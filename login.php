@@ -114,7 +114,7 @@ if (isset($_SESSION["pms_status"])) {
                     }
 
                     console.log(json.data);
-                    $("#btn_submit").html("Save");
+                    $("#btn_submit").html("Login");
                     $("#btn_submit").prop('disabled', false);
                 }
             });
