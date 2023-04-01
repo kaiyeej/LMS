@@ -38,7 +38,7 @@ $routes = array(
 
 
 $base_folder = "pages/";
-$page = str_replace("/juancoder/", "", $request);
+$page = str_replace("/lms/", "", $request);
 
 // chec if has parameters
 if (substr_count($page, "?") > 0) {
