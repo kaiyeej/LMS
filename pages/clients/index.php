@@ -8,7 +8,7 @@
     </div>
 
     <div class="section-body">
-        <div class="alert alert-light alert-has-icon" style="background:#dbfeb8;border: 1px dashed #3C84AB;">
+        <div class="alert alert-light alert-has-icon" style="border: 1px dashed #3C84AB;">
             <div class="alert-icon"><i class="far fa-lightbulb"></i></div>
             <div class="alert-body">
                 <div class="alert-title">Clients</div>
@@ -71,19 +71,19 @@
                     }
                 },
                 {
-                    "data": "client_name"
+                    "data": "client_fullname"
                 },
                 {
                     "data": "client_address"
                 },
                 {
-                    "data": "client_contact_num"
+                    "data": "client_contact_no"
                 },
                 {
                     "data": "date_added"
                 },
                 {
-                    "data": "date_modified"
+                    "data": "date_last_modified"
                 }
             ]
         });

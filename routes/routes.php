@@ -13,24 +13,12 @@ $routes = array(
         'class_name' => 'Clients',
         'has_detail' => 0
     ),
-    "roles" => array(
-        'class_name' => 'Roles',
+    "loan-types" => array(
+        'class_name' => 'LoanTypes',
         'has_detail' => 0
     ),
     "users" => array(
         'class_name' => 'Users',
-        'has_detail' => 0
-    ),
-    "projects" => array(
-        'class_name' => 'Clients',
-        'has_detail' => 1
-    ),
-    "payment" => array(
-        'class_name' => 'Payment',
-        'has_detail' => 0
-    ),
-    "distributions" => array(
-        'class_name' => 'Distributions',
         'has_detail' => 0
     ),
 );

@@ -11,21 +11,38 @@
                 <div class="modal-body">
                     <input type="hidden" id="hidden_id" name="input[client_id]">
                     <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label>Name</label>
-                            <input type="text" class="form-control input-item" placeholder="Client name" name="input[client_name]" id="client_name" required>
+                        <div class="form-group col-md-6">
+                            <label>First Name</label>
+                            <input type="text" class="form-control input-item" autocomplete="off" placeholder="Client first name" name="input[client_fname]" id="client_fname" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Middle Name</label>
+                            <input type="text" class="form-control input-item" autocomplete="off" placeholder="Client middle name" name="input[client_mname]" id="client_mname" required>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label>Last Name</label>
+                            <input type="text" class="form-control input-item" autocomplete="off" placeholder="Client last name" name="input[client_lname]" id="client_lname" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Suffix</label>
+                            <select class="form-control select2 input-item" id="client_name_extension" name="input[client_name_extension]" style="width:100%;" srequired>
+                                <option value="">Please Select</option>
+                                <option value="Jr.">Jr.</option>
+                                <option value="Sr.">Sr.</option>
+                                <option value="III">III</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Date of Birth</label>
+                            <input type="date" class="form-control input-item" name="input[client_dob]" id="client_dob" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Contact #</label>
-                            <input type="text" class="form-control input-item" placeholder="Contact number" name="input[client_contact_num]" id="client_contact_num" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Address</label>
-                            <input type="text" class="form-control input-item" placeholder="Address" name="input[client_address]" id="client_address" required>
+                            <input type="text" class="form-control input-item" placeholder="Contact number" name="input[client_contact_no]" id="client_contact_no" required>
                         </div>
                         <div class="form-group col-md-12">
-                            <label>Remarks</label>
-                            <textarea class="form-control" class="form-control input-item" placeholder="Remarks" name="input[client_remarks]" id="client_remarks"></textarea>
+                            <label>Address</label>
+                            <textarea class="form-control input-item" placeholder="Address" name="input[client_address]" id="client_address" required></textarea>
                         </div>
                     </div>
                 </div>

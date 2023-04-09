@@ -9,11 +9,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="hidden_id" name="input[roles_id]">
+                    <input type="hidden" id="hidden_id" name="input[loan_type_id]">
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label>Role</label>
-                            <input type="text" class="form-control input-item" placeholder="Role name" name="input[role_name]" id="role_name" required>
+                            <label>Loan Type</label>
+                            <input type="text" class="form-control input-item" autocomplete="off" placeholder="Loan type" name="input[loan_type]" id="loan_type" required>
                         </div>
                         <div class="form-group col-md-12">
                             <label>Remarks</label>

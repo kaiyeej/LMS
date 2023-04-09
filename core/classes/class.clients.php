@@ -4,20 +4,26 @@ class Clients extends Connection
 {
     private $table = 'tbl_clients';
     public $pk = 'client_id';
-    public $name = 'client_name';
+    public $name = 'client_fname';
 
     public function add()
     {
-        $client_name = $this->clean($this->inputs[$this->name]);
-        $is_exist = $this->select($this->table, $this->pk, "client_name = '$client_name'");
+        $client_fname = $this->clean($this->inputs['client_fname']);
+        $client_mname = $this->clean($this->inputs['client_mname']);
+        $client_lname = $this->clean($this->inputs['client_lname']);
+        $client_name_extension = $this->clean($this->inputs['client_name_extension']);
+        $is_exist = $this->select($this->table, $this->pk, "client_fname = '$client_fname' AND client_mname = '$client_mname' AND client_lname='$client_lname' AND client_name_extension='$client_name_extension'");
         if ($is_exist->num_rows > 0) {
             return -2;
         } else {
             $form = array(
-                $this->name             => $this->clean($this->inputs[$this->name]),
-                'client_address'        => $this->inputs['client_address'],
-                'client_remarks'        => $this->inputs['client_remarks'],
-                'client_contact_num'    => $this->inputs['client_contact_num']
+                'client_fname'             => $client_fname,
+                'client_mname'             => $client_mname,
+                'client_lname'             => $client_lname,
+                'client_name_extension'    => $client_name_extension,
+                'client_address'           => $this->clean($this->inputs['client_address']),
+                'client_dob'               => $this->clean($this->inputs['client_dob']),
+                'client_contact_no'        => $this->clean($this->inputs['client_contact_no']),    
             );
             return $this->insert($this->table, $form);
         }
@@ -26,16 +32,22 @@ class Clients extends Connection
     public function edit()
     {
         $primary_id = $this->inputs[$this->pk];
-        $client_name = $this->clean($this->inputs[$this->name]);
-        $is_exist = $this->select($this->table, $this->pk, "client_name = '$client_name' AND $this->pk != '$primary_id'");
+        $client_fname = $this->clean($this->inputs['client_fname']);
+        $client_mname = $this->clean($this->inputs['client_mname']);
+        $client_lname = $this->clean($this->inputs['client_lname']);
+        $client_name_extension = $this->clean($this->inputs['client_name_extension']);
+        $is_exist = $this->select($this->table, $this->pk, "client_fname = '$client_fname' AND client_mname = '$client_mname' AND client_lname='$client_lname' AND client_name_extension='$client_name_extension' AND $this->pk != '$primary_id'");
         if ($is_exist->num_rows > 0) {
             return 2;
         } else {
             $form = array(
-                $this->name             => $this->clean($this->inputs[$this->name]),
-                'client_address'        => $this->inputs['client_address'],
-                'client_remarks'        => $this->inputs['client_remarks'],
-                'client_contact_num'    => $this->inputs['client_contact_num']
+                'client_fname'             => $client_fname,
+                'client_mname'             => $client_mname,
+                'client_lname'             => $client_lname,
+                'client_name_extension'    => $client_name_extension,
+                'client_address'           => $this->clean($this->inputs['client_address']),
+                'client_dob'               => $this->clean($this->inputs['client_dob']),
+                'client_contact_no'        => $this->clean($this->inputs['client_contact_no']),    
             );
             return $this->update($this->table, $form, "$this->pk = '$primary_id'");
         }
@@ -48,6 +60,7 @@ class Clients extends Connection
         $rows = array();
         $result = $this->select($this->table, '*', $param);
         while ($row = $result->fetch_assoc()) {
+            $row['client_fullname'] = $row['client_fname']." ".$row['client_mname']." ".$row['client_lname']." ".$row['client_name_extension'];
             $rows[] = $row;
         }
         return $rows;
