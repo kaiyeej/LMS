@@ -12,24 +12,20 @@
                     <input type="hidden" id="hidden_id" name="input[user_id]">
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label>Name</label>
-                            <input type="text" class="form-control input-item" placeholder="Full name" name="input[user_fullname]" id="user_fullname" required>
+                            <label>First Name</label>
+                            <input type="text" class="form-control input-item" placeholder="First name" name="input[user_fname]" id="user_fname" autocomplete="off" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label>Contact #</label>
-                            <input type="text" class="form-control input-item" placeholder="Contact number" name="input[user_contact_number]" id="user_contact_number" required>
+                            <label>Middle Name</label>
+                            <input type="text" class="form-control input-item" placeholder="Middle name" name="input[user_mname]" id="user_mname" autocomplete="off">
                         </div>
                         <div class="form-group col-md-6">
-                            <label>Designation</label>
-                            <input type="text" class="form-control input-item" placeholder="Designation" name="input[designation]" id="designation" required>
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label>Address</label>
-                            <textarea class="form-control" class="form-control input-item" placeholder="Address" name="input[user_address]" id="user_address"></textarea>
+                            <label>Last Name</label>
+                            <input type="text" class="form-control input-item" placeholder="Last name" name="input[user_lname]" id="user_lname" required autocomplete="off">
                         </div>
                         <div class="form-group col-md-6">
                             <label>Category</label>
-                            <select class="form-control select2 input-item" id="user_category" name="input[user_category]" style="width:100%;" srequired>
+                            <select class="form-control select2 input-item" id="user_category" name="input[user_category]" style="width:100%;" required>
                                 <option value="">Please Select</option>
                                 <option value="A">Admin</option>
                                 <option value="S">Staff</option>
@@ -37,7 +33,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label>Username</label>
-                            <input type="text" class="form-control input-item" placeholder="Username" name="input[username]" id="username" required>
+                            <input type="text" class="form-control input-item" placeholder="Username" name="input[username]" id="username" required autocomplete="off">
                         </div>
                         <div class="form-group col-md-12" id="div_pass">
                             <label>Password</label>

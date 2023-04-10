@@ -15,10 +15,9 @@ class Users extends Connection
         } else {
             $pass = $this->inputs['password'];
             $form = array(
-                'user_fullname' => $this->inputs['user_fullname'],
-                'designation' => $this->inputs['designation'],
-                'user_contact_number' => $this->inputs['user_contact_number'],
-                'user_address' => $this->inputs['user_address'],
+                'user_fname' => $this->inputs['user_fname'],
+                'user_mname' => $this->inputs['user_mname'],
+                'user_lname' => $this->inputs['user_lname'],
                 'user_category' => $this->inputs['user_category'],
                 'username' => $this->inputs['username'],
                 'password' => md5($pass)
@@ -36,10 +35,9 @@ class Users extends Connection
             return 2;
         } else {
             $form = array(
-                'user_fullname' => $this->inputs['user_fullname'],
-                'designation' => $this->inputs['designation'],
-                'user_contact_number' => $this->inputs['user_contact_number'],
-                'user_address' => $this->inputs['user_address'],
+                'user_fname' => $this->inputs['user_fname'],
+                'user_mname' => $this->inputs['user_mname'],
+                'user_lname' => $this->inputs['user_lname'],
                 'user_category' => $this->inputs['user_category'],
                 'username' => $this->inputs['username'],
             );
@@ -54,19 +52,6 @@ class Users extends Connection
         return $this->delete($this->table, "$this->pk IN($ids)");
     }
 
-    public function approved()
-    {
-        $form = array(
-            'status' => "A"
-        );
-
-        $ids = implode(",", $this->inputs['ids']);
-        foreach ((array) $this->inputs['ids'] as $user_id) {
-            $this->sendNotif($user_id, 'Congratulations!', 'Your account was successfully verified.');
-        }
-
-        return $this->update($this->table, $form, "$this->pk IN($ids)");
-    }
 
     public function delete_entry()
     {
@@ -81,6 +66,7 @@ class Users extends Connection
         $rows = array();
         $result = $this->select($this->table, '*', $param);
         while ($row = $result->fetch_assoc()) {
+            $row['user_fullname'] = $row['user_fname']." ".$row['user_mname']." ".$row['user_lname'];
             $rows[] = $row;
         }
         return $rows;
@@ -148,14 +134,6 @@ class Users extends Connection
         $row = $result->fetch_assoc();
 
         if ($row) {
-
-            if($row['user_category'] == "A"){
-                $cat = "Admin";
-            }else{
-                $cat = "User";
-            }
-
-            $_SESSION['pms_status'] = "in";
             $_SESSION['user']['id'] = $row['user_id'];
             $_SESSION['user']['category'] = $row['user_category'];
 

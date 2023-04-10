@@ -36,8 +36,7 @@
                                         </th>
                                         <th></th>
                                         <th>Name</th>
-                                        <th>Designation</th>
-                                        <th>Contact #</th>
+                                        <th>Category</th>
                                         <th>Username</th>
                                         <th>Date Added</th>
                                         <th>Date Modified</th>
@@ -80,10 +79,7 @@
                     "data": "user_fullname"
                 },
                 {
-                    "data": "designation"
-                },
-                {
-                    "data": "user_contact_number"
+                    "data": "user_category"
                 },
                 {
                     "data": "username"
@@ -92,7 +88,7 @@
                     "data": "date_added"
                 },
                 {
-                    "data": "date_modified"
+                    "data": "date_last_modified"
                 }
             ]
         });
