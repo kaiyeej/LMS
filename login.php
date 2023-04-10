@@ -24,20 +24,7 @@ if (isset($_SESSION["pms_status"])) {
     <link rel="stylesheet" href="assets/css/components.css">
 
     <script src="assets/modules/jquery.min.js"></script>
-    <!-- Start GA -->
-    <script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script>
-    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-
-        gtag('config', 'UA-94034622-3');
-    </script>
-    <!-- /END GA -->
+    
 </head>
 
 <body>
@@ -47,7 +34,7 @@ if (isset($_SESSION["pms_status"])) {
                 <div class="row">
                     <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
                         <div class="login-brand">
-                            <img src="assets/img/logo.png" alt="logo" width="150">
+                            <img src="./assets/img/logo.png" alt="logo" width="150">
                         </div>
 
                         <div class="card card-success">
