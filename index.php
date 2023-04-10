@@ -1,7 +1,7 @@
 <?php
 include 'core/config.php';
 
-if (!isset($_SESSION["pms_status"])) {
+if (!isset($_SESSION['user']['id'] )) {
   header("location:./login.php");
 }
 ?>
