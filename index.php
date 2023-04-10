@@ -442,8 +442,6 @@ if (!isset($_SESSION['user']['id'] )) {
     function getEntryDetails2(id) {
       $("#hidden_id_2").val(id);
 
-      route_settings.class_name == "Projects" ? $("#hidden_id_3").val(id) : "";
-
       modal_detail_status = 1;
       $.ajax({
         type: "POST",
@@ -495,8 +493,6 @@ if (!isset($_SESSION['user']['id'] )) {
             (typeof(col_list) != 'undefined' && col_list != null) ? col_list.classList.add('col-8'): '';
           }
           getEntries2();
-
-          route_settings.class_name == "Projects" ? getEntries3() : "";
           
           $("#modalEntry2").modal('show');
         }
