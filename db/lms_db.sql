@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `tbl_clients` (
   `client_mname` varchar(50) NOT NULL,
   `client_lname` varchar(50) NOT NULL,
   `client_name_extension` varchar(5) NOT NULL,
-  `client_birthdate` date NOT NULL,
+  `client_dob` date NOT NULL,
   `client_contact_no` varchar(30) NOT NULL,
   `client_civil_status` varchar(10) NOT NULL COMMENT 'Single, Married, Widowed, Seperated',
   `client_address` varchar(250) NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `tbl_clients` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table lms_db.tbl_clients: ~1 rows (approximately)
-INSERT INTO `tbl_clients` (`client_id`, `client_fname`, `client_mname`, `client_lname`, `client_name_extension`, `client_birthdate`, `client_contact_no`, `client_civil_status`, `client_address`, `client_address_status`, `client_res_cert_no`, `client_res_cert_issued_at`, `client_res_cert_date`, `client_employer`, `client_employer_address`, `client_employer_contact_no`, `client_emp_position`, `Column 18`, `client_emp_income`, `client_emp_status`, `client_emp_length`, `client_prev_emp`, `client_spouse`, `client_spouse_address`, `client_spouse_res_cert_no`, `client_spouse_res_cert_issued_at`, `client_no_of_child`, `client_no_of_child_elem`, `client_no_of_child_hs`, `client_no_of_child_college`, `client_spouse_res_cert_date`, `client_spouse_employer`, `client_no_of_childred`, `client_no_of_child_dependent`, `date_added`, `date_last_modified`) VALUES
+INSERT INTO `tbl_clients` (`client_id`, `client_fname`, `client_mname`, `client_lname`, `client_name_extension`, `client_dob`, `client_contact_no`, `client_civil_status`, `client_address`, `client_address_status`, `client_res_cert_no`, `client_res_cert_issued_at`, `client_res_cert_date`, `client_employer`, `client_employer_address`, `client_employer_contact_no`, `client_emp_position`, `Column 18`, `client_emp_income`, `client_emp_status`, `client_emp_length`, `client_prev_emp`, `client_spouse`, `client_spouse_address`, `client_spouse_res_cert_no`, `client_spouse_res_cert_issued_at`, `client_no_of_child`, `client_no_of_child_elem`, `client_no_of_child_hs`, `client_no_of_child_college`, `client_spouse_res_cert_date`, `client_spouse_employer`, `client_no_of_childred`, `client_no_of_child_dependent`, `date_added`, `date_last_modified`) VALUES
 	(1, 'Sample', 'Mi', 'S', 'Jr.', '2008-12-29', '2313123', '', 'sdsa', '', '', '', '0000-00-00', '', '', '', '', '', 0.000, '', 0, '', '', '', '', '', 0, 0, 0, 0, '0000-00-00', '', 0, 0, '2023-04-09 21:09:35', '2023-04-09 21:31:43');
 
 -- Dumping structure for table lms_db.tbl_collections
