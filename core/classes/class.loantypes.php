@@ -11,7 +11,8 @@ class LoanTypes extends Connection
     {
         $form = array(
             $this->name     => $this->clean($this->inputs[$this->name]),
-            'remarks'       => $this->inputs['remarks'],
+            'loan_type_interest' => $this->clean($this->inputs['loan_type_interest']),
+            'remarks'       => $this->clean($this->inputs['remarks']),
         );
 
         return $this->insertIfNotExist($this->table, $form, "$this->name = '".$this->inputs[$this->name]."'");
@@ -27,7 +28,8 @@ class LoanTypes extends Connection
         } else {
             $form = array(
                 $this->name     => $this->clean($this->inputs[$this->name]),
-                'remarks'       => $this->inputs['remarks'],
+                'loan_type_interest' => $this->clean($this->inputs['loan_type_interest']),
+                'remarks'       => $this->clean($this->inputs['remarks']),
             );
 
             return $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");

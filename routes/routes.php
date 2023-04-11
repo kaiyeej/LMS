@@ -17,6 +17,10 @@ $routes = array(
         'class_name' => 'LoanTypes',
         'has_detail' => 0
     ),
+    "loans" => array(
+        'class_name' => 'Loans',
+        'has_detail' => 0
+    ),
     "users" => array(
         'class_name' => 'Users',
         'has_detail' => 0

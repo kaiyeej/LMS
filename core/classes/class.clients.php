@@ -81,9 +81,9 @@ class Clients extends Connection
    
     public function name($primary_id)
     {
-        $result = $this->select($this->table, $this->name, "$this->pk = '$primary_id'");
+        $result = $this->select($this->table, 'client_fname,client_mname,client_lname,client_name_extension', "$this->pk = '$primary_id'");
         $row = $result->fetch_assoc();
-        return $row[$this->name];
+        return $row['client_fname']." ".$row['client_mname']." ".$row['client_lname']." ".$row['client_name_extension'];;
     }
 
     public function delete_entry()

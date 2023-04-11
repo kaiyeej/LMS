@@ -16,6 +16,10 @@
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="Loan type" name="input[loan_type]" id="loan_type" required>
                         </div>
                         <div class="form-group col-md-12">
+                            <label>Loan Interest</label>
+                            <input type="number" step="0.1" max="100" min="0" class="form-control input-item" autocomplete="off" placeholder="Loan interest" name="input[loan_type_interest]" id="loan_type_interest" required>
+                        </div>
+                        <div class="form-group col-md-12">
                             <label>Remarks</label>
                             <textarea class="form-control" class="form-control input-item" placeholder="Remarks" name="input[remarks]" id="remarks"></textarea>
                         </div>

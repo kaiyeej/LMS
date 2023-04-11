@@ -1,7 +1,7 @@
 <?php
 include 'core/config.php';
 
-if (!isset($_SESSION['user']['id'] )) {
+if (!isset($_SESSION['user']['id'])) {
   header("location:./login.php");
 }
 ?>
@@ -289,8 +289,7 @@ if (!isset($_SESSION['user']['id'] )) {
       $("#hidden_id").val(0);
       document.getElementById("frm_submit").reset();
 
-
-      var element = document.getElementById('reference_code');
+      var element = document.getElementById('reference_number');
       if (typeof(element) != 'undefined' && element != null) {
         generateReference(route_settings.class_name);
       }
@@ -493,7 +492,7 @@ if (!isset($_SESSION['user']['id'] )) {
             (typeof(col_list) != 'undefined' && col_list != null) ? col_list.classList.add('col-8'): '';
           }
           getEntries2();
-          
+
           $("#modalEntry2").modal('show');
         }
       });
@@ -589,41 +588,41 @@ if (!isset($_SESSION['user']['id'] )) {
 
       var count_checked = $("input[name='dt_id_2']").length;
       if (count_checked > 0) {
-          swal({
-              title: 'Are you sure?',
-              text: 'This entries will be finished!',
-              icon: 'warning',
-              buttons: true,
-              dangerMode: true,
+        swal({
+            title: 'Are you sure?',
+            text: 'This entries will be finished!',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
           })
           .then((willDelete) => {
             if (willDelete) {
-                $.ajax({
-                    type: "POST",
-                    url: "controllers/sql.php?c=" + route_settings.class_name + "&q=finish",
-                    data: {
-                      input: {
-                        id: id
-                      }
-                    },
-                    success: function(data) {
-                      getEntries();
-                      var json = JSON.parse(data);
-                      if (json.data == 1) {
-                        success_finish();
-                        $("#modalEntry2").modal('hide');
-                      } else {
-                        failed_query(json);
-                      }
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        errorLogger('Error:', textStatus, errorThrown);
-                    }
-                });
+              $.ajax({
+                type: "POST",
+                url: "controllers/sql.php?c=" + route_settings.class_name + "&q=finish",
+                data: {
+                  input: {
+                    id: id
+                  }
+                },
+                success: function(data) {
+                  getEntries();
+                  var json = JSON.parse(data);
+                  if (json.data == 1) {
+                    success_finish();
+                    $("#modalEntry2").modal('hide');
+                  } else {
+                    failed_query(json);
+                  }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                  errorLogger('Error:', textStatus, errorThrown);
+                }
+              });
             } else {
-                swal("Cancelled", "Entries are safe :)", "error");
+              swal("Cancelled", "Entries are safe :)", "error");
             }
-        });
+          });
       } else {
         swal("Cannot proceed!", "No entries found!", "warning");
       }
@@ -670,7 +669,10 @@ if (!isset($_SESSION['user']['id'] )) {
         data: [],
         success: function(data) {
           var json = JSON.parse(data);
-          $("#reference_code").val(json.data);
+          $("#reference_number").val(json.data);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          errorLogger('Error:', textStatus, errorThrown);
         }
       });
     }
@@ -702,10 +704,10 @@ if (!isset($_SESSION['user']['id'] )) {
   <script src="assets/modules/select2/dist/js/select2.full.min.js"></script>
   <!-- <script src="assets/js/page/modules-sweetalert.js"></script> -->
 
-  
+
   <!-- Page Specific JS File -->
   <script src="assets/js/page/index.js"></script>
-  
+
   <!-- Template JS File -->
   <script src="assets/js/scripts.js"></script>
   <script src="assets/js/custom.js"></script>

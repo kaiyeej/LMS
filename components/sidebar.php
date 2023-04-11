@@ -12,7 +12,7 @@
         <li><a class="nav-link" href="loan-types"><i class="fas fa-list"></i> <span>Loan Types</span></a></li>
 
         <li class="menu-header">Transactions</li>
-        <li><a class="nav-link" href="Loans"><i class="fa fa-money-check"></i> <span>Loans</span></a></li>
+        <li><a class="nav-link" href="loans"><i class="fa fa-folder"></i> <span>Loans</span></a></li>
         <!-- <li class="dropdown">
             <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>Menu 3</span></a>
             <ul class="dropdown-menu">

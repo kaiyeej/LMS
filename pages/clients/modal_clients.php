@@ -25,12 +25,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label>Suffix</label>
-                            <select class="form-control select2 input-item" id="client_name_extension" name="input[client_name_extension]" style="width:100%;" srequired>
-                                <option value="">Please Select</option>
-                                <option value="Jr.">Jr.</option>
-                                <option value="Sr.">Sr.</option>
-                                <option value="III">III</option>
-                            </select>
+                            <input type="text" class="form-control input-item" autocomplete="off" placeholder="Name extension" name="input[client_name_extension]" id="client_name_extension">
                         </div>
                         <div class="form-group col-md-6">
                             <label>Date of Birth</label>

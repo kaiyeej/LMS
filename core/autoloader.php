@@ -8,4 +8,5 @@ $classes = array(
     'LoanTypes'         => $pre_class . 'loantypes.php',
     'Profile'           => $pre_class . 'profile.php',
     'Users'             => $pre_class . 'users.php',
+    'Loans'             => $pre_class . 'loans.php',
 );
