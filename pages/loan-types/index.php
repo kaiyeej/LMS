@@ -8,7 +8,7 @@
     </div>
 
     <div class="section-body">
-        <div class="alert alert-light alert-has-icon" style="background:#DEFCF9;border: 1px dashed #3C84AB;">
+        <div class="alert alert-light alert-has-icon" style="border: 1px dashed #3C84AB;">
             <div class="alert-icon"><i class="far fa-lightbulb"></i></div>
             <div class="alert-body">
                 <div class="alert-title">Loan Types</div>
