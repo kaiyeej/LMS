@@ -14,11 +14,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
--- Dumping database structure for lms_db
-CREATE DATABASE IF NOT EXISTS `lms_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
-USE `lms_db`;
-
 -- Dumping structure for table lms_db.tbl_clients
 CREATE TABLE IF NOT EXISTS `tbl_clients` (
   `client_id` int(11) NOT NULL AUTO_INCREMENT,

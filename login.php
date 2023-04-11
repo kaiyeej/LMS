@@ -37,7 +37,7 @@ if (isset($_SESSION["pms_status"])) {
                             <img src="./assets/img/logo.png" alt="logo" width="200">
                         </div>
 
-                        <div class="card card-success">
+                        <div class="card card-primary">
                            <div class="card-header">
                                 <h4>Login</h4>
                             </div>
@@ -61,7 +61,7 @@ if (isset($_SESSION["pms_status"])) {
                                     </div>
 
                                     <div class="form-group">
-                                        <button type="submit" id="btn_submit" class="btn btn-success btn-lg btn-block" tabindex="4">
+                                        <button type="submit" id="btn_submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
                                             Login
                                         </button>
                                     </div>
