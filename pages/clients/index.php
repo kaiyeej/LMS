@@ -29,7 +29,7 @@ input.invalid {
                 Manage clients here.
             </div>
             <div>
-                <a href="#" class="btn btn-icon icon-left btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</a>
+                <a href="#" class="btn btn-icon icon-left btn-primary" onclick="addClient()"><i class="fas fa-plus"></i> Add</a>
                 <a href="#" class="btn btn-icon icon-left btn-danger" onclick='deleteEntry()'><i class="fas fa-trash"></i> Delete</a>
             </div>
         </div>
@@ -66,6 +66,15 @@ input.invalid {
 </section>
 <?php include "modal_clients.php"; ?>
 <script type="text/javascript">
+    function addClient() {
+      modal_detail_status = 0;
+      $("#hidden_id").val(0);
+      document.getElementById("frm_client").reset();
+
+      $("#modalLabel").html("<i class='fa fa-edit'></i> Add Entry");
+      $("#modalEntry").modal('show');
+    }
+
     function getEntries() {
         $("#dt_entries").DataTable().destroy();
         $("#dt_entries").DataTable({

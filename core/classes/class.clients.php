@@ -17,15 +17,40 @@ class Clients extends Connection
             return -2;
         } else {
             $form = array(
-                'client_fname'             => $client_fname,
-                'client_mname'             => $client_mname,
-                'client_lname'             => $client_lname,
-                'client_name_extension'    => $client_name_extension,
-                'client_address'           => $this->clean($this->inputs['client_address']),
-                'client_dob'               => $this->clean($this->inputs['client_dob']),
-                'client_contact_no'        => $this->clean($this->inputs['client_contact_no']),    
+                'client_fname'                      => $client_fname,
+                'client_mname'                      => $client_mname,
+                'client_lname'                      => $client_lname,
+                'client_name_extension'             => $client_name_extension,
+                'client_address'                    => $this->clean($this->inputs['client_address']),
+                'client_dob'                        => $this->clean($this->inputs['client_dob']),
+                'client_contact_no'                 => $this->clean($this->inputs['client_contact_no']),
+                'client_civil_status'               => $this->clean($this->inputs['client_civil_status']),
+                'client_address'                    => $this->clean($this->inputs['client_address']),
+                'client_address_status'             => $this->clean($this->inputs['client_address_status']),
+                'client_res_cert_no'                => $this->clean($this->inputs['client_res_cert_no']),
+                'client_res_cert_issued_at'         => $this->clean($this->inputs['client_res_cert_issued_at']),
+                'client_res_cert_date'              => $this->clean($this->inputs['client_res_cert_date']),
+                'client_employer'                   => $this->clean($this->inputs['client_employer']),
+                'client_spouse'                     => $this->clean($this->inputs['client_spouse']),
+                'client_spouse_address'             => $this->clean($this->inputs['client_spouse_address']),
+                'client_spouse_res_cert_no'         => $this->clean($this->inputs['client_spouse_res_cert_no']),
+                'client_spouse_res_cert_issued_at'  => $this->clean($this->inputs['client_spouse_res_cert_issued_at']),
+                'client_spouse_res_cert_date'       => $this->clean($this->inputs['client_spouse_res_cert_date']),
+                'client_spouse_employer'            => $this->clean($this->inputs['client_spouse_employer']),
+                'client_no_of_childred'             => $this->clean($this->inputs['client_no_of_childred']),
+                'client_no_of_child_dependent'      => $this->clean($this->inputs['client_no_of_child_dependent']),
+                'client_no_of_child_college'        => $this->clean($this->inputs['client_no_of_child_college']),
+                'client_no_of_child_hs'             => $this->clean($this->inputs['client_no_of_child_hs']),
+                'client_no_of_child_elem'           => $this->clean($this->inputs['client_no_of_child_elem']),
+                'client_employer_address'           => $this->clean($this->inputs['client_employer_address']),
+                'client_employer_contact_no'        => $this->clean($this->inputs['client_employer_contact_no']),
+                'client_emp_position'               => $this->clean($this->inputs['client_emp_position']),
+                'client_emp_income'                 => $this->clean($this->inputs['client_emp_income']),
+                'client_emp_status'                 => $this->clean($this->inputs['client_emp_status']),
+                'client_emp_length'                 => $this->clean($this->inputs['client_emp_length']),
+                'client_prev_emp'                   => $this->clean($this->inputs['client_prev_emp']),
             );
-            return $this->insert($this->table, $form);
+            return $this->insert($this->table, $form, 'Y');
         }
     }
 
@@ -41,13 +66,28 @@ class Clients extends Connection
             return 2;
         } else {
             $form = array(
-                'client_fname'             => $client_fname,
-                'client_mname'             => $client_mname,
-                'client_lname'             => $client_lname,
-                'client_name_extension'    => $client_name_extension,
-                'client_address'           => $this->clean($this->inputs['client_address']),
-                'client_dob'               => $this->clean($this->inputs['client_dob']),
-                'client_contact_no'        => $this->clean($this->inputs['client_contact_no']),    
+                'client_fname'                      => $client_fname,
+                'client_mname'                      => $client_mname,
+                'client_lname'                      => $client_lname,
+                'client_name_extension'             => $client_name_extension,
+                'client_address'                    => $this->clean($this->inputs['client_address']),
+                'client_dob'                        => $this->clean($this->inputs['client_dob']),
+                'client_contact_no'                 => $this->clean($this->inputs['client_contact_no']),     'client_civil_status'               => $this->clean($this->inputs['client_civil_status']),
+                'client_address'                    => $this->clean($this->inputs['client_address']),     'client_address_status'             => $this->clean($this->inputs['client_address_status']),
+                'client_res_cert_no'                => $this->clean($this->inputs['client_res_cert_no']),     'client_res_cert_issued_at'         => $this->clean($this->inputs['client_res_cert_issued_at']),
+                'client_res_cert_date'              => $this->clean($this->inputs['client_res_cert_date']), 'client_employer'                   => $this->clean($this->inputs['client_employer']), 'client_employer_address'           => $this->clean($this->inputs['client_employer_address']), 'client_employer_contact_no'        => $this->clean($this->inputs['client_employer_contact_no']),
+                'client_emp_position'               => $this->clean($this->inputs['client_emp_position']), 'client_emp_income'                 => $this->clean($this->inputs['client_emp_income']), 'client_emp_status'                 => $this->clean($this->inputs['client_emp_status']), 'client_emp_length'                 => $this->clean($this->inputs['client_emp_length']), 'client_prev_emp'                   => $this->clean($this->inputs['client_prev_emp']),
+                'client_spouse'                     => $this->clean($this->inputs['client_spouse']),
+                'client_spouse_address'             => $this->clean($this->inputs['client_spouse_address']),
+                'client_spouse_res_cert_no'         => $this->clean($this->inputs['client_spouse_res_cert_no']),
+                'client_spouse_res_cert_issued_at'  => $this->clean($this->inputs['client_spouse_res_cert_issued_at']),
+                'client_spouse_res_cert_date'       => $this->clean($this->inputs['client_spouse_res_cert_date']),
+                'client_spouse_employer'            => $this->clean($this->inputs['client_spouse_employer']),
+                'client_no_of_childred'             => $this->clean($this->inputs['client_no_of_childred']),
+                'client_no_of_child_dependent'      => $this->clean($this->inputs['client_no_of_child_dependent']),
+                'client_no_of_child_college'        => $this->clean($this->inputs['client_no_of_child_college']),
+                'client_no_of_child_hs'             => $this->clean($this->inputs['client_no_of_child_hs']),
+                'client_no_of_child_elem'           => $this->clean($this->inputs['client_no_of_child_elem'])
             );
             return $this->update($this->table, $form, "$this->pk = '$primary_id'");
         }
@@ -60,7 +100,7 @@ class Clients extends Connection
         $rows = array();
         $result = $this->select($this->table, '*', $param);
         while ($row = $result->fetch_assoc()) {
-            $row['client_fullname'] = $row['client_fname']." ".$row['client_mname']." ".$row['client_lname']." ".$row['client_name_extension'];
+            $row['client_fullname'] = $row['client_fname'] . " " . $row['client_mname'] . " " . $row['client_lname'] . " " . $row['client_name_extension'];
             $rows[] = $row;
         }
         return $rows;
@@ -78,12 +118,12 @@ class Clients extends Connection
         $ids = implode(",", $this->inputs['ids']);
         return $this->delete($this->table, "$this->pk IN($ids)");
     }
-   
+
     public function name($primary_id)
     {
         $result = $this->select($this->table, 'client_fname,client_mname,client_lname,client_name_extension', "$this->pk = '$primary_id'");
         $row = $result->fetch_assoc();
-        return $row['client_fname']." ".$row['client_mname']." ".$row['client_lname']." ".$row['client_name_extension'];;
+        return $row['client_fname'] . " " . $row['client_mname'] . " " . $row['client_lname'] . " " . $row['client_name_extension'];;
     }
 
     public function delete_entry()
@@ -92,5 +132,4 @@ class Clients extends Connection
 
         return $this->delete($this->table, "$this->pk = $id");
     }
-
 }
