@@ -11,6 +11,11 @@ input {
 input.invalid {
     border: 1px #E57373 solid;
 }
+
+.modal-body{
+    max-width: 100%;
+    overflow-x: auto;
+}
 </style>
 <section class="section">
     <div class="section-header">

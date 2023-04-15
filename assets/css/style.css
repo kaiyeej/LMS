@@ -2496,7 +2496,7 @@ body.layout-3 .navbar.navbar-secondary {
   body.layout-3 .navbar.navbar-secondary .navbar-nav > .nav-item:last-child .nav-link {
     margin-right: 0; }
   body.layout-3 .navbar.navbar-secondary .navbar-nav > .nav-item > .nav-link {
-    color: #868e96;
+    color: #5d6c7b;
     font-size: 13px;
     letter-spacing: .3px;
     height: 70px;
@@ -2621,7 +2621,7 @@ body.layout-3 .main-footer {
       padding: 0 20px;
       width: 100%;
       letter-spacing: .3px;
-      color: #868e96;
+      color: #5d6c7b;
       text-decoration: none; }
       .main-sidebar .sidebar-menu li a .badge {
         float: right;
@@ -2666,7 +2666,7 @@ body.layout-3 .main-footer {
       box-shadow: none;
       background-color: transparent; }
       .main-sidebar .sidebar-menu li ul.dropdown-menu li a {
-        color: #868e96;
+        color: #5d6c7b;
         height: 35px;
         padding-left: 65px;
         font-weight: 400; }
