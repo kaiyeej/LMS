@@ -1,28 +1,9 @@
-<style>
-.tab {
-  display: none;
-}
-
-input {
-  border: 1px solid #aaaaaa;
-}
-
-/* Mark input boxes that gets an error on validation: */
-input.invalid {
-    border: 1px #E57373 solid;
-}
-
-.modal-body{
-    max-width: 100%;
-    overflow-x: auto;
-}
-</style>
 <section class="section">
     <div class="section-header">
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
             <div class="breadcrumb-item"><a href="#">Transactions</a></div>
-            <div class="breadcrumb-item">Clients</div>
+            <div class="breadcrumb-item">Insurance</div>
         </div>
     </div>
 
@@ -30,11 +11,11 @@ input.invalid {
         <div class="alert alert-light alert-has-icon" style="border: 1px dashed #3C84AB;">
             <div class="alert-icon"><i class="far fa-lightbulb"></i></div>
             <div class="alert-body">
-                <div class="alert-title">Clients</div>
-                Manage clients here.
+                <div class="alert-title">Insurance</div>
+                Manage insurance here.
             </div>
             <div>
-                <a href="#" class="btn btn-icon icon-left btn-primary" onclick="addClient()"><i class="fas fa-plus"></i> Add</a>
+                <a href="#" class="btn btn-icon icon-left btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</a>
                 <a href="#" class="btn btn-icon icon-left btn-danger" onclick='deleteEntry()'><i class="fas fa-trash"></i> Delete</a>
             </div>
         </div>
@@ -54,9 +35,9 @@ input.invalid {
                                             </div>
                                         </th>
                                         <th></th>
-                                        <th>Name</th>
-                                        <th>Address</th>
-                                        <th>Contact #</th>
+                                        <th>Insurance Name</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
                                         <th>Date Added</th>
                                         <th>Date Modified</th>
                                     </tr>
@@ -69,20 +50,8 @@ input.invalid {
         </div>
     </div>
 </section>
-<?php include "modal_clients.php"; ?>
+<?php include "modal_insurance.php"; ?>
 <script type="text/javascript">
-    function addClient() {
-        modal_detail_status = 0;
-        $("#hidden_id").val(0);
-        document.getElementById("frm_client").reset();
-
-        $("#modalLabel").html("<i class='fa fa-edit'></i> Add Entry");
-        $("#modalEntry").modal('show');
-
-        var currentTab = 0; // Current tab is set to be the first tab (0)
-        showTab(currentTab);
-    }
-
     function getEntries() {
         $("#dt_entries").DataTable().destroy();
         $("#dt_entries").DataTable({
@@ -93,22 +62,22 @@ input.invalid {
             },
             "columns": [{
                     "mRender": function(data, type, row) {
-                        return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.client_id + '" value=' + row.client_id + '><label for="checkbox-b' + row.client_id + '" class="custom-control-label">&nbsp;</label></div>';
+                        return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.insurance_id + '" value=' + row.insurance_id + '><label for="checkbox-b' + row.insurance_id + '" class="custom-control-label">&nbsp;</label></div>';
                     }
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.client_id + ")'><span class='fa fa-edit'></span></button></center>";
+                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.insurance_id + ")'><span class='fa fa-edit'></span></button></center>";
                     }
                 },
                 {
-                    "data": "client_fullname"
+                    "data": "insurance_name"
                 },
                 {
-                    "data": "client_address"
+                    "data": "insurance_desc"
                 },
                 {
-                    "data": "client_contact_no"
+                    "data": "insurance_amount"
                 },
                 {
                     "data": "date_added"
@@ -122,6 +91,5 @@ input.invalid {
 
     $(document).ready(function() {
         getEntries();
-        getSelectOption('Insurance', 'insurance_id', 'insurance_name');
     });
 </script>

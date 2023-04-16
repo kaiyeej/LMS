@@ -367,6 +367,27 @@ if (!isset($_SESSION['user']['id'])) {
             $("#" + id_name).val(json[id_name]).trigger('change');
           });
 
+          
+          if(route_settings.class_name == "Clients"){
+            
+            if(jsonParse.data['client_paymaster_deduct_salary'] == "Yes"){
+              $("#client_paymaster_deduct_salary").prop("checked",true);
+            }else{
+              $("#client_paymaster_deduct_salary").prop("checked",false);
+            }
+
+            if(jsonParse.data['client_paymaster_client_deduct_salary'] == "Yes"){
+              $("#client_paymaster_client_deduct_salary").prop("checked",true);
+            }else{
+              $("#client_paymaster_client_deduct_salary").prop("checked",false);
+            }
+
+            if(jsonParse.data['client_paymaster_conformity'] == "Yes"){
+              $("#client_paymaster_conformity").prop("checked",true);
+            }else{
+              $("#client_paymaster_conformity").prop("checked",false);
+            }
+          }
 
 
           $("#modalLabel").html("<i class='flaticon-edit'></i> Update Entry");

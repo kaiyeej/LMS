@@ -25,6 +25,10 @@ $routes = array(
         'class_name' => 'Users',
         'has_detail' => 0
     ),
+    "insurance" => array(
+        'class_name' => 'Insurance',
+        'has_detail' => 0
+    ),
 );
 /** END SET ROUTES */
 

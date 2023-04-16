@@ -63,14 +63,14 @@
                                                 Paymaster
                                             </div>
                                         </div>
-                                        <div class="col-md-2 wizard-step">
+                                        <!-- <div class="col-md-2 wizard-step">
                                             <div class="wizard-step-icon">
                                                 <i class="fas fa-home"></i>
                                             </div>
                                             <div class="wizard-step-label">
                                                 Property
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <form class="wizard-content mt-2">
@@ -185,11 +185,11 @@
                                                 <label class="text-md-right text-left">Spouse</label>
                                                 <input type="text" class="form-control input-item" autocomplete="off" placeholder="Spouse fullname" name="input[client_spouse]" id="client_spouse" required>
                                             </div>
-                                            <div class="col-lg-4" style="padding: 10px;">
+                                            <div class="col-lg-3" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Spouse Employer</label>
                                                 <input type="text" class="form-control input-item" autocomplete="off" placeholder="Employer name" name="input[client_spouse_employer]" id="client_spouse_employer" required>
                                             </div>
-                                            <div class="col-lg-4" style="padding: 10px;">
+                                            <div class="col-lg-5" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Address</label>
                                                 <input type="text" class="form-control input-item" autocomplete="off" placeholder="Spouse address" name="input[client_spouse_address]" id="client_spouse_address" required>
                                             </div>
@@ -233,55 +233,190 @@
 
                                     <div id="page_content_4" class="tab wizard-pane">
                                         <div class="form-group row">
-                                            <div class="col-lg-4" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Spouse</label>
-                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Spouse fullname" name="input[client_spouse]" id="client_spouse" required>
+                                            <div class="col-lg-5" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Source Of Income</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Source of income" name="input[client_soi]" id="client_soi" required>
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Spouse Employer</label>
-                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Employer name" name="input[client_spouse_employer]" id="client_spouse_employer" required>
+                                                <label class="text-md-right text-left">Source of income by whom</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="" name="input[client_soi_by_whom]" id="client_soi_by_whom" required>
                                             </div>
+                                            <div class="col-lg-3" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Monthly Income</label>
+                                                <input type="number" step="0.01" class="form-control input-item" autocomplete="off" placeholder="" name="input[client_soi_monthly_income]" id="client_soi_monthly_income" required>
+                                            </div>
+
+                                            <div class="col-lg-3" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Reference name 1</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Credit reference fullname" name="input[client_credit_ref_name1]" id="client_credit_ref_name1" required>
+                                            </div>
+                                            <div class="col-lg-3" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Reference Address 1</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Credit reference address" name="input[client_credit_ref_address1]" id="client_credit_ref_address1" required>
+                                            </div>
+                                            <div class="col-lg-3" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Reference name 2</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Credit reference fullname" name="input[client_credit_ref_name1]" id="client_credit_ref_name1" required>
+                                            </div>
+                                            <div class="col-lg-3" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Reference Address 2</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Credit reference address" name="input[client_credit_ref_address2]" id="client_credit_ref_address2" required>
+                                            </div>
+                                            <div class="col-lg-3" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Reference name 3</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Credit reference fullname" name="input[client_credit_ref_name3]" id="client_credit_ref_name3" required>
+                                            </div>
+                                            <div class="col-lg-3" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Reference Address 3</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Credit reference address" name="input[client_credit_ref_address3]" id="client_credit_ref_address3" required>
+                                            </div>
+                                            <div class="col-lg-3" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Aprox Total Income</label>
+                                                <input type="number" step="0.01" class="form-control input-item" autocomplete="off" placeholder="Approximately total monthly income" name="input[client_approx_total_monthly_income]" id="client_approx_total_monthly_income" required>
+                                            </div>
+                                            <div class="col-lg-3" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Total Oustanding Obligation</label>
+                                                <input type="number" step="0.01" class="form-control input-item" autocomplete="off" placeholder="Total oustanding obligation" name="input[client_total_outstanding_obligation]" id="client_total_outstanding_obligation" required>
+                                            </div>
+
+
                                             <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Business Name</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Business name" name="input[client_business_name]" id="client_business_name" required>
+                                            </div>
+                                            <div class="col-lg-5" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Address</label>
-                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Spouse address" name="input[client_spouse_address]" id="client_spouse_address" required>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Business address" name="input[client_business_address]" id="client_business_address" required>
                                             </div>
 
                                             <div class="col-lg-3" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Resident Certificate #</label>
-                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Spouse certificate number" name="input[client_spouse_res_cert_no]" id="client_spouse_res_cert_no" required>
+                                                <label class="text-md-right text-left">Telephone No.</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Telephone number" name="input[client_business_tel_no]" id="client_business_tel_no" required>
+                                            </div>
+                                            <div class="col-lg-2" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Position</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Business position" name="input[client_business_position]" id="client_business_position" required>
                                             </div>
                                             <div class="col-lg-3" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Issued At</label>
-                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Spouse certificate issued at" name="input[client_spouse_res_cert_issued_at]" id="client_spouse_res_cert_issued_at" required>
+                                                <label class="text-md-right text-left">Kind</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Business kind" name="input[client_business_kind]" id="client_business_kind" required>
+                                            </div>
+                                            <div class="col-lg-2" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Length</label>
+                                                <input type="number" class="form-control input-item" autocomplete="off" placeholder="Business length" name="input[client_business_length]" id="client_business_length" required>
+                                            </div>
+                                            <div class="col-lg-2" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Capital Invested</label>
+                                                <input type="number" step="0.01" class="form-control input-item" autocomplete="off" placeholder="Capital invested" name="input[client_business_capital_invested]" id="client_business_capital_invested" required>
                                             </div>
                                             <div class="col-lg-3" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Certificate Date</label>
-                                                <input type="date" class="form-control input-item" autocomplete="off" placeholder="Spouse certificate issued date" name="input[client_spouse_res_cert_date]" id="client_spouse_res_cert_date" required>
-                                            </div>
-
-                                            <div class="col-lg-3" style="padding: 10px;">
-                                                <label class="text-md-right text-left">No. of Children</label>
-                                                <input type="number" class="form-control input-item" autocomplete="off" placeholder="Number of children" name="input[client_no_of_childred]" id="client_no_of_childred" required>
-                                            </div>
-                                            <div class="col-lg-3" style="padding: 10px;">
-                                                <label class="text-md-right text-left">No. of Children Dependent on you</label>
-                                                <input type="number" class="form-control input-item" autocomplete="off" placeholder="Number of Children Dependent on you" name="input[client_no_of_child_dependent]" id="client_no_of_child_dependent" required>
-                                            </div>
-
-                                            <div class="col-lg-3" style="padding: 10px;">
-                                                <label class="text-md-right text-left">College</label>
-                                                <input type="number" class="form-control input-item" autocomplete="off" placeholder="Number of children studying" name="input[client_no_of_child_college]" id="client_no_of_child_college" required>
-                                            </div>
-                                            <div class="col-lg-3" style="padding: 10px;">
-                                                <label class="text-md-right text-left">High School</label>
-                                                <input type="number" class="form-control input-item" autocomplete="off" placeholder="Number of children studying" name="input[client_no_of_child_hs]" id="client_no_of_child_hs" required>
-                                            </div>
-                                            <div class="col-lg-3" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Elementary</label>
-                                                <input type="number" class="form-control input-item" autocomplete="off" placeholder="Number of children studying" name="input[client_no_of_child_elem]" id="client_no_of_child_elem" required>
+                                                <label class="text-md-right text-left">Business Type</label>
+                                                <select class="form-control select2 input-item" id="client_business_type" name="input[client_business_type]" style="width:100%;" required>
+                                                    <option value="">Please Select</option>
+                                                    <option value="Sole">Sole</option>
+                                                    <option value="Owner">Owner</option>
+                                                    <option value="Partner">Partner</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
+                                    <div id="page_content_5" class="tab wizard-pane">
+                                        <div class="form-group row">
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Insurance</label>
+                                                <select class="form-control select2 input-item" id="insurance_id" name="input[insurance_id]" style="width:100%;" required>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Amount</label>
+                                                <input type="number" step="0.01" class="form-control input-item" autocomplete="off" placeholder="Insurance amount" name="input[client_insurance_amount]" id="client_insurance_amount" required>
+                                            </div>
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Maturity</label>
+                                                <input type="number" class="form-control input-item" autocomplete="off" placeholder="Insurance maturity" name="input[client_insurance_maturity]" id="client_insurance_maturity" required>
+                                            </div>
+
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Bank Transaction</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Bank transaction" name="input[client_bank_transaction]" id="client_bank_transaction" required>
+                                            </div>
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Unpaid Obligation</label>
+                                                <input type="number" step="0.01" class="form-control input-item" autocomplete="off" placeholder="" name="input[client_unpaid_obligation]" id="client_unpaid_obligation" required>
+                                            </div>
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Salary Withdrawal</label>
+                                                <select class="form-control select2 input-item" id="client_salary_withdrawal" name="input[client_salary_withdrawal]" style="width:100%;" required>
+                                                    <option value="">Please Select</option>
+                                                    <option value="Weekly">Weekly</option>
+                                                    <option value="Semi-monthly">Semi-monthly</option>
+                                                    <option value="Monthly">Monthly</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div id="page_content_4" class="tab wizard-pane">
+                                        <div class="form-group row">
+                                            <div class="col-lg-6" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Paymaster Name</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Paymaster fullname" name="input[client_paymaster_name]" id="client_paymaster_name" required>
+                                            </div>
+                                            <div class="col-lg-6" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Residence</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Paymaster address" name="input[client_paymaster_residence]" id="client_paymaster_residence" required>
+                                            </div>
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Resident Certificate #</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Paymaster certificate number" name="input[client_paymaster_res_cert_no]" id="client_paymaster_res_cert_no" required>
+                                            </div>
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Issued At</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Paymaster certificate issued at" name="input[client_paymaster_res_cert_issued_at]" id="client_paymaster_res_cert_issued_at" required>
+                                            </div>
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Certificate Date</label>
+                                                <input type="date" class="input-item form-control input-item" autocomplete="off" placeholder="Paymaster certificate issued date" name="input[client_paymaster_res_cert_date]" id="client_paymaster_res_cert_date" required>
+                                            </div>
+
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Paymaster Deduct Salary</label>
+                                                <div class="form-group">
+                                                    <label class="custom-switch mt-2">
+                                                        <span class="custom-switch-description"> No &nbsp;</span>
+                                                        <input type="checkbox" value="Yes" id="client_paymaster_deduct_salary" name="input[client_paymaster_deduct_salary]" class="input-item custom-switch-input">
+                                                        <span class="custom-switch-indicator"></span>
+                                                        <span class="custom-switch-description">Yes</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Client Deduct Salary</label>
+                                                <div class="form-group">
+                                                    <label class="custom-switch mt-2">
+                                                        <span class="custom-switch-description"> No &nbsp;</span>
+                                                        <input type="checkbox" value="Yes" id="client_paymaster_client_deduct_salary" name="input[client_paymaster_client_deduct_salary]" class="custom-switch-input">
+                                                        <span class="custom-switch-indicator"></span>
+                                                        <span class="custom-switch-description">Yes</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Paymaster Conformity</label>
+                                                <div class="form-group">
+                                                    <label class="custom-switch mt-2">
+                                                        <span class="custom-switch-description"> No &nbsp;</span>
+                                                        <input type="checkbox" value="Yes" id="client_paymaster_conformity" name="input[client_paymaster_conformity]" class="input-item custom-switch-input">
+                                                        <span class="custom-switch-indicator"></span>
+                                                        <span class="custom-switch-description">Yes</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" id="preset_null" name="preset_null" required>
+                                        </div>
+                                    </div>
+                                    <div class="tab wizard-pane"></div>
                                 </form>
                             </div>
                         </div>
@@ -301,7 +436,7 @@
     </div>
 </form>
 <script type="text/javascript">
-    var currentTab = 3; // Current tab is set to be the first tab (0)
+    var currentTab = 0; // Current tab is set to be the first tab (0)
     showTab(currentTab); // Display the current tab
 
     function showTab(n) {
@@ -349,6 +484,7 @@
         var x, y, i, valid = true;
         x = document.getElementsByClassName("tab");
         y = x[currentTab].querySelectorAll("[required]");
+
         // A loop that checks every input field in the current tab:
         for (i = 0; i < y.length; i++) {
             // If a field is empty...
@@ -360,6 +496,7 @@
 
             }
         }
+
         // If the valid status is true, mark the step as finished and valid:
         if (valid) {
             document.getElementsByClassName("wizard-step")[currentTab].className += " wizard-step-info";

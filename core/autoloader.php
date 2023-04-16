@@ -9,4 +9,5 @@ $classes = array(
     'Profile'           => $pre_class . 'profile.php',
     'Users'             => $pre_class . 'users.php',
     'Loans'             => $pre_class . 'loans.php',
+    'Insurance'         => $pre_class . 'insurance.php',
 );

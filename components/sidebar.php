@@ -1,15 +1,16 @@
 <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
-        <a href="./">Lending Management</a>
+        <a href="./">LMS</a>
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
-        <a href="./">Lending Management</a>
+        <a href="./">LMS</a>
     </div>
     <ul class="sidebar-menu">
         <li><a class="nav-link" href="homepage"><i class="fas fa-th-large"></i> <span>Dashboard</span></a></li>
         <li class="menu-header">Master Data</li>
         <li><a class="nav-link" href="clients"><i class="fas fa-address-card"></i> <span>Clients</span></a></li>
         <li><a class="nav-link" href="loan-types"><i class="fas fa-list"></i> <span>Loan Types</span></a></li>
+        <li><a class="nav-link" href="insurance"><i class="fas fa-shield-alt"></i> <span>Insurance</span></a></li>
 
         <li class="menu-header">Transactions</li>
         <li><a class="nav-link" href="loans"><i class="fa fa-folder"></i> <span>Loans</span></a></li>
