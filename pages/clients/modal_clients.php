@@ -537,7 +537,7 @@
             success: function(data) {
                 var json = JSON.parse(data);
                 if (json.data > 0) {
-                    if (currentTab == 6) {
+                    if (currentTab == 5) {
                         success_update();
                         $("#modalEntry").modal('hide');
                         currentTab = 0;
