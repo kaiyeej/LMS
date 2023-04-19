@@ -71,6 +71,7 @@ input.invalid {
 </section>
 <?php include "modal_clients.php"; ?>
 <script type="text/javascript">
+    var c_status = "add";
     function addClient() {
         modal_detail_status = 0;
         $("#hidden_id").val(0);
@@ -81,6 +82,7 @@ input.invalid {
 
         var currentTab = 0; // Current tab is set to be the first tab (0)
         showTab(currentTab);
+        c_status = "add";
     }
 
     function getEntries() {

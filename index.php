@@ -369,7 +369,7 @@ if (!isset($_SESSION['user']['id'])) {
 
           
           if(route_settings.class_name == "Clients"){
-            
+            c_status = "update";
             if(jsonParse.data['client_paymaster_deduct_salary'] == "Yes"){
               $("#client_paymaster_deduct_salary").prop("checked",true);
             }else{

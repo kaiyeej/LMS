@@ -99,9 +99,11 @@ class Clients extends Connection
         $client_mname = $this->clean($this->inputs['client_mname']);
         $client_lname = $this->clean($this->inputs['client_lname']);
         $client_name_extension = $this->clean($this->inputs['client_name_extension']);
-        $client_paymaster_deduct_salary = $this->inputs['client_paymaster_deduct_salary'] != "Yes" ? "No" : $this->inputs['client_paymaster_deduct_salary'];
-        $client_paymaster_client_deduct_salary = $this->inputs['client_paymaster_client_deduct_salary'] != "Yes" ? "No" : $this->inputs['client_paymaster_client_deduct_salary'];
-        $client_paymaster_conformity = $this->inputs['client_paymaster_conformity'] != "Yes" ? "No" : $this->inputs['client_paymaster_conformity'];
+
+        $client_paymaster_deduct_salary = (!isset($this->inputs['client_paymaster_deduct_salary']) ? "No" : "Yes");
+        $client_paymaster_client_deduct_salary = (!isset($this->inputs['client_paymaster_client_deduct_salary']) ? "No" : "Yes");
+        $client_paymaster_conformity = (!isset($this->inputs['client_paymaster_conformity']) ? "No" : "Yes");
+
 
         $is_exist = $this->select($this->table, $this->pk, "client_fname = '$client_fname' AND client_mname = '$client_mname' AND client_lname='$client_lname' AND client_name_extension='$client_name_extension' AND $this->pk != '$primary_id'");
         if ($is_exist->num_rows > 0) {

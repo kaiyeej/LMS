@@ -256,7 +256,7 @@
                                             </div>
                                             <div class="col-lg-3" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Reference name 2</label>
-                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Credit reference fullname" name="input[client_credit_ref_name1]" id="client_credit_ref_name1" required>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Credit reference fullname" name="input[client_credit_ref_name2]" id="client_credit_ref_name1" required>
                                             </div>
                                             <div class="col-lg-3" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Reference Address 2</label>
@@ -416,7 +416,15 @@
                                             <input type="hidden" id="preset_null" name="preset_null" required>
                                         </div>
                                     </div>
-                                    <div class="tab wizard-pane"></div>
+                                    
+                                    <div id="page_content_5" class="tab wizard-pane">
+                                        <div class="form-group row">
+                                            <div class="col-lg-6" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Paymaster Name</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Paymaster fullname"  name="property_location" id="property_location" required>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -450,7 +458,7 @@
             document.getElementById("prevBtn").style.display = "inline";
         }
         if (n == (x.length - 1)) {
-            document.getElementById("nextBtn").innerHTML = "Submit";
+            document.getElementById("nextBtn").innerHTML = "Finish";
             // document.getElementById("nextBtn").type = "submit";
         } else {
             document.getElementById("nextBtn").innerHTML = "Save and continue";
@@ -464,7 +472,11 @@
         // This function will figure out which tab to display
         var x = document.getElementsByClassName("tab");
         // Exit the function if any field in the current tab is invalid:
-        if (n == 1 && !validateForm()) return false;
+            //ari
+        if(c_status == "add"){
+            if (n == 1 && !validateForm()) return false;
+        }
+        
         // Hide the current tab:
         x[currentTab].style.display = "none";
         // Increase or decrease the current tab by 1:
@@ -501,7 +513,6 @@
         if (valid) {
             document.getElementsByClassName("wizard-step")[currentTab].className += " wizard-step-info";
             saveClient();
-
         }
         return valid; // return the valid status
     }
@@ -526,7 +537,7 @@
             success: function(data) {
                 var json = JSON.parse(data);
                 if (json.data > 0) {
-                    if (currentTab == 3) {
+                    if (currentTab == 6) {
                         success_update();
                         $("#modalEntry").modal('hide');
                         currentTab = 0;
@@ -534,8 +545,10 @@
                         $("#hidden_id").val(json.data);
                     }
 
-                } else if (json.data == 2) {
+                } else if (json.data == -2) {
                     entry_already_exists();
+                    currentTab = 0;
+                    showTab(currentTab);
                 } else {
                     failed_query(json);
                 }
