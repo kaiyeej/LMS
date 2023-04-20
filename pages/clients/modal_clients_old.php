@@ -451,7 +451,7 @@
         // This function will display the specified tab of the form...
         var x = document.getElementsByClassName("tab");
         x[n].style.display = "block";
-       $(".tab "+n+" input").hide();
+        
         //... and fix the Previous/Next buttons:
         if (n == 0) {
             document.getElementById("prevBtn").style.display = "none";
@@ -474,9 +474,8 @@
         var x = document.getElementsByClassName("tab");
         // Exit the function if any field in the current tab is invalid:
             //ari
-        //if(c_status == "add"){
             if (n == 1 && !validateForm()) return false;
-        //}
+        
         
         // Hide the current tab:
         x[currentTab].style.display = "none";
@@ -496,7 +495,8 @@
         // This function deals with validation of the form fields
         var x, y, i, valid = true;
         x = document.getElementsByClassName("tab");
-        y = x[currentTab].getElementsByTagName("input");
+        y = x[currentTab].querySelectorAll("[]");
+
         // A loop that checks every input field in the current tab:
         for (i = 0; i < y.length; i++) {
             // If a field is empty...
@@ -527,8 +527,8 @@
         x[n].className += " wizard-step-active";
     }
 
-    $("#frm_client").submit(function(e) {
-      e.preventDefault();
+    function saveClient() {
+        alert(1);
         var hidden_id = $("#hidden_id").val();
         var q = hidden_id > 0 ? "edit" : "add";
         $.ajax({
@@ -558,5 +558,5 @@
                 errorLogger('Error:', textStatus, errorThrown);
             }
         });
-    });
+    }
 </script>
