@@ -1,21 +1,29 @@
 <style>
-.tab {
-  display: none;
-}
+    .tab {
+        display: none;
+    }
 
-input {
-  border: 1px solid #aaaaaa;
-}
+    input {
+        border: 1px solid #aaaaaa;
+    }
 
-/* Mark input boxes that gets an error on validation: */
+    /* Mark input boxes that gets an error on validation:
 input.invalid {
     border: 1px #E57373 solid;
 }
 
-.modal-body{
-    max-width: 100%;
-    overflow-x: auto;
-}
+textarea.invalid {
+    border: 1px #E57373 solid;
+} */
+
+    .input-item.invalid {
+        border: 1px #E57373 solid;
+    }
+
+    .modal-body {
+        max-width: 100%;
+        overflow-x: auto;
+    }
 </style>
 <section class="section">
     <div class="section-header">
@@ -71,7 +79,7 @@ input.invalid {
 </section>
 <?php include "modal_clients.php"; ?>
 <script type="text/javascript">
-    var c_status = "add";
+
     function addClient() {
         modal_detail_status = 0;
         $("#hidden_id").val(0);
@@ -80,9 +88,10 @@ input.invalid {
         $("#modalLabel").html("<i class='fa fa-edit'></i> Add Entry");
         $("#modalEntry").modal('show');
 
-        var currentTab = 0; // Current tab is set to be the first tab (0)
+        currentTab = 0;
         showTab(currentTab);
-        c_status = "add";
+        alert(currentTab);
+        $('.select2').select2().trigger('change');
     }
 
     function getEntries() {
@@ -121,6 +130,12 @@ input.invalid {
             ]
         });
     }
+
+    $("#modalEntry").on('hide.bs.modal', function(){
+        currentTab = 0;
+        showTab(0);
+        $(".required").removeClass("invalid");
+    });
 
     $(document).ready(function() {
         getEntries();

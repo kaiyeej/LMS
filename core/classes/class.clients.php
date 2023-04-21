@@ -158,6 +158,7 @@ class Clients extends Connection
                 'client_bank_transaction'           => $this->clean($this->inputs['client_bank_transaction']),
                 'client_unpaid_obligation'          => $this->clean($this->inputs['client_unpaid_obligation']),
                 'client_salary_withdrawal'          => $this->clean($this->inputs['client_salary_withdrawal']),
+
                 'client_paymaster_name'             => $this->clean($this->inputs['client_paymaster_name']),
                 'client_paymaster_residence'        => $this->clean($this->inputs['client_paymaster_residence']),
                 'client_paymaster_res_cert_no'      => $this->clean($this->inputs['client_paymaster_res_cert_no']),
