@@ -7,15 +7,6 @@
         border: 1px solid #aaaaaa;
     }
 
-    /* Mark input boxes that gets an error on validation:
-input.invalid {
-    border: 1px #E57373 solid;
-}
-
-textarea.invalid {
-    border: 1px #E57373 solid;
-} */
-
     .input-item.invalid {
         border: 1px #E57373 solid;
     }

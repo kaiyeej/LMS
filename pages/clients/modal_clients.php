@@ -412,21 +412,67 @@
                                         </div>
                                     </div>
 
-                                    <div id="page_content_6" class="tab wizard-pane">
-                                        <div class="row">
-                                            <div class="row form-group">
-                                                <div class="col-lg-8" style="padding: 10px;">
-                                                    <label class="text-md-right text-left">Children Name</label>
-                                                    <select class="required form-control select2 input-item" id="insurance_id" name="input[insurance_id]" style="width:100%;">
-                                                    </select>
+                                    <div id="page_content_6" class="tab wizard-pane" style="width: -webkit-fill-available;">
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <div class="row">
+                                                    <div class="col-lg-12" style="padding: 10px;">
+                                                        <label class="text-md-right text-left">Location</label>
+                                                        <input type="text" class="p_required form-control input-item" autocomplete="off" placeholder="Real property location" name="input[property_location]" id="property_location">
+                                                    </div>
+                                                    <div class="col-lg-6" style="padding: 10px;">
+                                                        <label class="text-md-right text-left">Area</label>
+                                                        <input type="text" class="p_required form-control" autocomplete="off" placeholder="Area" name="input[property_area]" id="property_area">
+                                                    </div>
+                                                    <div class="col-lg-6" style="padding: 10px;">
+                                                        <label class="text-md-right text-left">Cost</label>
+                                                        <input type="number" step="0.01" class="p_required form-control" autocomplete="off" placeholder="Acquisition cost" name="input[client_soi]" id="client_soi">
+                                                    </div>
+                                                    <div class="col-lg-6" style="padding: 10px;">
+                                                        <label class="text-md-right text-left">Property Market Value</label>
+                                                        <input type="number" step="0.01" class="p_required form-control" autocomplete="off" placeholder="Property Market Value" name="input[property_pres_market_val]" id="property_pres_market_val">
+                                                    </div>
+                                                    <div class="col-lg-6" style="padding: 10px;">
+                                                        <label class="text-md-right text-left">Improvement, if any</label>
+                                                        <input type="text" class="p_required form-control" autocomplete="off" name="input[property_improvement]" id="property_improvement">
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <button type="button" style="float: right;" class="btn btn-icon icon-right btn-info" onclick="addProperty()">Add Entry</button>
+                                                    </div>
                                                 </div>
-                                                <div class="col-lg-4" style="padding: 10px;">
-                                                    <label class="text-md-right text-left">Amount</label>
-                                                    <input type="number" step="0.01" class="required form-control input-item" autocomplete="off" placeholder="Insurance amount" name="input[client_insurance_amount]" id="client_insurance_amount">
-                                                </div>
-                                                <div class="col-lg-6" style="padding: 10px;">
-                                                    <label class="text-md-right text-left">Maturity</label>
-                                                    <input type="number" class="form-control input-item" autocomplete="off" placeholder="Insurance maturity" name="input[client_insurance_maturity]" id="client_insurance_maturity">
+                                            </div>
+                                            <div class="col-lg-6" style="padding: 10px;">
+                                                <div class="col-lg-12">
+                                                    <table class="table table-hover alert alert-light" style="border: 1px dashed #3C84AB;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">#</th>
+                                                                <th scope="col">First</th>
+                                                                <th scope="col">Last</th>
+                                                                <th scope="col">Handle</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row">1</th>
+                                                                <td>Mark</td>
+                                                                <td>Otto</td>
+                                                                <td>@mdo</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">2</th>
+                                                                <td>Jacob</td>
+                                                                <td>Thornton</td>
+                                                                <td>@fat</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">3</th>
+                                                                <td>Larry</td>
+                                                                <td>the Bird</td>
+                                                                <td>@twitter</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
@@ -434,7 +480,6 @@
                                 </form>
                             </div>
                         </div>
-
                     </div>
                     <div class="modal-footer bg-whitesmoke br">
                         <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -571,5 +616,57 @@
                 errorLogger('Error:', textStatus, errorThrown);
             }
         });
+    }
+
+    function addProperty() {
+        var isValid = true;
+        var fields = $('input.p_required');
+        for (var i = 0; i < fields.length; i++) {
+            if ($(fields[i]).val() == '') {
+                $(fields[i]).addClass('invalid');
+                isValid = false;
+            }else{
+                $(fields[i]).removeClass('invalid');
+            }
+        }
+
+        // if (isValid) {
+        //     var property_location = $("#property_location").val();
+        //     var property_area = $("#property_area").val();
+        //     var property_acquisition_cost = $("#property_acquisition_cost").val();
+        //     var property_pres_market_val = $("#property_pres_market_val").val();
+        //     var property_improvement = $("#property_improvement").val();
+
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "controllers/sql.php?c=" + route_settings.class_name + "&q=" + q,
+        //         data: $("#frm_client").serialize(),
+        //         success: function(data) {
+        //             var json = JSON.parse(data);
+        //             if (json.data > 0) {
+        //                 if (currentTab == 6) {
+        //                     success_update();
+        //                     $("#modalEntry").modal('hide');
+        //                     currentTab = 0;
+        //                 } else if (currentTab == 1 && q == "add") {
+        //                     $("#hidden_id").val(json.data);
+        //                 }
+
+        //             } else if (json.data == -2) {
+        //                 entry_already_exists();
+        //                 currentTab = 0;
+        //                 showTab(currentTab);
+        //             } else {
+        //                 failed_query(json);
+        //             }
+        //         },
+        //         error: function(jqXHR, textStatus, errorThrown) {
+        //             errorLogger('Error:', textStatus, errorThrown);
+        //         }
+        //     });
+        // } else {
+
+        // }
+
     }
 </script>
