@@ -11,6 +11,14 @@
         border: 1px #E57373 solid;
     }
 
+    .p_required.invalid {
+        border: 1px #E57373 solid;
+    }
+
+    .c_required.invalid {
+        border: 1px #E57373 solid;
+    }
+
     .modal-body {
         max-width: 100%;
         overflow-x: auto;
@@ -100,7 +108,7 @@
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.client_id + ")'><span class='fa fa-edit'></span></button></center>";
+                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.client_id + ");getProperty()'><span class='fa fa-edit'></span></button></center>";
                     }
                 },
                 {
@@ -126,6 +134,10 @@
         currentTab = 0;
         showTab(0);
         $(".required").removeClass("invalid");
+        $(".p_required").removeClass("invalid");
+        $(".wizard-step").removeClass("wizard-step-info");
+        $(".tab").css({"display":"none"});
+        $("#page_content_1").css({"display":"block"});
     });
 
     $(document).ready(function() {

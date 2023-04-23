@@ -63,14 +63,7 @@
                                                 Family
                                             </div>
                                         </div>
-                                        <!-- <div class="col-md-2 wizard-step">
-                                            <div class="wizard-step-icon">
-                                                <i class="fas fa-home"></i>
-                                            </div>
-                                            <div class="wizard-step-label">
-                                                Property
-                                            </div>
-                                        </div> -->
+
                                     </div>
                                 </div>
                                 <form class="wizard-content mt-2">
@@ -418,7 +411,7 @@
                                                 <div class="row">
                                                     <div class="col-lg-12" style="padding: 10px;">
                                                         <label class="text-md-right text-left">Location</label>
-                                                        <input type="text" class="p_required form-control input-item" autocomplete="off" placeholder="Real property location" name="input[property_location]" id="property_location">
+                                                        <input type="text" class="p_required form-control" autocomplete="off" placeholder="Real property location" name="input[property_location]" id="property_location">
                                                     </div>
                                                     <div class="col-lg-6" style="padding: 10px;">
                                                         <label class="text-md-right text-left">Area</label>
@@ -426,7 +419,7 @@
                                                     </div>
                                                     <div class="col-lg-6" style="padding: 10px;">
                                                         <label class="text-md-right text-left">Cost</label>
-                                                        <input type="number" step="0.01" class="p_required form-control" autocomplete="off" placeholder="Acquisition cost" name="input[client_soi]" id="client_soi">
+                                                        <input type="number" step="0.01" class="p_required form-control" autocomplete="off" placeholder="Acquisition cost" name="input[property_acquisition_cost]" id="property_acquisition_cost">
                                                     </div>
                                                     <div class="col-lg-6" style="padding: 10px;">
                                                         <label class="text-md-right text-left">Property Market Value</label>
@@ -434,7 +427,7 @@
                                                     </div>
                                                     <div class="col-lg-6" style="padding: 10px;">
                                                         <label class="text-md-right text-left">Improvement, if any</label>
-                                                        <input type="text" class="p_required form-control" autocomplete="off" name="input[property_improvement]" id="property_improvement">
+                                                        <input type="text" class="form-control" autocomplete="off" name="input[property_improvement]" id="property_improvement">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <button type="button" style="float: right;" class="btn btn-icon icon-right btn-info" onclick="addProperty()">Add Entry</button>
@@ -442,37 +435,70 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-6" style="padding: 10px;">
-                                                <div class="col-lg-12">
-                                                    <table class="table table-hover alert alert-light" style="border: 1px dashed #3C84AB;">
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col">#</th>
-                                                                <th scope="col">First</th>
-                                                                <th scope="col">Last</th>
-                                                                <th scope="col">Handle</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <th scope="row">1</th>
-                                                                <td>Mark</td>
-                                                                <td>Otto</td>
-                                                                <td>@mdo</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">2</th>
-                                                                <td>Jacob</td>
-                                                                <td>Thornton</td>
-                                                                <td>@fat</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">3</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                                <div class="table-responsive">
+                                                    <div class="table-responsive">
+                                                        <table id="dt_properties" class="table table-striped" style="font-size:10px;">
+                                                            <thead style="background: #17a2b8;color: #fff;">
+                                                                <tr>
+                                                                    <th scope="col"></th>
+                                                                    <th scope="col">Location</th>
+                                                                    <th scope="col">Area</th>
+                                                                    <th scope="col">Cost</th>
+                                                                    <th scope="col">Market Value</th>
+                                                                    <th scope="col">Improvement</th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="page_content_7" class="tab wizard-pane" style="width: -webkit-fill-available;">
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <div class="row">
+                                                    <div class="col-lg-9" style="padding: 10px;">
+                                                        <label class="text-md-right text-left">Child Name</label>
+                                                        <input type="text" class="c_required form-control" autocomplete="off" placeholder="Child Fullname" name="input[child_name]" id="child_name">
+                                                    </div>
+                                                    <div class="col-lg-3" style="padding: 10px;">
+                                                        <label class="text-md-right text-left">Age</label>
+                                                        <input type="number" class="c_required form-control" autocomplete="off" placeholder="Age" name="input[child_age]" id="child_age">
+                                                    </div>
+                                                    <div class="col-lg-4" style="padding: 10px;">
+                                                        <label class="text-md-right text-left">Gender</label>
+                                                        <select class="c_required form-control select2 input-item" id="child_sex" name="input[child_sex]" style="width:100%;">
+                                                            <option value="">Please Select</option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female">Female</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-8" style="padding: 10px;">
+                                                        <label class="text-md-right text-left">Occupation</label>
+                                                        <input type="text" class="c_required form-control" autocomplete="off" placeholder="Child occupation" name="input[child_occupation]" id="child_occupation">
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <button type="button" style="float: right;" class="btn btn-icon icon-right btn-info" onclick="addChildren()">Add Entry</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6" style="padding: 10px;">
+                                                <div class="table-responsive">
+                                                    <div class="table-responsive">
+                                                        <table id="dt_children" class="table table-striped" style="font-size:10px;">
+                                                            <thead style="background: #17a2b8;color: #fff;">
+                                                                <tr>
+                                                                    <th scope="col"></th>
+                                                                    <th scope="col">Name</th>
+                                                                    <th scope="col">Age</th>
+                                                                    <th scope="col">Gender</th>
+                                                                    <th scope="col">Occupatio</th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -499,49 +525,42 @@
     showTab(currentTab); // Display the current tab
 
     function showTab(n) {
-        // This function will display the specified tab of the form...
         var x = document.getElementsByClassName("tab");
         x[n].style.display = "block";
         $(".tab " + n + " input").hide();
-        //... and fix the Previous/Next buttons:
         if (n == 0) {
             document.getElementById("prevBtn").style.display = "none";
         } else {
+
             document.getElementById("prevBtn").style.display = "inline";
+
         }
         if (n == (x.length - 1)) {
             document.getElementById("nextBtn").innerHTML = "Finish";
-            // document.getElementById("nextBtn").type = "submit";
         } else {
             document.getElementById("nextBtn").innerHTML = "Save and continue";
-            //document.getElementById("nextBtn").type = "button";
         }
-        //... and run a function that will display the correct step indicator:
         fixStepIndicator(n)
     }
 
     function nextPrev(n) {
-        // This function will figure out which tab to display
         var x = document.getElementsByClassName("tab");
-        // Exit the function if any field in the current tab is invalid:
-        //ari
-        //if(c_status == "add"){
         if (n == 1 && !validateForm()) return false;
-        //}
 
         // Hide the current tab:
         x[currentTab].style.display = "none";
-        // Increase or decrease the current tab by 1:
         currentTab = currentTab + n;
-        // if you have reached the end of the form...
         if (currentTab >= x.length) {
-            // ... the form gets submitted:
-            // document.getElementById("frm_client").submit();
 
             return false;
         }
-        // Otherwise, display the correct tab:
+
         showTab(currentTab);
+        if (currentTab == 4) {
+            getProperty();
+        } else if (currentTab == 5) {
+            getChildren();
+        }
     }
 
     function validateForm() {
@@ -558,11 +577,10 @@
                 // and set the current valid status to false
                 valid = false;
 
-            }
-
-            if (y[i].value != "") {
+            } else {
                 y[i].classList.remove("invalid");
             }
+
         }
 
         // If the valid status is true, mark the step as finished and valid:
@@ -625,48 +643,270 @@
             if ($(fields[i]).val() == '') {
                 $(fields[i]).addClass('invalid');
                 isValid = false;
-            }else{
+            } else {
                 $(fields[i]).removeClass('invalid');
             }
         }
 
-        // if (isValid) {
-        //     var property_location = $("#property_location").val();
-        //     var property_area = $("#property_area").val();
-        //     var property_acquisition_cost = $("#property_acquisition_cost").val();
-        //     var property_pres_market_val = $("#property_pres_market_val").val();
-        //     var property_improvement = $("#property_improvement").val();
+        if (isValid) {
+            var client_id = $("#hidden_id").val();
+            var property_location = $("#property_location").val();
+            var property_area = $("#property_area").val();
+            var property_acquisition_cost = $("#property_acquisition_cost").val();
+            var property_pres_market_val = $("#property_pres_market_val").val();
+            var property_improvement = $("#property_improvement").val();
 
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "controllers/sql.php?c=" + route_settings.class_name + "&q=" + q,
-        //         data: $("#frm_client").serialize(),
-        //         success: function(data) {
-        //             var json = JSON.parse(data);
-        //             if (json.data > 0) {
-        //                 if (currentTab == 6) {
-        //                     success_update();
-        //                     $("#modalEntry").modal('hide');
-        //                     currentTab = 0;
-        //                 } else if (currentTab == 1 && q == "add") {
-        //                     $("#hidden_id").val(json.data);
-        //                 }
+            $.ajax({
+                type: "POST",
+                url: "controllers/sql.php?c=" + route_settings.class_name + "&q=addProperty",
+                data: {
+                    input: {
+                        client_id: client_id,
+                        property_location: property_location,
+                        property_area: property_area,
+                        property_acquisition_cost: property_acquisition_cost,
+                        property_pres_market_val: property_pres_market_val,
+                        property_improvement: property_improvement
+                    }
+                },
+                success: function(data) {
+                    var json = JSON.parse(data);
+                    if (json.data == 1) {
+                        success_add();
+                        getProperty();
+                    } else if (json.data == 2) {
+                        entry_already_exists();
+                    } else {
+                        failed_query(json);
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    errorLogger('Error:', textStatus, errorThrown);
+                }
+            });
+        } else {
 
-        //             } else if (json.data == -2) {
-        //                 entry_already_exists();
-        //                 currentTab = 0;
-        //                 showTab(currentTab);
-        //             } else {
-        //                 failed_query(json);
-        //             }
-        //         },
-        //         error: function(jqXHR, textStatus, errorThrown) {
-        //             errorLogger('Error:', textStatus, errorThrown);
-        //         }
-        //     });
-        // } else {
+        }
 
-        // }
+    }
 
+
+    function addChildren() {
+        var isValid = true;
+        var fields = $('input.c_required');
+        for (var i = 0; i < fields.length; i++) {
+            if ($(fields[i]).val() == '') {
+                $(fields[i]).addClass('invalid');
+                isValid = false;
+            } else {
+                $(fields[i]).removeClass('invalid');
+            }
+        }
+
+        if (isValid) {
+            var client_id = $("#hidden_id").val();
+            var child_name = $("#child_name").val();
+            var child_age = $("#child_age").val();
+            var child_sex = $("#child_sex").val();
+            var child_occupation = $("#child_occupation").val();
+
+            $.ajax({
+                type: "POST",
+                url: "controllers/sql.php?c=" + route_settings.class_name + "&q=addChildren",
+                data: {
+                    input: {
+                        client_id: client_id,
+                        child_name: child_name,
+                        child_age: child_age,
+                        child_sex: child_sex,
+                        child_occupation: child_occupation
+                    }
+                },
+                success: function(data) {
+                    var json = JSON.parse(data);
+                    if (json.data == 1) {
+                        success_add();
+                        getChildren();
+                    } else if (json.data == 2) {
+                        entry_already_exists();
+                    } else {
+                        failed_query(json);
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    errorLogger('Error:', textStatus, errorThrown);
+                }
+            });
+        } else {
+
+        }
+
+    }
+
+    function getProperty() {
+
+        var params = "client_id = '" + $("#hidden_id_2").val() + "'";
+
+        $("#dt_properties").DataTable().destroy();
+        $("#dt_properties").DataTable({
+            "processing": true,
+            "bPaginate": false,
+            "bFilter": false,
+            "bInfo": false,
+            "ajax": {
+                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=showProperty",
+                "dataSrc": "data",
+                "method": "POST",
+                "data": {
+                    input: {
+                        params: params
+                    }
+                },
+            },
+            "columns": [{
+                    "mRender": function(data, type, row) {
+                        return "<center><button type='button' class='btn btn-sm btn-danger' id='btn_delete_" + row.property_id + "' onclick='deleteProperty(" + row.property_id + ")'><span class='fa fa-trash'></span></button></center>";
+                    }
+                },
+                {
+                    "data": "property_location"
+                },
+                {
+                    "data": "property_area"
+                },
+                {
+                    "data": "property_acquisition_cost"
+                },
+                {
+                    "data": "property_pres_market_val"
+                },
+                {
+                    "data": "property_improvement"
+                }
+            ]
+        });
+    }
+
+    function deleteChild(id) {
+
+        $("#btn_delete_c_" + id).html("<span class='fa fa-spinner fa-spin'></span>");
+        swal({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover these entries!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "controllers/sql.php?c=" + route_settings.class_name + "&q=delete_child",
+                        data: {
+                            input: {
+                                id: id
+                            }
+                        },
+                        success: function(data) {
+                            getChildren();
+                            var json = JSON.parse(data);
+                            console.log(json);
+                            if (json.data == 1) {
+                                success_delete();
+                            } else {
+                                failed_query(json);
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            errorLogger('Error:', textStatus, errorThrown);
+                        }
+                    });
+                } else {
+                    swal("Cancelled", "Entries are safe :)", "error");
+                }
+            });
+    }
+
+    function deleteProperty(id) {
+
+        $("#btn_delete_c_" + id).html("<span class='fa fa-spinner fa-spin'></span>");
+        swal({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover these entries!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "controllers/sql.php?c=" + route_settings.class_name + "&q=delete_property",
+                        data: {
+                            input: {
+                                id: id
+                            }
+                        },
+                        success: function(data) {
+                            getProperty();
+                            var json = JSON.parse(data);
+                            console.log(json);
+                            if (json.data == 1) {
+                                success_delete();
+                            } else {
+                                failed_query(json);
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            errorLogger('Error:', textStatus, errorThrown);
+                        }
+                    });
+                } else {
+                    swal("Cancelled", "Entries are safe :)", "error");
+                }
+            });
+    }
+
+    function getChildren() {
+
+        var params = "client_id = '" + $("#hidden_id_2").val() + "'";
+
+        $("#dt_children").DataTable().destroy();
+        $("#dt_children").DataTable({
+            "processing": true,
+            "bPaginate": false,
+            "bFilter": false,
+            "bInfo": false,
+            "ajax": {
+                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=showChildren",
+                "dataSrc": "data",
+                "method": "POST",
+                "data": {
+                    input: {
+                        params: params
+                    }
+                },
+            },
+            "columns": [{
+                    "mRender": function(data, type, row) {
+                        return "<center><button type='button' class='btn btn-sm btn-danger' id='btn_delete_c_" + row.child_id + "' onclick='deleteChild(" + row.child_id + ")'><span class='fa fa-trash'></span></button></center>";
+                    }
+                },
+                {
+                    "data": "child_name"
+                },
+                {
+                    "data": "child_age"
+                },
+                {
+                    "data": "child_sex"
+                },
+                {
+                    "data": "child_occupation"
+                }
+            ]
+        });
     }
 </script>
