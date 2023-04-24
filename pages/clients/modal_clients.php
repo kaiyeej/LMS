@@ -87,7 +87,7 @@
                                             </div>
                                             <div class="col-lg-2" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Civil Status</label>
-                                                <select class="required form-control select2 input-item" id="client_civil_status" name="input[client_civil_status]" style="width:100%;">
+                                                <select class="required form-control input-item" id="client_civil_status" name="input[client_civil_status]" style="width:100%;">
                                                     <option value="">Please Select</option>
                                                     <option value="Single">Single</option>
                                                     <option value="Married">Married</option>
@@ -109,7 +109,7 @@
                                             </div>
                                             <div class="col-lg-3" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Status</label>
-                                                <select class="required form-control select2 input-item" id="client_address_status" name="input[client_address_status]" style="width:100%;">
+                                                <select class="required form-control input-item" id="client_address_status" name="input[client_address_status]" style="width:100%;">
                                                     <option value="">Please Select</option>
                                                     <option value="Owned">Owned</option>
                                                     <option value="Rented">Rented</option>
@@ -302,7 +302,7 @@
                                             </div>
                                             <div class="col-lg-3" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Business Type</label>
-                                                <select class="required form-control select2 input-item" id="client_business_type" name="input[client_business_type]" style="width:100%;">
+                                                <select class="required form-control input-item" id="client_business_type" name="input[client_business_type]" style="width:100%;">
                                                     <option value="">Please Select</option>
                                                     <option value="Sole">Sole</option>
                                                     <option value="Owner">Owner</option>
@@ -316,7 +316,7 @@
                                         <div class="form-group row">
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Insurance</label>
-                                                <select class="required form-control select2 input-item" id="insurance_id" name="input[insurance_id]" style="width:100%;">
+                                                <select class="required form-control input-item" id="insurance_id" name="input[insurance_id]" style="width:100%;">
                                                 </select>
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
@@ -325,7 +325,7 @@
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Maturity</label>
-                                                <input type="number" class="form-control input-item" autocomplete="off" placeholder="Insurance maturity" name="input[client_insurance_maturity]" id="client_insurance_maturity">
+                                                <input type="number" class="required form-control input-item" autocomplete="off" placeholder="Insurance maturity" name="input[client_insurance_maturity]" id="client_insurance_maturity">
                                             </div>
 
                                             <div class="col-lg-4" style="padding: 10px;">
@@ -338,7 +338,7 @@
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Salary Withdrawal</label>
-                                                <select class="required form-control select2 input-item" id="client_salary_withdrawal" name="input[client_salary_withdrawal]" style="width:100%;">
+                                                <select class="required form-control input-item" id="client_salary_withdrawal" name="input[client_salary_withdrawal]" style="width:100%;">
                                                     <option value="">Please Select</option>
                                                     <option value="Weekly">Weekly</option>
                                                     <option value="Semi-monthly">Semi-monthly</option>
@@ -362,7 +362,7 @@
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Issued At</label>
-                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Paymaster certificate issued at" name="input[client_paymaster_res_cert_issued_at]" id="client_paymaster_res_cert_issued_at">
+                                                <input type="text" class="required form-control input-item" autocomplete="off" placeholder="Paymaster certificate issued at" name="input[client_paymaster_res_cert_issued_at]" id="client_paymaster_res_cert_issued_at">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Certificate Date</label>
@@ -437,7 +437,7 @@
                                             <div class="col-lg-6" style="padding: 10px;">
                                                 <div class="table-responsive">
                                                     <div class="table-responsive">
-                                                        <table id="dt_properties" class="table table-striped" style="font-size:10px;">
+                                                        <table id="dt_properties" class="table table-striped" style="font-size:10px;width: 100%!important;">
                                                             <thead style="background: #17a2b8;color: #fff;">
                                                                 <tr>
                                                                     <th scope="col"></th>
@@ -469,7 +469,7 @@
                                                     </div>
                                                     <div class="col-lg-4" style="padding: 10px;">
                                                         <label class="text-md-right text-left">Gender</label>
-                                                        <select class="c_required form-control select2 input-item" id="child_sex" name="input[child_sex]" style="width:100%;">
+                                                        <select class="c_required form-control input-item" id="child_sex" name="input[child_sex]" style="width:100%;">
                                                             <option value="">Please Select</option>
                                                             <option value="Male">Male</option>
                                                             <option value="Female">Female</option>
@@ -487,7 +487,7 @@
                                             <div class="col-lg-6" style="padding: 10px;">
                                                 <div class="table-responsive">
                                                     <div class="table-responsive">
-                                                        <table id="dt_children" class="table table-striped" style="font-size:10px;">
+                                                        <table id="dt_children" class="table table-striped" style="font-size:10px;width: 100%!important;">
                                                             <thead style="background: #17a2b8;color: #fff;">
                                                                 <tr>
                                                                     <th scope="col"></th>
@@ -521,7 +521,7 @@
     </div>
 </form>
 <script type="text/javascript">
-    var currentTab = 4; // Current tab is set to be the first tab (0)
+    var currentTab = 0; // Current tab is set to be the first tab (0)
     showTab(currentTab); // Display the current tab
 
     function showTab(n) {
@@ -574,6 +574,7 @@
             if (y[i].value == "") {
                 // add an "invalid" class to the field:
                 y[i].className += " invalid";
+                $(this).siblings(".select2-container").css('border', '5px solid red');
                 // and set the current valid status to false
                 valid = false;
 
@@ -582,6 +583,7 @@
             }
 
         }
+        
 
         // If the valid status is true, mark the step as finished and valid:
         if (valid) {
@@ -616,10 +618,12 @@
                 if (json.data > 0) {
                     if (currentTab == 6) {
                         success_update();
+                        getEntries();
                         $("#modalEntry").modal('hide');
                         currentTab = 0;
-                    } else if (currentTab == 1 && q == "add") {
-                        $("#hidden_id").val(json.data);
+                    } else if (currentTab == 1) {
+                        q == "add" ? $("#hidden_id").val(json.data) : "";
+                        getEntries();
                     }
 
                 } else if (json.data == -2) {
@@ -672,6 +676,8 @@
                 success: function(data) {
                     var json = JSON.parse(data);
                     if (json.data == 1) {
+                        $(".p_required").val("");
+                        $("#property_improvement").val("");
                         success_add();
                         getProperty();
                     } else if (json.data == 2) {
@@ -725,6 +731,8 @@
                 success: function(data) {
                     var json = JSON.parse(data);
                     if (json.data == 1) {
+                        $(".c_required").val("");
+                        $('#child_sex').select2().trigger('change');
                         success_add();
                         getChildren();
                     } else if (json.data == 2) {

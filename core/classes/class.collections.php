@@ -1,22 +1,21 @@
 <?php
 
-class Loans extends Connection
+class Collections extends Connection
 {
-    private $table = 'tbl_loans';
-    public $pk = 'loan_id';
+    private $table = 'tbl_collections';
+    public $pk = 'collection_id';
     public $name = 'reference_number';
+    public $fk = 'loan_id';
 
 
     public function add()
     {
         $form = array(
             $this->name         => $this->clean($this->inputs[$this->name]),
-            'client_id'         => $this->clean($this->inputs['client_id']),
-            'loan_type_id'      => $this->clean($this->inputs['loan_type_id']),
-            'loan_date'         => $this->clean($this->inputs['loan_date']),
-            'loan_amount'       => $this->clean($this->inputs['loan_amount']),
-            'loan_period'       => $this->clean($this->inputs['loan_period']),
-            'loan_interest'     => $this->clean($this->inputs['loan_interest']),
+            $this->fk           => $this->clean($this->inputs[$this->fk]),
+            'amount'            => $this->clean($this->inputs['amount']),
+            'remarks'           => $this->clean($this->inputs['remarks']),
+            'user_id'           => $this->clean($_SESSION['user']['id']),
         );
 
         return $this->insertIfNotExist($this->table, $form, "$this->name = '".$this->inputs[$this->name]."'");
@@ -31,13 +30,9 @@ class Loans extends Connection
             return 2;
         } else {
             $form = array(
-                $this->name     => $this->clean($this->inputs[$this->name]),
-                'client_id'         => $this->clean($this->inputs['client_id']),
-                'loan_type_id'      => $this->clean($this->inputs['loan_type_id']),
-                'loan_date'         => $this->clean($this->inputs['loan_date']),
-                'loan_amount'       => $this->clean($this->inputs['loan_amount']),
-                'loan_period'       => $this->clean($this->inputs['loan_period']),
-                'loan_interest'     => $this->clean($this->inputs['loan_interest']),
+                'amount'            => $this->clean($this->inputs['amount']),
+                'remarks'           => $this->clean($this->inputs['remarks']),
+                'user_id'           => $this->clean($_SESSION['user']['id']),
             );
 
             return $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");
@@ -49,11 +44,10 @@ class Loans extends Connection
         $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
         $rows = array();
         $Clients = new Clients;
-        $LoanTypes = new LoanTypes;
+        $Loans = new Loans;
         $result = $this->select($this->table, '*', $param);
         while ($row = $result->fetch_assoc()) {
-            $row['client'] = $Clients->name($row['client_id']);
-            $row['loan_type'] = $LoanTypes->name($row['loan_type_id']);
+            $row['client'] = $Clients->name($Loans->loan_client($row['loan_id']));
             $rows[] = $row;
         }
         return $rows;
@@ -78,13 +72,6 @@ class Loans extends Connection
         $result = $this->select($this->table, 'reference_number', "$this->pk = '$primary_id'");
         $row = $result->fetch_assoc();
         return $row['reference_number'];
-    }
-
-    public function loan_client($primary_id)
-    {
-        $result = $this->select($this->table, 'client_id', "$this->pk = '$primary_id'");
-        $row = $result->fetch_assoc();
-        return $row['client_id'];
     }
 
     public function generate()

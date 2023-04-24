@@ -7,16 +7,20 @@
         border: 1px solid #aaaaaa;
     }
 
+    .select2.invalid {
+        border: 1px #E57373 solid !important;
+    }
+
     .input-item.invalid {
-        border: 1px #E57373 solid;
+        border: 1px #E57373 solid !important;
     }
 
     .p_required.invalid {
-        border: 1px #E57373 solid;
+        border: 1px #E57373 solid !important;
     }
 
     .c_required.invalid {
-        border: 1px #E57373 solid;
+        border: 1px #E57373 solid !important;
     }
 
     .modal-body {
@@ -89,7 +93,6 @@
 
         currentTab = 0;
         showTab(currentTab);
-        alert(currentTab);
         $('.select2').select2().trigger('change');
     }
 
