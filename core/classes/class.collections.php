@@ -13,7 +13,9 @@ class Collections extends Connection
         $form = array(
             $this->name         => $this->clean($this->inputs[$this->name]),
             $this->fk           => $this->clean($this->inputs[$this->fk]),
+            'client_id'         => $this->clean($this->inputs['client_id']),
             'amount'            => $this->clean($this->inputs['amount']),
+            'collection_date'   => $this->clean($this->inputs['collection_date']),
             'remarks'           => $this->clean($this->inputs['remarks']),
             'user_id'           => $this->clean($_SESSION['user']['id']),
         );
@@ -24,13 +26,13 @@ class Collections extends Connection
     public function edit()
     {
         $primary_id = $this->inputs[$this->pk];
-        $name = $this->clean($this->inputs['reference_number']);
         $is_exist = $this->select($this->table, $this->pk, "$this->name = '".$this->inputs[$this->name]."' AND $this->pk != '$primary_id'");
         if ($is_exist->num_rows > 0) {
             return 2;
         } else {
             $form = array(
                 'amount'            => $this->clean($this->inputs['amount']),
+                'collection_date'   => $this->clean($this->inputs['collection_date']),
                 'remarks'           => $this->clean($this->inputs['remarks']),
                 'user_id'           => $this->clean($_SESSION['user']['id']),
             );
@@ -48,6 +50,7 @@ class Collections extends Connection
         $result = $this->select($this->table, '*', $param);
         while ($row = $result->fetch_assoc()) {
             $row['client'] = $Clients->name($Loans->loan_client($row['loan_id']));
+            $row['loan_ref_id'] = $Loans->name($row['loan_id']);
             $rows[] = $row;
         }
         return $rows;
@@ -76,6 +79,6 @@ class Collections extends Connection
 
     public function generate()
     {
-        return 'LN-' . date('YmdHis');
+        return 'CL-' . date('YmdHis');
     }
 }

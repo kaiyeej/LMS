@@ -52,7 +52,7 @@
         </div>
     </div>
 </section>
-<?php include "modal_loans.php"; ?>
+<?php include "modal_collections.php"; ?>
 <script type="text/javascript">
     function getEntries() {
         $("#dt_entries").DataTable().destroy();
@@ -76,7 +76,7 @@
                     "data": "reference_number"
                 },
                 {
-                    "data": "loan_id"
+                    "data": "loan_ref_id"
                 },
                 {
                     "data": "client"
@@ -86,7 +86,7 @@
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return row.status == "P" ? '<a href="#" class="badge badge-light">Pending</a>' : ( row.status == "A" ? '<a href="#" class="badge badge-success">Approved</a>' : (row.status == 'R' ? '<a href="#" class="badge badge-primary">Paid</a>' : '<a href="#" class="badge badge-danger">Denied</a>'));
+                        return row.status == "P" ? '<a href="#" class="badge badge-light">Pending</a>' :(row.status == 'F' ? '<a href="#" class="badge badge-success">Finished</a>' : '<a href="#" class="badge badge-danger">Canceled</a>');
                     }
                 },
                 {
@@ -99,25 +99,17 @@
         });
     }
 
-    function changeLoanType() {
-        var optionSelected = $("#loan_type_id").find('option:selected').attr('loan_type_interest');
-        loan_type_interest = optionSelected;
-        $("#loan_interest").val(loan_type_interest);
-    }
+    // function getLoan() {
+    //     var client_id = $("#client_id").val();
+    //     getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + client_id + "' AND status = 'R'");
+    // }
 
-    function calculateInterest(){
-        var loan_amount = $("#loan_amount").val();
-        var loan_period = $("#loan_period").val();
-        var interest = (loan_type_interest/100)
+    $('#client_id').change(function() {
+        getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + $(this).val() + "' AND status = 'R'");
+    })
 
-        // $("#loan_interest").val(loan_type_interest);
-
-    }
-
-    var loan_type_interest = 0;
     $(document).ready(function() {
         getEntries();
-        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);
         getSelectOption('Clients', 'client_id', 'client_fullname');
     });
 </script>

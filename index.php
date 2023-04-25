@@ -336,7 +336,7 @@ if (!isset($_SESSION['user']['id'])) {
             }
           }
           $("#btn_submit").prop('disabled', false);
-          $("#btn_submit").html("Submit");
+          $("#btn_submit").html("Save");
         },
         error: function(jqXHR, textStatus, errorThrown) {
           errorLogger('Error:', textStatus, errorThrown);

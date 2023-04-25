@@ -91,4 +91,5 @@ class Loans extends Connection
     {
         return 'LN-' . date('YmdHis');
     }
+
 }

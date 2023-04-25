@@ -14,6 +14,7 @@
 
         <li class="menu-header">Transactions</li>
         <li><a class="nav-link" href="loans"><i class="fa fa-folder"></i> <span>Loans</span></a></li>
+        <li><a class="nav-link" href="collections"><i class="fas fa-credit-card"></i> <span>Collections</span></a></li>
         <!-- <li class="dropdown">
             <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>Menu 3</span></a>
             <ul class="dropdown-menu">
@@ -25,7 +26,6 @@
         <li class="menu-header">Reports</li>
         <li><a class="nav-link" href="aging-accounts"><i class="fas fa-align-left"></i> <span>Aging of Accounts</span></a></li>
         <li><a class="nav-link" href="accounts-receivable"><i class="fas fa-chart-bar"></i> <span>Accounts Receivables</span></a></li>
-        <li><a class="nav-link" href="collections"><i class="fas fa-clipboard-list"></i> <span>Collections</span></a></li>
         <!-- <li class="dropdown">
             <a href="#" class="nav-link has-dropdown"><i class="far fa-bar-graph"></i> <span>Aging of Accounts</span></a>
             <ul class="dropdown-menu">

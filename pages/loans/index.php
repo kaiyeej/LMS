@@ -86,7 +86,7 @@
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return row.status == "P" ? '<a href="#" class="badge badge-light">Pending</a>' : ( row.status == "F" ? '<a href="#" class="badge badge-success">Finished</a>' : '<a href="#" class="badge badge-danger">Canceled</a>');
+                        return row.status == "P" ? '<a href="#" class="badge badge-light">Pending</a>' : row.status == "A" ? '<a href="#" class="badge badge-success">Approved</a>' :  row.status == "R" ? '<a href="#" class="badge badge-info">Released</a>' : row.status == "F" ? '<a href="#" class="badge badge-primary">Fully Paid</a>' : '<a href="#" class="badge badge-danger">Denied</a>';
                     }
                 },
                 {

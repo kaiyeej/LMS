@@ -164,7 +164,7 @@
                                             </div>
                                             <div class="col-lg-3" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Previous Employment</label>
-                                                <input type="text" class="required form-control input-item" autocomplete="off" placeholder="Previous employment" name="input[client_prev_emp]" id="client_prev_emp">
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Previous employment" name="input[client_prev_emp]" id="client_prev_emp">
                                             </div>
                                         </div>
                                     </div>
