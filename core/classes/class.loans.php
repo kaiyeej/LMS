@@ -92,4 +92,15 @@ class Loans extends Connection
         return 'LN-' . date('YmdHis');
     }
 
+    public function data_row($primary_id, $field)
+    {
+        $result = $this->select($this->table, $field, "$this->pk = '$primary_id'");
+        if($result->num_rows > 0){
+            $row = $result->fetch_array();
+            return $row[$field];
+        }else{
+            return "";
+        }
+    }
+
 }

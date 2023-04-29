@@ -33,6 +33,20 @@ $routes = array(
         'class_name' => 'Collections',
         'has_detail' => 0
     ),
+    //ACCOUNTING
+    "journals" => array(
+        'class_name' => 'Journals',
+        'has_detail' => 0
+    ),
+    "chart-of-accounts" => array(
+        'class_name' => 'ChartOfAccounts',
+        'has_detail' => 0
+    ),
+    //REPORTS
+    "receivable-ledger" => array(
+        'class_name' => 'ReceivableLedger',
+        'has_detail' => 0
+    ),
 );
 /** END SET ROUTES */
 

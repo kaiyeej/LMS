@@ -1,7 +1,7 @@
 <?php
 include 'core/config.php';
 
-if (!isset($_SESSION['user']['id'])) {
+if (!isset($_SESSION['lms_user_id'])) {
   header("location:./login.php");
 }
 ?>
@@ -360,6 +360,7 @@ if (!isset($_SESSION['user']['id'])) {
           $("#hidden_id").val(id);
 
 
+          $('.select2').select2().trigger('change');
           $('.input-item').map(function() {
             //console.log(this.id);
             const id_name = this.id;
@@ -387,6 +388,10 @@ if (!isset($_SESSION['user']['id'])) {
             }else{
               $("#client_paymaster_conformity").prop("checked",false);
             }
+          }else if(route_settings.class_name == "Collections"){
+            // getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + json['client_id'] + "' AND status = 'R'");
+            // $("#loan_id").val(json['loan_id']);
+            $("#loan_id").select2().select2('val',json['loan_id']);
           }
 
 

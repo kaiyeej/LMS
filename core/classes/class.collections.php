@@ -17,7 +17,7 @@ class Collections extends Connection
             'amount'            => $this->clean($this->inputs['amount']),
             'collection_date'   => $this->clean($this->inputs['collection_date']),
             'remarks'           => $this->clean($this->inputs['remarks']),
-            'user_id'           => $this->clean($_SESSION['user']['id']),
+            'user_id'           => $this->clean($_SESSION['lms_user_id']),
         );
 
         return $this->insertIfNotExist($this->table, $form, "$this->name = '".$this->inputs[$this->name]."'");
@@ -34,7 +34,7 @@ class Collections extends Connection
                 'amount'            => $this->clean($this->inputs['amount']),
                 'collection_date'   => $this->clean($this->inputs['collection_date']),
                 'remarks'           => $this->clean($this->inputs['remarks']),
-                'user_id'           => $this->clean($_SESSION['user']['id']),
+                'user_id'           => $this->clean($_SESSION['lms_user_id']),
             );
 
             return $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");
@@ -81,4 +81,17 @@ class Collections extends Connection
     {
         return 'CL-' . date('YmdHis');
     }
+
+    
+    public function data_row($primary_id, $field)
+    {
+        $result = $this->select($this->table, $field, "$this->pk = '$primary_id'");
+        if($result->num_rows > 0){
+            $row = $result->fetch_array();
+            return $row[$field];
+        }else{
+            return "";
+        }
+    }
+
 }

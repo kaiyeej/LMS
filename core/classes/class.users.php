@@ -134,8 +134,8 @@ class Users extends Connection
         $row = $result->fetch_assoc();
 
         if ($row) {
-            $_SESSION['user']['id'] = $row['user_id'];
-            $_SESSION['user']['category'] = $row['user_category'];
+            $_SESSION['lms_user_id'] = $row['user_id'];
+            $_SESSION['lms_user_category'] = $row['user_category'];
 
             $res = 1;
         } else {
