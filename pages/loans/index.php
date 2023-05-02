@@ -126,6 +126,7 @@
             "bPaginate": false,
             "bFilter": false,
             "bInfo": false,
+            "ordering": false,
             "ajax": {
                 "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=sample_calculation",
                 "dataSrc": "data",
