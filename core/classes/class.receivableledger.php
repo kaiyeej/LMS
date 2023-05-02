@@ -28,7 +28,7 @@ class ReceivableLedger extends Connection
                 $debit = 0;
                 $credit = $Collections->total($id);
                 $balance -= $credit;
-                $date = $Collections->data_row($id, 'payment_date');
+                $date = $Collections->data_row($id, 'collection_date');
                 $ref_number = $row['reference_number'];
             }else if($trans == "LN"){
                 $trans = "Loans";
@@ -36,7 +36,7 @@ class ReceivableLedger extends Connection
                 $debit = $Loans->total($id);
                 $credit = 0;
                 $balance += $debit;
-                $date = $Loans->data_row($id, 'bb_date');
+                $date = $Loans->data_row($id, 'loan_date');
                 $ref_number = $row['reference_number'];
             }
 
@@ -56,24 +56,14 @@ class ReceivableLedger extends Connection
         $client_id = $this->inputs['client_id'];
         $start_date = $this->inputs['start_date'];
 
-        $get_sales = $this->select("tbl_sales as h, tbl_sales_details as d","sum((d.quantity*d.price)-d.discount)","h.client_id='$client_id' AND h.sales_date < '$start_date' AND h.sales_type='H' AND (h.status='F' OR h.status='P') AND h.sales_id=d.sales_id");
-        $total_sales = $get_sales->fetch_array();
+        $get_loans = $this->select("tbl_loans","sum(loan_amount)","client_id='$client_id' AND loan_date < '$start_date' AND status='R'");
+        $total_loan = $get_loans->fetch_array();
 
-       $getSales = $this->select("tbl_sales" , "sales_id", "client_id='$client_id' AND sales_date < '$start_date' AND status='F'");
-       $total_sr = 0;
-       while($drRow = $getSales->fetch_array()){
-            $fetch_sr = $this->select("tbl_sales_return as h, tbl_sales_return_details as d","sum(d.price*d.quantity_return)","h.status='F' AND h.sales_return_id=d.sales_return_id AND h.sales_id='$drRow[sales_id]'");
-            $sum_pr = $fetch_sr->fetch_array();
-            $total_sr = $sum_pr[0];
-       }
+        $get_collections = $this->select("tbl_collections","sum(amount)","client_id='$client_id' AND collection_date < '$start_date' AND status='F'");
+        $total_collection = $get_collections->fetch_array();
 
-        $get_payment = $this->select("tbl_customer_payment as h, tbl_customer_payment_details as d","sum(d.amount)","h.client_id='$client_id' AND h.payment_date < '$start_date' AND h.status='F' AND h.cp_id=d.cp_id");
-        $total_payment = $get_payment->fetch_array();
 
-        $get_bb = $this->select("tbl_beginning_balance","sum(bb_amount)","bb_ref_id='$client_id' AND bb_date < '$start_date' AND bb_module='AR'");
-        $total_bb = $get_bb->fetch_array();
-
-        $bf = ($total_sales[0]+$total_bb[0])-($total_payment[0]+$total_sr);
+        $bf = $total_loan[0]-$total_collection[0];
         $total = "";
         
         return [$bf,$total];

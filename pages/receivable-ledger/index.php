@@ -105,7 +105,6 @@
         </div>
     </div>
 </section>
-<?php include "modal_types.php"; ?>
 <script type="text/javascript">
     $("#frm_generate").submit(function(e) {
         e.preventDefault();
@@ -147,7 +146,7 @@
     }
 
     function getClient() {
-        var optionSelected = $("#client_id").find('option:selected').attr('customer_name');
+        var optionSelected = $("#client_id").find('option:selected').attr('client_fullname');
         $("#span_client").html(optionSelected);
     }
 

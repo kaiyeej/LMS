@@ -368,30 +368,30 @@ if (!isset($_SESSION['lms_user_id'])) {
             $("#" + id_name).val(json[id_name]).trigger('change');
           });
 
-          
-          if(route_settings.class_name == "Clients"){
+
+          if (route_settings.class_name == "Clients") {
             c_status = "update";
-            if(jsonParse.data['client_paymaster_deduct_salary'] == "Yes"){
-              $("#client_paymaster_deduct_salary").prop("checked",true);
-            }else{
-              $("#client_paymaster_deduct_salary").prop("checked",false);
+            if (jsonParse.data['client_paymaster_deduct_salary'] == "Yes") {
+              $("#client_paymaster_deduct_salary").prop("checked", true);
+            } else {
+              $("#client_paymaster_deduct_salary").prop("checked", false);
             }
 
-            if(jsonParse.data['client_paymaster_client_deduct_salary'] == "Yes"){
-              $("#client_paymaster_client_deduct_salary").prop("checked",true);
-            }else{
-              $("#client_paymaster_client_deduct_salary").prop("checked",false);
+            if (jsonParse.data['client_paymaster_client_deduct_salary'] == "Yes") {
+              $("#client_paymaster_client_deduct_salary").prop("checked", true);
+            } else {
+              $("#client_paymaster_client_deduct_salary").prop("checked", false);
             }
 
-            if(jsonParse.data['client_paymaster_conformity'] == "Yes"){
-              $("#client_paymaster_conformity").prop("checked",true);
-            }else{
-              $("#client_paymaster_conformity").prop("checked",false);
+            if (jsonParse.data['client_paymaster_conformity'] == "Yes") {
+              $("#client_paymaster_conformity").prop("checked", true);
+            } else {
+              $("#client_paymaster_conformity").prop("checked", false);
             }
-          }else if(route_settings.class_name == "Collections"){
+          } else if (route_settings.class_name == "Collections") {
             // getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + json['client_id'] + "' AND status = 'R'");
             // $("#loan_id").val(json['loan_id']);
-            $("#loan_id").select2().select2('val',json['loan_id']);
+            $("#loan_id").select2().select2('val', json['loan_id']);
           }
 
 
@@ -702,6 +702,53 @@ if (!isset($_SESSION['lms_user_id'])) {
         }
       });
     }
+
+    function exportTableToExcel(el, tableID = 'dt_entries', filename = '') {
+
+      $(el).prop('disabled', true);
+
+      filename = filename ? filename + '.xls' : 'excel_data.xls';
+
+      var htmls = "";
+      var uri = 'data:application/vnd.ms-excel;base64,';
+      var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>';
+      var base64 = function(s) {
+        return window.btoa(unescape(encodeURIComponent(s)))
+      };
+
+      var format = function(s, c) {
+        return s.replace(/{(\w+)}/g, function(m, p) {
+          return c[p];
+        })
+      };
+
+      var table = document.getElementById(tableID).createCaption();
+
+      var header_text = '';
+      $('.report-header').map(function() {
+        header_text += this.innerHTML + "<br>";
+      });
+
+      table.innerHTML = header_text + "<br>";
+
+      htmls = $("#" + tableID).html();
+      document.getElementById(tableID).deleteCaption();
+      var ctx = {
+        worksheet: 'Worksheet',
+        table: htmls
+      }
+
+
+      var link = document.createElement("a");
+      link.download = filename;
+      link.href = uri + base64(format(template, ctx));
+      link.click();
+
+      myTimeout = setTimeout(function() {
+        $(el).prop('disabled', false)
+      }, 1000);
+    }
+
 
     function printCanvas() {
       var printContents = document.getElementById('print_canvas').innerHTML;

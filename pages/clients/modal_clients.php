@@ -494,7 +494,7 @@
                                                                     <th scope="col">Name</th>
                                                                     <th scope="col">Age</th>
                                                                     <th scope="col">Gender</th>
-                                                                    <th scope="col">Occupatio</th>
+                                                                    <th scope="col">Occupation</th>
                                                                 </tr>
                                                             </thead>
                                                         </table>

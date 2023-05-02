@@ -77,6 +77,13 @@ class Collections extends Connection
         return $row['reference_number'];
     }
 
+    public function total($primary_id)
+    {
+        $result = $this->select($this->table, 'sum(amount) as total', "$this->pk = '$primary_id'");
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+
     public function generate()
     {
         return 'CL-' . date('YmdHis');
@@ -93,5 +100,14 @@ class Collections extends Connection
             return "";
         }
     }
+
+    public function pk_by_name($name = null)
+    {
+        $name = $name == null ? $this->inputs[$this->name] : $name;
+        $result = $this->select($this->table, $this->pk, "$this->name = '$name'");
+        $row = $result->fetch_assoc();
+        return $row[$this->pk] * 1;
+    }
+
 
 }

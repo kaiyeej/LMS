@@ -114,6 +114,48 @@
 
     }
 
+    function sampleCalculation() {
+        var loan_date = $("#loan_date").val();
+        var loan_amount = $("#loan_amount").val();
+        var loan_period = $("#loan_period").val();
+        var loan_interest = $("#loan_interest").val();
+
+        $("#dt_calculation").DataTable().destroy();
+        $("#dt_calculation").DataTable({
+            "processing": true,
+            "bPaginate": false,
+            "bFilter": false,
+            "bInfo": false,
+            "ajax": {
+                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=sample_calculation",
+                "dataSrc": "data",
+                "method": "POST",
+                "data": {
+                    input: {
+                        loan_interest: loan_interest,
+                        loan_period: loan_period,
+                        loan_amount: loan_amount,
+                        loan_date: loan_date
+                    }
+                },
+            },
+            "columns": [
+                {
+                    "data": "date"
+                },
+                {
+                    "data": "payment"
+                },
+                {
+                    "data": "interest"
+                },
+                {
+                    "data": "applicable_principal"
+                }
+            ]
+        });
+    }
+
     var loan_type_interest = 0;
     $(document).ready(function() {
         getEntries();
