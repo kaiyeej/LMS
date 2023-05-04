@@ -1,9 +1,14 @@
+<style>
+    .text-right {
+        text-align: right;
+    }
+</style>
 <section class="section">
     <div class="section-header">
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="#">Transactions</a></div>
-            <div class="breadcrumb-item">Loans</div>
+            <div class="breadcrumb-item"><a href="#">Reports</a></div>
+            <div class="breadcrumb-item">Loan Status</div>
         </div>
     </div>
 
@@ -145,13 +150,13 @@
                     "data": "date"
                 },
                 {
-                    "data": "payment"
+                    "data": "payment", className: "text-right"
                 },
                 {
-                    "data": "interest"
+                    "data": "interest", className: "text-right"
                 },
                 {
-                    "data": "applicable_principal"
+                    "data": "applicable_principal", className: "text-right"
                 }
             ]
         });

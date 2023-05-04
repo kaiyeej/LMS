@@ -3,7 +3,7 @@
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
             <div class="breadcrumb-item"><a href="#">Reports</a></div>
-            <div class="breadcrumb-item">Accounts Ledger</div>
+            <div class="breadcrumb-item">Loan Type</div>
         </div>
     </div>
 
@@ -11,24 +11,23 @@
         <div class="alert alert-light alert-has-icon" style="border: 1px dashed #3C84AB;">
             <form id='frm_generate'>
                 <div class="form-group row">
-                    <div class="col-lg-3">
-                        <label><strong>Client</strong></label>
-                        <div>
-                            <select class="form-control form-control-sm select2" required id="client_id" name="input[client_id]">
-                                <option class="">&mdash; All &mdash; </option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
+                <div class="col-lg-3">
                         <label><strong>Start Date</strong></label>
                         <div>
-                            <input type="date" required class="form-control" id="start_date" name="input[start_date]">
+                            <input type="date" required class="form-control" value="<?php echo date('Y-m-01', strtotime(date("Y-m-d"))); ?>" id="start_date" name="input[start_date]">
                         </div>
                     </div>
                     <div class="col-lg-3">
                         <label><strong>End Date</strong></label>
                         <div>
-                            <input type="date" required class="form-control" id="end_date" name="input[end_date]">
+                            <input type="date" required class="form-control" value="<?php echo date('Y-m-t', strtotime(date("Y-m-d"))) ?>" id="end_date" name="input[end_date]">
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <label><strong>Loan Type</strong></label>
+                        <div>
+                            <select class="form-control form-control-sm select2" required id="loan_type_id" name="input[loan_type_id]">
+                            </select>
                         </div>
                     </div>
                     <div class="col-lg-3">
@@ -41,7 +40,7 @@
                                     </span>
                                     <span class="text"> Generate</span>
                                 </button>
-                                <button type="button" onclick="exportTableToExcel(this,'dt_entries','Receivable-Ledger-Report')" class="btn btn-success btn-icon-split">
+                                <button type="button" onclick="exportTableToExcel(this,'dt_entries','Loan-Type-Report')" class="btn btn-success btn-icon-split">
                                     <span class="icon">
                                         <i class="ti ti-cloud-down"></i>
                                     </span>
@@ -65,35 +64,25 @@
                 <div class="col-12 col-xl-12 card shadow mb-4">
                     <div id="report_container" class="card-body">
                         <center>
-                            <h5>Receivable Ledger</h5><br>
+                            <h5>Loan Type Report</h5><br>
                         </center>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dt_entries" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>DATE</th>
-                                        <th>TRANSACTION</th>
+                                        <th>CLIENT</th>
                                         <th>REFERENCE #</th>
-                                        <th style="text-align:right">DEBIT</th>
-                                        <th style="text-align:right">CREDIT</th>
-                                        <th style="text-align:right">BALANCE</th>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align:right"><strong>Account:</strong></td>
-                                        <td colspan="5"><span id="span_client"></span></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="5" style="text-align:right"><strong>Balance Fowarded:</strong></td>
-                                        <td><span id="span_balance_fowarded"></span></td>
+                                        <th>TYPE</th>
+                                        <th>STATUS</th>
+                                        <th style="text-align:right">AMOUNT</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="3" style="text-align:right">Summary:</th>
-                                        <th></th>
-                                        <th></th>
+                                        <th colspan="5" style="text-align:right">TOTAL:</th>
                                         <th><span id="span_total"></span></th>
                                     </tr>
                                 </tfoot>
@@ -112,46 +101,8 @@
     });
 
 
-    function getTotal() {
-        var client_id = $("#client_id").val();
-        var start_date = $("#start_date").val();
-        var end_date = $("#end_date").val();
-
-        $.ajax({
-            type: "POST",
-            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=total",
-            data: {
-                input: {
-                    client_id: client_id,
-                    start_date: start_date,
-                    end_date: end_date
-                }
-            },
-            success: function(data) {
-                var json = JSON.parse(data);
-                $("#span_balance_fowarded").html(json.data[0].toLocaleString('en-US', {
-                    minimumFractionDigits: 2
-                }));
-
-                var bf_total = $(".bf_total").last().val();
-                if (bf_total != undefined) {
-                    $("#span_total").html(bf_total);
-                } else {
-                    $("#span_total").html(json.data[0].toLocaleString('en-US', {
-                        minimumFractionDigits: 2
-                    }));
-                }
-            }
-        });
-    }
-
-    function getClient() {
-        var optionSelected = $("#client_id").find('option:selected').attr('client_fullname');
-        $("#span_client").html(optionSelected);
-    }
-
     function getReport() {
-        var client_id = $("#client_id").val();
+        var loan_type_id = $("#loan_type_id").val();
         var start_date = $("#start_date").val();
         var end_date = $("#end_date").val();
         $("#dt_entries").DataTable().destroy();
@@ -167,9 +118,10 @@
                 "method": "POST",
                 "data": {
                     input: {
-                        client_id: client_id,
+                        loan_type_id: loan_type_id,
                         start_date: start_date,
-                        end_date: end_date
+                        end_date: end_date,
+                        report_type: "type"
                     }
                 },
             },
@@ -185,7 +137,7 @@
                 };
 
                 debitTotal = api
-                    .column(3, {
+                    .column(5, {
                         page: 'current'
                     })
                     .data()
@@ -194,51 +146,33 @@
                     }, 0);
 
                 // Update footer
-                $(api.column(3).footer()).html(
+                $(api.column(5).footer()).html(
                     "&#x20B1; " + debitTotal.toLocaleString('en-US', {
                         minimumFractionDigits: 2
                     })
                 );
 
-                creditTotal = api
-                    .column(4, {
-                        page: 'current'
-                    })
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-                // Update footer
-                $(api.column(4).footer()).html(
-                    "&#x20B1; " + creditTotal.toLocaleString('en-US', {
-                        minimumFractionDigits: 2
-                    })
-                );
 
             },
             "columns": [{
-                    "data": "date"
+                    "data": "loan_date"
                 },
                 {
-                    "data": "transaction"
+                    "data": "client"
                 },
                 {
                     "data": "reference_number"
                 },
                 {
-                    "data": "debit",
-                    className: "text-right"
-                },
-                {
-                    "data": "credit",
-                    className: "text-right"
+                    "data": "loan_type"
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return row.balance + "<input type='hidden' class='bf_total' value='" + row.balance + "'>";
-
-                    },
+                        return row.status == "P" ? '<a href="#" class="badge badge-light">Pending</a>' : row.status == "A" ? '<a href="#" class="badge badge-success">Approved</a>' :  row.status == "R" ? '<a href="#" class="badge badge-info">Released</a>' : row.status == "F" ? '<a href="#" class="badge badge-primary">Fully Paid</a>' : '<a href="#" class="badge badge-danger">Denied</a>';
+                    }
+                },
+                {
+                    "data": "amount",
                     className: "text-right"
                 },
 
@@ -246,12 +180,10 @@
 
         });
 
-        getTotal();
-        getClient();
     }
 
     $(document).ready(function() {
-        getSelectOption('Clients', 'client_id', 'client_fullname', "", ['client_fullname']);
-        getTotal();
+        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', '', [], -1, 'All');
+        getReport();
     });
 </script>

@@ -392,7 +392,7 @@ if (!isset($_SESSION['lms_user_id'])) {
             // getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + json['client_id'] + "' AND status = 'R'");
             // $("#loan_id").val(json['loan_id']);
             $("#loan_id").select2().select2('val', json['loan_id']);
-          }else if(route_settings.class_name == "Loans"){
+          } else if (route_settings.class_name == "Loans") {
             sampleCalculation();
           }
 
@@ -762,6 +762,8 @@ if (!isset($_SESSION['lms_user_id'])) {
       location.reload();
 
     }
+
+
   </script>
 
   <!-- General JS Scripts -->

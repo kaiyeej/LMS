@@ -17,6 +17,23 @@
 CREATE DATABASE IF NOT EXISTS `lms_db` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `lms_db`;
 
+-- Dumping structure for table lms_db.tbl_chart_of_accounts
+CREATE TABLE IF NOT EXISTS `tbl_chart_of_accounts` (
+  `chart_id` int(11) NOT NULL AUTO_INCREMENT,
+  `chart_code` varchar(10) NOT NULL,
+  `chart_name` varchar(30) NOT NULL,
+  `journal_id` int(11) NOT NULL,
+  `chart_type` varchar(1) NOT NULL COMMENT 'M - Main; S - Sub',
+  `main_chart_id` int(11) DEFAULT NULL,
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`chart_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table lms_db.tbl_chart_of_accounts: ~0 rows (approximately)
+/*!40000 ALTER TABLE `tbl_chart_of_accounts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tbl_chart_of_accounts` ENABLE KEYS */;
+
 -- Dumping structure for table lms_db.tbl_children
 CREATE TABLE IF NOT EXISTS `tbl_children` (
   `child_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -28,12 +45,12 @@ CREATE TABLE IF NOT EXISTS `tbl_children` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`child_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_children: ~0 rows (approximately)
+-- Dumping data for table lms_db.tbl_children: ~1 rows (approximately)
 /*!40000 ALTER TABLE `tbl_children` DISABLE KEYS */;
 INSERT INTO `tbl_children` (`child_id`, `client_id`, `child_name`, `child_sex`, `child_age`, `child_occupation`, `date_added`, `date_last_modified`) VALUES
-	(4, 45, '4', 'Female', 4, '4', '2023-04-24 15:11:38', '2023-04-24 15:11:38');
+	(5, 47, '3', 'Male', 3, '3', '2023-04-25 09:00:58', '2023-04-25 09:00:58');
 /*!40000 ALTER TABLE `tbl_children` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_clients
@@ -106,31 +123,36 @@ CREATE TABLE IF NOT EXISTS `tbl_clients` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`client_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table lms_db.tbl_clients: ~2 rows (approximately)
 /*!40000 ALTER TABLE `tbl_clients` DISABLE KEYS */;
 INSERT INTO `tbl_clients` (`client_id`, `client_fname`, `client_mname`, `client_lname`, `client_name_extension`, `client_dob`, `client_contact_no`, `client_civil_status`, `client_address`, `client_address_status`, `client_res_cert_no`, `client_res_cert_issued_at`, `client_res_cert_date`, `client_employer`, `client_employer_address`, `client_employer_contact_no`, `client_emp_position`, `client_emp_income`, `client_emp_status`, `client_emp_length`, `client_prev_emp`, `client_spouse`, `client_spouse_address`, `client_spouse_res_cert_no`, `client_spouse_res_cert_issued_at`, `client_spouse_res_cert_date`, `client_spouse_employer`, `client_no_of_childred`, `client_no_of_child_dependent`, `client_no_of_child_college`, `client_no_of_child_hs`, `client_no_of_child_elem`, `client_soi`, `client_soi_by_whom`, `client_soi_monthly_income`, `client_credit_ref_name1`, `client_credit_ref_address1`, `client_credit_ref_name2`, `client_credit_ref_address2`, `client_credit_ref_name3`, `client_credit_ref_address3`, `client_approx_total_monthly_income`, `client_total_outstanding_obligation`, `client_business_name`, `client_business_address`, `client_business_tel_no`, `client_business_position`, `client_business_kind`, `client_business_length`, `client_business_capital_invested`, `client_business_type`, `insurance_id`, `client_insurance_amount`, `client_insurance_maturity`, `client_bank_transaction`, `client_unpaid_obligation`, `client_salary_withdrawal`, `client_paymaster_name`, `client_paymaster_residence`, `client_paymaster_res_cert_no`, `client_paymaster_res_cert_issued_at`, `client_paymaster_res_cert_date`, `client_paymaster_deduct_salary`, `client_paymaster_client_deduct_salary`, `client_paymaster_conformity`, `date_added`, `date_last_modified`) VALUES
 	(45, 'Pepe', '', 'Smith', '', '2023-01-05', '021', 'Married', '0', 'Owned', '0', '0', '2023-04-24', '0', '0', '0', '0', -1.000, '0', 0, '0', '0', '0', '0', '0', '2023-04-24', '0', 0, 0, 0, 0, 0, '0', '0', 0.000, '0', '0', '0', '0', '0', '0', 0.000, 0.000, '0', '0', '0', '0', '0', 0, 0.000, 'Owner', 1, 4.000, 4, '4', 4.000, 'Weekly', '4', '4', '4', '4', '2023-04-24', 'No', 'Yes', 'Yes', '2023-04-24 15:09:21', '2023-04-24 15:11:24'),
-	(46, '2', '2', '2', '2', '2023-04-24', '2', 'Single', '2', 'Owned', '2', '2', '2023-04-24', '2', '2', '2', '2', 2.000, '2', 2, '2', '', '', '', '', '0000-00-00', '', 0, 0, 0, 0, 0, '', '', 0.000, '', '', '', '', '', '', 0.000, 0.000, '', '', '', '', '', 0, 0.000, '', 0, 0.000, 0, '', 0.000, '', '', '', '', '', '0000-00-00', '', '', '', '2023-04-24 15:14:09', '2023-04-24 15:14:09');
+	(46, '2', '2', '2', '2', '2023-04-24', '2', 'Single', '2', 'Owned', '2', '2', '2023-04-24', '2', '2', '2', '2', 2.000, '2', 2, '2', '', '', '', '', '0000-00-00', '', 0, 0, 0, 0, 0, '', '', 0.000, '', '', '', '', '', '', 0.000, 0.000, '', '', '', '', '', 0, 0.000, '', 0, 0.000, 0, '', 0.000, '', '', '', '', '', '0000-00-00', '', '', '', '2023-04-24 15:14:09', '2023-04-24 15:14:09'),
+	(47, 'sa', 'a', 'a', '', '2017-01-12', '3', 'Married', '3', 'Owned', '3', '3', '2023-04-25', '2', '2', '2', '2', 2.000, '2', 2, '', '2', '3', '3', '3', '2023-04-25', '3', 2, 3, 2, 3, 2, '3', '3', 2.000, '3', '3', '3', '3', '3', '3', 3.000, 3.000, '3', '3', '3', '3', '3', 3, 3.000, 'Sole', 1, 3.000, 3, '3', 3.000, 'Weekly', '3', '3', '3', '3', '2023-04-25', 'Yes', 'Yes', 'No', '2023-04-25 08:59:53', '2023-04-25 09:00:39');
 /*!40000 ALTER TABLE `tbl_clients` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_collections
 CREATE TABLE IF NOT EXISTS `tbl_collections` (
   `collection_id` int(11) NOT NULL AUTO_INCREMENT,
   `reference_number` varchar(30) NOT NULL,
+  `client_id` int(11) NOT NULL,
   `loan_id` int(11) DEFAULT NULL,
   `amount` decimal(12,3) DEFAULT NULL,
   `remarks` varchar(250) DEFAULT NULL,
-  `status` varchar(1) NOT NULL COMMENT 'P - Pending ; F - Finished',
+  `collection_date` date NOT NULL,
+  `status` varchar(1) NOT NULL DEFAULT 'F' COMMENT 'P - Pending ; F - Finished',
   `user_id` int(11) NOT NULL DEFAULT '0',
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`collection_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table lms_db.tbl_collections: ~0 rows (approximately)
 /*!40000 ALTER TABLE `tbl_collections` DISABLE KEYS */;
+INSERT INTO `tbl_collections` (`collection_id`, `reference_number`, `client_id`, `loan_id`, `amount`, `remarks`, `collection_date`, `status`, `user_id`, `date_added`, `date_last_modified`) VALUES
+	(7, 'CL-20230502051105', 45, 3, 20.000, '', '2023-05-02', 'F', 1, '2023-05-02 11:11:12', '2023-05-02 11:11:12');
 /*!40000 ALTER TABLE `tbl_collections` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_comakers
@@ -173,6 +195,26 @@ INSERT INTO `tbl_insurance` (`insurance_id`, `insurance_name`, `insurance_desc`,
 	(2, 'Insurance 002', 'a', 1202.000, '2023-04-16 16:49:23', '2023-04-16 16:51:03');
 /*!40000 ALTER TABLE `tbl_insurance` ENABLE KEYS */;
 
+-- Dumping structure for table lms_db.tbl_journals
+CREATE TABLE IF NOT EXISTS `tbl_journals` (
+  `journal_id` int(11) NOT NULL AUTO_INCREMENT,
+  `journal_name` varchar(50) NOT NULL,
+  `journal_code` varchar(10) NOT NULL,
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`journal_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table lms_db.tbl_journals: ~5 rows (approximately)
+/*!40000 ALTER TABLE `tbl_journals` DISABLE KEYS */;
+INSERT INTO `tbl_journals` (`journal_id`, `journal_name`, `journal_code`, `date_added`, `date_last_modified`) VALUES
+	(3, 'Beginning Balance', 'BB', '2023-05-02 13:37:29', '2023-05-02 13:37:29'),
+	(4, 'Collection Receipts Journal', 'CRJ', '2023-05-02 13:37:48', '2023-05-02 13:37:48'),
+	(5, 'Credit Card Journal', 'CCJ', '2023-05-02 13:38:04', '2023-05-02 13:38:04'),
+	(6, 'Deposit Journal', 'DJ', '2023-05-02 13:38:15', '2023-05-02 13:38:15'),
+	(7, 'Cash/Check Disbursement Journal', 'CDJ', '2023-05-02 13:38:30', '2023-05-02 13:38:30');
+/*!40000 ALTER TABLE `tbl_journals` ENABLE KEYS */;
+
 -- Dumping structure for table lms_db.tbl_loans
 CREATE TABLE IF NOT EXISTS `tbl_loans` (
   `loan_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -183,17 +225,19 @@ CREATE TABLE IF NOT EXISTS `tbl_loans` (
   `loan_period` int(6) NOT NULL DEFAULT '0',
   `loan_interest` decimal(12,3) NOT NULL DEFAULT '0.000',
   `due_date` date NOT NULL,
-  `status` varchar(1) NOT NULL DEFAULT 'P' COMMENT 'P - Pending; A - Approved; R - Released; D - Denied',
+  `status` varchar(1) NOT NULL DEFAULT 'A' COMMENT 'P - Pending; A - Approved; R - Released; D - Denied; F- Fully paid',
   `loan_date` date NOT NULL,
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`loan_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table lms_db.tbl_loans: ~0 rows (approximately)
+-- Dumping data for table lms_db.tbl_loans: ~3 rows (approximately)
 /*!40000 ALTER TABLE `tbl_loans` DISABLE KEYS */;
 INSERT INTO `tbl_loans` (`loan_id`, `reference_number`, `client_id`, `loan_type_id`, `loan_amount`, `loan_period`, `loan_interest`, `due_date`, `status`, `loan_date`, `date_added`, `date_last_modified`) VALUES
-	(1, 'LN-20230410152538', 45, 1, 1000.000, 4, 3.000, '0000-00-00', 'C', '2023-04-10', '2023-04-10 22:06:05', '2023-04-24 16:35:59');
+	(3, 'LN-20230502050211', 45, 1, 100000.000, 12, 17.000, '0000-00-00', 'R', '2023-05-02', '2023-05-02 11:02:18', '2023-05-02 16:53:04'),
+	(4, 'LN-20230503042518', 45, 1, 4.000, 2, 12.000, '0000-00-00', 'A', '2023-05-03', '2023-05-03 10:25:27', '2023-05-03 10:25:27'),
+	(5, 'LN-20230503094828', 45, 2, 2.000, 2, 1.000, '0000-00-00', 'A', '2023-05-03', '2023-05-03 15:48:37', '2023-05-03 15:49:10');
 /*!40000 ALTER TABLE `tbl_loans` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_loan_types
@@ -205,12 +249,13 @@ CREATE TABLE IF NOT EXISTS `tbl_loan_types` (
   `date_added` datetime DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`loan_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table lms_db.tbl_loan_types: ~0 rows (approximately)
 /*!40000 ALTER TABLE `tbl_loan_types` DISABLE KEYS */;
 INSERT INTO `tbl_loan_types` (`loan_type_id`, `loan_type`, `loan_type_interest`, `remarks`, `date_added`, `date_last_modified`) VALUES
-	(1, 'short term loan', 12.00, '', '2023-04-09 22:12:49', '2023-04-11 10:22:37');
+	(1, 'short term loan', 12.00, '', '2023-04-09 22:12:49', '2023-04-11 10:22:37'),
+	(2, 'Long term', 1.00, '', '2023-05-03 15:48:54', '2023-05-03 15:48:54');
 /*!40000 ALTER TABLE `tbl_loan_types` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_property_owned
@@ -225,12 +270,12 @@ CREATE TABLE IF NOT EXISTS `tbl_property_owned` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`property_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_property_owned: ~0 rows (approximately)
+-- Dumping data for table lms_db.tbl_property_owned: ~1 rows (approximately)
 /*!40000 ALTER TABLE `tbl_property_owned` DISABLE KEYS */;
 INSERT INTO `tbl_property_owned` (`property_id`, `client_id`, `property_location`, `property_area`, `property_acquisition_cost`, `property_pres_market_val`, `property_improvement`, `date_added`, `date_last_modified`) VALUES
-	(4, 45, '4', '4', 4.000, 4.000, '4', '2023-04-24 15:11:29', '2023-04-24 15:11:29');
+	(5, 47, '3', '3', 3.000, 3.000, '3', '2023-04-25 09:00:49', '2023-04-25 09:00:49');
 /*!40000 ALTER TABLE `tbl_property_owned` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_users

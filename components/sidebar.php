@@ -30,6 +30,14 @@
         <li class="menu-header">Reports</li>
         <li><a class="nav-link" href="receivable-ledger"><i class="fas fa-chart-bar"></i> <span>AR Ledger</span></a></li>
         <li><a class="nav-link" href="accounts-receivable"><i class="fas fa-chart-bar"></i> <span>Accounts Receivables</span></a></li>
+        <li class="dropdown">
+            <a href="#" class="nav-link has-dropdown"><i class="fas fa-list-ul"></i> <span>Loan Report</span></a>
+            <ul class="dropdown-menu">
+                <li><a class="nav-link" href="loan-status-report">Loan Status</a></li>
+                <li><a class="nav-link" href="loan-type-report">Loan Type</a></li>
+            </ul>
+        </li>
+        <li><a class="nav-link" href="collection-report"><i class="fas fa-file-invoice-dollar"></i> <span>Collection Report</span></a></li>
 
         <li class="menu-header">Security</li>
         <li><a class="nav-link" href="users"><i class="fas fa-user-cog"></i> <span>Users</span></a></li>

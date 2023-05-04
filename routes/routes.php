@@ -47,6 +47,18 @@ $routes = array(
         'class_name' => 'ReceivableLedger',
         'has_detail' => 0
     ),
+    "loan-status-report" => array(
+        'class_name' => 'LoanReport',
+        'has_detail' => 0
+    ),
+    "loan-type-report" => array(
+        'class_name' => 'LoanReport',
+        'has_detail' => 0
+    ),
+    "collection-report" => array(
+        'class_name' => 'Collections',
+        'has_detail' => 0
+    ),
 );
 /** END SET ROUTES */
 
