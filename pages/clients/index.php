@@ -81,8 +81,8 @@
     </div>
 </section>
 <?php include "modal_clients.php"; ?>
+<?php include "modal_preview.php"; ?>
 <script type="text/javascript">
-
     function addClient() {
         modal_detail_status = 0;
         $("#hidden_id").val(0);
@@ -111,7 +111,7 @@
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.client_id + ");getProperty()'><span class='fa fa-edit'></span></button></center>";
+                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.client_id + ");getProperty()'><span class='fa fa-edit'></span></button><button class='btn btn-sm btn-warning' onclick='getPreview(" + row.client_id + ")'><span class='fa fa-file-alt'></span></button></center>";
                     }
                 },
                 {
@@ -133,14 +133,41 @@
         });
     }
 
-    $("#modalEntry").on('hide.bs.modal', function(){
+    function getPreview(id) {
+        $("#modalPreview").modal("show");
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=view",
+            data: {
+                input: {
+                    id: id
+                }
+            },
+            success: function(data) {
+                var jsonParse = JSON.parse(data);
+                const json = jsonParse.data;
+
+                $('.label-item').map(function() {
+                    const id_name = this.id;
+                    const new_id = id_name.replace('_label', '');
+                    this.innerHTML = json[new_id];
+                });
+            }
+        });
+    }
+
+    $("#modalEntry").on('hide.bs.modal', function() {
         currentTab = 0;
         showTab(0);
         $(".required").removeClass("invalid");
         $(".p_required").removeClass("invalid");
         $(".wizard-step").removeClass("wizard-step-info");
-        $(".tab").css({"display":"none"});
-        $("#page_content_1").css({"display":"block"});
+        $(".tab").css({
+            "display": "none"
+        });
+        $("#page_content_1").css({
+            "display": "block"
+        });
     });
 
     $(document).ready(function() {
