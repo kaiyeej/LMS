@@ -16,15 +16,6 @@
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="Chart code" name="input[chart_code]" id="chart_code" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label>Chart</label>
-                            <input type="text" class="form-control input-item" autocomplete="off" placeholder="Chart of account" name="input[chart_name]" id="chart_name" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Journal</label>
-                            <select class="form-control select2 input-item" id="journal_id" name="input[journal_id]" style="width:100%;" required>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-6">
                             <label>Type</label>
                             <select class="form-control select2 input-item" id="chart_type" name="input[chart_type]" style="width:100%;" onchange="changeChartType()" required>
                                 <option value="">Please Select</option>
@@ -34,8 +25,12 @@
                         </div>
                         <div class="form-group col-md-12" id="div_main_chart" style="display:none;">
                             <label>Main Chart</label>
-                            <select class="form-control select2 input-item" id="main_chart_id" name="input[main_chart_id]" style="width:100%;">
+                            <select class="form-control select2 input-item" id="main_chart_id" name="input[main_chart_id]" onchange="changeChart()" style="width:100%;">
                             </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label>Chart</label>
+                            <input type="text" class="form-control input-item" autocomplete="off" placeholder="Chart of account" name="input[chart_name]" id="chart_name" required>
                         </div>
                     </div>
                 </div>

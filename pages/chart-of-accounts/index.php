@@ -37,7 +37,6 @@
                                         <th></th>
                                         <th>Code</th>
                                         <th>Chart of Accounts</th>
-                                        <th>Journal</th>
                                         <th>Type</th>
                                         <th>Main Account</th>
                                         <th>Date Added</th>
@@ -79,9 +78,6 @@
                     "data": "chart_name"
                 },
                 {
-                    "data": "journal"
-                },
-                {
                     "data": "type"
                 },
                 {
@@ -106,12 +102,25 @@
         }else{
             $("#div_main_chart").hide();
             $("#main_chart_id").prop('required',false);
+            $("#chart_name").val("");
         }
+    }
+
+    function changeChart() {
+        var chart_type = $("#chart_type").val();
+
+        if(chart_type == "S"){
+            var optionSelected = $("#main_chart_id").find('option:selected').attr('chart_name');
+            chart_name = optionSelected;
+            $("#chart_name").val(chart_name+" - ");
+        }else{
+            $("#chart_name").val("");
+        }
+        
     }
 
     $(document).ready(function() {
         getEntries();
-        getSelectOption('Journals', 'journal_id', 'journal_name');
-        getSelectOption('ChartOfAccounts', 'main_chart_id', "chart_name", "chart_type = 'M'");
+        getSelectOption('ChartOfAccounts', 'main_chart_id', "chart_name", "chart_type = 'M'", ['chart_name']);
     });
 </script>

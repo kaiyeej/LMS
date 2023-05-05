@@ -3,7 +3,7 @@
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
             <div class="breadcrumb-item"><a href="#">Reports</a></div>
-            <div class="breadcrumb-item">Loan Type</div>
+            <div class="breadcrumb-item">Statement of Accounts</div>
         </div>
     </div>
 
@@ -12,8 +12,8 @@
             <form id='frm_generate'>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label><strong>Account</strong></label>
-                        <select style="width:100%;" class="form-control form-control-sm select2" required id="loan_id" name="input[loan_id]">
+                        <label><strong>Client</strong></label>
+                        <select style="width:100%;" class="form-control form-control-sm select2" required id="client_id" name="input[client_id]">
                         </select>
                     </div>
                     <div class="form-group col-md-6">
@@ -26,7 +26,7 @@
                                     </span>
                                     <span class="text"> Generate</span>
                                 </button>
-                                <button type="button" onclick="exportTableToExcel(this,'dt_entries','Collection-Report')" class="btn btn-success btn-icon-split">
+                                <button type="button" onclick="exportTableToExcel(this,'dt_entries','Statement-of-Accounts')" class="btn btn-success btn-icon-split">
                                     <span class="icon">
                                         <i class="ti ti-cloud-down"></i>
                                     </span>
@@ -62,24 +62,29 @@
                             </div> -->
                             <div class="col-md-12 table-responsive">
                                 <center>
-                                    <h5>Collection Report</h5>
+                                    <h5>Statement of Accounts</h5>
                                     <h6><span class="span_details" id="client"></span></h6>
                                     <h6><span class="span_details" id="reference_number"></span></h6>
                                 </center>
                                 <table class="table table-bordered" id="dt_entries" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>DATE</th>
-                                            <th>REFERENCE #</th>
-                                            <th style="text-align:right">AMOUNT</th>
+                                            <th>PAYMENT DATE</th>
+                                            <th>PAYMENT</th>
+                                            <th>INTEREST AMOUNT</th>
+                                            <th>PENALTY</th>
+                                            <th>APPLICABLE TO PRINCIPAL</th>
+                                            <th>BALANCE OUTSTANDING</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th colspan="2" style="text-align:right">TOTAL:</th>
-                                            <th><span id="span_total"></span></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th colspan="3"></th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -101,7 +106,6 @@
     function getReport() {
         var loan_id = $("#loan_id").val();
         var param = "loan_id= '"+loan_id+"' ";
-        getDetails(loan_id);
         $("#dt_entries").DataTable().destroy();
         $("#dt_entries").DataTable({
             "processing": true,
@@ -110,7 +114,7 @@
             "ordering": false,
             "info": false,
             "ajax": {
-                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=show",
+                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=statement_of_accounts",
                 "dataSrc": "data",
                 "method": "POST",
                 "data": {
@@ -130,7 +134,24 @@
                         i : 0;
                 };
 
-                debitTotal = api
+
+                payment_total = api
+                    .column(1, {
+                        page: 'current'
+                    })
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                // Update footer
+                $(api.column(1).footer()).html(
+                    "&#x20B1; " + payment_total.toLocaleString('en-US', {
+                        minimumFractionDigits: 2
+                    })
+                );
+
+                interest_total = api
                     .column(2, {
                         page: 'current'
                     })
@@ -141,7 +162,7 @@
 
                 // Update footer
                 $(api.column(2).footer()).html(
-                    "&#x20B1; " + debitTotal.toLocaleString('en-US', {
+                    "&#x20B1; " + interest_total.toLocaleString('en-US', {
                         minimumFractionDigits: 2
                     })
                 );
@@ -149,15 +170,17 @@
 
             },
             "columns": [{
-                    "data": "collection_date"
+                    "data": "date"
                 },
                 {
-                    "data": "reference_number"
+                    "data": "payment", className: "text-right"
                 },
                 {
-                    "data": "amount",
-                    className: "text-right"
+                    "data": "interest", className: "text-right"
                 },
+                {
+                    "data": "applicable_principal", className: "text-right"
+                }
 
             ]
 

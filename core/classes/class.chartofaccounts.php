@@ -12,7 +12,6 @@ class ChartOfAccounts extends Connection
         $form = array(
             $this->name         => $this->clean($this->inputs[$this->name]),
             'chart_code'        => $this->clean($this->inputs['chart_code']),
-            'journal_id'        => $this->clean($this->inputs['journal_id']),
             'chart_type'        => $this->clean($this->inputs['chart_type']),
             'main_chart_id'     => $this->clean($this->inputs['main_chart_id']),
         );
@@ -27,7 +26,6 @@ class ChartOfAccounts extends Connection
         $form = array(
             $this->name     => $this->clean($this->inputs[$this->name]),
             'chart_code'        => $this->clean($this->inputs['chart_code']),
-            'journal_id'        => $this->clean($this->inputs['journal_id']),
             'chart_type'        => $this->clean($this->inputs['chart_type']),
             'main_chart_id'     => $main_chart_id,
         );
@@ -42,7 +40,6 @@ class ChartOfAccounts extends Connection
         $Journals = new Journals();
         $result = $this->select($this->table, '*', $param);
         while ($row = $result->fetch_assoc()) {
-             $row['journal'] = $Journals->name($row['journal_id']);
             $row['type'] = $row['chart_type'] == "M" ? "Main" : "Sub";
             $row['main_chart_id'] = $row['chart_id'];
             $rows[] = $row;

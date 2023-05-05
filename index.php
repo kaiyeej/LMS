@@ -288,6 +288,8 @@ if (!isset($_SESSION['lms_user_id'])) {
       modal_detail_status = 0;
       $("#hidden_id").val(0);
       document.getElementById("frm_submit").reset();
+      
+      $('.select2').select2().trigger('change');
 
       var element = document.getElementById('reference_number');
       if (typeof(element) != 'undefined' && element != null) {
@@ -335,6 +337,7 @@ if (!isset($_SESSION['lms_user_id'])) {
               failed_query(json);
             }
           }
+          
           $("#btn_submit").prop('disabled', false);
           $("#btn_submit").html("Save");
         },

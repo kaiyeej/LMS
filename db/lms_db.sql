@@ -21,17 +21,36 @@ USE `lms_db`;
 CREATE TABLE IF NOT EXISTS `tbl_chart_of_accounts` (
   `chart_id` int(11) NOT NULL AUTO_INCREMENT,
   `chart_code` varchar(10) NOT NULL,
-  `chart_name` varchar(30) NOT NULL,
+  `chart_name` varchar(50) NOT NULL,
   `journal_id` int(11) NOT NULL,
   `chart_type` varchar(1) NOT NULL COMMENT 'M - Main; S - Sub',
   `main_chart_id` int(11) DEFAULT NULL,
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`chart_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_chart_of_accounts: ~0 rows (approximately)
+-- Dumping data for table lms_db.tbl_chart_of_accounts: ~18 rows (approximately)
 /*!40000 ALTER TABLE `tbl_chart_of_accounts` DISABLE KEYS */;
+INSERT INTO `tbl_chart_of_accounts` (`chart_id`, `chart_code`, `chart_name`, `journal_id`, `chart_type`, `main_chart_id`, `date_added`, `date_last_modified`) VALUES
+	(1, '100100', 'Petty Cash Fund', 7, 'M', 0, '2023-05-05 09:07:51', '2023-05-05 09:07:51'),
+	(2, '100200', 'Revolving Fund', 7, 'M', 0, '2023-05-05 09:08:15', '2023-05-05 09:08:15'),
+	(4, '200100', 'Cash in Bank', 7, 'M', 0, '2023-05-05 09:12:29', '2023-05-05 09:12:29'),
+	(5, '100300', 'Cash in Bank - RBMI-Featherleaf-(51-000120-4)', 0, 'S', 4, '2023-05-05 09:16:07', '2023-05-05 09:50:38'),
+	(6, '100400', 'Cash in Bank - RBMI - Featherleaf (101-21-000448-4', 0, 'S', 4, '2023-05-05 09:16:47', '2023-05-05 10:08:06'),
+	(7, '100500', 'Cash in Bank - RBMI - Featherleaf (101-21-000739-4', 7, 'S', 4, '2023-05-05 09:17:07', '2023-05-05 10:09:29'),
+	(8, '100600', 'Cash in Bank - CHINABANK - Featherleaf (1087000020', 0, 'S', 4, '2023-05-05 10:09:53', '2023-05-05 10:09:53'),
+	(9, '100700', 'Cash in Bank - PNB', 0, 'S', 4, '2023-05-05 10:10:08', '2023-05-05 10:10:08'),
+	(10, '100800', 'Cash in Bank - LAND BANK', 0, 'S', 4, '2023-05-05 10:10:22', '2023-05-05 10:10:22'),
+	(11, '100900', 'Cash in Bank - BDO', 0, 'S', 4, '2023-05-05 10:10:59', '2023-05-05 10:10:59'),
+	(12, '101000', 'Prepaid Rent', 0, 'M', 0, '2023-05-05 10:12:00', '2023-05-05 10:12:00'),
+	(13, '20020', 'Loans Receivable', 0, 'M', 0, '2023-05-05 10:12:46', '2023-05-05 10:12:46'),
+	(14, '101200', 'Loans Receivable - Pension Loan', 0, 'S', 13, '2023-05-05 10:13:17', '2023-05-05 10:13:17'),
+	(15, '101201', 'Loans Receivable - Pension Loan -LA CARLOTA', 0, 'S', 13, '2023-05-05 10:18:28', '2023-05-05 10:18:28'),
+	(16, '101202', 'Loans Receivable - Pension Loan -TALISAY', 0, 'S', 13, '2023-05-05 10:18:46', '2023-05-05 10:18:46'),
+	(17, '101300', 'Loans Receivable - Salary Loan', 0, 'S', 13, '2023-05-05 10:19:53', '2023-05-05 10:19:53'),
+	(18, '101301', 'Loans Receivable -  Salary Loan- LA CARLOTA', 0, 'S', 13, '2023-05-05 10:20:06', '2023-05-05 10:20:06'),
+	(19, '101302', 'Loans Receivable - Salary Loan- TALISAY', 0, 'S', 13, '2023-05-05 10:20:24', '2023-05-05 10:20:24');
 /*!40000 ALTER TABLE `tbl_chart_of_accounts` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_children
@@ -147,12 +166,13 @@ CREATE TABLE IF NOT EXISTS `tbl_collections` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`collection_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table lms_db.tbl_collections: ~0 rows (approximately)
+-- Dumping data for table lms_db.tbl_collections: ~1 rows (approximately)
 /*!40000 ALTER TABLE `tbl_collections` DISABLE KEYS */;
 INSERT INTO `tbl_collections` (`collection_id`, `reference_number`, `client_id`, `loan_id`, `amount`, `remarks`, `collection_date`, `status`, `user_id`, `date_added`, `date_last_modified`) VALUES
-	(7, 'CL-20230502051105', 45, 3, 20.000, '', '2023-05-02', 'F', 1, '2023-05-02 11:11:12', '2023-05-02 11:11:12');
+	(7, 'CL-20230502051105', 45, 3, 20.000, '', '2023-05-02', 'F', 1, '2023-05-02 11:11:12', '2023-05-02 11:11:12'),
+	(8, 'CL-20230505044052', 45, 3, 23.000, '', '2023-05-05', 'F', 1, '2023-05-05 10:40:58', '2023-05-05 10:40:58');
 /*!40000 ALTER TABLE `tbl_collections` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_comakers

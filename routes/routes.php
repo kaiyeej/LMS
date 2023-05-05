@@ -59,6 +59,10 @@ $routes = array(
         'class_name' => 'Collections',
         'has_detail' => 0
     ),
+    "statement-of-accounts" => array(
+        'class_name' => 'StatementOfAccounts',
+        'has_detail' => 0
+    ),
 );
 /** END SET ROUTES */
 
