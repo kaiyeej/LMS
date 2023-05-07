@@ -365,7 +365,6 @@ if (!isset($_SESSION['lms_user_id'])) {
 
           $('.select2').select2().trigger('change');
           $('.input-item').map(function() {
-            //console.log(this.id);
             const id_name = this.id;
             this.value = json[id_name];
             $("#" + id_name).val(json[id_name]).trigger('change');

@@ -160,13 +160,18 @@ class Loans extends Connection
 
     public function statement_of_accounts()
     {
-        $loan_interest = $this->inputs['loan_interest'];
-        $loan_period = $this->inputs['loan_period'];
-        $loan_amount = $this->inputs['loan_amount'];
-        $loan_date = $this->inputs['loan_date'];
+        $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
+        $result = $this->select($this->table, '*', "$param");
+        $row = $result->fetch_assoc();
+       
+        $loan_interest = $row['loan_interest'];
+        $loan_period = $row['loan_period'];
+        $loan_amount = $row['loan_amount'];
+        $loan_date = $row['loan_date'];
 
         $count = 1;
         $rows = array();
+        $Collection = new Collections;
         while ($count <= $loan_period) {
             
             $loan_date = date('M d, Y', strtotime('+1 month', strtotime($loan_date)));
@@ -177,9 +182,12 @@ class Loans extends Connection
             $monthly_interest = $loan_amount*$monthly_interest_rate;
             $principal_amount = $loan_amount/$loan_period;
 
+        
+
             $row['date'] = $loan_date;
-            $row['payment'] = number_format($suggested_payment, 2);
+            $row['payment'] = number_format($Collection->collected_per_month($loan_date), 2);
             $row['interest'] = number_format($monthly_interest, 2);
+            $row['penalty'] = number_format(0,2);
             $row['applicable_principal'] =  number_format($principal_amount, 2);
             $rows[] = $row;
             

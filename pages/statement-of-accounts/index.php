@@ -104,8 +104,8 @@
 
 
     function getReport() {
-        var loan_id = $("#loan_id").val();
-        var param = "loan_id= '"+loan_id+"' ";
+        var client_id = $("#client_id").val();
+        var param = "client_id= '"+client_id+"' ";
         $("#dt_entries").DataTable().destroy();
         $("#dt_entries").DataTable({
             "processing": true,
@@ -179,6 +179,12 @@
                     "data": "interest", className: "text-right"
                 },
                 {
+                    "data": "penalty", className: "text-right"
+                },
+                {
+                    "data": "applicable_principal", className: "text-right"
+                },
+                {
                     "data": "applicable_principal", className: "text-right"
                 }
 
@@ -211,7 +217,7 @@
     }
 
     $(document).ready(function() {
-        getSelectOption('Loans', 'loan_id', 'loan_account', '', ['client']);
+        getSelectOption('Clients', 'client_id', 'client_fullname', '', ['client']);
 
     });
 </script>
