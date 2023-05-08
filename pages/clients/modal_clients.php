@@ -172,30 +172,65 @@
                                     <div id="page_content_2" class="tab wizard-pane">
 
                                         <div class="form-group row">
-                                            <div class="col-lg-4" style="padding: 10px;">
+                                            <div class="col-lg-6" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Spouse</label>
                                                 <input type="text" class="required form-control input-item" autocomplete="off" placeholder="Spouse fullname" name="input[client_spouse]" id="client_spouse">
                                             </div>
-                                            <div class="col-lg-3" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Spouse Employer</label>
-                                                <input type="text" class="required form-control input-item" autocomplete="off" placeholder="Employer name" name="input[client_spouse_employer]" id="client_spouse_employer">
-                                            </div>
-                                            <div class="col-lg-5" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Address</label>
+                                            <div class="col-lg-6" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Residence</label>
                                                 <input type="text" class="required form-control input-item" autocomplete="off" placeholder="Spouse address" name="input[client_spouse_address]" id="client_spouse_address">
                                             </div>
 
-                                            <div class="col-lg-3" style="padding: 10px;">
+                                            <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Resident Certificate #</label>
                                                 <input type="text" class="required form-control input-item" autocomplete="off" placeholder="Spouse certificate number" name="input[client_spouse_res_cert_no]" id="client_spouse_res_cert_no">
                                             </div>
-                                            <div class="col-lg-3" style="padding: 10px;">
+                                            <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Issued At</label>
                                                 <input type="text" class="required form-control input-item" autocomplete="off" placeholder="Spouse certificate issued at" name="input[client_spouse_res_cert_issued_at]" id="client_spouse_res_cert_issued_at">
                                             </div>
-                                            <div class="col-lg-3" style="padding: 10px;">
+                                            <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Certificate Date</label>
                                                 <input type="date" class="required form-control input-item" autocomplete="off" placeholder="Spouse certificate issued date" name="input[client_spouse_res_cert_date]" id="client_spouse_res_cert_date">
+                                            </div>
+                                            
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Spouse Employer</label>
+                                                <input type="text" class="required form-control input-item" autocomplete="off" placeholder="Employer name" name="input[client_spouse_employer]" id="client_spouse_employer">
+                                            </div>
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Bussiness Address</label>
+                                                <input type="text" class="required form-control input-item" autocomplete="off" placeholder="Employer name" name="input[client_spouce_employer_address]" id="client_spouce_employer_address">
+                                            </div>
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Telephone #</label>
+                                                <input type="text" class="required form-control input-item" autocomplete="off" placeholder="Employer name" name="input[client_spouce_employer_contact_no]" id="client_spouce_employer_contact_no">
+                                            </div>
+
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Position</label>
+                                                <input type="text" class="required form-control input-item" autocomplete="off" placeholder="Employer name" name="input[client_spouse_position]" id="client_spouse_position">
+                                            </div>
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Income</label>
+                                                <input type="text" class="required form-control input-item" autocomplete="off" placeholder="Employer name" name="input[client_spouse_income]" id="client_spouse_income">
+                                            </div>
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Status of Employment</label>
+                                                <input type="text" class="required form-control input-item" autocomplete="off" placeholder="Employer name" name="input[client_spouse_emp_status]" id="client_spouse_emp_status">
+                                            </div>
+
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Length of Employement</label>
+                                                <input type="text" class="required form-control input-item" autocomplete="off" placeholder="Employer name" name="input[client_spouse_leng_emp]" id="client_spouse_leng_emp">
+                                            </div>
+                                            <div class="col-lg-8" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Prev. Employment</label>
+                                                <input type="text" class="form-control input-item" autocomplete="off" placeholder="Employer name" name="input[client_spouse_prev_employment]" id="client_spouse_prev_employment">
+                                            </div>
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Status of Employment</label>
+                                                <input type="text" class="required form-control input-item" autocomplete="off" placeholder="Employer name" name="input[client_spouse_emp_status]" id="client_spouse_emp_status">
                                             </div>
 
                                             <div class="col-lg-3" style="padding: 10px;">
@@ -206,7 +241,6 @@
                                                 <label class="text-md-right text-left">No. of Children Dependent on you</label>
                                                 <input type="number" class="required form-control input-item" autocomplete="off" placeholder="Number of Children Dependent on you" name="input[client_no_of_child_dependent]" id="client_no_of_child_dependent">
                                             </div>
-
                                             <div class="col-lg-3" style="padding: 10px;">
                                                 <label class="text-md-right text-left">College</label>
                                                 <input type="number" class="required form-control input-item" autocomplete="off" placeholder="Number of children studying" name="input[client_no_of_child_college]" id="client_no_of_child_college">

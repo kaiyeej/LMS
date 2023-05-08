@@ -78,6 +78,15 @@ class Clients extends Connection
                 'client_spouse_res_cert_issued_at'  => $this->clean($this->inputs['client_spouse_res_cert_issued_at']),
                 'client_spouse_res_cert_date'       => $this->clean($this->inputs['client_spouse_res_cert_date']),
                 'client_spouse_employer'            => $this->clean($this->inputs['client_spouse_employer']),
+                'client_spouce_employer_address'           => $this->clean($this->inputs['client_spouce_employer_address']),
+                'client_spouce_employer_contact_no' => $this->clean($this->inputs['client_spouce_employer_contact_no']),
+                
+                'client_spouse_position'            => $this->clean($this->inputs['client_spouse_position']),
+                'client_spouse_income'              => $this->clean($this->inputs['client_spouse_income']),
+                'client_spouse_emp_status'          => $this->clean($this->inputs['client_spouse_emp_status']),
+                'client_spouse_leng_emp'            => $this->clean($this->inputs['client_spouse_leng_emp']),
+                'client_spouse_prev_employment'     => $this->clean($this->inputs['client_spouse_prev_employment']),
+
                 'client_no_of_childred'             => $this->clean($this->inputs['client_no_of_childred']),
                 'client_no_of_child_dependent'      => $this->clean($this->inputs['client_no_of_child_dependent']),
                 'client_no_of_child_college'        => $this->clean($this->inputs['client_no_of_child_college']),
@@ -142,7 +151,16 @@ class Clients extends Connection
     {
         $primary_id = $this->inputs['id'];
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
-        return $result->fetch_assoc();
+        $row = $result->fetch_assoc();
+
+        $bithdayDate = $row['client_dob'];
+        $date = new DateTime($bithdayDate);
+        $now = new DateTime();
+        $interval = $now->diff($date);
+
+        $row['client_fullname'] = $row['client_fname'] . " " . $row['client_mname'] . " " . $row['client_lname'] . " " . $row['client_name_extension'];
+        $row['client_age'] = $interval->y;
+        return $row;
     }
 
     public function remove()
