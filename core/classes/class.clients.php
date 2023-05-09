@@ -259,11 +259,26 @@ class Clients extends Connection
         $result = $this->select("tbl_property_owned", '*', $param);
         while ($row = $result->fetch_assoc()) {
             
-            $rows .=    '<div class="col-md-3"><label>Real Property Owned Location</label><h6>'.$row['property_location'].'</h6></div>'.
-                        '<div class="col-md-2"><label>Area</label><h6></h6></div>'.
-                        '<div class="col-md-2"><label>Acquisition Cost</label><h6></h6></div>'.
-                        '<div class="col-md-2"><label>Present Market Value</label><h6></h6></div>'.
-                        '<div class="col-md-3"><label>Improvement, if any</label><h6></h6></div>';
+            $rows .=    '<div class="col-md-3"><h6>'.$row['property_location'].'</h6></div>'.
+                        '<div class="col-md-2"><h6>'.$row['property_area'].'</h6></div>'.
+                        '<div class="col-md-2"><h6>'.$row['property_acquisition_cost'].'</h6></div>'.
+                        '<div class="col-md-2"><h6>'.$row['property_pres_market_val'].'</h6></div>'.
+                        '<div class="col-md-3"><h6>'.$row['property_improvement'].'</h6></div>';
+        }
+        return $rows;
+    }
+
+    public function get_children()
+    {
+        $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
+        $rows = "";
+        $result = $this->select("tbl_children", '*', $param);
+        while ($row = $result->fetch_assoc()) {
+            
+            $rows .=    '<div class="col-md-3"><h6>'.$row['child_name'].'</h6></div>'.
+                        '<div class="col-md-2"><h6>'.$row['child_sex'].'</h6></div>'.
+                        '<div class="col-md-2"><h6>'.$row['child_age'].'</h6></div>'.
+                        '<div class="col-md-5"><h6>'.$row['child_occupation'].'</h6></div>';
         }
         return $rows;
     }

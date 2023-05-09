@@ -13,6 +13,10 @@ $routes = array(
         'class_name' => 'Clients',
         'has_detail' => 0
     ),
+    "client-update" => array(
+        'class_name' => 'Clients',
+        'has_detail' => 0
+    ),
     "loan-types" => array(
         'class_name' => 'LoanTypes',
         'has_detail' => 0
