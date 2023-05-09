@@ -149,6 +149,7 @@ class Clients extends Connection
 
     public function view()
     {
+        $Insurance = new Insurance;
         $primary_id = $this->inputs['id'];
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
         $row = $result->fetch_assoc();
@@ -158,6 +159,7 @@ class Clients extends Connection
         $now = new DateTime();
         $interval = $now->diff($date);
 
+        $row['client_insurance'] = $Insurance->name($row['insurance_id']);
         $row['client_fullname'] = $row['client_fname'] . " " . $row['client_mname'] . " " . $row['client_lname'] . " " . $row['client_name_extension'];
         $row['client_age'] = $interval->y;
         return $row;
@@ -246,6 +248,22 @@ class Clients extends Connection
         $result = $this->select("tbl_property_owned", '*', $param);
         while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
+        }
+        return $rows;
+    }
+
+    public function get_property()
+    {
+        $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
+        $rows = "";
+        $result = $this->select("tbl_property_owned", '*', $param);
+        while ($row = $result->fetch_assoc()) {
+            
+            $rows .=    '<div class="col-md-3"><label>Real Property Owned Location</label><h6>'.$row['property_location'].'</h6></div>'.
+                        '<div class="col-md-2"><label>Area</label><h6></h6></div>'.
+                        '<div class="col-md-2"><label>Acquisition Cost</label><h6></h6></div>'.
+                        '<div class="col-md-2"><label>Present Market Value</label><h6></h6></div>'.
+                        '<div class="col-md-3"><label>Improvement, if any</label><h6></h6></div>';
         }
         return $rows;
     }

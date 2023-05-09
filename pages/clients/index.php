@@ -144,6 +144,7 @@
                 }
             },
             success: function(data) {
+                getProperty(id);
                 var jsonParse = JSON.parse(data);
                 const json = jsonParse.data;
 
@@ -152,6 +153,25 @@
                     const new_id = id_name.replace('_label', '');
                     this.innerHTML = json[new_id];
                 });
+            }
+        });
+    }
+
+    function getProperty(id) {
+        var params = "client_id = '" + id + "'";
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=get_property",
+            data: {
+                input: {
+                    params: params
+                }
+            },
+            success: function(data) {
+                var jsonParse = JSON.parse(data);
+                const json = jsonParse.data;
+                console.log(json);
+                $("#property_container").html(json);
             }
         });
     }

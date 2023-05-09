@@ -57,8 +57,8 @@ class Insurance extends Connection
 
     public function name($primary_id)
     {
-        $result = $this->select($this->table, 'loan_type', "$this->pk = '$primary_id'");
+        $result = $this->select($this->table, 'insurance_name', "$this->pk = '$primary_id'");
         $row = $result->fetch_assoc();
-        return $row['loan_type'];
+        return $row['insurance_name'];
     }
 }
