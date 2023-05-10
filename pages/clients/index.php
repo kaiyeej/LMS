@@ -111,7 +111,8 @@
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.client_id + ");getProperty()'><span class='fa fa-edit'></span></button><button class='btn btn-sm btn-warning' onclick='getPreview(" + row.client_id + ")'><span class='fa fa-file-alt'></span></button></center>";
+                        var update_client = "window.location='u'";
+                        return "<center><button class='btn btn-sm btn-info' onclick='window.location=\"client-update?c=" + row.client_id + "\" '><span class='fa fa-edit'></span></button><button class='btn btn-sm btn-warning' onclick='getPreview(" + row.client_id + ")'><span class='fa fa-file-alt'></span></button></center>";
                     }
                 },
                 {

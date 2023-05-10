@@ -344,9 +344,9 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> 
 
-                                    <div id="page_content_5" class="tab wizard-pane">
+                                    <div id="page_content_3" class="tab wizard-pane">
                                         <div class="form-group row">
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Insurance</label>

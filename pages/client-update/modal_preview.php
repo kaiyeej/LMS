@@ -404,3 +404,44 @@
         </div>
     </div>
 </form>
+<script>
+    
+
+    function get_property(id) {
+        var params = "client_id = '" + id + "'";
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=get_property",
+            data: {
+                input: {
+                    params: params
+                }
+            },
+            success: function(data) {
+                var jsonParse = JSON.parse(data);
+                const json = jsonParse.data;
+                console.log(json);
+                $("#property_container").html(json);
+            }
+        });
+    }
+
+    function get_children(id) {
+        var params = "client_id = '" + id + "'";
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=get_children",
+            data: {
+                input: {
+                    params: params
+                }
+            },
+            success: function(data) {
+                var jsonParse = JSON.parse(data);
+                const json = jsonParse.data;
+                console.log(json);
+                $("#children_container").html(json);
+            }
+        });
+    }
+</script>
