@@ -25,7 +25,8 @@
 
         <li class="menu-header">Accounting</li>
         <li><a class="nav-link" href="chart-of-accounts"><i class="fas fa-clipboard-list"></i> <span>Chart of Accounts</span></a></li></li>
-        <li><a class="nav-link" href="journals"><i class="fas fa-book"></i> <span>Journals</span></a></li></li>
+        <li><a class="nav-link" href="journals"><i class="fas fa-bookmark"></i> <span>Journals</span></a></li></li>
+        <li><a class="nav-link" href="journal-entry"><i class="fa fa-book"></i> <span>Journal Entry</span></a></li></li>
 
         <li class="menu-header">Reports</li>
         <li><a class="nav-link" href="accounts-receivable"><i class="fas fa-chart-bar"></i> <span>Accounts Receivables</span></a></li>

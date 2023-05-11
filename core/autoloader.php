@@ -16,4 +16,5 @@ $classes = array(
     'ReceivableLedger'      => $pre_class . 'receivableledger.php',
     'LoanReport'            => $pre_class . 'loanreport.php',
     'StatementOfAccounts'   => $pre_class . 'statementofaccounts.php',
+    'JournalEntry'          => $pre_class . 'journalentry.php',
 );

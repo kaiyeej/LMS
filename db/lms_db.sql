@@ -58,11 +58,12 @@ CREATE TABLE IF NOT EXISTS `tbl_children` (
   `date_added` datetime NOT NULL DEFAULT current_timestamp(),
   `date_last_modified` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`child_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table lms_db.tbl_children: ~0 rows (approximately)
 INSERT INTO `tbl_children` (`child_id`, `client_id`, `child_name`, `child_sex`, `child_age`, `child_occupation`, `date_added`, `date_last_modified`) VALUES
-	(5, 47, '3', 'Male', 3, '3', '2023-04-25 09:00:58', '2023-04-25 09:00:58');
+	(5, 47, '3', 'Male', 3, '3', '2023-04-25 09:00:58', '2023-04-25 09:00:58'),
+	(6, 45, 'q2', 'Male', 2, '2', '2023-05-09 21:01:32', '2023-05-09 21:01:32');
 
 -- Dumping structure for table lms_db.tbl_clients
 CREATE TABLE IF NOT EXISTS `tbl_clients` (
@@ -156,12 +157,13 @@ CREATE TABLE IF NOT EXISTS `tbl_collections` (
   `date_added` datetime NOT NULL DEFAULT current_timestamp(),
   `date_last_modified` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`collection_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table lms_db.tbl_collections: ~2 rows (approximately)
+-- Dumping data for table lms_db.tbl_collections: ~3 rows (approximately)
 INSERT INTO `tbl_collections` (`collection_id`, `reference_number`, `client_id`, `loan_id`, `amount`, `remarks`, `collection_date`, `status`, `user_id`, `date_added`, `date_last_modified`) VALUES
-	(7, 'CL-20230502051105', 45, 3, 20.000, '', '2023-05-02', 'F', 1, '2023-05-02 11:11:12', '2023-05-02 11:11:12'),
-	(8, 'CL-20230505044052', 45, 3, 23.000, '', '2023-05-05', 'F', 1, '2023-05-05 10:40:58', '2023-05-05 10:40:58');
+	(7, 'CL-20230502051105', 45, 3, 20.000, '', '2023-06-01', 'F', 1, '2023-05-02 11:11:12', '2023-05-11 18:57:16'),
+	(8, 'CL-20230505044052', 45, 3, 23.000, '', '2023-06-01', 'F', 1, '2023-05-05 10:40:58', '2023-05-11 18:57:23'),
+	(9, 'CL-20230511130337', 45, 3, 1000.000, '', '2023-07-11', 'F', 1, '2023-05-11 19:03:52', '2023-05-11 19:03:52');
 
 -- Dumping structure for table lms_db.tbl_comakers
 CREATE TABLE IF NOT EXISTS `tbl_comakers` (
@@ -217,6 +219,41 @@ INSERT INTO `tbl_journals` (`journal_id`, `journal_name`, `journal_code`, `date_
 	(6, 'Deposit Journal', 'DJ', '2023-05-02 13:38:15', '2023-05-02 13:38:15'),
 	(7, 'Cash/Check Disbursement Journal', 'CDJ', '2023-05-02 13:38:30', '2023-05-02 13:38:30');
 
+-- Dumping structure for table lms_db.tbl_journal_entries
+CREATE TABLE IF NOT EXISTS `tbl_journal_entries` (
+  `journal_entry_id` int(11) NOT NULL AUTO_INCREMENT,
+  `reference_number` varchar(50) DEFAULT NULL,
+  `cross_reference` varchar(50) DEFAULT NULL,
+  `journal_id` int(11) DEFAULT NULL,
+  `remarks` varchar(250) DEFAULT NULL,
+  `journal_date` date DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `date_added` datetime DEFAULT current_timestamp(),
+  `date_last_modified` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`journal_entry_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table lms_db.tbl_journal_entries: ~0 rows (approximately)
+INSERT INTO `tbl_journal_entries` (`journal_entry_id`, `reference_number`, `cross_reference`, `journal_id`, `remarks`, `journal_date`, `user_id`, `date_added`, `date_last_modified`) VALUES
+	(4, 'JE-20230511161008', 'u', 3, '', '2023-05-11', 1, '2023-05-11 22:10:17', '2023-05-11 22:10:17');
+
+-- Dumping structure for table lms_db.tbl_journal_entry_details
+CREATE TABLE IF NOT EXISTS `tbl_journal_entry_details` (
+  `journal_entry_detail_id` int(11) NOT NULL AUTO_INCREMENT,
+  `journal_entry_id` int(11) NOT NULL DEFAULT 0,
+  `chart_id` int(11) NOT NULL DEFAULT 0,
+  `description` varchar(250) NOT NULL,
+  `debit` decimal(12,3) NOT NULL DEFAULT 0.000,
+  `credit` decimal(12,3) NOT NULL DEFAULT 0.000,
+  PRIMARY KEY (`journal_entry_detail_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table lms_db.tbl_journal_entry_details: ~0 rows (approximately)
+INSERT INTO `tbl_journal_entry_details` (`journal_entry_detail_id`, `journal_entry_id`, `chart_id`, `description`, `debit`, `credit`) VALUES
+	(2, 4, 1, '', 2.000, 0.000),
+	(3, 4, 1, '', 2.000, 0.000),
+	(4, 4, 1, '', 0.000, 4.000);
+
 -- Dumping structure for table lms_db.tbl_loans
 CREATE TABLE IF NOT EXISTS `tbl_loans` (
   `loan_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -237,7 +274,7 @@ CREATE TABLE IF NOT EXISTS `tbl_loans` (
 -- Dumping data for table lms_db.tbl_loans: ~3 rows (approximately)
 INSERT INTO `tbl_loans` (`loan_id`, `reference_number`, `client_id`, `loan_type_id`, `loan_amount`, `loan_period`, `loan_interest`, `due_date`, `status`, `loan_date`, `date_added`, `date_last_modified`) VALUES
 	(3, 'LN-20230502050211', 45, 1, 100000.000, 12, 17.000, '0000-00-00', 'R', '2023-05-02', '2023-05-02 11:02:18', '2023-05-02 16:53:04'),
-	(4, 'LN-20230503042518', 45, 1, 4.000, 2, 12.000, '0000-00-00', 'A', '2023-05-03', '2023-05-03 10:25:27', '2023-05-03 10:25:27'),
+	(4, 'LN-20230503042518', 45, 1, 4.000, 2, 12.000, '0000-00-00', 'R', '2023-05-03', '2023-05-03 10:25:27', '2023-05-11 17:21:30'),
 	(5, 'LN-20230503094828', 45, 2, 2.000, 2, 1.000, '0000-00-00', 'A', '2023-05-03', '2023-05-03 15:48:37', '2023-05-03 15:49:10');
 
 -- Dumping structure for table lms_db.tbl_loan_types
@@ -274,11 +311,12 @@ CREATE TABLE IF NOT EXISTS `tbl_property_owned` (
   `date_added` datetime NOT NULL DEFAULT current_timestamp(),
   `date_last_modified` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`property_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table lms_db.tbl_property_owned: ~0 rows (approximately)
 INSERT INTO `tbl_property_owned` (`property_id`, `client_id`, `property_location`, `property_area`, `property_acquisition_cost`, `property_pres_market_val`, `property_improvement`, `date_added`, `date_last_modified`) VALUES
-	(5, 47, '3', '3', 3.000, 3.000, '3', '2023-04-25 09:00:49', '2023-04-25 09:00:49');
+	(5, 47, '3', '3', 3.000, 3.000, '3', '2023-04-25 09:00:49', '2023-04-25 09:00:49'),
+	(6, 47, '3', '3', 3.000, 3.000, '3', '2023-04-25 09:00:49', '2023-04-25 09:00:49');
 
 -- Dumping structure for table lms_db.tbl_users
 CREATE TABLE IF NOT EXISTS `tbl_users` (

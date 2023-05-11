@@ -109,7 +109,8 @@
                 }
             },
             success: function(data) {
-                $("#soa_report").html(data);
+                $("#soa_report").html(data.replace('{"data":null}', ''));
+                
             }
         });
 

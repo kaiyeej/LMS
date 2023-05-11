@@ -288,7 +288,7 @@ if (!isset($_SESSION['lms_user_id'])) {
       modal_detail_status = 0;
       $("#hidden_id").val(0);
       document.getElementById("frm_submit").reset();
-      
+
       $('.select2').select2().trigger('change');
 
       var element = document.getElementById('reference_number');
@@ -337,7 +337,7 @@ if (!isset($_SESSION['lms_user_id'])) {
               failed_query(json);
             }
           }
-          
+
           $("#btn_submit").prop('disabled', false);
           $("#btn_submit").html("Save");
         },
@@ -391,7 +391,7 @@ if (!isset($_SESSION['lms_user_id'])) {
               $("#client_paymaster_conformity").prop("checked", false);
             }
 
-            
+
             $(".client_span").html(jsonParse.data['client_fullname']);
           } else if (route_settings.class_name == "Collections") {
             // getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + json['client_id'] + "' AND status = 'R'");
@@ -567,20 +567,18 @@ if (!isset($_SESSION['lms_user_id'])) {
       var count_checked = $("input[name='dt_id_2']:checked").length;
 
       if (count_checked > 0) {
+
+        $("#btn_delete_member").prop("disabled", true);
+        $("#btn_delete_member").html("<span class='fa fa-spinner fa-spin'></span>");
         swal({
-            title: "Are you sure?",
-            text: "You will not be able to recover these entries!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonClass: "btn-danger",
-            cancelButtonClass: "btn-primary",
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "No, cancel!",
-            closeOnConfirm: false,
-            closeOnCancel: false
-          },
-          function(isConfirm) {
-            if (isConfirm) {
+            title: 'Are you sure?',
+            text: 'You will not be able to recover these entries!',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
               var checkedValues = $("input[name='dt_id_2']:checked").map(function() {
                 return this.value;
               }).get();
@@ -602,14 +600,16 @@ if (!isset($_SESSION['lms_user_id'])) {
                   } else {
                     failed_query(json);
                   }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                  errorLogger('Error:', textStatus, errorThrown);
                 }
               });
-
-              $("#btn_delete").prop('disabled', true);
-
             } else {
               swal("Cancelled", "Entries are safe :)", "error");
             }
+            $("#btn_delete_member").prop('disabled', false);
+            $("#btn_delete_member").html('<i class = "fas fa-trash"> </i> Delete');
           });
       } else {
         swal("Cannot proceed!", "Please select entries to delete!", "warning");
@@ -767,8 +767,6 @@ if (!isset($_SESSION['lms_user_id'])) {
       location.reload();
 
     }
-
-
   </script>
 
   <!-- General JS Scripts -->

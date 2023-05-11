@@ -46,6 +46,10 @@ $routes = array(
         'class_name' => 'ChartOfAccounts',
         'has_detail' => 0
     ),
+    "journal-entry" => array(
+        'class_name' => 'JournalEntry',
+        'has_detail' => 1
+    ),
     //REPORTS
     "receivable-ledger" => array(
         'class_name' => 'ReceivableLedger',

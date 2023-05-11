@@ -109,8 +109,8 @@ class Collections extends Connection
         return $row[$this->pk] * 1;
     }
 
-    public function collected_per_month($date){
-        $result = $this->select($this->table, 'sum(amount) as total', "MONTH(collection_date) = MONTH('$date')");
+    public function collected_per_month($date,$loan_id){
+        $result = $this->select("tbl_collections as c, tbl_loans as l", 'sum(c.amount) as total', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND (MONTH(c.collection_date) = MONTH('$date') AND YEAR(c.collection_date)= YEAR('$date'))");
         $row = $result->fetch_assoc();
         return $row['total'];
     }

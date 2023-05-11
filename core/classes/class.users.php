@@ -98,11 +98,11 @@ class Users extends Connection
     public static function fullname($primary_id)
     {
         $self = new self;
-        $result = $self->select($self->table, 'user_fullname', "$self->pk  = '$primary_id'");
+        $result = $self->select($self->table, 'user_fname,user_mname,user_lname', "$self->pk  = '$primary_id'");
 
         if ($result->num_rows > 0) {
-            $row = $result->fetch_array();
-            return $row[0];
+            $row = $result->fetch_assoc();
+            return $row['user_fname']." ".$row['user_mname']." ".$row['user_lname'];
         } else {
             return "---";
         }
