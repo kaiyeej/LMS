@@ -64,7 +64,7 @@ $routes = array(
         'has_detail' => 0
     ),
     "statement-of-accounts" => array(
-        'class_name' => 'Loans',
+        'class_name' => 'StatementOfAccounts',
         'has_detail' => 0
     ),
 );

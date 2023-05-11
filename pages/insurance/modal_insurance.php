@@ -21,7 +21,7 @@
                         </div>
                         <div class="form-group col-md-12">
                             <label>Description</label>
-                            <textarea class="form-control" class="form-control input-item" placeholder="Insurance desciption" name="input[insurance_desc]" id="insurance_desc"></textarea>
+                            <textarea class="form-control input-item" placeholder="Insurance desciption" name="input[insurance_desc]" id="insurance_desc"></textarea>
                         </div>
                     </div>
                 </div>

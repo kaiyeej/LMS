@@ -50,13 +50,12 @@
                 <div class="col-12 col-xl-12 card shadow mb-4">
                     <div id="report_container" class="card-body">
 
-                        <center>
-                            <h5>Statement of Accounts</h5>
-                            <h6><span class="span_details" id="span_client"></span></h6>
-                        </center>
-
-                        <div class="row" id="soa_report">
+                        <div class="row">
                             <div class="col-md-12 table-responsive">
+                                <center>
+                                    <h5>Statement of Accounts</h5>
+                                    <h6><span class="span_details" id="span_client"></span></h6>
+                                </center>
                                 <table class="table table-bordered" id="dt_entries" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
@@ -96,21 +95,91 @@
 
     function getReport() {
         var client_id = $("#client_id").val();
-        var param = "client_id= '" + client_id + "' AND status='R'";
-
-        $("#soa_report").html("<center><h3><span class='fa fa-spinner fa-spin'></span> Loading ...</h3></center>");
-
-        $.ajax({
-            type: "POST",
-            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=report",
-            data: {
-                input: {
-                    param: param
-                }
+        var param = "client_id= '"+client_id+"' ";
+        $("#dt_entries").DataTable().destroy();
+        $("#dt_entries").DataTable({
+            "processing": true,
+            "searching": false,
+            "paging": false,
+            "ordering": false,
+            "info": false,
+            "ajax": {
+                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=statement_of_accounts",
+                "dataSrc": "data",
+                "method": "POST",
+                "data": {
+                    input: {
+                        param: param
+                    }
+                },
             },
-            success: function(data) {
-                $("#soa_report").html(data);
-            }
+            "footerCallback": function(row, data, start, end, display) {
+                var api = this.api();
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function(i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+
+
+                payment_total = api
+                    .column(1, {
+                        page: 'current'
+                    })
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                // Update footer
+                $(api.column(1).footer()).html(
+                    "&#x20B1; " + payment_total.toLocaleString('en-US', {
+                        minimumFractionDigits: 2
+                    })
+                );
+
+                interest_total = api
+                    .column(2, {
+                        page: 'current'
+                    })
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                // Update footer
+                $(api.column(2).footer()).html(
+                    "&#x20B1; " + interest_total.toLocaleString('en-US', {
+                        minimumFractionDigits: 2
+                    })
+                );
+
+
+            },
+            "columns": [{
+                    "data": "date"
+                },
+                {
+                    "data": "payment", className: "text-right"
+                },
+                {
+                    "data": "interest", className: "text-right"
+                },
+                {
+                    "data": "penalty", className: "text-right"
+                },
+                {
+                    "data": "applicable_principal", className: "text-right"
+                },
+                {
+                    "data": "applicable_principal", className: "text-right"
+                }
+
+            ]
+
         });
 
         getClient();

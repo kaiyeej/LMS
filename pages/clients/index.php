@@ -81,7 +81,6 @@
     </div>
 </section>
 <?php include "modal_clients.php"; ?>
-<?php include "modal_preview.php"; ?>
 <script type="text/javascript">
     function addClient() {
         modal_detail_status = 0;
@@ -112,7 +111,7 @@
                 {
                     "mRender": function(data, type, row) {
                         var update_client = "window.location='u'";
-                        return "<center><button class='btn btn-sm btn-info' onclick='window.location=\"client-update?c=" + row.client_id + "\" '><span class='fa fa-edit'></span></button><button class='btn btn-sm btn-warning' onclick='getPreview(" + row.client_id + ")'><span class='fa fa-file-alt'></span></button></center>";
+                        return "<center><button class='btn btn-sm btn-info' onclick='window.location=\"client-update?c=" + row.client_id + "\" '><span class='fa fa-edit'></span></button></center>";
                     }
                 },
                 {
