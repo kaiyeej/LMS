@@ -1,3 +1,4 @@
+
 <form method='POST' id='frm_submit'>
     <div class="modal fade" id="modalEntry" role="dialog" aria-labelledby="myModalLabel" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -9,28 +10,48 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="hidden_id" name="input[journal_entry_id]">
+                    <input type="hidden" id="hidden_id" name="input[voucher_id]">
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label>Journal</label>
-                            <select class="form-control select2 input-item" id="journal_id" name="input[journal_id]" style="width:100%;" onchange="generateRef()" required>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>General Reference</label>
+                            <label>Reference #</label>
                             <input type="text" class="form-control input-item" autocomplete="off" name="input[reference_number]" id="reference_number" readonly required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label>Cross Reference</label>
-                            <input type="text" class="form-control input-item" autocomplete="off" name="input[cross_reference]" id="cross_reference" required>
+                            <label>Voucher #</label>
+                            <input type="text" class="form-control input-item" autocomplete="off" name="input[voucher_no]" id="voucher_no" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Account Type</label>
+                            <select class="form-control select2 input-item" id="account_type" name="input[account_type]" style="width:100%;" onchange="getAccount()" required>
+                                <option value="">&mdash;Please Select&mdash;</option>
+                                <option value="S">Supplier</option>
+                                <option value="C">Client</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Account</label>
+                            <select class="form-control select2 input-item" id="account_id" name="input[account_id]" style="width:100%;" required>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Check #</label>
+                            <input type="text" class="form-control input-item" autocomplete="off" name="input[check_number]" id="check_number" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>A/C #</label>
+                            <input type="text" class="form-control input-item" autocomplete="off" name="input[ac_no]" id="ac_no" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Amount</label>
+                            <input type="number" step="0.01" min="0" class="form-control input-item" autocomplete="off" name="input[amount]" id="amount" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Date</label>
-                            <input type="date" class="form-control input-item" autocomplete="off" name="input[journal_date]" id="journal_date" required>
+                            <input type="date" class="form-control input-item" autocomplete="off" name="input[voucher_date]" id="voucher_date" required>
                         </div>
                         <div class="form-group col-md-12">
-                            <label>Remarks</label>
-                            <textarea class="form-control input-item" name="input[remarks]" id="remarks"></textarea>
+                            <label>Description</label>
+                            <textarea class="form-control input-item" name="input[description]" id="description"></textarea>
                         </div>
                     </div>
                 </div>
@@ -53,12 +74,15 @@
                 <div class="container">
                     <div class="row alert alert-light alert-has-icon" style="padding-left: 0px;padding-right:0px;font-size: small;border: 1px dashed #17a2b8;">
                         <div class="col-3">
-                            <div><b>General Reference:</b> <span id="reference_number_label" class="label-item"></span></div>
-                            <div><b>Cross Reference:</b> <span id="cross_reference_label" class="label-item"></span></div>
-                            <div><b>Date:</b> <span id="journal_date_label" class="label-item"></span></div>
+                            <div><b>Reference #:</b> <span id="reference_number_label" class="label-item"></span></div>
+                            <div><b>Voucher #:</b> <span id="voucher_no_label" class="label-item"></span></div>
+                            <div><b>Check #:</b> <span id="check_number_label" class="label-item"></span></div>
+                            <div><b>A/C #:</b> <span id="ac_no_label" class="label-item"></span></div>
                         </div>
                         <div class="col-3">
-                            <div><b>Remarks:</b> <span id="remarks_label" class="label-item"></span></div>
+                            <div><b>Account:</b> <span id="account_label" class="label-item"></span></div>
+                            <div><b>Remarks:</b> <span id="description_label" class="label-item"></span></div>
+                            <div><b>Date:</b> <span id="voucher_date_label" class="label-item"></span></div>
                             <div><b>Encoded By:</b> <span id="encoded_by_label" class="label-item"></span></div>
                         </div>
                         <div class="col-6">
@@ -87,7 +111,7 @@
                         <div class="row">
                             <div class="col-4" id="col-item">
                                 <form method='POST' id='frm_submit_2'>
-                                    <input type="hidden" id="hidden_id_2" name="input[journal_entry_id]">
+                                    <input type="hidden" id="hidden_id_2" name="input[voucher_id]">
 
                                     <div class="form-group row">
                                         <div class="col">

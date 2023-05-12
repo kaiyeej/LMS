@@ -259,6 +259,7 @@ class Clients extends Connection
         $result = $this->select($this->table, '*', $param);
         while ($row = $result->fetch_assoc()) {
             $row['client_fullname'] = $row['client_fname'] . " " . $row['client_mname'] . " " . $row['client_lname'] . " " . $row['client_name_extension'];
+            $row['account_id'] = $row['client_id'];
             $rows[] = $row;
         }
         return $rows;

@@ -17,4 +17,6 @@ $classes = array(
     'LoanReport'            => $pre_class . 'loanreport.php',
     'StatementOfAccounts'   => $pre_class . 'statementofaccounts.php',
     'JournalEntry'          => $pre_class . 'journalentry.php',
+    'Suppliers'             => $pre_class . 'suppliers.php',
+    'Vouchers'              => $pre_class . 'vouchers.php',
 );

@@ -2,8 +2,8 @@
     <div class="section-header">
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="#">Accounting</a></div>
-            <div class="breadcrumb-item">Journal Entry</div>
+            <div class="breadcrumb-item"><a href="#">Transactions</a></div>
+            <div class="breadcrumb-item">Vouchers</div>
         </div>
     </div>
 
@@ -11,8 +11,8 @@
         <div class="alert alert-light alert-has-icon" style="border: 1px dashed #3C84AB;">
             <div class="alert-icon"><i class="far fa-lightbulb"></i></div>
             <div class="alert-body">
-                <div class="alert-title">Journal Entry</div>
-                Manage journal entry here.
+                <div class="alert-title">Vouchers</div>
+                Manage vouchers here.
             </div>
             <div>
                 <a href="#" class="btn btn-icon icon-left btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</a>
@@ -35,9 +35,9 @@
                                             </div>
                                         </th>
                                         <th></th>
-                                        <th>General Reference</th>
-                                        <th>Cross Reference</th>
-                                        <th>Journal</th>
+                                        <th>Reference #</th>
+                                        <th>Account</th>
+                                        <th>Voucher #</th>
                                         <th>Amount</th>
                                         <th>Encoded By</th>
                                         <th>Date Added</th>
@@ -52,8 +52,19 @@
         </div>
     </div>
 </section>
-<?php include "modal_journal_entry.php"; ?>
+<?php include "modal_vouchers.php"; ?>
 <script type="text/javascript">
+    function getAccount(){
+        var account_type = $("#account_type").val();
+
+        if(account_type == "S"){
+            getSelectOption('Suppliers', 'account_id', 'supplier_name');
+        }else{
+            getSelectOption('Clients', 'account_id', 'client_fullname');
+        }
+    }
+
+
     function getEntries() {
         $("#dt_entries").DataTable().destroy();
         $("#dt_entries").DataTable({
@@ -64,22 +75,22 @@
             },
             "columns": [{
                     "mRender": function(data, type, row) {
-                        return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.journal_entry_id + '" value=' + row.journal_entry_id + '><label for="checkbox-b' + row.journal_entry_id + '" class="custom-control-label">&nbsp;</label></div>';
+                        return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.voucher_id + '" value=' + row.voucher_id + '><label for="checkbox-b' + row.voucher_id + '" class="custom-control-label">&nbsp;</label></div>';
                     }
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails2(" + row.journal_entry_id + ")'><span class='fa fa-edit'></span></button></center>";
+                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails2(" + row.voucher_id + ")'><span class='fa fa-edit'></span></button></center>";
                     }
                 },
                 {
                     "data": "reference_number"
                 },
                 {
-                    "data": "cross_reference"
+                    "data": "account"
                 },
                 {
-                    "data": "journal"
+                    "data": "voucher_no"
                 },
                 {
                     "data": "amount",
@@ -100,7 +111,7 @@
 
     function getEntries2() {
         var hidden_id_2 = $("#hidden_id_2").val();
-        var param = "journal_entry_id = '" + hidden_id_2 + "'";
+        var param = "voucher_id = '" + hidden_id_2 + "'";
         $("#dt_entries_2").DataTable().destroy();
         $("#dt_entries_2").DataTable({
             "processing": true,

@@ -1,9 +1,9 @@
 <?php
 
-class JournalEntry extends Connection
+class Vouchers extends Connection
 {
-    private $table = 'tbl_journal_entries';
-    public $pk = 'journal_entry_id';
+    private $table = 'tbl_vouchers';
+    public $pk = 'voucher_id';
     public $name = 'reference_number';
 
     private $table_detail = 'tbl_journal_entry_details';
@@ -14,10 +14,14 @@ class JournalEntry extends Connection
     {
         $form = array(
             $this->name         => $this->clean($this->inputs[$this->name]),
-            'cross_reference'   => $this->inputs['cross_reference'],
-            'journal_id'        => $this->inputs['journal_id'],
-            'remarks'           => $this->inputs['remarks'],
-            'journal_date'      => $this->inputs['journal_date'],
+            'account_type'      => $this->inputs['account_type'],
+            'account_id'        => $this->inputs['account_id'],
+            'voucher_no'        => $this->inputs['voucher_no'],
+            'description'       => $this->inputs['description'],
+            'check_number'      => $this->inputs['check_number'],
+            'ac_no'             => $this->inputs['ac_no'],
+            'amount'            => $this->inputs['amount'],
+            'voucher_date'      => $this->inputs['voucher_date'],
             'user_id'           => $_SESSION['lms_user_id']
         );
         return $this->insertIfNotExist($this->table, $form, '', 'Y');
@@ -26,10 +30,15 @@ class JournalEntry extends Connection
     public function edit()
     {
         $form = array(
-            'cross_reference'   => $this->inputs['cross_reference'],
-            'journal_id'        => $this->inputs['journal_id'],
-            'remarks'           => $this->inputs['remarks'],
-            'journal_date'      => $this->inputs['journal_date'],
+            $this->name         => $this->clean($this->inputs[$this->name]),
+            'account_type'      => $this->inputs['account_type'],
+            'account_id'        => $this->inputs['account_id'],
+            'voucher_no'        => $this->inputs['voucher_no'],
+            'description'       => $this->inputs['description'],
+            'check_number'      => $this->inputs['check_number'],
+            'ac_no'             => $this->inputs['ac_no'],
+            'amount'            => $this->inputs['amount'],
+            'voucher_date'      => $this->inputs['voucher_date'],
             'user_id'           => $_SESSION['lms_user_id']
         );
         return $this->updateIfNotExist($this->table, $form);
@@ -39,14 +48,16 @@ class JournalEntry extends Connection
     {
         $Users = new Users;
         $Journals = new Journals;
+        $Suppliers = new Suppliers;
+        $Clients = new Clients;
         $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
         $rows = array();
         $result = $this->select($this->table, '*', $param);
         while ($row = $result->fetch_assoc()) {
-            $details = $this->total_details($row['journal_entry_id']);
+            // $details = $this->total_details($row['journal_entry_id']);
+            $row['account'] = $row['account_type'] == "S"? $Suppliers->name($row['account_id']) : $Clients->name($row['account_id']);
             $row['encoded_by'] = $Users->fullname($row['user_id']);
-            $row['journal'] = $Journals->name($row['journal_id']);
-            $row['amount'] = $details[2] == 0 ? number_format($details[0],2) : "<strong style='color:#F44336;'>".number_format($details[0],2)."</strong>";
+            $row['amount'] = 0;
             $rows[] = $row;
         }
         return $rows;
@@ -65,10 +76,13 @@ class JournalEntry extends Connection
     {
         $primary_id = $this->inputs['id'];
         $Users = new Users;
+        $Suppliers = new Suppliers;
+        $Clients = new Clients;
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $row['encoded_by'] = $Users->fullname($row['user_id']);
+            $row['account'] = $row['account_type'] == "S"? $Suppliers->name($row['account_id']) : $Clients->name($row['account_id']);
             return $row;
         } else {
             return null;
@@ -177,6 +191,6 @@ class JournalEntry extends Connection
 
     public function generate()
     {
-        return 'JE-' . date('YmdHis');
+        return 'CV-' . date('YmdHis');
     }
 }

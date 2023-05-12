@@ -9,6 +9,10 @@ $routes = array(
         'class_name' => 'Homepage',
         'has_detail' => 0
     ),
+    "suppliers" => array(
+        'class_name' => 'Suppliers',
+        'has_detail' => 0
+    ),
     "clients" => array(
         'class_name' => 'Clients',
         'has_detail' => 0
@@ -36,6 +40,10 @@ $routes = array(
     "collections" => array(
         'class_name' => 'Collections',
         'has_detail' => 0
+    ),
+    "vouchers" => array(
+        'class_name' => 'Vouchers',
+        'has_detail' => 1
     ),
     //ACCOUNTING
     "journals" => array(
