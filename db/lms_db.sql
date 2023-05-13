@@ -245,18 +245,42 @@ CREATE TABLE IF NOT EXISTS `tbl_journal_entries` (
   `remarks` varchar(250) DEFAULT NULL,
   `journal_date` date DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
+  `status` varchar(1) DEFAULT 'S',
   `date_added` datetime DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_manual` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`journal_entry_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_journal_entries: ~3 rows (approximately)
+-- Dumping data for table lms_db.tbl_journal_entries: ~26 rows (approximately)
 /*!40000 ALTER TABLE `tbl_journal_entries` DISABLE KEYS */;
-INSERT INTO `tbl_journal_entries` (`journal_entry_id`, `reference_number`, `cross_reference`, `journal_id`, `remarks`, `journal_date`, `user_id`, `date_added`, `date_last_modified`, `is_manual`) VALUES
-	(4, 'JE-20230511161008', 'u', 3, '', '2023-05-11', 1, '2023-05-11 22:10:17', '2023-05-11 22:10:17', NULL),
-	(5, 'BB-20230512021826', '3', 3, '', '2023-05-12', 1, '2023-05-12 08:18:32', '2023-05-12 08:18:32', NULL),
-	(6, 'CRJ-20230512072905', '234', 4, '', '2023-05-12', 1, '2023-05-12 13:29:29', '2023-05-12 13:29:29', NULL);
+INSERT INTO `tbl_journal_entries` (`journal_entry_id`, `reference_number`, `cross_reference`, `journal_id`, `remarks`, `journal_date`, `user_id`, `status`, `date_added`, `date_last_modified`, `is_manual`) VALUES
+	(4, 'JE-20230511161008', 'u', 3, '', '2023-05-11', 1, 'F', '2023-05-11 22:10:17', '2023-05-13 16:09:17', NULL),
+	(5, 'BB-20230512021826', '3', 3, '', '2023-05-12', 1, NULL, '2023-05-12 08:18:32', '2023-05-12 08:18:32', NULL),
+	(6, 'CRJ-20230512072905', '234', 4, '', '2023-05-12', 1, NULL, '2023-05-12 13:29:29', '2023-05-12 13:29:29', NULL),
+	(7, 'CDJ20230513051824', 'CV-20230513051816', 7, '', '2023-05-13', 1, NULL, '2023-05-13 11:18:24', '2023-05-13 11:18:24', NULL),
+	(8, 'BBJ20230513051851', 'CV-20230513051840', 3, '2', '2023-05-13', 1, NULL, '2023-05-13 11:18:51', '2023-05-13 11:18:51', NULL),
+	(9, 'CDJ20230513052028', 'CV-20230513052010', 7, '2', '2023-05-13', 1, NULL, '2023-05-13 11:20:28', '2023-05-13 11:20:28', NULL),
+	(10, 'CDJ20230513054701', 'CV-20230513054650', 7, '2', '2023-05-13', 1, NULL, '2023-05-13 11:47:01', '2023-05-13 11:47:01', NULL),
+	(11, 'BBJ20230513073554', 'CV-20230513073542', 3, '3', '2023-05-13', 1, NULL, '2023-05-13 13:35:54', '2023-05-13 13:35:54', NULL),
+	(12, 'BBJ-20230513073710', '2', 3, '', '2023-05-13', 1, NULL, '2023-05-13 13:37:14', '2023-05-13 13:37:14', 'Y'),
+	(13, 'BBJ20230513073755', 'CV-20230513073625', 3, '2', '2023-05-13', 1, NULL, '2023-05-13 13:37:55', '2023-05-13 13:37:55', NULL),
+	(14, 'BBJ20230513073939', 'CV-20230513073625', 3, '2', '2023-05-13', 1, NULL, '2023-05-13 13:39:39', '2023-05-13 13:39:39', NULL),
+	(15, 'CDJ20230513074137', 'CV-20230513074119', 7, '3', '2023-05-13', 1, NULL, '2023-05-13 13:41:37', '2023-05-13 13:41:37', NULL),
+	(16, 'DJ20230513075712', 'CV-20230513075632', 6, '3', '2023-05-13', 1, NULL, '2023-05-13 13:57:12', '2023-05-13 13:57:12', NULL),
+	(17, 'BBJ20230513075727', 'CV-20230513075716', 3, '3', '2023-05-13', 1, NULL, '2023-05-13 13:57:27', '2023-05-13 13:57:27', NULL),
+	(18, 'CDJ-20230513075830', 'CV-20230513075822', 7, '3', '2023-05-13', 1, NULL, '2023-05-13 13:58:30', '2023-05-13 13:58:30', NULL),
+	(19, 'CDJ-20230513080043', 'CV-20230513080033', 7, '2', '2023-05-13', 1, NULL, '2023-05-13 14:00:43', '2023-05-13 14:00:43', NULL),
+	(20, 'CDJ-20230513080722', 'CV-20230513080712', 7, '21', '2023-05-13', 1, NULL, '2023-05-13 14:07:22', '2023-05-13 14:07:22', NULL),
+	(21, 'CDJ-20230513080945', 'CV-20230513080934', 7, '3', '2023-05-13', 1, NULL, '2023-05-13 14:09:45', '2023-05-13 14:09:45', NULL),
+	(22, 'BBJ-20230513094214', 'CV-20230513094205', 3, '2', '2023-05-13', 1, NULL, '2023-05-13 15:42:14', '2023-05-13 15:42:14', NULL),
+	(23, 'CRJ-20230513094427', 'CV-20230513094418', 4, '3', '2023-05-13', 1, NULL, '2023-05-13 15:44:27', '2023-05-13 15:44:27', NULL),
+	(24, 'DJ-20230513095426', 'CV-20230513095415', 6, '3', '2023-05-13', 1, '0', '2023-05-13 15:54:26', '2023-05-13 15:56:34', NULL),
+	(25, 'DJ-20230513095702', 'CV-20230513095652', 6, '3', '2023-05-13', 1, 'F', '2023-05-13 15:57:02', '2023-05-13 16:00:29', NULL),
+	(26, 'CDJ-20230513095908', 'CV-20230513095858', 7, '3', '2023-05-13', 1, '', '2023-05-13 15:59:08', '2023-05-13 16:00:24', NULL),
+	(27, 'CDJ-20230513100115', 'CV-20230513100105', 7, '3', '2023-05-13', 1, 'F', '2023-05-13 16:01:15', '2023-05-13 16:01:29', NULL),
+	(28, 'CDJ-20230513100254', 'CV-20230513100242', 7, '34', '2023-05-13', 1, 'F', '2023-05-13 16:02:54', '2023-05-13 16:03:09', NULL),
+	(29, 'CDJ-20230513100729', 'CV-20230513100719', 7, '3', '2023-05-13', 1, 'F', '2023-05-13 16:07:29', '2023-05-13 16:07:44', NULL);
 /*!40000 ALTER TABLE `tbl_journal_entries` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_journal_entry_details
@@ -268,15 +292,33 @@ CREATE TABLE IF NOT EXISTS `tbl_journal_entry_details` (
   `debit` decimal(12,3) NOT NULL DEFAULT '0.000',
   `credit` decimal(12,3) NOT NULL DEFAULT '0.000',
   PRIMARY KEY (`journal_entry_detail_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_journal_entry_details: ~4 rows (approximately)
+-- Dumping data for table lms_db.tbl_journal_entry_details: ~22 rows (approximately)
 /*!40000 ALTER TABLE `tbl_journal_entry_details` DISABLE KEYS */;
 INSERT INTO `tbl_journal_entry_details` (`journal_entry_detail_id`, `journal_entry_id`, `chart_id`, `description`, `debit`, `credit`) VALUES
 	(10, 6, 1, '', 3.000, 0.000),
 	(15, 4, 1, '', 2.000, 0.000),
 	(16, 4, 4, '', 0.000, 2.000),
-	(17, 4, 4, '', 2.000, 0.000);
+	(17, 4, 4, '', 2.000, 0.000),
+	(18, 16, 1, '2', 2.000, 0.000),
+	(19, 16, 4, '2', 2.000, 0.000),
+	(20, 16, 5, '2', 2.000, 0.000),
+	(21, 21, 1, '', 3.000, 0.000),
+	(22, 22, 5, '2', 2.000, 0.000),
+	(23, 22, 1, '', 0.000, 2.000),
+	(24, 23, 1, '3', 3.000, 0.000),
+	(25, 23, 4, '', 0.000, 3.000),
+	(26, 24, 5, '', 500.000, 0.000),
+	(27, 24, 2, '', 0.000, 500.000),
+	(28, 25, 2, '', 3.000, 0.000),
+	(29, 25, 5, '', 3.000, 0.000),
+	(30, 26, 1, '', 3.000, 0.000),
+	(31, 27, 1, '', 3.000, 0.000),
+	(32, 27, 5, '', 0.000, 34.000),
+	(33, 28, 1, '', 0.000, 3.000),
+	(34, 28, 5, '', 3.000, 0.000),
+	(35, 29, 1, '', 4.000, 0.000);
 /*!40000 ALTER TABLE `tbl_journal_entry_details` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_loans
@@ -402,17 +444,17 @@ CREATE TABLE IF NOT EXISTS `tbl_vouchers` (
   `voucher_date` date NOT NULL,
   `status` varchar(1) NOT NULL DEFAULT 'S',
   `user_id` int(11) NOT NULL DEFAULT '0',
+  `journal_id` int(11) NOT NULL,
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`voucher_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_vouchers: ~3 rows (approximately)
+-- Dumping data for table lms_db.tbl_vouchers: ~2 rows (approximately)
 /*!40000 ALTER TABLE `tbl_vouchers` DISABLE KEYS */;
-INSERT INTO `tbl_vouchers` (`voucher_id`, `reference_number`, `account_type`, `account_id`, `voucher_no`, `description`, `check_number`, `ac_no`, `amount`, `voucher_date`, `status`, `user_id`, `date_added`, `date_last_modified`) VALUES
-	(1, 'CV-20230512090644', 'S', 2, '', '', '', '2', 3222.000, '2023-05-12', 'S', 1, '2023-05-12 15:06:56', '2023-05-12 15:06:56'),
-	(2, 'CV-20230512091431', 'S', 2, '2', '', '', '2', 2.000, '2023-05-12', 'S', 1, '2023-05-12 15:14:40', '2023-05-12 15:14:40'),
-	(3, 'CV-20230512091528', 'C', 46, '2', '', '2', '2', 2.000, '2023-05-12', 'S', 1, '2023-05-12 15:15:39', '2023-05-12 15:15:39');
+INSERT INTO `tbl_vouchers` (`voucher_id`, `reference_number`, `account_type`, `account_id`, `voucher_no`, `description`, `check_number`, `ac_no`, `amount`, `voucher_date`, `status`, `user_id`, `journal_id`, `date_added`, `date_last_modified`) VALUES
+	(23, 'CV-20230513100242', 'C', 45, '4234', '34', '342', '234', 234.000, '2023-05-13', 'F', 1, 7, '2023-05-13 16:02:54', '2023-05-13 16:03:09'),
+	(24, 'CV-20230513100719', 'S', 2, '324', '3', '342', '234', 34.000, '2023-05-13', 'F', 1, 7, '2023-05-13 16:07:29', '2023-05-13 16:07:44');
 /*!40000 ALTER TABLE `tbl_vouchers` ENABLE KEYS */;
 
 -- Dumping structure for trigger lms_db.delete_client
@@ -422,6 +464,20 @@ CREATE TRIGGER `delete_client` AFTER DELETE ON `tbl_clients` FOR EACH ROW BEGIN
 DELETE FROM tbl_children WHERE client_id = OLD.client_id;
 DELETE FROM tbl_children WHERE client_id = OLD.client_id;
 END//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
+
+-- Dumping structure for trigger lms_db.delete_voucher
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+DELIMITER //
+CREATE TRIGGER `delete_voucher` AFTER DELETE ON `tbl_vouchers` FOR EACH ROW DELETE FROM tbl_journal_entries WHERE cross_reference = OLD.reference_number AND is_manual !='Y'//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
+
+-- Dumping structure for trigger lms_db.finish_voucher
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+DELIMITER //
+CREATE TRIGGER `finish_voucher` AFTER UPDATE ON `tbl_vouchers` FOR EACH ROW UPDATE tbl_journal_entries SET status = IF (NEW.status = 'F', 'F', 'S') WHERE cross_reference = NEW.reference_number//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
