@@ -18,7 +18,8 @@ class JournalEntry extends Connection
             'journal_id'        => $this->inputs['journal_id'],
             'remarks'           => $this->inputs['remarks'],
             'journal_date'      => $this->inputs['journal_date'],
-            'user_id'           => $_SESSION['lms_user_id']
+            'user_id'           => $_SESSION['lms_user_id'],
+            'is_manual'         => 'Y'
         );
         return $this->insertIfNotExist($this->table, $form, '', 'Y');
     }

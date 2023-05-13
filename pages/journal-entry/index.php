@@ -39,6 +39,7 @@
                                         <th>Cross Reference</th>
                                         <th>Journal</th>
                                         <th>Amount</th>
+                                        <th>Status</th>
                                         <th>Encoded By</th>
                                         <th>Date Added</th>
                                         <th>Date Modified</th>
@@ -84,6 +85,11 @@
                 {
                     "data": "amount",
                     className: "text-right"
+                },
+                {
+                    "mRender": function(data, type, row) {
+                        return row.status == "F" ?  '<a href="#" class="badge badge-primary">Posted</a>' : row.status == "C" ? '<a href="#" class="badge badge-danger">Canceled</a>' : '<a href="#" class="badge badge-light">Saved</a>';
+                    }
                 },
                 {
                     "data": "encoded_by"

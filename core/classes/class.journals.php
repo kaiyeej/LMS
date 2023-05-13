@@ -59,4 +59,11 @@ class Journals extends Connection
         $row = $result->fetch_assoc();
         return $row['journal_name'];
     }
+
+    public function journal_code($primary_id)
+    {
+        $result = $this->select($this->table, 'journal_code', "$this->pk = '$primary_id'");
+        $row = $result->fetch_assoc();
+        return $row['journal_code'];
+    }
 }

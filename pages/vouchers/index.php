@@ -39,6 +39,7 @@
                                         <th>Account</th>
                                         <th>Voucher #</th>
                                         <th>Amount</th>
+                                        <th>Status</th>
                                         <th>Encoded By</th>
                                         <th>Date Added</th>
                                         <th>Date Modified</th>
@@ -54,12 +55,12 @@
 </section>
 <?php include "modal_vouchers.php"; ?>
 <script type="text/javascript">
-    function getAccount(){
+    function getAccount() {
         var account_type = $("#account_type").val();
 
-        if(account_type == "S"){
+        if (account_type == "S") {
             getSelectOption('Suppliers', 'account_id', 'supplier_name');
-        }else{
+        } else {
             getSelectOption('Clients', 'account_id', 'client_fullname');
         }
     }
@@ -97,6 +98,11 @@
                     className: "text-right"
                 },
                 {
+                    "mRender": function(data, type, row) {
+                        return row.status == "F" ?  '<a href="#" class="badge badge-primary">Finished</a>' : row.status == "C" ? '<a href="#" class="badge badge-danger">Canceled</a>' : '<a href="#" class="badge badge-light">Saved</a>';
+                    }
+                },
+                {
                     "data": "encoded_by"
                 },
                 {
@@ -109,9 +115,26 @@
         });
     }
 
+    function journalID(id) {
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=journal_id",
+            data: {
+                input: {
+                    id: id
+                }
+            },
+            success: function(data) {
+                var jsonParse = JSON.parse(data);
+                const json = jsonParse.data;
+                $("#journal_entry_id").val(json);
+            }
+        });
+    }
+
     function getEntries2() {
-        var hidden_id_2 = $("#hidden_id_2").val();
-        var param = "voucher_id = '" + hidden_id_2 + "'";
+        var journal_entry_id = $("#journal_entry_id").val();
+        var param = "journal_entry_id = '" + journal_entry_id + "'";
         $("#dt_entries_2").DataTable().destroy();
         $("#dt_entries_2").DataTable({
             "processing": true,
@@ -148,7 +171,7 @@
                         return intVal(a) + intVal(b);
                     }, 0);
 
-                
+
                 creditTotal = api
                     .column(4, {
                         page: 'current'
@@ -158,7 +181,7 @@
                         return intVal(a) + intVal(b);
                     }, 0);
 
-                
+
 
                 // Update footer
                 $(api.column(3).footer()).html(
@@ -203,7 +226,7 @@
         var optionSelected = $("#journal_id").find('option:selected').attr('journal_code');
         var newStr = refnum.split("-");
 
-        $("#reference_number").val(optionSelected+"-"+newStr[1]);
+        $("#reference_number").val(optionSelected + "-" + newStr[1]);
     }
 
     $(document).ready(function() {

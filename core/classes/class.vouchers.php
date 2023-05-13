@@ -12,6 +12,11 @@ class Vouchers extends Connection
 
     public function add()
     {
+        
+        $Journals = new Journals;
+        $code = $Journals->journal_code($this->inputs['journal_id']);
+        $ref_code = $code."-". date('YmdHis');
+        
         $form = array(
             $this->name         => $this->clean($this->inputs[$this->name]),
             'account_type'      => $this->inputs['account_type'],
@@ -22,9 +27,24 @@ class Vouchers extends Connection
             'ac_no'             => $this->inputs['ac_no'],
             'amount'            => $this->inputs['amount'],
             'voucher_date'      => $this->inputs['voucher_date'],
+            'journal_id'        => $this->inputs['journal_id'],
             'user_id'           => $_SESSION['lms_user_id']
         );
+
+        
+
+        $form_journal = array(
+            'reference_number'  => $ref_code,
+            'cross_reference'   => $this->clean($this->inputs[$this->name]),
+            'journal_id'        => $this->inputs['journal_id'],
+            'remarks'           => $this->inputs['description'],
+            'journal_date'      => $this->inputs['voucher_date'],
+            'user_id'           => $_SESSION['lms_user_id']
+        );
+        
+        $this->insert("tbl_journal_entries", $form_journal);
         return $this->insertIfNotExist($this->table, $form, '', 'Y');
+
     }
 
     public function edit()
@@ -126,6 +146,15 @@ class Vouchers extends Connection
         return $row[$this->name];
     }
 
+    public function journal_id($id = null)
+    {
+        $primary_id = $id == null ? $this->inputs['id'] : $id;
+        $cross_reference = $this->name($primary_id);
+        $result = $this->select('tbl_journal_entries', 'journal_entry_id', "cross_reference = '$cross_reference'");
+        $row = $result->fetch_assoc();
+        return $row['journal_entry_id'];
+    }
+
     public function dataRow($primary_id, $field)
     {
         $result = $this->select($this->table, $field, "$this->pk = '$primary_id'");
@@ -159,11 +188,11 @@ class Vouchers extends Connection
         }
         
         $form = array(
-            $this->pk       => $this->inputs[$this->pk],
-            $this->fk_det   => $this->inputs[$this->fk_det],
-            'debit'         => $debit,
-            'credit'        => $credit,
-            'description'   => $this->inputs['description'],
+            'journal_entry_id'      => $this->inputs['journal_entry_id'],
+            $this->fk_det           => $this->inputs[$this->fk_det],
+            'debit'                 => $debit,
+            'credit'                => $credit,
+            'description'           => $this->inputs['description'],
         );
         return $this->insert($this->table_detail, $form);
     }

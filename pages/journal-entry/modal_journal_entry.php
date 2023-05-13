@@ -66,7 +66,7 @@
                                 <li class="nav-item">
                                     <a id="menu-edit-transaction" class="nav-link" href="#" style="font-size: small;"><i class='ti ti-pencil'></i> Edit Journal Entry</a>
                                 </li>
-                                <li class="nav-item" style="display:none;">
+                                <li class="nav-item">
                                     <a id="menu-finish-transaction" class="nav-link" href="#" style="font-size: small;"><i class='ti ti-check'></i> Finish Transaction</a>
                                 </li>
                                 <li class="nav-item">

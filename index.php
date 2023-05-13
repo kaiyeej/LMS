@@ -194,8 +194,6 @@ if (!isset($_SESSION['lms_user_id'])) {
       //     });
       //   });
       // });
-
-
     });
 
     function print_report(container) {
@@ -295,6 +293,11 @@ if (!isset($_SESSION['lms_user_id'])) {
       if (typeof(element) != 'undefined' && element != null) {
         generateReference(route_settings.class_name);
       }
+
+      if (route_settings.class_name == "Vouchers") {
+        $("#journal_id").val(7).trigger('change');
+      }
+
 
       $("#modalLabel").html("<i class='fa fa-edit'></i> Add Entry");
       $("#modalEntry").modal('show');
@@ -498,6 +501,10 @@ if (!isset($_SESSION['lms_user_id'])) {
           var transaction_finish = document.getElementById("menu-finish-transaction");
           var col_list = document.getElementById("col-list");
           var col_item = document.getElementById("col-item");
+
+          if(route_settings.class_name == "Vouchers"){
+            journalID(id);
+          }
 
           if (json.status == 'F') {
             transaction_edit.classList.add('disabled');

@@ -5,7 +5,7 @@
     }
 </style>
 <form metdod='POST'>
-    <div class="modal fade" id="modalPreview" role="dialog" aria-labelledby="myModalLabel" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="modalPreview" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
