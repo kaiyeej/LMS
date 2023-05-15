@@ -12,11 +12,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
--- Dumping database structure for lms_db
-CREATE DATABASE IF NOT EXISTS `lms_db` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `lms_db`;
-
 -- Dumping structure for table lms_db.tbl_chart_of_accounts
 CREATE TABLE IF NOT EXISTS `tbl_chart_of_accounts` (
   `chart_id` int(11) NOT NULL AUTO_INCREMENT,

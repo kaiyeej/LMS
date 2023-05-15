@@ -19,4 +19,7 @@ $classes = array(
     'JournalEntry'          => $pre_class . 'journalentry.php',
     'Suppliers'             => $pre_class . 'suppliers.php',
     'Vouchers'              => $pre_class . 'vouchers.php',
+    'Settings'              => $pre_class . 'settings.php',
+    'Menus'                 => $pre_class . 'menus.php',
+    'UserPrivileges'        => $pre_class . 'userprivileges.php',
 );

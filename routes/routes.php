@@ -1,4 +1,4 @@
-<?php
+<!-- 
 
 $request = $_SERVER['REQUEST_URI'];
 
@@ -80,8 +80,11 @@ $routes = array(
         'has_detail' => 0
     ),
 );
-/** END SET ROUTES */
+/** END SET ROUTES */ -->
 
+<?php
+
+$request = $_SERVER['REQUEST_URI'];
 
 $base_folder = "pages/";
 $page = str_replace("/lms/", "", $request);
@@ -100,10 +103,8 @@ if (substr_count($page, "?") > 0) {
     $dir = $base_folder . $page . '/index.php';
 }
 
-if (array_key_exists($page, $routes)) {
-    require_once $dir;
-    $route_settings = json_encode($routes[$page]);
-} else {
-    require_once '404.php';
-    $route_settings = json_encode([]);
-}
+$Menus = new Menus();
+$Menus->routes($page, $dir);
+
+require_once $Menus->dir;
+$route_settings = json_encode($Menus->route_settings);

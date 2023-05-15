@@ -31,7 +31,6 @@ class Vouchers extends Connection
             'user_id'           => $_SESSION['lms_user_id']
         );
 
-        
 
         $form_journal = array(
             'reference_number'  => $ref_code,
@@ -39,7 +38,8 @@ class Vouchers extends Connection
             'journal_id'        => $this->inputs['journal_id'],
             'remarks'           => $this->inputs['description'],
             'journal_date'      => $this->inputs['voucher_date'],
-            'user_id'           => $_SESSION['lms_user_id']
+            'user_id'           => $_SESSION['lms_user_id'],
+            'is_manual'         => 'N'
         );
         
         $this->insert("tbl_journal_entries", $form_journal);

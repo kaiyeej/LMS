@@ -35,6 +35,7 @@
                                             </div>
                                         </th>
                                         <th></th>
+                                        <th></th>
                                         <th>Name</th>
                                         <th>Category</th>
                                         <th>Username</th>
@@ -50,13 +51,97 @@
         </div>
     </div>
 </section>
-<?php include "modal_users.php"; ?>
+<?php require_once "modal_users.php"; ?>
+<?php require_once 'modal_privileges.php'; ?>
 <script type="text/javascript">
-    function addUser(){
+    function addUser() {
         $("#div_pass").show();
-        $("#password").prop('required',true);
+        $("#password").prop('required', true);
         addModal();
     }
+
+    function getUserDetails(id) {
+        $("#div_password").hide();
+        getEntryDetails(id);
+    }
+
+    function getUserPrivileges(id) {
+        $("#priv_user_id").val(id);
+        $("#modalPrivileges").modal('show');
+
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=UserPrivileges&q=lists",
+            data: {
+                input: {
+                    id: id
+                }
+            },
+            success: function(data) {
+                var json = JSON.parse(data),
+                    text_masterdata = '',
+                    text_transaction = '',
+                    text_report = '';
+
+                if (json.data.masterdata.length > 0) {
+                    for (let mIndex = 0; mIndex < json.data.masterdata.length; mIndex++) {
+                        const rowData = json.data.masterdata[mIndex];
+                        text_masterdata += skin_privilege(rowData.name, rowData.status, rowData.url);
+                    }
+                }
+                $("#master_data_column").html(text_masterdata);
+
+                if (json.data.transaction.length > 0) {
+                    for (let mIndex = 0; mIndex < json.data.transaction.length; mIndex++) {
+                        const rowData = json.data.transaction[mIndex];
+                        text_transaction += skin_privilege(rowData.name, rowData.status, rowData.url);
+                    }
+                }
+                $("#transaction_column").html(text_transaction);
+
+                if (json.data.report.length > 0) {
+                    for (let mIndex = 0; mIndex < json.data.report.length; mIndex++) {
+                        const rowData = json.data.report[mIndex];
+                        text_report += skin_privilege(rowData.name, rowData.status, rowData.url);
+                    }
+                }
+                $("#report_column").html(text_report);
+            }
+        });
+    }
+
+    function skin_privilege(item_name, status, url) {
+        var check_input = status == 1 ? "checked" : '';
+        return '<li>' +
+            '<div class="form-check">' +
+            '<label class="form-check-label">' +
+            '<input class="checkbox" name="input[' + url + ']" value="1" type="checkbox" ' + check_input + '>' + item_name + '<i class="input-helper"></i></label>' +
+            '</div>' +
+            '</li>';
+    }
+
+
+    $("#frm_privileges_submit").submit(function(e) {
+        e.preventDefault();
+
+        $("#btn_submit_priv").prop('disabled', true);
+        $("#btn_submit_priv").html("<span class='fa fa-spinner fa-spin'></span> Submitting ...");
+
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=UserPrivileges&q=add",
+            data: $("#frm_privileges_submit").serialize(),
+            success: function(data) {
+                var json = JSON.parse(data);
+                if (json.data) {
+                    success_update();
+                }
+                $("#btn_submit_priv").prop('disabled', false);
+                $("#btn_submit_priv").html("<span class='fa fa-check-circle'></span> Submit");
+            }
+        });
+    });
+
     function getEntries() {
         $("#dt_entries").DataTable().destroy();
         $("#dt_entries").DataTable({
@@ -68,6 +153,11 @@
             "columns": [{
                     "mRender": function(data, type, row) {
                         return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-bs' + row.user_id + '" value=' + row.user_id + '><label for="checkbox-b' + row.user_id + '" class="custom-control-label">&nbsp;</label></div>';
+                    }
+                },
+                {
+                    "mRender": function(data, type, row) {
+                        return row.user_category != 'S' ? '' : "<center><button class='btn btn-warning btn-sm' onclick='getUserPrivileges(" + row.user_id + ")'><span class='fa fa-key'></span></button></center>";
                     }
                 },
                 {
@@ -94,10 +184,10 @@
         });
     }
 
-    function getUserEntry(id){
+    function getUserEntry(id) {
         getEntryDetails(id);
         $("#div_pass").hide();
-        $("#password").prop('required',false);
+        $("#password").prop('required', false);
     }
 
     $(document).ready(function() {
