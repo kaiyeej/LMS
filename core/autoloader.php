@@ -22,4 +22,5 @@ $classes = array(
     'Settings'              => $pre_class . 'settings.php',
     'Menus'                 => $pre_class . 'menus.php',
     'UserPrivileges'        => $pre_class . 'userprivileges.php',
+    'UserCategories'        => $pre_class . 'usercategories.php',
 );

@@ -17,6 +17,12 @@ class Menus extends Connection
                 array('url' => 'vouchers', 'name' => 'Vouchers', 'class_name' => 'Vouchers', 'has_detail' => 1),
                 array('url' => 'sales-return', 'name' => 'Sales Return', 'class_name' => 'SalesReturn', 'has_detail' => 1),
             ),
+            'accounting' => array(
+
+                array('url' => 'chart-of-accounts', 'name' => 'Chart of Accounts', 'class_name' => 'ChartOfAccounts', 'has_detail' => 0),
+                array('url' => 'journals', 'name' => 'Journals', 'class_name' => 'Journals', 'has_detail' => 0),
+                array('url' => 'journal-entry', 'name' => 'Journal Entry', 'class_name' => 'JournalEntry', 'has_detail' => 1),
+            ),
             'report' => array(
 
                 array('url' => 'receivable-ledger', 'name' => 'Receivable Ledger', 'class_name' => 'ReceivableLedger', 'has_detail' => 0),
@@ -31,6 +37,7 @@ class Menus extends Connection
                 array('url' => 'log', 'name' => 'Logs', 'class_name' => 'Logs', 'has_detail' => 0),
             ),
             'user' => array(
+                array('url' => 'user-categories', 'name' => 'User Categories', 'class_name' => 'UserCategories', 'has_detail' => 0),
                 array('url' => 'profile', 'name' => 'Profile', 'class_name' => 'Profile', 'has_detail' => 0),
             ),
         );
@@ -41,7 +48,7 @@ class Menus extends Connection
     public function routes($page, $dir)
     {
         $this->lists();
-        $levels = ['master-data', 'transaction', 'report', 'admin', 'user'];
+        $levels = ['master-data', 'transaction', 'report', 'accounting', 'admin', 'user'];
 
         if ($page == 'homepage' || $page == 'profile') {
             $this->dir = $dir;
@@ -68,7 +75,7 @@ class Menus extends Connection
                         'has_detail' => $list_data['has_detail']
                     ];
                 } else {
-                    $this->dir = 'restricted/index.php';
+                    $this->dir = '405.php';
                     $this->route_settings = [];
                 }
             } else {

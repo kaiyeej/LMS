@@ -4,6 +4,8 @@ include 'core/config.php';
 if (!isset($_SESSION['lms_user_id'])) {
   header("location:./login.php");
 }
+
+$User = new Users;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -141,10 +143,10 @@ if (!isset($_SESSION['lms_user_id'])) {
           </li>
           <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
               <img alt="image" src="assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-              <div class="d-sm-none d-lg-inline-block">Hi, Juan Dela Cruz</div>
+              <div class="d-sm-none d-lg-inline-block">Hi, <?= $User->fullname($_SESSION['lms_user_id']); ?></div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-              <a href="features-profile.html" class="dropdown-item has-icon">
+              <a href="profile" class="dropdown-item has-icon">
                 <i class="far fa-user"></i> Profile
               </a>
               <a href="features-activities.html" class="dropdown-item has-icon">

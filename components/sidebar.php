@@ -66,6 +66,12 @@
         $Menus->sidebar('Collections', 'collections', 'fas fa-money-bill-wave');
         $Menus->sidebar('Vouchers', 'vouchers', 'fas fa-money-check');
 
+        //ACCOUNTING
+        echo '<li class="menu-header">Accounting</li>';
+        $Menus->sidebar('Chart of Accounts', 'chart-of-accounts', 'fas fa-clipboard-list');
+        $Menus->sidebar('Journals', 'journals', 'fas fa-bookmark');
+        $Menus->sidebar('Journal Entry', 'journal-entry', 'fa fa-book');
+
         //REPORTS
         echo '<li class="menu-header">Reports</li>';
         $Menus->sidebar('Accounts Receivables', 'accounts-receivable', 'fas fa-chart-bar');
@@ -80,7 +86,8 @@
 
         // ADMIN
         echo '<li class="menu-header">Security</li>';
-        $Menus->sidebar('User Accounts', 'users', 'fas fa-user-cog');
+        $Menus->sidebar('User Categories', 'user-categories', 'fas fa-user-tag');
+        $Menus->sidebar('User Accounts', 'users', 'fas fa-users-cog');
     ?>
         <br>
     </ul>

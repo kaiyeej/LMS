@@ -50,6 +50,12 @@ class UserPrivileges extends Connection
             $transaction_data[] = ['name' => $row['name'], 'url' => $row['url'], 'status' => $this->check($row['url'], $user_id)];
         }
 
+        $accounting_data = [];
+        $_menus = $Menus->menus['accounting'];
+        foreach ($_menus as $row) {
+            $accounting_data[] = ['name' => $row['name'], 'url' => $row['url'], 'status' => $this->check($row['url'], $user_id)];
+        }
+
         $reports_data = [];
         $_menus = $Menus->menus['report'];
         foreach ($_menus as $row) {
@@ -59,6 +65,7 @@ class UserPrivileges extends Connection
         return [
             'masterdata' => $master_data,
             'transaction' => $transaction_data,
+            'accounting' => $accounting_data,
             'report' => $reports_data,
         ];
     }

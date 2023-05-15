@@ -81,6 +81,7 @@
                 var json = JSON.parse(data),
                     text_masterdata = '',
                     text_transaction = '',
+                    text_accounting = '';
                     text_report = '';
 
                 if (json.data.masterdata.length > 0) {
@@ -99,6 +100,14 @@
                 }
                 $("#transaction_column").html(text_transaction);
 
+                if (json.data.accounting.length > 0) {
+                    for (let mIndex = 0; mIndex < json.data.accounting.length; mIndex++) {
+                        const rowData = json.data.accounting[mIndex];
+                        text_accounting += skin_privilege(rowData.name, rowData.status, rowData.url);
+                    }
+                }
+                $("#accounting_column").html(text_accounting);
+
                 if (json.data.report.length > 0) {
                     for (let mIndex = 0; mIndex < json.data.report.length; mIndex++) {
                         const rowData = json.data.report[mIndex];
@@ -112,11 +121,9 @@
 
     function skin_privilege(item_name, status, url) {
         var check_input = status == 1 ? "checked" : '';
-        return '<li>' +
-            '<div class="form-check">' +
-            '<label class="form-check-label">' +
-            '<input class="checkbox" name="input[' + url + ']" value="1" type="checkbox" ' + check_input + '>' + item_name + '<i class="input-helper"></i></label>' +
-            '</div>' +
+        return '<li class="list-group-item">' +
+            '<input class="checkbox" name="input[' + url + ']" value="1" type="checkbox" ' + check_input + '>  ' + item_name + '<i class="input-helper"></i></label>' +
+            
             '</li>';
     }
 
@@ -157,7 +164,7 @@
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return row.user_category != 'S' ? '' : "<center><button class='btn btn-warning btn-sm' onclick='getUserPrivileges(" + row.user_id + ")'><span class='fa fa-key'></span></button></center>";
+                        return row.user_category_id <= '1' ? '' : "<center><button class='btn btn-warning btn-sm' onclick='getUserPrivileges(" + row.user_id + ")'><span class='fa fa-key'></span></button></center>";
                     }
                 },
                 {
@@ -169,7 +176,7 @@
                     "data": "user_fullname"
                 },
                 {
-                    "data": "user_category"
+                    "data": "user_category_name"
                 },
                 {
                     "data": "username"
@@ -192,5 +199,6 @@
 
     $(document).ready(function() {
         getEntries();
+        getSelectOption('UserCategories', 'user_caterogy_id', 'user_caterogy_name');
     });
 </script>

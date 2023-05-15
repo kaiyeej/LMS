@@ -18,7 +18,7 @@ class Users extends Connection
                 'user_fname' => $this->inputs['user_fname'],
                 'user_mname' => $this->inputs['user_mname'],
                 'user_lname' => $this->inputs['user_lname'],
-                'user_category' => $this->inputs['user_category'],
+                'user_category_id' => $this->inputs['user_category_id'],
                 'username' => $this->inputs['username'],
                 'password' => md5($pass)
             );
@@ -35,11 +35,11 @@ class Users extends Connection
             return 2;
         } else {
             $form = array(
-                'user_fname' => $this->inputs['user_fname'],
-                'user_mname' => $this->inputs['user_mname'],
-                'user_lname' => $this->inputs['user_lname'],
-                'user_category' => $this->inputs['user_category'],
-                'username' => $this->inputs['username'],
+                'user_fname'            => $this->inputs['user_fname'],
+                'user_mname'            => $this->inputs['user_mname'],
+                'user_lname'            => $this->inputs['user_lname'],
+                'user_category_id'      => $this->inputs['user_category_id'],
+                'username'              => $this->inputs['username'],
             );
             return $this->update($this->table, $form, "$this->pk = '$primary_id'");
         }
@@ -64,9 +64,11 @@ class Users extends Connection
     {
         $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
         $rows = array();
+        $UserCategories = new UserCategories;
         $result = $this->select($this->table, '*', $param);
         while ($row = $result->fetch_assoc()) {
             $row['user_fullname'] = $row['user_fname']." ".$row['user_mname']." ".$row['user_lname'];
+            $row['user_category_name'] = "";//$UserCategories->name($row['user_category_id']);
             $rows[] = $row;
         }
         return $rows;
@@ -90,9 +92,9 @@ class Users extends Connection
     public static function category($primary_id)
     {
         $self = new self;
-        $result = $self->select($self->table, 'user_category', "$self->pk  = '$primary_id'");
+        $result = $self->select($self->table, 'user_category_id', "$self->pk  = '$primary_id'");
         $row = $result->fetch_assoc();
-        return $row['user_category'] == "A" ? "Admin" : ($row['user_category'] == "C" ? "Conductor" : "Passenger");
+        return $row['user_category_id'] == "A" ? "Admin" : ($row['user_category_id'] == "C" ? "Conductor" : "Passenger");
     }
 
     public static function fullname($primary_id)
@@ -135,7 +137,7 @@ class Users extends Connection
 
         if ($row) {
             $_SESSION['lms_user_id'] = $row['user_id'];
-            $_SESSION['lms_user_category'] = $row['user_category'];
+            $_SESSION['lms_user_category_id'] = $row['user_category_id'];
 
             $res = 1;
         } else {

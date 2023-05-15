@@ -25,10 +25,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label>Category</label>
-                            <select class="form-control select2 input-item" id="user_category" name="input[user_category]" style="width:100%;" required>
-                                <option value="">Please Select</option>
-                                <option value="A">Admin</option>
-                                <option value="S">Staff</option>
+                            <select class="form-control select2 input-item" id="user_caterogy_id" name="input[user_caterogy_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col-md-6">
