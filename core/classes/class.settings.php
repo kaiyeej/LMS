@@ -58,35 +58,4 @@ class Settings extends Connection
         return "<pre>$output</pre>";
     }
 
-    public function schema()
-    {
-        if (DEVELOPMENT) {
-            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
-            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', '', 'ON UPDATE CURRENT_TIMESTAMP');
-
-
-            // TABLE HEADER
-            $tables[] = array(
-                'name'      => $this->table,
-                'primary'   => $this->pk,
-                'fields' => array(
-                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
-                    $this->metadata('module_discount', 'varchar', 32),
-                    $this->metadata('module_cancel', 'varchar', 32),
-                    $this->metadata('module_delete', 'varchar', 32),
-                    $this->metadata('module_add_customer', 'varchar', 32),
-                    $this->metadata('module_change_payment_type', 'varchar', 32),
-                    $this->metadata('module_remove_online_payment', 'varchar', 32),
-                    $this->metadata('company_name', 'varchar', 50),
-                    $this->metadata('company_address', 'varchar', 100),
-                    $this->metadata('print_header', 'text'),
-                    $this->metadata('print_footer', 'text'),
-                    $default['date_added'],
-                    $default['date_last_modified']
-                )
-            );
-
-            return $this->schemaCreator($tables);
-        }
-    }
 }
