@@ -184,6 +184,7 @@ $User = new Users;
   <script type='text/javascript'>
     <?php
     echo "var route_settings = " . $route_settings . ";\n";
+    echo "var company_name = 'Featherleaf Lending Corporation'";
     ?>
   </script>
   <script type="text/javascript">

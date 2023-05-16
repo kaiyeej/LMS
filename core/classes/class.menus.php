@@ -7,9 +7,11 @@ class Menus extends Connection
             'master-data' => array(
                 array('url' => 'suppliers', 'name' => 'Suppliers', 'class_name' => 'Suppliers', 'has_detail' => 0),
                 array('url' => 'clients', 'name' => 'Client', 'class_name' => 'Clients', 'has_detail' => 0),
+                array('url' => 'client-update', 'name' => 'Client Profile', 'class_name' => 'Clients', 'has_detail' => 0),
                 array('url' => 'product-price', 'name' => 'Product Price Notice', 'class_name' => 'ProductPrice', 'has_detail' => 1),
                 array('url' => 'loan-types', 'name' => 'Loan Types', 'class_name' => 'LoanTypes', 'has_detail' => 0),
                 array('url' => 'insurance', 'name' => 'Insurance', 'class_name' => 'Insurance', 'has_detail' => 0),
+                array('url' => 'user-categories', 'name' => 'User Categories', 'class_name' => 'UserCategories', 'has_detail' => 0),
             ),
             'transaction' => array(
                 array('url' => 'loans', 'name' => 'Loans', 'class_name' => 'Loans', 'has_detail' => 0),
@@ -21,7 +23,7 @@ class Menus extends Connection
 
                 array('url' => 'chart-of-accounts', 'name' => 'Chart of Accounts', 'class_name' => 'ChartOfAccounts', 'has_detail' => 0),
                 array('url' => 'journals', 'name' => 'Journals', 'class_name' => 'Journals', 'has_detail' => 0),
-                array('url' => 'journal-entry', 'name' => 'Journal Entry', 'class_name' => 'JournalEntry', 'has_detail' => 1),
+                array('url' => 'journal-entry', 'name' => 'Journal Entry', 'class_name' => 'JournalEntry', 'has_detail' => 1),array('url' => 'trial-balance', 'name' => 'Trial Balance', 'class_name' => 'ChartOfAccounts', 'has_detail' => 0),
             ),
             'report' => array(
 
@@ -33,11 +35,9 @@ class Menus extends Connection
             ),
             'admin' => array(
                 array('url' => 'users', 'name' => 'User Account', 'class_name' => 'Users', 'has_detail' => 0),
-                array('url' => 'settings', 'name' => 'Settings', 'class_name' => 'Settings', 'has_detail' => 0),
                 array('url' => 'log', 'name' => 'Logs', 'class_name' => 'Logs', 'has_detail' => 0),
             ),
             'user' => array(
-                array('url' => 'user-categories', 'name' => 'User Categories', 'class_name' => 'UserCategories', 'has_detail' => 0),
                 array('url' => 'profile', 'name' => 'Profile', 'class_name' => 'Profile', 'has_detail' => 0),
             ),
         );
@@ -88,7 +88,7 @@ class Menus extends Connection
     public function sidebar($name, $url, $ti)
     {
         $UserPrivileges = new UserPrivileges();
-        if ($UserPrivileges->check($url, $_SESSION['lms_user_id']) == 1) {
+        if ($UserPrivileges->check($url, $_SESSION['lms_user_category_id']) == 1) {
 
             echo '<li><a class="nav-link" href="./' . $url . '"><i class="' . $ti . '"></i> <span>' . $name . '</span></a></li></li>';
         }
@@ -101,7 +101,7 @@ class Menus extends Connection
         $ui = str_replace(' ', '', strtolower($name));
         $child_label = "";
         foreach ($child as $row) {
-            if ($UserPrivileges->check($row[1], $_SESSION['lms_user_id']) == 1) {
+            if ($UserPrivileges->check($row[1], $_SESSION['lms_user_category_id']) == 1) {
                 
                 $child_label .=  '<li><a class="nav-link" href="./' . $row[1] . '">' . $row[0] . '</a></li>';
             }

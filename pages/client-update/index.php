@@ -16,7 +16,7 @@
         <div class="row">
             <div class="row">
                 <div class="col-12">
-                    <div class="card">
+                    <div class="card shadow">
                         <div class="card-header">
                             <div class="col-md-12">
                                 <div class="author-box-name">

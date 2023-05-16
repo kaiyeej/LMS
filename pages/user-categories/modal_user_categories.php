@@ -13,7 +13,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label>User Category</label>
-                            <input type="text" class="form-control input-item" autocomplete="off" placeholder="Loan type" name="input[user_caterogy_name]" id="user_caterogy_name" required>
+                            <input type="text" class="form-control input-item" autocomplete="off" placeholder="User Category name" name="input[user_category_name]" id="user_category_name" required>
                         </div>
                         <div class="form-group col-md-12">
                             <label>Remarks</label>

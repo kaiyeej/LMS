@@ -25,7 +25,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label>Category</label>
-                            <select class="form-control select2 input-item" id="user_caterogy_id" name="input[user_caterogy_id]" style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="user_category_id" name="input[user_category_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col-md-6">

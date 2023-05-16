@@ -72,4 +72,22 @@ class ChartOfAccounts extends Connection
         }
         
     }
+
+    public function trial_balance()
+    {
+        $start_date = $this->inputs['start_date'];
+        $end_date = $this->inputs['end_date'];
+        $JournalEntry = new JournalEntry;
+        $rows = array();
+        $result = $this->select($this->table, '*');
+        while ($row = $result->fetch_assoc()) {
+            $JL = $JournalEntry->total_per_chart($start_date,$end_date,$row['chart_id']);
+            $sub = $row['chart_type'] == "S" ? "&emsp;&emsp;&emsp; " : "";
+            $row['chart_name'] = $sub.$row['chart_name'];
+            $row['debit'] = number_format($JL['total_debit'],2);
+            $row['credit'] = number_format($JL['total_credit'],2);
+            $rows[] = $row;
+        }
+        return $rows;
+    }
 }

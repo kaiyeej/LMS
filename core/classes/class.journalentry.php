@@ -180,4 +180,12 @@ class JournalEntry extends Connection
     {
         return 'JE-' . date('YmdHis');
     }
+
+    public function total_per_chart($start_date, $end_date,$chart_id){
+        // (sales_date >= '" + start_date + "' AND sales_date <= '" + end_date + "')
+        $result = $this->select("tbl_journal_entries as h, tbl_journal_entry_details as d", 'sum(d.debit) as total_debit, sum(d.credit) as total_credit', "(h.journal_date >= '$start_date' AND h.journal_date <= '$end_date') AND h.journal_entry_id=d.journal_entry_id AND h.status='F' AND d.chart_id='$chart_id'");
+
+        $row = $result->fetch_assoc();
+        return $row;
+    }
 }

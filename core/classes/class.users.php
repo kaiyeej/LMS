@@ -89,14 +89,6 @@ class Users extends Connection
         return $row[$self->name];
     }
 
-    public static function category($primary_id)
-    {
-        $self = new self;
-        $result = $self->select($self->table, 'user_category_id', "$self->pk  = '$primary_id'");
-        $row = $result->fetch_assoc();
-        return $row['user_category_id'] == "A" ? "Admin" : ($row['user_category_id'] == "C" ? "Conductor" : "Passenger");
-    }
-
     public static function fullname($primary_id)
     {
         $self = new self;

@@ -12,7 +12,7 @@
                     <h4 class="modal-title" id="modalPrivilegesLabel"><span class='fa fa-pen'></span> User Privileges</h4>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="input[user_id]" id="priv_user_id">
+                    <input type="hidden" name="input[user_category_id]" id="priv_user_id">
                     <div class="row">
                         <div class="col-3">
                             <a class="nav-link" href="#">

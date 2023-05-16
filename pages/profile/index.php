@@ -10,7 +10,7 @@
     <div class="row">
       <div class="col-lg-8">
         <!--begin::Example-->
-        <div class="card shadow mb-4">
+        <div class="card  mb-4">
           <div class="card-body">
             <h4 class="card-title" style="color: #009688;">Profile information</h4>
               <form method='POST' id='frm_profile' class="profile">

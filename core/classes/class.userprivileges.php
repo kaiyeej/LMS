@@ -7,21 +7,21 @@ class UserPrivileges extends Connection
 
     public function add()
     {
-        $user_id = $this->inputs['user_id'];
+        $user_category_id = $this->inputs['user_category_id'];
         $loop = $this->inputs;
 
-        $this->update($this->table, ['status' => 0], "user_id = '$user_id'");
+        $this->update($this->table, ['status' => 0], "user_category_id = '$user_category_id'");
         if (count($loop) > 0) {
             foreach ($loop as $url => $status) {
-                if ($url != 'user_id') {
-                    $result = $this->select($this->table, $this->pk, "user_id = '$user_id' AND url='$url'");
+                if ($url != 'user_category_id') {
+                    $result = $this->select($this->table, $this->pk, "user_category_id = '$user_category_id' AND url='$url'");
                     if ($result->num_rows > 0) {
                         $row = $result->fetch_assoc();
                         $privilege_id = $row['privilege_id'];
                         $this->update($this->table, ['status' => 1], "$this->pk = '$privilege_id'");
                     } else {
                         $this->insert($this->table, [
-                            'user_id' => $user_id,
+                            'user_category_id' => $user_category_id,
                             'url' => $url,
                             'status' => 1
                         ]);
@@ -34,32 +34,32 @@ class UserPrivileges extends Connection
 
     public function lists()
     {
-        $user_id = $this->inputs['id'];
+        $user_category_id = $this->inputs['id'];
         $Menus = new Menus();
         $Menus->lists();
 
         $master_data = [];
         $_menus = $Menus->menus['master-data'];
         foreach ($_menus as $row) {
-            $master_data[] = ['name' => $row['name'], 'url' => $row['url'], 'status' => $this->check($row['url'], $user_id)];
+            $master_data[] = ['name' => $row['name'], 'url' => $row['url'], 'status' => $this->check($row['url'], $user_category_id)];
         }
 
         $transaction_data = [];
         $_menus = $Menus->menus['transaction'];
         foreach ($_menus as $row) {
-            $transaction_data[] = ['name' => $row['name'], 'url' => $row['url'], 'status' => $this->check($row['url'], $user_id)];
+            $transaction_data[] = ['name' => $row['name'], 'url' => $row['url'], 'status' => $this->check($row['url'], $user_category_id)];
         }
 
         $accounting_data = [];
         $_menus = $Menus->menus['accounting'];
         foreach ($_menus as $row) {
-            $accounting_data[] = ['name' => $row['name'], 'url' => $row['url'], 'status' => $this->check($row['url'], $user_id)];
+            $accounting_data[] = ['name' => $row['name'], 'url' => $row['url'], 'status' => $this->check($row['url'], $user_category_id)];
         }
 
         $reports_data = [];
         $_menus = $Menus->menus['report'];
         foreach ($_menus as $row) {
-            $reports_data[] = ['name' => $row['name'], 'url' => $row['url'], 'status' => $this->check($row['url'], $user_id)];
+            $reports_data[] = ['name' => $row['name'], 'url' => $row['url'], 'status' => $this->check($row['url'], $user_category_id)];
         }
 
         return [
@@ -70,17 +70,17 @@ class UserPrivileges extends Connection
         ];
     }
 
-    public function check($url, $user_id)
+    public function check($url, $user_category_id)
     {
         $User = new Users();
-        $user_category = $User->dataRow($user_id, 'user_category');
+        $user_category = $User->dataRow($user_category_id, 'user_category');
         if ($user_category == 'A') {
             return 1;
         } else {
             if ($url == 'homepage') {
                 return 1;
             } else {
-                $result = $this->select($this->table, 'status', "url = '$url' AND user_id = '$user_id'");
+                $result = $this->select($this->table, 'status', "url = '$url' AND user_category_id = '$user_category_id'");
                 if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
                     return (int) $row['status'];

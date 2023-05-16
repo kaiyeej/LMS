@@ -7,7 +7,7 @@
         </div>
     </div>
 
-    <div class="section-body">
+    <div class="section-body shadow">
         <div class="alert alert-light alert-has-icon" style="border: 1px dashed #3C84AB;">
             <div class="alert-icon"><i class="far fa-lightbulb"></i></div>
             <div class="alert-body">
@@ -35,7 +35,6 @@
                                             </div>
                                         </th>
                                         <th></th>
-                                        <th></th>
                                         <th>Name</th>
                                         <th>Category</th>
                                         <th>Username</th>
@@ -52,7 +51,6 @@
     </div>
 </section>
 <?php require_once "modal_users.php"; ?>
-<?php require_once 'modal_privileges.php'; ?>
 <script type="text/javascript">
     function addUser() {
         $("#div_pass").show();
@@ -164,11 +162,6 @@
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return row.user_category_id <= '1' ? '' : "<center><button class='btn btn-warning btn-sm' onclick='getUserPrivileges(" + row.user_id + ")'><span class='fa fa-key'></span></button></center>";
-                    }
-                },
-                {
-                    "mRender": function(data, type, row) {
                         return "<center><button class='btn btn-sm btn-info' onclick='getUserEntry(" + row.user_id + ")'><span class='fa fa-edit'></span></button></center>";
                     }
                 },
@@ -199,6 +192,6 @@
 
     $(document).ready(function() {
         getEntries();
-        getSelectOption('UserCategories', 'user_caterogy_id', 'user_caterogy_name');
+        getSelectOption('UserCategories', 'user_category_id', 'user_category_name');
     });
 </script>

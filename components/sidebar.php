@@ -71,7 +71,7 @@
         $Menus->sidebar('Chart of Accounts', 'chart-of-accounts', 'fas fa-clipboard-list');
         $Menus->sidebar('Journals', 'journals', 'fas fa-bookmark');
         $Menus->sidebar('Journal Entry', 'journal-entry', 'fa fa-book');
-
+        $Menus->sidebar('Trial Balance', 'trial-balance', 'fas fa-balance-scale');
         //REPORTS
         echo '<li class="menu-header">Reports</li>';
         $Menus->sidebar('Accounts Receivables', 'accounts-receivable', 'fas fa-chart-bar');
