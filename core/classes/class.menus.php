@@ -68,14 +68,14 @@ class Menus extends Connection
                 $list_data = $this->menus[$main_column][$index];
 
                 $UserPrivileges = new UserPrivileges();
-                if ($UserPrivileges->check($page, $_SESSION['lms_user_id']) == 1) {
+                if ($UserPrivileges->check($page, $_SESSION['lms_user_category_id']) == 1) {
                     $this->dir = $dir;
                     $this->route_settings = [
                         'class_name' => $list_data['class_name'],
                         'has_detail' => $list_data['has_detail']
                     ];
                 } else {
-                    $this->dir = '405.php';
+                    $this->dir = '403.php';
                     $this->route_settings = [];
                 }
             } else {

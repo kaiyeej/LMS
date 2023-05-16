@@ -196,4 +196,52 @@ class Loans extends Connection
 
         return $rows;
     }
+
+    public function released_total(){
+        $year = date('Y');
+        $result = $this->select($this->table, "sum(loan_amount) as total", "YEAR(loan_date) = '$year' AND (status = 'R' OR status='F')");
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+
+    
+    public function outstanding_total(){
+        $total = 0;
+        $result = $this->select($this->table, "loan_id,loan_amount,client_id", "status = 'R'");
+        while($row = $result->fetch_assoc()){
+            $collection = $this->select('tbl_collections', "sum(amount) as total", "status = 'F' AND loan_id='$row[loan_id]' AND client_id='$row[client_id]'");
+            $total_collected = $collection->fetch_assoc();
+
+            $total += $row['loan_amount']-$total_collected['total'];
+        }
+
+        return $total;
+    }
+
+    public function approved_loans(){
+        $year = date('Y');
+        $result = $this->select($this->table, "count(loan_id) as total", "YEAR(loan_date) = '$year' AND (status = 'R' OR status = 'A' OR status='F')");
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+
+    public function pending_loans(){
+        $year = date('Y');
+        $result = $this->select($this->table, "count(loan_id) as total", "YEAR(loan_date) = '$year' AND status = 'P'");
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+
+    public function dashboard()
+    {
+        $rows = array();
+        $row['outstanding_total'] = number_format($this->outstanding_total(),2);
+        $row['released_total'] = number_format($this->released_total(),2);
+        $row['approved_total'] = $this->approved_loans();
+        $row['pending_total'] = $this->pending_loans();
+        $rows = $row;
+        return $rows;
+    }
+
+    
 }
