@@ -50,7 +50,7 @@ class LoanReport extends Connection
                         <div class="text-small float-right font-weight-bold text-muted">' . number_format($loan_row['total'], 2) . '</div>
                         <div class="font-weight-bold mb-1">' . $row['loan_type'] . '</div>
                         <div class="progress" data-height="3" style="height: 3px;">
-                            <div class="progress-bar" role="progressbar" data-width="' . $count2 . '%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: ' . $count2 . '%;"></div>
+                            <div class="progress-bar" title="' . $count2 . '%" role="progressbar" data-width="' . $count2 . '%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: ' . $count2 . '%;"></div>
                         </div>
                     </div>';
         }

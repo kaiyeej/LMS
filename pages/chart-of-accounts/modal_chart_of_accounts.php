@@ -32,6 +32,11 @@
                             <label>Chart</label>
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="Chart of account" name="input[chart_name]" id="chart_name" required>
                         </div>
+                        <div class="form-group col-md-12" id="div_sub_class" style="display:none;">
+                            <label>Chart Classification</label>
+                            <select class="form-control select2 input-item" id="chart_class_id" name="input[chart_class_id]" style="width:100%;">
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer bg-whitesmoke br">

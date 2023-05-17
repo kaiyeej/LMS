@@ -1,11 +1,9 @@
-
-
 <section class="section">
     <div class="section-header">
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
             <div class="breadcrumb-item"><a href="#">Accounting</a></div>
-            <div class="breadcrumb-item">Trial Balance</div>
+            <div class="breadcrumb-item">Financial Statements</div>
         </div>
     </div>
 
@@ -14,16 +12,36 @@
             <form id='frm_generate'>
                 <div class="form-group row">
                     <div class="col-lg-4">
-                        <label><strong>Start Date</strong></label>
-                        <div>
-                            <input type="date" required class="form-control" value="<?php echo date('Y-m-01', strtotime(date("Y-m-d"))); ?>" id="start_date" name="input[start_date]">
-                        </div>
+                        <label><strong>Start Year</strong></label>
+                        <select class="form-control select2" style="width: 100%;" id='start_date' name='start_date' required>
+                            <?php
+                            $year = date("Y") - 4;
+                            for ($i = 1; $i <= 4; $i++) { ?>
+                                <option value='<?php echo $year; ?>' <?php if ($year == date("Y")) {
+                                                                            echo 'selected';
+                                                                        } ?>>
+                                    <?php echo $year; ?></option>;
+                            <?php
+                                $year++;
+                            }
+                            ?>
+                        </select>
                     </div>
                     <div class="col-lg-4">
-                        <label><strong>End Date</strong></label>
-                        <div>
-                            <input type="date" required class="form-control" value="<?php echo date('Y-m-t', strtotime(date("Y-m-d"))) ?>" id="end_date" name="input[end_date]">
-                        </div>
+                        <label><strong>End Year</strong></label>
+                        <select class="form-control select2" style="width: 100%;" id='end_date' name='end_date' required>
+                            <?php
+                            $year2 = date("Y");
+                            for ($i = 0; $i <= 4; $i++) { ?>
+                                <option value='<?php echo $year2; ?>' <?php if ($year2 == date("Y")) {
+                                                                            echo 'selected';
+                                                                        } ?>>
+                                    <?php echo $year2; ?></option>;
+                            <?php
+                                $year2++;
+                            }
+                            ?>
+                        </select>
                     </div>
                     <div class="col-lg-4">
                         <label>&nbsp;</label>
@@ -35,7 +53,7 @@
                                     </span>
                                     <span class="text"> Generate</span>
                                 </button>
-                                <button type="button" onclick="exportTableToExcel(this,'dt_entries','Trial-Balance')" class="btn btn-success btn-icon-split">
+                                <button type="button" onclick="exportTableToExcel(this,'dt_entries','Financial-Statements')" class="btn btn-success btn-icon-split">
                                     <span class="icon">
                                         <i class="ti ti-cloud-down"></i>
                                     </span>
@@ -61,7 +79,7 @@
                         <center>
                             <img src="./assets/img/logo2.png" alt="logo" width="200"><br>
                             <!-- <h5><span id="company_label"></span></h5> -->
-                            <h5>Trial Balance</h5>
+                            <h5>Financial Statements</h5>
                             <strong> <span id='covered_date_label'></span></strong>
                         </center>
                         <br>
@@ -69,16 +87,14 @@
                             <table class="table table-bordered table-hover cell-border" id="dt_entries" width="100%" cellspacing="0">
                                 <thead style="background: #1f384b;">
                                     <tr>
-                                        <th style="color:#fff;">CHART OF ACCOUNTS</th>
-                                        <th style="text-align:right;color:#fff;">DEBIT</th>
-                                        <th style="text-align:right;color:#fff;">CREDIT</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
                                 <tfoot>
                                     <tr style="font-size: 15px;">
-                                        <th style="text-align:right">TOTAL:</th>
+                                        <th style="text-align:right;">TOTAL:</th>
                                         <th></th>
                                         <th></th>
                                     </tr>
@@ -95,12 +111,29 @@
     $("#frm_generate").submit(function(e) {
         e.preventDefault();
 
-
         getReport();
     });
 
+    function setTH(){
+        $("#dt_entries>thead>tr").html("<th style='color:#fff;'>CHART</th>");
+        $("#dt_entries>tfoot>tr").html("<th style='text-align:right;'>TOTAL</th>");
+
+        var start_date = $("#start_date").val();
+        var end_date = $("#end_date").val();
+        var y = (end_date-start_date)+1;
+        var i = 0;
+        var year = start_date;
+        while (i < y) {
+            $("#dt_entries>thead>tr").append("<th style='color:#fff;text-align:right;'>"+year+"</th>");
+            $("#dt_entries>tfoot>tr").append("<th style='text-align:right;'></th>");
+            year++;
+            i++;
+        }
+    }
+
 
     function getReport() {
+        setTH();
         var start_date = $("#start_date").val();
         var end_date = $("#end_date").val();
         var start_d = new Date(start_date);
@@ -122,7 +155,7 @@
             "ordering": false,
             "info": false,
             "ajax": {
-                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=trial_balance",
+                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=show",
                 "dataSrc": "data",
                 "method": "POST",
                 "data": {
@@ -132,51 +165,40 @@
                     }
                 },
             },
-            "footerCallback": function(row, data, start, end, display) {
-                var api = this.api();
+            // "footerCallback": function(row, data, start, end, display) {
+            //     var api = this.api();
 
-                // Remove the formatting to get integer data for summation
-                var intVal = function(i) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '') * 1 :
-                        typeof i === 'number' ?
-                        i : 0;
-                };
+            //     // Remove the formatting to get integer data for summation
+            //     var intVal = function(i) {
+            //         return typeof i === 'string' ?
+            //             i.replace(/[\$,]/g, '') * 1 :
+            //             typeof i === 'number' ?
+            //             i : 0;
+            //     };
 
-                debitTotal = api
-                    .column(1, {
-                        page: 'current'
-                    })
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
+            //     var y = (end_date-start_date)+1;
+            //     var i = 0;
+            //     while (i < y) {
+            //         i++;
+            //         creditTotal = api
+            //         .column(i, {
+            //             page: 'current'
+            //         })
+            //         .data()
+            //         .reduce(function(a, b) {
+            //             return intVal(a) + intVal(b);
+            //         }, 0);
 
-                // Update footer
-                $(api.column(1).footer()).html(
-                    "&#x20B1; " + debitTotal.toLocaleString('en-US', {
-                        minimumFractionDigits: 2
-                    })
-                );
-
-                creditTotal = api
-                    .column(2, {
-                        page: 'current'
-                    })
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-                // Update footer
-                $(api.column(2).footer()).html(
-                    "&#x20B1; " + creditTotal.toLocaleString('en-US', {
-                        minimumFractionDigits: 2
-                    })
-                );
+            //         // Update footer
+            //         $(api.column(i).footer()).html(
+            //             "&#x20B1; " + creditTotal.toLocaleString('en-US', {
+            //                 minimumFractionDigits: 2
+            //             })
+            //         );
+            //     }
 
 
-            },
+            // },
             "columns": [{
                     "data": "chart_name"
                 },
@@ -196,7 +218,6 @@
     }
 
     $(document).ready(function() {
-        getReport();
-        // $("#company_label").html(company_name);
+        // getReport();
     });
 </script>
