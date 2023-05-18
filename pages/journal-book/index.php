@@ -1,3 +1,10 @@
+<style>
+tr{
+    border: 1px solid #ede6e6;
+
+}    
+</style>
+
 <section class="section">
     <div class="section-header">
         <div class="section-header-breadcrumb">
@@ -38,7 +45,7 @@
                                     </span>
                                     <span class="text"> Generate</span>
                                 </button>
-                                <button type="button" onclick="exportTableToExcel(this,'dt_entries','Loan-Status-Report')" class="btn btn-success btn-icon-split">
+                                <button type="button" onclick="exportTableToExcel(this,'dt_entries','Journal-Book')" class="btn btn-success btn-icon-split">
                                     <span class="icon">
                                         <i class="ti ti-cloud-down"></i>
                                     </span>
@@ -62,10 +69,14 @@
                 <div class="col-12 col-xl-12 card shadow mb-4">
                     <div id="report_container" class="card-body">
                         <center>
-                            <h5>Journal Book</h5><br>
+                            <img src="./assets/img/logo2.png" alt="logo" width="200"><br>
+                            <!-- <h5><span id="company_label"></span></h5> -->
+                            <h5>Journal Book</h5>
+                            <strong><h6 id="journal_label"></h6></strong>
+                            <strong> <span id='covered_date_label'></span></strong>
                         </center>
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dt_entries" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="dt_entries" width="100%">
                                 <thead style="background: #1f384b;">
                                     <tr>
                                         <th style="color:#fff;">DATE</th>
@@ -91,33 +102,124 @@
         getReport();
     });
 
+    // function getReport() {
+    //     var journal_id = $("#journal_id").val();
+    //     var start_date = $("#start_date").val();
+    //     var end_date = $("#end_date").val();
+
+    //     $("#jb_report").html("<tr><td colspan='5'><center><h3><span class='fa fa-spinner fa-spin'></span> Loading ...</h3></center></td></tr>");
+
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "controllers/sql.php?c=" + route_settings.class_name + "&q=journal_book",
+    //         data: {
+    //             input: {
+    //                 start_date: start_date,
+    //                 end_date:end_date,
+    //                 journal_id:journal_id
+    //             }
+    //         },
+    //         success: function(data) {
+    //             $("#jb_report").html(data.replace('{"data":null}', ''));
+
+    //         }
+    //     });
+        
+    // }
+
     function getReport() {
         var journal_id = $("#journal_id").val();
         var start_date = $("#start_date").val();
         var end_date = $("#end_date").val();
 
-        $("#jb_report").html("<tr><td colspan='5'><center><h3><span class='fa fa-spinner fa-spin'></span> Loading ...</h3></center></td></tr>");
+        var start_d = new Date(start_date);
+        var end_d = new Date(end_date);
 
-        $.ajax({
-            type: "POST",
-            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=journal_book",
-            data: {
-                input: {
-                    start_date: start_date,
-                    end_date:end_date,
-                    journal_id:journal_id
-                }
-            },
-            success: function(data) {
-                $("#jb_report").html(data.replace('{"data":null}', ''));
+        var options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        };
 
-            }
-        });
+        $("#covered_date_label").html("PERIOD COVERED " + start_d.toLocaleDateString('en-US', options).toUpperCase() + " TO " + end_d.toLocaleDateString('en-US', options).toUpperCase());
         
+        $("#dt_entries").DataTable().destroy();
+        $("#dt_entries").DataTable({
+            "processing": true,
+            "searching": false,
+            "paging": false,
+            "ordering": false,
+            "info": false,
+            "ajax": {
+                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=journal_book",
+                "dataSrc": "data",
+                "method": "POST",
+                "data": {
+                    input: {
+                        journal_id: journal_id,
+                        start_date: start_date,
+                        end_date: end_date,
+                    }
+                },
+            },
+            // "footerCallback": function(row, data, start, end, display) {
+            //     var api = this.api();
+
+            //     // Remove the formatting to get integer data for summation
+            //     var intVal = function(i) {
+            //         return typeof i === 'string' ?
+            //             i.replace(/[\$,]/g, '') * 1 :
+            //             typeof i === 'number' ?
+            //             i : 0;
+            //     };
+
+            //     debitTotal = api
+            //         .column(5, {
+            //             page: 'current'
+            //         })
+            //         .data()
+            //         .reduce(function(a, b) {
+            //             return intVal(a) + intVal(b);
+            //         }, 0);
+
+            //     // Update footer
+            //     $(api.column(5).footer()).html(
+            //         "&#x20B1; " + debitTotal.toLocaleString('en-US', {
+            //             minimumFractionDigits: 2
+            //         })
+            //     );
+
+
+            // },
+            "columns": [{
+                    "data": "date"
+                },
+                {
+                    "data": "general_reference"
+                },
+                {
+                    "data": "account"
+                },
+                {
+                    "data": "debit",
+                    className: "text-right"
+                },
+                {
+                    "data": "credit",
+                    className: "text-right"
+                },
+
+            ]
+
+        });
+        var optionSelected = $("#journal_id").find('option:selected').attr('journal_name');
+        
+        $("#journal_label").html(optionSelected);
+
     }
 
     $(document).ready(function() {
-        getSelectOption('Journals', 'journal_id', 'journal_name', '', ['journal_code']);
+        getSelectOption('Journals', 'journal_id', 'journal_name', '', ['journal_name']);
         getReport();
     });
 </script>

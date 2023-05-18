@@ -200,14 +200,16 @@ class JournalEntry extends Connection
         $journal_id = $this->inputs['journal_id'];
         $start_date = $this->inputs['start_date'];
         $end_date = $this->inputs['end_date'];
+        
+        $rows = array();
         $Chart = new ChartOfAccounts;
-        $data = "";
         $result = $this->select($this->table, '*',"journal_id='$journal_id' AND (journal_date >= '$start_date' AND journal_date <= '$end_date')");
         while ($row = $result->fetch_assoc()) {
             $details = $this->select($this->table_detail,"*","journal_entry_id='$row[journal_entry_id]' ORDER BY debit DESC");
-            $chart_data = "<td style='border-color: #9E9E9E;'>";
-            $debit_data = "<td style='text-align:right;border-color: #9E9E9E;'>";
-            $credit_data = "<td style='text-align:right;border-color: #9E9E9E;'>";
+            
+            $chart_data = "";
+            $debit_data = "";
+            $credit_data = "";
             while($dRow = $details->fetch_array()){
                 $type = $dRow['debit'] > 0 ? "" : "&emsp;&emsp;";
                 $debit = $dRow['debit'] > 0 ? number_format($dRow['debit']) : "";
@@ -216,15 +218,16 @@ class JournalEntry extends Connection
                 $debit_data .= $debit."<br>";
                 $credit_data .= $credit."<br>";
             }
-            $remarks = $row['remarks'] == "" ? "" : '('.$row['remarks'].')';
-            $data .= '<tr>
-                        <td style="border-color: #9E9E9E;">'.date('M d, Y', strtotime($row["journal_date"])).'</td>
-                        <td style="border-color: #9E9E9E;">'.$row["reference_number"].'<br>'.$remarks.'</td>'.
-                        $chart_data.'</td>'.$debit_data.$credit_data.'
-                    </tr>';
-            
+            $remarks = $row['remarks'] == "" ? "" : '<br>('.$row['remarks'].')';
+
+            $row['date'] = date('M d, Y', strtotime($row["journal_date"]));
+            $row['general_reference'] = $row["reference_number"].$remarks;
+            $row['account'] = $chart_data;
+            $row['debit'] = $debit_data;
+            $row['credit'] = $credit_data;
+            $rows[] = $row;
         }
 
-        echo $data;
+        return $rows;
     }
 }
