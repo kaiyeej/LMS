@@ -209,7 +209,7 @@ class JournalEntry extends Connection
             $debit_data = "<td style='text-align:right;border-color: #9E9E9E;'>";
             $credit_data = "<td style='text-align:right;border-color: #9E9E9E;'>";
             while($dRow = $details->fetch_array()){
-                $type = $dRow['debit'] > 0 ? "" : "&emsp;";
+                $type = $dRow['debit'] > 0 ? "" : "&emsp;&emsp;";
                 $debit = $dRow['debit'] > 0 ? number_format($dRow['debit']) : "";
                 $credit = $dRow['credit'] > 0 ? number_format($dRow['credit']) : "";
                 $chart_data .= $type.$Chart->name($dRow['chart_id'])."<br>";
