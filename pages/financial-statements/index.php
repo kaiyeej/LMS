@@ -83,11 +83,11 @@
                             <strong> <span id='covered_date_label'></span></strong>
                         </center>
                         <br>
-                        <div class="table-responsive">
+                        <div class="table-responsive" id="financial_report">
                             <table class="table table-bordered table-hover cell-border" id="dt_entries" width="100%" cellspacing="0">
                                 <thead style="background: #1f384b;">
                                     <tr>
-                                        
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -114,17 +114,17 @@
         getReport();
     });
 
-    function setTH(){
+    function setTH() {
         $("#dt_entries>thead>tr").html("<th style='color:#fff;'>CHART</th>");
         $("#dt_entries>tfoot>tr").html("<th style='text-align:right;'>TOTAL</th>");
 
         var start_date = $("#start_date").val();
         var end_date = $("#end_date").val();
-        var y = (end_date-start_date)+1;
+        var y = (end_date - start_date) + 1;
         var i = 0;
         var year = start_date;
         while (i < y) {
-            $("#dt_entries>thead>tr").append("<th style='color:#fff;text-align:right;'>"+year+"</th>");
+            $("#dt_entries>thead>tr").append("<th style='color:#fff;text-align:right;'>" + year + "</th>");
             $("#dt_entries>tfoot>tr").append("<th style='text-align:right;'></th>");
             year++;
             i++;
@@ -141,78 +141,25 @@
 
         var options = {
             year: 'numeric',
-            month: 'long',
-            day: 'numeric'
         };
 
         $("#covered_date_label").html("PERIOD COVERED " + start_d.toLocaleDateString('en-US', options).toUpperCase() + " TO " + end_d.toLocaleDateString('en-US', options).toUpperCase());
 
-        $("#dt_entries").DataTable().destroy();
-        $("#dt_entries").DataTable({
-            "processing": true,
-            "searching": false,
-            "paging": false,
-            "ordering": false,
-            "info": false,
-            "ajax": {
-                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=show",
-                "dataSrc": "data",
-                "method": "POST",
-                "data": {
-                    input: {
-                        start_date: start_date,
-                        end_date: end_date
-                    }
-                },
+        $("#financial_report").html("<center><h3><span class='fa fa-spinner fa-spin'></span> Loading ...</h3></center>");
+
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=show",
+            data: {
+                input: {
+                    start_date: start_date,
+                    end_date:end_date
+                }
             },
-            // "footerCallback": function(row, data, start, end, display) {
-            //     var api = this.api();
+            success: function(data) {
+                $("#financial_report").html(data.replace('{"data":null}', ''));
 
-            //     // Remove the formatting to get integer data for summation
-            //     var intVal = function(i) {
-            //         return typeof i === 'string' ?
-            //             i.replace(/[\$,]/g, '') * 1 :
-            //             typeof i === 'number' ?
-            //             i : 0;
-            //     };
-
-            //     var y = (end_date-start_date)+1;
-            //     var i = 0;
-            //     while (i < y) {
-            //         i++;
-            //         creditTotal = api
-            //         .column(i, {
-            //             page: 'current'
-            //         })
-            //         .data()
-            //         .reduce(function(a, b) {
-            //             return intVal(a) + intVal(b);
-            //         }, 0);
-
-            //         // Update footer
-            //         $(api.column(i).footer()).html(
-            //             "&#x20B1; " + creditTotal.toLocaleString('en-US', {
-            //                 minimumFractionDigits: 2
-            //             })
-            //         );
-            //     }
-
-
-            // },
-            "columns": [{
-                    "data": "chart_name"
-                },
-                {
-                    "data": "debit",
-                    className: "text-right"
-                },
-                {
-                    "data": "credit",
-                    className: "text-right"
-                },
-
-            ]
-
+            }
         });
 
     }

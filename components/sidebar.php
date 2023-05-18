@@ -66,14 +66,6 @@
         $Menus->sidebar('Collections', 'collections', 'fas fa-money-bill-wave');
         $Menus->sidebar('Vouchers', 'vouchers', 'fas fa-money-check');
 
-        //ACCOUNTING
-        echo '<li class="menu-header">Accounting</li>';
-        $Menus->sidebar('Chart of Accounts', 'chart-of-accounts', 'fas fa-clipboard-list');
-        $Menus->sidebar('Chart Classification', 'chart-classification', 'fas fa-table');
-        $Menus->sidebar('Journals', 'journals', 'fas fa-bookmark');
-        $Menus->sidebar('Journal Entry', 'journal-entry', 'fa fa-book');
-        $Menus->sidebar('Financial Statements', 'financial-statements', 'fas fa-chart-line');
-        $Menus->sidebar('Trial Balance', 'trial-balance', 'fas fa-balance-scale');
         //REPORTS
         echo '<li class="menu-header">Reports</li>';
         $Menus->sidebar('Accounts Receivables', 'accounts-receivable', 'fas fa-chart-bar');
@@ -85,6 +77,15 @@
         ));
         $Menus->sidebar('Statement of Accounts', 'statement-of-accounts', 'fas fa-file-alt');
 
+        //ACCOUNTING
+        echo '<li class="menu-header">Accounting</li>';
+        $Menus->sidebar('Chart of Accounts', 'chart-of-accounts', 'fas fa-clipboard-list');
+        $Menus->sidebar('Chart Classification', 'chart-classification', 'fas fa-table');
+        $Menus->sidebar('Journals', 'journals', 'fas fa-bookmark');
+        $Menus->sidebar('Journal Entry', 'journal-entry', 'fas fa-book-open');
+        $Menus->sidebar('Journal Book', 'journal-book', 'fa fa-book');
+        $Menus->sidebar('Financial Statements', 'financial-statements', 'fas fa-chart-line');
+        $Menus->sidebar('Trial Balance', 'trial-balance', 'fas fa-balance-scale');
 
         // ADMIN
         echo '<li class="menu-header">Security</li>';

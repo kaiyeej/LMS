@@ -182,10 +182,49 @@ class JournalEntry extends Connection
     }
 
     public function total_per_chart($start_date, $end_date,$chart_id){
-        // (sales_date >= '" + start_date + "' AND sales_date <= '" + end_date + "')
         $result = $this->select("tbl_journal_entries as h, tbl_journal_entry_details as d", 'sum(d.debit) as total_debit, sum(d.credit) as total_credit', "(h.journal_date >= '$start_date' AND h.journal_date <= '$end_date') AND h.journal_entry_id=d.journal_entry_id AND h.status='F' AND d.chart_id='$chart_id'");
 
         $row = $result->fetch_assoc();
         return $row;
+    }
+
+    public function chart_per_year($year,$chart_id){
+        $result = $this->select("tbl_journal_entries as h, tbl_journal_entry_details as d", 'sum(d.debit-d.credit) as total', "YEAR(journal_date)='$year' AND h.journal_entry_id=d.journal_entry_id AND h.status='F' AND d.chart_id='$chart_id'");
+
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+
+    public function journal_book()
+    {
+        $journal_id = $this->inputs['journal_id'];
+        $start_date = $this->inputs['start_date'];
+        $end_date = $this->inputs['end_date'];
+        $Chart = new ChartOfAccounts;
+        $data = "";
+        $result = $this->select($this->table, '*',"journal_id='$journal_id' AND (journal_date >= '$start_date' AND journal_date <= '$end_date')");
+        while ($row = $result->fetch_assoc()) {
+            $details = $this->select($this->table_detail,"*","journal_entry_id='$row[journal_entry_id]' ORDER BY debit DESC");
+            $chart_data = "<td style='border-color: #9E9E9E;'>";
+            $debit_data = "<td style='text-align:right;border-color: #9E9E9E;'>";
+            $credit_data = "<td style='text-align:right;border-color: #9E9E9E;'>";
+            while($dRow = $details->fetch_array()){
+                $type = $dRow['debit'] > 0 ? "" : "&emsp;";
+                $debit = $dRow['debit'] > 0 ? number_format($dRow['debit']) : "";
+                $credit = $dRow['credit'] > 0 ? number_format($dRow['credit']) : "";
+                $chart_data .= $type.$Chart->name($dRow['chart_id'])."<br>";
+                $debit_data .= $debit."<br>";
+                $credit_data .= $credit."<br>";
+            }
+            $remarks = $row['remarks'] == "" ? "" : '('.$row['remarks'].')';
+            $data .= '<tr>
+                        <td style="border-color: #9E9E9E;">'.date('M d, Y', strtotime($row["journal_date"])).'</td>
+                        <td style="border-color: #9E9E9E;">'.$row["reference_number"].'<br>'.$remarks.'</td>'.
+                        $chart_data.'</td>'.$debit_data.$credit_data.'
+                    </tr>';
+            
+        }
+
+        echo $data;
     }
 }

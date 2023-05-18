@@ -24,4 +24,5 @@ $classes = array(
     'UserPrivileges'        => $pre_class . 'userprivileges.php',
     'UserCategories'        => $pre_class . 'usercategories.php',
     'ChartClassification'   => $pre_class . 'chartclassification.php',
+    'FinancialStatements'   => $pre_class . 'financialstatements.php',
 );
