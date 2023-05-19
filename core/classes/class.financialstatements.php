@@ -32,28 +32,50 @@ class FinancialStatements extends Connection
                     <tbody>';
         $JL = new JournalEntry;
         $result = $this->select($this->table);
+        $total_td = "";
+        $counter = 0;
         while ($row = $result->fetch_assoc()) {
             $data .= '<tr>
-                        <td colspan="' . $cl_span . '">' . $row['chart_class_name'] . '</td>
+                        <td colspan="' . $cl_span . '"><strong>' . $row['chart_class_name'] . '</strong></td>
                     </tr>';
             $result_chart = $this->select('tbl_chart_of_accounts', '*', "chart_class_id='$row[chart_class_id]'");
+            $tf_total = 0;
+            
             while ($chartRow = $result_chart->fetch_assoc()) {
                 $y = 0;
                 $td = "";
                 $td_year = $start_date;
                 while ($y < $years_) {
-                    $td .= "<td style='text-align:right;'>" . number_format($JL->chart_per_year($td_year,$chartRow['chart_id']),2) . "</td>";
+                    $y_total = $JL->chart_per_year($td_year,$chartRow['chart_id']);
+                    $td .= "<td style='text-align:right;'>" . number_format($y_total,2) . "</td>";
                     $y++;
                     $td_year++;
+                    $tf_total += $y_total;
                 }
                 $data .= '<tr>
                             <td>&emsp;&emsp;&emsp; ' . $chartRow['chart_name'] . '</td>
                             '.$td.'
                         </tr>';
             }
+
+            
+            if($counter > 0){
+                $total_td .= "<td>".number_format($tf_total,2)."</td>";
+            }
+
+            $counter++;
+
+            
         }
 
-        $data .= "</tbody></table>";
+        $data .= "</tbody>
+                    <tfoot>
+                        <tr style='text-align:right;font-weight: bold;'>
+                            <td>Total:</td>
+                            ".$total_td."
+                        </tr>
+                    </tfoot>
+                </table>";
 
         echo $data;
     }

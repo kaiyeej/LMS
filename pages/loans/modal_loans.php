@@ -48,17 +48,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="alert alert-light col-lg-5" style="padding: 10px;border: 1px dashed #607D8B;border-radius: 5px;">
+                        <div class="col-lg-5" style="padding: 10px;border: 1px dashed #607D8B;border-radius: 5px;">
                             <div class="table-responsive">
                                 <button type="button" style="float: right;" class="btn btn-icon btn-sm icon-right btn-warning" onclick="sampleCalculation()">Sample Calculation</button>
                                 <div class="table-responsive" style="padding-top: 5px;max-height: 350px;">
                                     <table id="dt_calculation" class="table table-striped" style="font-size:10px;width: 100%!important;">
-                                        <thead style="background: #80cbc4;color: #fff;">
+                                        <thead style="background: #1f384b;">
                                             <tr>
-                                                <th scope="col">Date</th>
-                                                <th scope="col">Suggested Payment</th>
-                                                <th scope="col">Interest</th>
-                                                <th scope="col">Applicable to Principal</th>
+                                                <th style="color:#fff;" scope="col">Date</th>
+                                                <th style="color:#fff;" scope="col">Suggested Payment</th>
+                                                <th style="color:#fff;" scope="col">Interest</th>
+                                                <th style="color:#fff;" scope="col">Applicable to Principal</th>
                                             </tr>
                                         </thead>
                                     </table>

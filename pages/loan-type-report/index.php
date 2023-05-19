@@ -64,6 +64,7 @@
                 <div class="col-12 col-xl-12 card shadow mb-4">
                     <div id="report_container" class="card-body">
                         <center>
+                            <img src="./assets/img/logo2.png" alt="logo" width="200"><br>
                             <h5>Loan Type Report</h5><br>
                         </center>
                         <div class="table-responsive">

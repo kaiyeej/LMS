@@ -299,6 +299,8 @@ $User = new Users;
 
       if (route_settings.class_name == "Vouchers") {
         $("#journal_id").val(7).trigger('change');
+      }else if(route_settings.class_name == "Loans"){
+        sampleCalculation();
       }
 
 

@@ -51,6 +51,7 @@
                     <div id="report_container" class="card-body">
 
                         <center>
+                            <img src="./assets/img/logo2.png" alt="logo" width="200"><br>
                             <h5>Statement of Accounts</h5>
                             <h6><span class="span_details" id="span_client"></span></h6>
                         </center>

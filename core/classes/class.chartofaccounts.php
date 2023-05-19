@@ -94,8 +94,8 @@ class ChartOfAccounts extends Connection
             $JL = $JournalEntry->total_per_chart($start_date,$end_date,$row['chart_id']);
             $sub = $row['chart_type'] == "S" ? "&emsp;&emsp;&emsp; " : "";
             $row['chart_name'] = $sub.$row['chart_name'];
-            $row['debit'] = $JL['total_debit'] > 0 ? number_format($JL['total_debit'],2) : "--";
-            $row['credit'] = $JL['total_credit'] > 0 ? number_format($JL['total_credit'],2) : "--";
+            $row['debit'] = number_format($JL['total_debit'],2);//$JL['total_debit'] > 0 ? number_format($JL['total_debit'],2) : "";
+            $row['credit'] = number_format($JL['total_credit'],2);//$JL['total_credit'] > 0 ? number_format($JL['total_credit'],2) : "";
             $rows[] = $row;
         }
         return $rows;

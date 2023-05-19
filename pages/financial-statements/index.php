@@ -165,6 +165,6 @@
     }
 
     $(document).ready(function() {
-        // getReport();
+        getReport();
     });
 </script>
