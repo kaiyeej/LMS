@@ -9,12 +9,12 @@ class ChartOfAccounts extends Connection
 
     public function add()
     {
-        
+
         $main_chart_id = (!isset($this->inputs['main_chart_id']) && $this->inputs['chart_type'] == "M" ? "" : $this->clean($this->inputs['main_chart_id']));
         $chart_type = $this->clean($this->inputs['chart_type']);
-        if($chart_type == "S"){
+        if ($chart_type == "S") {
             $chart_class_id = $this->main_chart_class($main_chart_id);
-        }else{
+        } else {
             $chart_class_id = $this->clean($this->inputs['chart_class_id']);
         }
         $form = array(
@@ -25,7 +25,7 @@ class ChartOfAccounts extends Connection
             'chart_class_id'    => $chart_class_id,
         );
 
-        return $this->insertIfNotExist($this->table, $form, "$this->name = '".$this->inputs[$this->name]."'");
+        return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
     }
 
     public function edit()
@@ -83,25 +83,81 @@ class ChartOfAccounts extends Connection
         }
     }
 
+    // public function trial_balance()
+    // {
+    //     $start_date = $this->inputs['start_date'];
+    //     $end_date = $this->inputs['end_date'];
+    //     $JournalEntry = new JournalEntry;
+    //     $rows = array();
+    //     $result = $this->select($this->table, '*');
+    //     while ($row = $result->fetch_assoc()) {
+    //         $JL = $JournalEntry->total_per_chart($start_date,$end_date,$row['chart_id']);
+    //         $sub = $row['chart_type'] == "S" ? "&emsp;&emsp;&emsp; ↪ " : "";
+    //         $row['chart_name'] = $sub.$row['chart_name'];
+    //         $row['debit'] = number_format($JL['total_debit'],2);//$JL['total_debit'] > 0 ? number_format($JL['total_debit'],2) : "";
+    //         $row['credit'] = number_format($JL['total_credit'],2);//$JL['total_credit'] > 0 ? number_format($JL['total_credit'],2) : "";
+    //         $rows[] = $row;
+    //     }
+    //     return $rows;
+    // }
+
     public function trial_balance()
     {
         $start_date = $this->inputs['start_date'];
         $end_date = $this->inputs['end_date'];
+
+        $th_jl = "";
+        $th_dc_jl = "";
+
+        $td_jl = "";
+
         $JournalEntry = new JournalEntry;
-        $rows = array();
+
+        $fetchJournals = $this->select('tbl_journals', '*');
+        while($jlRow = $fetchJournals->fetch_assoc()){
+            $th_jl .= "<th colspan='2' style='color:#fff;'>".$jlRow['journal_name']."</th>";
+            $th_dc_jl .= '<th style="text-align:right;color:#fff;">DEBIT</th><th style="text-align:right;color:#fff;">CREDIT</th>';
+
+        }
+
+        $data = '<table class="table table-bordered table-hover cell-border" id="dt_entries" width="100%" cellspacing="0">
+                    <thead style="background: #1f384b;">
+                        <tr style="text-align:center;">
+                            <th></th>'.
+                            $th_jl
+                            .'
+                        </tr>
+                        <tr style="background: #607d8b;">
+                            <th style="color:#fff;width:100px;">CHART OF ACCOUNTS</th>'.
+                            $th_dc_jl.'
+                        </tr>
+                    </thead>
+                    <tbody>'.$td_jl;
+        
+
         $result = $this->select($this->table, '*');
         while ($row = $result->fetch_assoc()) {
-            $JL = $JournalEntry->total_per_chart($start_date,$end_date,$row['chart_id']);
-            $sub = $row['chart_type'] == "S" ? "&emsp;&emsp;&emsp; " : "";
-            $row['chart_name'] = $sub.$row['chart_name'];
-            $row['debit'] = number_format($JL['total_debit'],2);//$JL['total_debit'] > 0 ? number_format($JL['total_debit'],2) : "";
-            $row['credit'] = number_format($JL['total_credit'],2);//$JL['total_credit'] > 0 ? number_format($JL['total_credit'],2) : "";
-            $rows[] = $row;
+        
+            $sub = $row['chart_type'] == "S" ? "&emsp;&emsp;&emsp; ↪ " : "";
+            $chart_name = $sub . $row['chart_name'];
+            $td_ = "<tr><td style='width:100px;'>".$chart_name."</td>";
+            $fetchJournals = $this->select('tbl_journals', '*');
+            while($jlRow = $fetchJournals->fetch_assoc()){
+                $JL = $JournalEntry->total_per_chart($start_date, $end_date, $row['chart_id'],$jlRow['journal_id']);
+                $debit = $JL['total_debit'] > 0 ? number_format($JL['total_debit'],2) : "-";
+                $credit = $JL['total_credit'] > 0 ? number_format($JL['total_credit'],2) : "-";
+                $td_ .= "<td>".$debit."</td><td>".$credit."</td>";
+            }
+            $td_ .= "</tr>";
+
+            $data .= $td_;
+
         }
-        return $rows;
+        echo $data;
     }
 
-    public function main_chart_class($primary_id){
+    public function main_chart_class($primary_id)
+    {
         $result = $this->select($this->table, "chart_class_id", "$this->pk = '$primary_id'");
         $row = $result->fetch_assoc();
         return $row['chart_class_id'];

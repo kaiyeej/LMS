@@ -1,5 +1,14 @@
+<style>
+    table {
+        display: block;
+        overflow-x: auto;
+    }
 
-
+    table tbody {
+        display: table;
+        width: 100%;
+    }
+</style>
 <section class="section">
     <div class="section-header">
         <div class="section-header-breadcrumb">
@@ -65,7 +74,7 @@
                             <strong> <span id='covered_date_label'></span></strong>
                         </center>
                         <br>
-                        <div class="table-responsive">
+                        <div id="trial_balance_report">
                             <table class="table table-bordered table-hover cell-border" id="dt_entries" width="100%" cellspacing="0">
                                 <thead style="background: #1f384b;">
                                     <tr>
@@ -100,6 +109,101 @@
     });
 
 
+    // function getReport() {
+    //     var start_date = $("#start_date").val();
+    //     var end_date = $("#end_date").val();
+    //     var start_d = new Date(start_date);
+    //     var end_d = new Date(end_date);
+
+    //     var options = {
+    //         year: 'numeric',
+    //         month: 'long',
+    //         day: 'numeric'
+    //     };
+
+    //     $("#covered_date_label").html("PERIOD COVERED " + start_d.toLocaleDateString('en-US', options).toUpperCase() + " TO " + end_d.toLocaleDateString('en-US', options).toUpperCase());
+
+    //     $("#dt_entries").DataTable().destroy();
+    //     $("#dt_entries").DataTable({
+    //         "processing": true,
+    //         "searching": false,
+    //         "paging": false,
+    //         "ordering": false,
+    //         "info": false,
+    //         "ajax": {
+    //             "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=trial_balance",
+    //             "dataSrc": "data",
+    //             "method": "POST",
+    //             "data": {
+    //                 input: {
+    //                     start_date: start_date,
+    //                     end_date: end_date
+    //                 }
+    //             },
+    //         },
+    //         "footerCallback": function(row, data, start, end, display) {
+    //             var api = this.api();
+
+    //             // Remove the formatting to get integer data for summation
+    //             var intVal = function(i) {
+    //                 return typeof i === 'string' ?
+    //                     i.replace(/[\$,]/g, '') * 1 :
+    //                     typeof i === 'number' ?
+    //                     i : 0;
+    //             };
+
+    //             debitTotal = api
+    //                 .column(1, {
+    //                     page: 'current'
+    //                 })
+    //                 .data()
+    //                 .reduce(function(a, b) {
+    //                     return intVal(a) + intVal(b);
+    //                 }, 0);
+
+    //             // Update footer
+    //             $(api.column(1).footer()).html(
+    //                 "&#x20B1; " + debitTotal.toLocaleString('en-US', {
+    //                     minimumFractionDigits: 2
+    //                 })
+    //             );
+
+    //             creditTotal = api
+    //                 .column(2, {
+    //                     page: 'current'
+    //                 })
+    //                 .data()
+    //                 .reduce(function(a, b) {
+    //                     return intVal(a) + intVal(b);
+    //                 }, 0);
+
+    //             // Update footer
+    //             $(api.column(2).footer()).html(
+    //                 "&#x20B1; " + creditTotal.toLocaleString('en-US', {
+    //                     minimumFractionDigits: 2
+    //                 })
+    //             );
+
+
+    //         },
+    //         "columns": [{
+    //                 "data": "chart_name"
+    //             },
+    //             {
+    //                 "data": "debit",
+    //                 className: "text-right"
+    //             },
+    //             {
+    //                 "data": "credit",
+    //                 className: "text-right"
+    //             },
+
+    //         ]
+
+    //     });
+
+    // }
+
     function getReport() {
         var start_date = $("#start_date").val();
         var end_date = $("#end_date").val();
@@ -114,85 +218,20 @@
 
         $("#covered_date_label").html("PERIOD COVERED " + start_d.toLocaleDateString('en-US', options).toUpperCase() + " TO " + end_d.toLocaleDateString('en-US', options).toUpperCase());
 
-        $("#dt_entries").DataTable().destroy();
-        $("#dt_entries").DataTable({
-            "processing": true,
-            "searching": false,
-            "paging": false,
-            "ordering": false,
-            "info": false,
-            "ajax": {
-                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=trial_balance",
-                "dataSrc": "data",
-                "method": "POST",
-                "data": {
-                    input: {
-                        start_date: start_date,
-                        end_date: end_date
-                    }
-                },
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=trial_balance",
+            data: {
+                input: {
+                    start_date: start_date,
+                    end_date: end_date
+                }
             },
-            "footerCallback": function(row, data, start, end, display) {
-                var api = this.api();
+            success: function(data) {
+                $("#trial_balance_report").html(data.replace('{"data":null}', ''));
 
-                // Remove the formatting to get integer data for summation
-                var intVal = function(i) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '') * 1 :
-                        typeof i === 'number' ?
-                        i : 0;
-                };
-
-                debitTotal = api
-                    .column(1, {
-                        page: 'current'
-                    })
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-                // Update footer
-                $(api.column(1).footer()).html(
-                    "&#x20B1; " + debitTotal.toLocaleString('en-US', {
-                        minimumFractionDigits: 2
-                    })
-                );
-
-                creditTotal = api
-                    .column(2, {
-                        page: 'current'
-                    })
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-                // Update footer
-                $(api.column(2).footer()).html(
-                    "&#x20B1; " + creditTotal.toLocaleString('en-US', {
-                        minimumFractionDigits: 2
-                    })
-                );
-
-
-            },
-            "columns": [{
-                    "data": "chart_name"
-                },
-                {
-                    "data": "debit",
-                    className: "text-right"
-                },
-                {
-                    "data": "credit",
-                    className: "text-right"
-                },
-
-            ]
-
+            }
         });
-
     }
 
     $(document).ready(function() {
