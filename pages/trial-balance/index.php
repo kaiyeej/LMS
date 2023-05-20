@@ -4,10 +4,50 @@
         overflow-x: auto;
     }
 
-    table tbody {
-        display: table;
-        width: 100%;
-    }
+.div1 table {
+    border-spacing: 0;
+}
+
+.div1 th {
+    border-left: none;
+    border-right: 1px solid #bbbbbb;
+    padding: 8px;
+    width: 100px;
+    min-width: 100px;
+    position: sticky;
+    top: 0;
+    background: #1f384b;
+    color: #e0e0e0;
+    font-weight: normal;
+}
+
+.div1 td {
+    border-left: none;
+    border-right: 1px solid #bbbbbb;
+    border-bottom: 1px solid #bbbbbb;
+    padding: 8px;
+    width: 100px;
+    min-width: 100px;
+}
+
+.div1 th:nth-child(1),
+.div1 td:nth-child(1) {
+    position: sticky;
+    left: 0;
+    width: 300px;
+    min-width: 300px;
+}
+
+
+.div1 td:nth-child(1){
+    background: #ffebb5;
+}
+
+.div1 th:nth-child(1){
+    z-index: 2;
+}
+
+    
 </style>
 <section class="section">
     <div class="section-header">
@@ -78,7 +118,7 @@
                             <table class="table table-bordered table-hover cell-border" id="dt_entries" width="100%" cellspacing="0">
                                 <thead style="background: #1f384b;">
                                     <tr>
-                                        <th style="color:#fff;">CHART OF ACCOUNTS</th>
+                                        <th style="color:#fff;width:50%;">CHART OF ACCOUNTS</th>
                                         <th style="text-align:right;color:#fff;">DEBIT</th>
                                         <th style="text-align:right;color:#fff;">CREDIT</th>
                                     </tr>

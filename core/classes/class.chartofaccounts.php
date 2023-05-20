@@ -120,15 +120,15 @@ class ChartOfAccounts extends Connection
 
         }
 
-        $data = '<table class="table table-bordered table-hover cell-border" id="dt_entries" width="100%" cellspacing="0">
+        $data = '<table class="div1" width="100%" cellspacing="0">
                     <thead style="background: #1f384b;">
                         <tr style="text-align:center;">
-                            <th></th>'.
+                            <th class="th_first"></th>'.
                             $th_jl
                             .'
                         </tr>
                         <tr style="background: #607d8b;">
-                            <th style="color:#fff;width:100px;">CHART OF ACCOUNTS</th>'.
+                            <th class="th_first" style="color:#fff;">CHART OF ACCOUNTS</th>'.
                             $th_dc_jl.'
                         </tr>
                     </thead>
@@ -138,15 +138,15 @@ class ChartOfAccounts extends Connection
         $result = $this->select($this->table, '*');
         while ($row = $result->fetch_assoc()) {
         
-            $sub = $row['chart_type'] == "S" ? "&emsp;&emsp;&emsp; ↪ " : "";
+            $sub = $row['chart_type'] == "S" ? "&emsp; ↪ " : "";
             $chart_name = $sub . $row['chart_name'];
-            $td_ = "<tr><td style='width:100px;'>".$chart_name."</td>";
+            $td_ = "<tr><td style=''>".$chart_name."</td>";
             $fetchJournals = $this->select('tbl_journals', '*');
             while($jlRow = $fetchJournals->fetch_assoc()){
                 $JL = $JournalEntry->total_per_chart($start_date, $end_date, $row['chart_id'],$jlRow['journal_id']);
                 $debit = $JL['total_debit'] > 0 ? number_format($JL['total_debit'],2) : "-";
                 $credit = $JL['total_credit'] > 0 ? number_format($JL['total_credit'],2) : "-";
-                $td_ .= "<td>".$debit."</td><td>".$credit."</td>";
+                $td_ .= "<td style='text-align:right;'>".$debit."</td><td style='text-align:right;'>".$credit."</td>";
             }
             $td_ .= "</tr>";
 
