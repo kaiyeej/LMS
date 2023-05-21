@@ -63,7 +63,7 @@ class LoanReport extends Connection
         // $year = date('Y');
         $Clients = new Clients;
         $data = "";
-        $result = $this->select("tbl_loans", '*', "status='P'");
+        $result = $this->select("tbl_loans", '*', "status='R'");
         if($result->num_rows <= 0){
             $data = "<center><h5>!No details found.</h5></center>";
         }else{
