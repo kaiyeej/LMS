@@ -1,9 +1,9 @@
 <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
-        <a href="./">LMS</a>
+        <img style="width: 100px;" src="assets/img/logo2.png"> 
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
-        <a href="./">LMS</a>
+        <img style="width: 100px;" src="assets/img/logo2.png"> 
     </div>
     <!-- <ul class="sidebar-menu">
         <li><a class="nav-link" href="homepage"><i class="fas fa-th-large"></i> <span>Dashboard</span></a></li>
@@ -46,7 +46,7 @@
         <li class="menu-header">Security</li>
         <li><a class="nav-link" href="users"><i class="fas fa-user-cog"></i> <span>Users</span></a></li>
     </ul> -->
-    <ul class="sidebar-menu">
+    <ul class="sidebar-menu" style="padding-top: 15px;">
     <?php
         $Menus = new Menus();
 

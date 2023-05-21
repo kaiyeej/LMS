@@ -2,52 +2,70 @@
     table {
         display: block;
         overflow-x: auto;
+        overflow-y: auto;
+        max-height: 800px;
     }
 
-.div1 table {
-    border-spacing: 0;
-}
+    .div1 table {
+        border-spacing: 0;
+    }
 
-.div1 th {
-    border-left: none;
-    border-right: 1px solid #bbbbbb;
-    padding: 8px;
-    width: 100px;
-    min-width: 100px;
-    position: sticky;
-    top: 0;
-    background: #1f384b;
-    color: #e0e0e0;
-    font-weight: normal;
-}
+    .div1 th {
+        border-left: none;
+        border-right: 1px solid #bbbbbb;
+        padding: 8px;
+        width: 100px;
+        min-width: 100px;
+        position: sticky;
+        top: 0;
+        background: #1f384b;
+        color: #e0e0e0;
+        font-weight: normal;
+    }
 
-.div1 td {
-    border-left: none;
-    border-right: 1px solid #bbbbbb;
-    border-bottom: 1px solid #bbbbbb;
-    padding: 8px;
-    width: 100px;
-    min-width: 100px;
-}
+    .div1 td {
+        border-left: none;
+        border-right: 1px solid #bbbbbb;
+        border-bottom: 1px solid #bbbbbb;
+        padding: 8px;
+        width: 100px;
+        min-width: 100px;
+    }
 
-.div1 th:nth-child(1),
-.div1 td:nth-child(1) {
-    position: sticky;
-    left: 0;
-    width: 300px;
-    min-width: 300px;
-}
+    /* .div1 th:nth-child(1), */
+    .div1 td:nth-child(1) {
+        position: sticky;
+        left: 0;
+        width: 300px;
+        min-width: 300px;
+    }
 
 
-.div1 td:nth-child(1){
-    background: #ffebb5;
-}
+    .div1 td:nth-child(1) {
+        background: #ffebb5;
+    }
 
-.div1 th:nth-child(1){
-    z-index: 2;
-}
+    /* .div1 th:nth-child(1) {
+        z-index: 2;
+    } */
 
-    
+    .div1 td:nth-child(1) {
+        z-index: 2;
+    }
+
+    thead {
+        position: sticky;
+        top: 0;
+        border-bottom: 2px solid #ccc;
+        z-index: 999999;
+    }
+
+    tfoot {
+        position: sticky;
+        bottom: 0;
+        border-top: 2px solid #ccc;
+        z-index: 999999;
+    }
 </style>
 <section class="section">
     <div class="section-header">
@@ -115,24 +133,7 @@
                         </center>
                         <br>
                         <div id="trial_balance_report">
-                            <table class="table table-bordered table-hover cell-border" id="dt_entries" width="100%" cellspacing="0">
-                                <thead style="background: #1f384b;">
-                                    <tr>
-                                        <th style="color:#fff;width:50%;">CHART OF ACCOUNTS</th>
-                                        <th style="text-align:right;color:#fff;">DEBIT</th>
-                                        <th style="text-align:right;color:#fff;">CREDIT</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                                <tfoot>
-                                    <tr style="font-size: 15px;">
-                                        <th style="text-align:right">TOTAL:</th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </tfoot>
-                            </table>
+
                         </div>
                     </div>
                 </div>
@@ -269,6 +270,26 @@
             },
             success: function(data) {
                 $("#trial_balance_report").html(data.replace('{"data":null}', ''));
+                // $("tfoot").html("<td>Total:</td>");
+                var sums = []
+                $("table tbody tr").each(function() {
+                    $(this).find("td").each(function(i, x) {
+                        if ($(x).html().length) {
+                            var tdValue = parseInt($(x).html().replaceAll(',', ''));
+                            tdValue = (tdValue + parseInt(sums[i] == undefined ? 0 : sums[i]))
+                            sums[i] = tdValue
+                        }
+                    })
+                })
+                $.each(sums, function(i, x) {
+                    if(i == 0){
+                        $("tfoot").append("<td style='background: #1f384b;'>Total</td>")
+                    }else{
+                        total = x == undefined ? 0.00 : x;
+                        $("tfoot").append("<td>" + total.toLocaleString() + "</td>")
+                    }
+                    
+                })
 
             }
         });

@@ -123,36 +123,45 @@ class ChartOfAccounts extends Connection
         $data = '<table class="div1" width="100%" cellspacing="0">
                     <thead style="background: #1f384b;">
                         <tr style="text-align:center;">
-                            <th class="th_first"></th>'.
+                            <th></th>'.
                             $th_jl
                             .'
                         </tr>
                         <tr style="background: #607d8b;">
-                            <th class="th_first" style="color:#fff;">CHART OF ACCOUNTS</th>'.
+                            <th style="color:#fff;">CHART OF ACCOUNTS</th>'.
                             $th_dc_jl.'
                         </tr>
                     </thead>
                     <tbody>'.$td_jl;
         
-
+        $tfoot = "<td></td>";
         $result = $this->select($this->table, '*');
         while ($row = $result->fetch_assoc()) {
         
-            $sub = $row['chart_type'] == "S" ? "&emsp; ↪ " : "";
+            $sub = $row['chart_type'] == "S" ? "&emsp; <i class='fas fa-arrow-right'></i> " : "";
             $chart_name = $sub . $row['chart_name'];
             $td_ = "<tr><td style=''>".$chart_name."</td>";
             $fetchJournals = $this->select('tbl_journals', '*');
+            $total_debit = 0;
+            $total_credit = 0;
+            $tfoot_ = "";
             while($jlRow = $fetchJournals->fetch_assoc()){
                 $JL = $JournalEntry->total_per_chart($start_date, $end_date, $row['chart_id'],$jlRow['journal_id']);
-                $debit = $JL['total_debit'] > 0 ? number_format($JL['total_debit'],2) : "-";
-                $credit = $JL['total_credit'] > 0 ? number_format($JL['total_credit'],2) : "-";
+                $debit = $JL['total_debit'] > 0 ? number_format($JL['total_debit'],2) : "";
+                $credit = $JL['total_credit'] > 0 ? number_format($JL['total_credit'],2) : "";
                 $td_ .= "<td style='text-align:right;'>".$debit."</td><td style='text-align:right;'>".$credit."</td>";
+                $total_debit += $JL['total_debit'];
+                $total_credit += $JL['total_credit'];
+                $tfoot_ .= "<td></td><td style='text-align:right;'>".$total_debit."</td><td style='text-align:right;'>".$total_credit."</td>";
             }
             $td_ .= "</tr>";
-
             $data .= $td_;
 
         }
+
+        
+
+        $data .= "</tbody><tfoot style='text-align:right;background: #1f384b;color:#fff;'></tfoot></table>";
         echo $data;
     }
 

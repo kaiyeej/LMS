@@ -34,6 +34,8 @@ $User = new Users;
 
 
   <script src="assets/modules/jquery.min.js"></script>
+  
+  <link rel="shortcut icon" href="assets/img/logo2.png" />
 
   <!-- JS Libraies -->
   <script src="assets/modules/datatables/datatables.min.js"></script>
