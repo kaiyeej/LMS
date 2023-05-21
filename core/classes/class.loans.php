@@ -227,7 +227,7 @@ class Loans extends Connection
 
     public function pending_loans(){
         $year = date('Y');
-        $result = $this->select($this->table, "count(loan_id) as total", "YEAR(loan_date) = '$year' AND status = 'P'");
+        $result = $this->select($this->table, "count(loan_id) as total", "YEAR(loan_date) = '$year' AND status = 'R'");
         $row = $result->fetch_assoc();
         return $row['total'];
     }
