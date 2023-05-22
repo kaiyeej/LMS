@@ -80,6 +80,15 @@ class Loans extends Connection
         return $this->delete($this->table, "$this->pk IN($ids)");
     }
 
+    public function released()
+    {
+        $primary_id = $this->inputs['id'];
+        $form = array(
+            'status' => 'R',
+        );
+        return $this->update($this->table, $form, "$this->pk = '$primary_id'");
+    }
+
     public function name($primary_id)
     {
         $result = $this->select($this->table, 'reference_number', "$this->pk = '$primary_id'");
@@ -227,7 +236,7 @@ class Loans extends Connection
 
     public function pending_loans(){
         $year = date('Y');
-        $result = $this->select($this->table, "count(loan_id) as total", "YEAR(loan_date) = '$year' AND status = 'R'");
+        $result = $this->select($this->table, "count(loan_id) as total", "YEAR(loan_date) = '$year' AND status = 'A'");
         $row = $result->fetch_assoc();
         return $row['total'];
     }

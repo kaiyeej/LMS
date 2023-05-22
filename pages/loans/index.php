@@ -91,7 +91,7 @@
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return row.status == "P" ? '<a href="#" class="badge badge-light">Pending</a>' : row.status == "A" ? '<a href="#" class="badge badge-success">Approved</a>' :  row.status == "R" ? '<a href="#" class="badge badge-info">Released</a>' : row.status == "F" ? '<a href="#" class="badge badge-primary">Fully Paid</a>' : '<a href="#" class="badge badge-danger">Denied</a>';
+                        return row.status == "P" ? '<a href="#" class="badge badge-light">Pending</a>' : row.status == "A" ? '<a href="#" class="badge badge-success">Approved</a>' : row.status == "R" ? '<a href="#" class="badge badge-info">Released</a>' : row.status == "F" ? '<a href="#" class="badge badge-primary">Fully Paid</a>' : '<a href="#" class="badge badge-danger">Denied</a>';
                     }
                 },
                 {
@@ -104,16 +104,61 @@
         });
     }
 
+    function releasedLoan() {
+        $("#btn_release").html("<span class='fa fa-spinner fa-spin'></span>");
+        swal({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover these entries!',
+                icon: 'info',
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    var loan_id = $("#hidden_id").val();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "controllers/sql.php?c=" + route_settings.class_name + "&q=released",
+                        data: {
+                            input: {
+                                id: loan_id
+                            }
+                        },
+                        success: function(data) {
+                            getEntries();
+                            var json = JSON.parse(data);
+                            console.log(json);
+                            if (json.data == 1) {
+                                swal("Success!", "Successfully released loan!", "success");
+                            } else {
+                                failed_query(json);
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            errorLogger('Error:', textStatus, errorThrown);
+                        }
+                    });
+                    $("#btn_release").html('Release');
+                    $("#btn_release").prop('disabled', true);
+
+                    $("#modalEntry").modal("hide");
+                } else {
+                    swal("Cancelled", "Entries are safe :)", "error");
+                }
+            });
+    }
+
     function changeLoanType() {
         var optionSelected = $("#loan_type_id").find('option:selected').attr('loan_type_interest');
         loan_type_interest = optionSelected;
         $("#loan_interest").val(loan_type_interest);
     }
 
-    function calculateInterest(){
+    function calculateInterest() {
         var loan_amount = $("#loan_amount").val();
         var loan_period = $("#loan_period").val();
-        var interest = (loan_type_interest/100)
+        var interest = (loan_type_interest / 100)
 
         // $("#loan_interest").val(loan_type_interest);
 
@@ -145,18 +190,20 @@
                     }
                 },
             },
-            "columns": [
-                {
+            "columns": [{
                     "data": "date"
                 },
                 {
-                    "data": "payment", className: "text-right"
+                    "data": "payment",
+                    className: "text-right"
                 },
                 {
-                    "data": "interest", className: "text-right"
+                    "data": "interest",
+                    className: "text-right"
                 },
                 {
-                    "data": "applicable_principal", className: "text-right"
+                    "data": "applicable_principal",
+                    className: "text-right"
                 }
             ]
         });

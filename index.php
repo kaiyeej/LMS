@@ -34,7 +34,7 @@ $User = new Users;
 
 
   <script src="assets/modules/jquery.min.js"></script>
-  
+
   <link rel="shortcut icon" href="assets/img/logo2.png" />
 
   <!-- JS Libraies -->
@@ -301,8 +301,13 @@ $User = new Users;
 
       if (route_settings.class_name == "Vouchers") {
         $("#journal_id").val(7).trigger('change');
-      }else if(route_settings.class_name == "Loans"){
+      } else if (route_settings.class_name == "Loans") {
+        $('#loan_container :input').attr('readonly', false);
+        $(".select2").prop("disabled", false);
         sampleCalculation();
+        $("#btn_submit").show();
+        $("#btn_release").hide();
+        
       }
 
 
@@ -408,6 +413,15 @@ $User = new Users;
             // $("#loan_id").val(json['loan_id']);
             $("#loan_id").select2().select2('val', json['loan_id']);
           } else if (route_settings.class_name == "Loans") {
+            if (jsonParse.data['status'] != "A") {
+              $('#loan_container :input').attr('readonly', true);
+              $(".select2").prop("disabled", true);
+              $("#btn_submit").hide();
+              $("#btn_release").hide();
+            }else if(jsonParse.data['status'] == "A"){
+              $("#btn_submit").hide();
+              $("#btn_release").show();
+            }
             sampleCalculation();
           }
 
@@ -425,7 +439,6 @@ $User = new Users;
         modal_detail_status = 0;
       }
     }
-
 
 
     function deleteEntry() {
@@ -509,7 +522,7 @@ $User = new Users;
           var col_list = document.getElementById("col-list");
           var col_item = document.getElementById("col-item");
 
-          if(route_settings.class_name == "Vouchers"){
+          if (route_settings.class_name == "Vouchers") {
             journalID(id);
           }
 

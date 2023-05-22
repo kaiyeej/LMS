@@ -59,6 +59,9 @@
         $("#dt_entries").DataTable().destroy();
         $("#dt_entries").DataTable({
             "processing": true,
+            "order": [
+                [8, 'desc']
+            ],
             "ajax": {
                 "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=show",
                 "dataSrc": "data"
@@ -110,9 +113,6 @@
         $("#dt_entries_2").DataTable().destroy();
         $("#dt_entries_2").DataTable({
             "processing": true,
-            "order": [
-                [3, 'desc']
-            ],
             "ajax": {
                 "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=show_detail",
                 "dataSrc": "data",
