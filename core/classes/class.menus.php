@@ -6,6 +6,7 @@ class Menus extends Connection
         $this->menus = array(
             'master-data' => array(
                 array('url' => 'suppliers', 'name' => 'Suppliers', 'class_name' => 'Suppliers', 'has_detail' => 0),
+                array('url' => 'expense-category', 'name' => 'Expense Category', 'class_name' => 'ExpenseCategory', 'has_detail' => 0),
                 array('url' => 'clients', 'name' => 'Client', 'class_name' => 'Clients', 'has_detail' => 0),
                 array('url' => 'client-update', 'name' => 'Client Profile', 'class_name' => 'Clients', 'has_detail' => 0),
                 array('url' => 'product-price', 'name' => 'Product Price Notice', 'class_name' => 'ProductPrice', 'has_detail' => 1),
