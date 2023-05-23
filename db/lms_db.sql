@@ -52,35 +52,35 @@ CREATE TABLE IF NOT EXISTS `tbl_chart_of_accounts` (
   PRIMARY KEY (`chart_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_chart_of_accounts: ~26 rows (approximately)
+-- Dumping data for table lms_db.tbl_chart_of_accounts: ~24 rows (approximately)
 /*!40000 ALTER TABLE `tbl_chart_of_accounts` DISABLE KEYS */;
 INSERT INTO `tbl_chart_of_accounts` (`chart_id`, `chart_code`, `chart_name`, `chart_type`, `main_chart_id`, `chart_class_id`, `date_added`, `date_last_modified`) VALUES
-	(1, '100100', 'Petty Cash Fund', 'M', 0, 0, '2023-05-05 09:07:51', '2023-05-05 09:07:51'),
-	(2, '100200', 'Revolving Fund', 'M', 0, 0, '2023-05-05 09:08:15', '2023-05-05 09:08:15'),
-	(4, '200100', 'Cash in Bank', 'M', 0, 0, '2023-05-05 09:12:29', '2023-05-05 09:12:29'),
-	(5, '100300', 'Cash in Bank - RBMI-Featherleaf-(51-000120-4)', 'S', 4, 0, '2023-05-05 09:16:07', '2023-05-05 09:50:38'),
-	(6, '100400', 'Cash in Bank - RBMI - Featherleaf (101-21-000448-4', 'S', 4, 0, '2023-05-05 09:16:47', '2023-05-05 10:08:06'),
-	(7, '100500', 'Cash in Bank - RBMI - Featherleaf (101-21-000739-4', 'S', 4, 0, '2023-05-05 09:17:07', '2023-05-05 10:09:29'),
-	(8, '100600', 'Cash in Bank - CHINABANK - Featherleaf (1087000020', 'S', 4, 0, '2023-05-05 10:09:53', '2023-05-05 10:09:53'),
-	(9, '100700', 'Cash in Bank - PNB', 'S', 4, 0, '2023-05-05 10:10:08', '2023-05-05 10:10:08'),
-	(10, '100800', 'Cash in Bank - LAND BANK', 'S', 4, 0, '2023-05-05 10:10:22', '2023-05-05 10:10:22'),
-	(11, '100900', 'Cash in Bank - BDO', 'S', 4, 0, '2023-05-05 10:10:59', '2023-05-05 10:10:59'),
-	(12, '101000', 'Prepaid Rent', 'M', 0, 0, '2023-05-05 10:12:00', '2023-05-05 10:12:00'),
-	(13, '20020', 'Loans Receivable', 'M', 0, 0, '2023-05-05 10:12:46', '2023-05-05 10:12:46'),
-	(14, '101200', 'Loans Receivable - Pension Loan', 'S', 13, 0, '2023-05-05 10:13:17', '2023-05-05 10:13:17'),
-	(15, '101201', 'Loans Receivable - Pension Loan -LA CARLOTA', 'S', 13, 0, '2023-05-05 10:18:28', '2023-05-05 10:18:28'),
-	(16, '101202', 'Loans Receivable - Pension Loan -TALISAY', 'S', 13, 0, '2023-05-05 10:18:46', '2023-05-05 10:18:46'),
-	(17, '101300', 'Loans Receivable - Salary Loan', 'S', 13, 0, '2023-05-05 10:19:53', '2023-05-05 10:19:53'),
-	(18, '101301', 'Loans Receivable -  Salary Loan- LA CARLOTA', 'S', 13, 0, '2023-05-05 10:20:06', '2023-05-05 10:20:06'),
-	(19, '101302', 'Loans Receivable - Salary Loan- TALISAY', 'S', 13, 0, '2023-05-05 10:20:24', '2023-05-05 10:20:24'),
-	(20, 'w', 'Petty Cash Fund - ', 'S', 1, 2, '2023-05-17 13:54:28', '2023-05-17 13:54:28'),
-	(28, '21', '32 - 2', 'S', 0, 0, '2023-05-17 14:39:14', '2023-05-17 14:39:14'),
-	(31, '21', '2 - 21', 'S', 30, 0, '2023-05-17 14:41:45', '2023-05-17 14:41:45'),
+	(1, '100100', 'Petty Cash Fund', 'M', 0, 1, '2023-05-05 09:07:51', '2023-05-18 14:46:22'),
+	(2, '100200', 'Revolving Fund', 'M', 0, 1, '2023-05-05 09:08:15', '2023-05-18 14:46:40'),
+	(4, '200100', 'Cash in Bank', 'M', 0, 1, '2023-05-05 09:12:29', '2023-05-18 14:46:40'),
+	(5, '100300', 'Cash in Bank - RBMI-Featherleaf-(51-000120-4)', 'S', 4, 1, '2023-05-05 09:16:07', '2023-05-18 14:46:40'),
+	(6, '100400', 'Cash in Bank - RBMI - Featherleaf (101-21-000448-4', 'S', 4, 1, '2023-05-05 09:16:47', '2023-05-18 14:46:40'),
+	(7, '100500', 'Cash in Bank - RBMI - Featherleaf (101-21-000739-4', 'S', 4, 1, '2023-05-05 09:17:07', '2023-05-18 14:46:40'),
+	(8, '100600', 'Cash in Bank - CHINABANK - Featherleaf (1087000020', 'S', 4, 1, '2023-05-05 10:09:53', '2023-05-18 14:46:40'),
+	(9, '100700', 'Cash in Bank - PNB', 'S', 4, 1, '2023-05-05 10:10:08', '2023-05-18 14:46:40'),
+	(10, '100800', 'Cash in Bank - LAND BANK', 'S', 4, 1, '2023-05-05 10:10:22', '2023-05-18 14:46:40'),
+	(11, '100900', 'Cash in Bank - BDO', 'S', 4, 1, '2023-05-05 10:10:59', '2023-05-18 14:46:40'),
+	(12, '101000', 'Prepaid Rent', 'M', 0, 1, '2023-05-05 10:12:00', '2023-05-18 14:46:40'),
+	(13, '20020', 'Loans Receivable', 'M', 0, 1, '2023-05-05 10:12:46', '2023-05-18 14:46:40'),
+	(14, '101200', 'Loans Receivable - Pension Loan', 'S', 13, 1, '2023-05-05 10:13:17', '2023-05-18 14:46:40'),
+	(15, '101201', 'Loans Receivable - Pension Loan -LA CARLOTA', 'S', 13, 1, '2023-05-05 10:18:28', '2023-05-18 14:46:40'),
+	(16, '101202', 'Loans Receivable - Pension Loan -TALISAY', 'S', 13, 1, '2023-05-05 10:18:46', '2023-05-18 14:46:40'),
+	(17, '101300', 'Loans Receivable - Salary Loan', 'S', 13, 1, '2023-05-05 10:19:53', '2023-05-18 14:46:40'),
+	(18, '101301', 'Loans Receivable -  Salary Loan- LA CARLOTA', 'S', 13, 1, '2023-05-05 10:20:06', '2023-05-18 14:46:40'),
+	(19, '101302', 'Loans Receivable - Salary Loan- TALISAY', 'S', 13, 1, '2023-05-05 10:20:24', '2023-05-18 14:46:40'),
+	(20, 'w', 'Petty Cash Fund - ', 'S', 1, 1, '2023-05-17 13:54:28', '2023-05-18 14:46:40'),
+	(28, '21', '32 - 2', 'S', 0, 1, '2023-05-17 14:39:14', '2023-05-18 14:46:40'),
+	(31, '21', '2 - 21', 'S', 30, 1, '2023-05-17 14:41:45', '2023-05-18 14:46:40'),
 	(32, '12323', 'sample', 'M', 0, 1, '2023-05-17 14:42:09', '2023-05-17 14:42:09'),
 	(33, '23', 'sample - 3', 'S', 32, 1, '2023-05-17 14:42:24', '2023-05-17 14:42:24'),
 	(34, '3123', '32123', 'M', 0, 1, '2023-05-17 14:44:13', '2023-05-17 14:44:13'),
 	(35, '23', '234', 'M', 0, 1, '2023-05-17 14:48:39', '2023-05-17 14:48:39'),
-	(36, '234', 'Revolving Fund - 32', 'S', 2, 0, '2023-05-17 14:48:46', '2023-05-17 14:48:46');
+	(36, '234', 'Revolving Fund - 32', 'S', 2, 1, '2023-05-17 14:48:46', '2023-05-18 14:46:40');
 /*!40000 ALTER TABLE `tbl_chart_of_accounts` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_children
@@ -229,6 +229,53 @@ CREATE TABLE IF NOT EXISTS `tbl_comakers` (
 /*!40000 ALTER TABLE `tbl_comakers` DISABLE KEYS */;
 /*!40000 ALTER TABLE `tbl_comakers` ENABLE KEYS */;
 
+-- Dumping structure for table lms_db.tbl_expenses
+CREATE TABLE IF NOT EXISTS `tbl_expenses` (
+  `expense_id` int(11) NOT NULL AUTO_INCREMENT,
+  `reference_number` varchar(50) NOT NULL,
+  `expense_date` date NOT NULL,
+  `remarks` varchar(250) NOT NULL,
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `journal_id` int(11) NOT NULL,
+  `status` varchar(1) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `credit_method` int(11) NOT NULL,
+  PRIMARY KEY (`expense_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table lms_db.tbl_expenses: ~0 rows (approximately)
+/*!40000 ALTER TABLE `tbl_expenses` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tbl_expenses` ENABLE KEYS */;
+
+-- Dumping structure for table lms_db.tbl_expense_category
+CREATE TABLE IF NOT EXISTS `tbl_expense_category` (
+  `expense_category_id` int(11) NOT NULL AUTO_INCREMENT,
+  `expense_category` varchar(50) NOT NULL,
+  `remarks` varchar(250) NOT NULL,
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_last_modefied` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`expense_category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table lms_db.tbl_expense_category: ~0 rows (approximately)
+/*!40000 ALTER TABLE `tbl_expense_category` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tbl_expense_category` ENABLE KEYS */;
+
+-- Dumping structure for table lms_db.tbl_expense_details
+CREATE TABLE IF NOT EXISTS `tbl_expense_details` (
+  `expense_detail_id` int(11) NOT NULL AUTO_INCREMENT,
+  `expense_id` int(11) NOT NULL,
+  `chart_id` int(11) NOT NULL,
+  `expense_amount` decimal(12,3) NOT NULL,
+  `expense_desc` varchar(250) NOT NULL,
+  PRIMARY KEY (`expense_detail_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table lms_db.tbl_expense_details: ~0 rows (approximately)
+/*!40000 ALTER TABLE `tbl_expense_details` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tbl_expense_details` ENABLE KEYS */;
+
 -- Dumping structure for table lms_db.tbl_insurance
 CREATE TABLE IF NOT EXISTS `tbl_insurance` (
   `insurance_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -281,13 +328,14 @@ CREATE TABLE IF NOT EXISTS `tbl_journal_entries` (
   `date_last_modified` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_manual` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`journal_entry_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table lms_db.tbl_journal_entries: ~2 rows (approximately)
 /*!40000 ALTER TABLE `tbl_journal_entries` DISABLE KEYS */;
 INSERT INTO `tbl_journal_entries` (`journal_entry_id`, `reference_number`, `cross_reference`, `journal_id`, `remarks`, `journal_date`, `user_id`, `status`, `date_added`, `date_last_modified`, `is_manual`) VALUES
 	(30, 'BBJ-20230516084133', '20000dsad', 3, '', '2023-05-16', 1, 'F', '2023-05-16 14:41:42', '2023-05-16 14:42:15', 'Y'),
-	(31, 'CDJ-20230516084245', 'CV-20230516084230', 7, '324', '2023-05-09', 1, 'F', '2023-05-16 14:42:45', '2023-05-16 14:43:18', 'N');
+	(31, 'CDJ-20230516084245', 'CV-20230516084230', 7, '324', '2023-05-09', 1, 'F', '2023-05-16 14:42:45', '2023-05-16 14:43:18', 'N'),
+	(32, 'BBJ-20230518103549', '23434', 3, 'Purchase Qwerty', '2023-05-18', 1, 'S', '2023-05-18 16:35:57', '2023-05-18 16:47:49', 'Y');
 /*!40000 ALTER TABLE `tbl_journal_entries` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_journal_entry_details
@@ -299,9 +347,9 @@ CREATE TABLE IF NOT EXISTS `tbl_journal_entry_details` (
   `debit` decimal(12,3) NOT NULL DEFAULT '0.000',
   `credit` decimal(12,3) NOT NULL DEFAULT '0.000',
   PRIMARY KEY (`journal_entry_detail_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_journal_entry_details: ~30 rows (approximately)
+-- Dumping data for table lms_db.tbl_journal_entry_details: ~26 rows (approximately)
 /*!40000 ALTER TABLE `tbl_journal_entry_details` DISABLE KEYS */;
 INSERT INTO `tbl_journal_entry_details` (`journal_entry_detail_id`, `journal_entry_id`, `chart_id`, `description`, `debit`, `credit`) VALUES
 	(10, 6, 1, '', 3.000, 0.000),
@@ -333,7 +381,10 @@ INSERT INTO `tbl_journal_entry_details` (`journal_entry_detail_id`, `journal_ent
 	(40, 31, 12, '', 1500.000, 0.000),
 	(41, 31, 13, '', 1500.000, 0.000),
 	(42, 32, 2, '', 23.000, 0.000),
-	(43, 32, 5, '', 0.000, 23.000);
+	(43, 32, 5, '', 0.000, 23.000),
+	(44, 32, 2, '', 324.000, 0.000),
+	(45, 32, 4, '', 0.000, 50.000),
+	(46, 32, 17, '', 27.000, 0.000);
 /*!40000 ALTER TABLE `tbl_journal_entry_details` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_loans
@@ -351,14 +402,15 @@ CREATE TABLE IF NOT EXISTS `tbl_loans` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`loan_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table lms_db.tbl_loans: ~3 rows (approximately)
 /*!40000 ALTER TABLE `tbl_loans` DISABLE KEYS */;
 INSERT INTO `tbl_loans` (`loan_id`, `reference_number`, `client_id`, `loan_type_id`, `loan_amount`, `loan_period`, `loan_interest`, `due_date`, `status`, `loan_date`, `date_added`, `date_last_modified`) VALUES
 	(3, 'LN-20230502050211', 45, 1, 100000.000, 12, 17.000, '0000-00-00', 'R', '2023-05-02', '2023-05-02 11:02:18', '2023-05-02 16:53:04'),
 	(4, 'LN-20230503042518', 45, 1, 4.000, 2, 12.000, '0000-00-00', 'R', '2023-05-03', '2023-05-03 10:25:27', '2023-05-11 17:21:30'),
-	(5, 'LN-20230503094828', 45, 2, 2.000, 2, 1.000, '0000-00-00', 'A', '2023-05-03', '2023-05-03 15:48:37', '2023-05-03 15:49:10');
+	(5, 'LN-20230503094828', 45, 2, 2.000, 2, 1.000, '0000-00-00', 'A', '2023-05-03', '2023-05-03 15:48:37', '2023-05-03 15:49:10'),
+	(6, 'LN-20230519092753', 45, 1, 10000.000, 10, 18.000, '0000-00-00', 'R', '2023-05-19', '2023-05-19 15:28:58', '2023-05-23 14:37:54');
 /*!40000 ALTER TABLE `tbl_loans` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_loan_types
@@ -418,7 +470,7 @@ CREATE TABLE IF NOT EXISTS `tbl_suppliers` (
   PRIMARY KEY (`supplier_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_suppliers: ~1 rows (approximately)
+-- Dumping data for table lms_db.tbl_suppliers: ~0 rows (approximately)
 /*!40000 ALTER TABLE `tbl_suppliers` DISABLE KEYS */;
 INSERT INTO `tbl_suppliers` (`supplier_id`, `supplier_name`, `supplier_address`, `supplier_contact_no`, `remarks`, `date_added`, `date_last_modified`) VALUES
 	(2, 'Lao Chan Corp.', '', '033222', '', '2023-05-12 13:22:48', '2023-05-12 13:22:48');
@@ -439,7 +491,7 @@ CREATE TABLE IF NOT EXISTS `tbl_users` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table lms_db.tbl_users: ~3 rows (approximately)
+-- Dumping data for table lms_db.tbl_users: ~2 rows (approximately)
 /*!40000 ALTER TABLE `tbl_users` DISABLE KEYS */;
 INSERT INTO `tbl_users` (`user_id`, `user_fname`, `user_mname`, `user_lname`, `user_category_id`, `user_category`, `username`, `password`, `date_added`, `date_last_modified`) VALUES
 	(1, 'Juan', '', 'Dela Cruz', 1, 'A', 'admin', '0cc175b9c0f1b6a831c399e269772661', '2023-04-09 20:44:25', '2023-05-16 08:25:02'),
@@ -458,7 +510,7 @@ CREATE TABLE IF NOT EXISTS `tbl_user_categories` (
   PRIMARY KEY (`user_category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_user_categories: ~3 rows (approximately)
+-- Dumping data for table lms_db.tbl_user_categories: ~2 rows (approximately)
 /*!40000 ALTER TABLE `tbl_user_categories` DISABLE KEYS */;
 INSERT INTO `tbl_user_categories` (`user_category_id`, `user_category_name`, `remarks`, `is_preset`, `date_added`, `date_last_modified`) VALUES
 	(1, 'Admin', '', 'Y', '2023-05-15 22:08:46', '2023-05-15 22:15:00'),

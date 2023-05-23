@@ -4,6 +4,7 @@
         overflow-x: auto;
         overflow-y: auto;
         max-height: 800px;
+        font-size: 12px;
     }
 
     .div1 table {
@@ -20,7 +21,6 @@
         top: 0;
         background: #1f384b;
         color: #e0e0e0;
-        font-weight: normal;
     }
 
     .div1 td {
