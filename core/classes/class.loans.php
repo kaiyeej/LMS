@@ -206,6 +206,23 @@ class Loans extends Connection
         return $rows;
     }
 
+    public function accounts_receivable(){
+        $report_year = $this->inputs['report_year'];
+
+        $rows = array();
+        $result = $this->select($this->table, '*', "YEAR(loan_date) = '$report_year' AND status != 'D'");
+        while ($row = $result) {
+            
+            $loan_date = date('M d, Y', strtotime('+1 month', strtotime($loan_date)));
+
+
+            $row['date'] = $loan_date;
+            $rows[] = $row;
+        }
+
+        return $rows;
+    }
+
     public function released_total(){
         $year = date('Y');
         $result = $this->select($this->table, "sum(loan_amount) as total", "YEAR(loan_date) = '$year' AND (status = 'R' OR status='F')");

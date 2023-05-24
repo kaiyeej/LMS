@@ -52,6 +52,7 @@ class ChartOfAccounts extends Connection
             $row['type'] = $row['chart_type'] == "M" ? "Main" : "Sub";
             $row['main_chart'] = $this->name($row['main_chart_id']);
             $row['main_chart_id'] = $row['chart_id'];
+            $row['credit_method'] = $row['chart_id'];
             $row['chart_class'] = $ChartClassification->name($row['chart_class_id']);
             $rows[] = $row;
         }

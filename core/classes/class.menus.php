@@ -17,11 +17,12 @@ class Menus extends Connection
             'transaction' => array(
                 array('url' => 'loans', 'name' => 'Loans', 'class_name' => 'Loans', 'has_detail' => 0),
                 array('url' => 'collections', 'name' => 'Collections', 'class_name' => 'Collections', 'has_detail' => 0),
+                array('url' => 'expenses', 'name' => 'Expenses', 'class_name' => 'Expenses', 'has_detail' => 1),
                 array('url' => 'vouchers', 'name' => 'Vouchers', 'class_name' => 'Vouchers', 'has_detail' => 1),
-                array('url' => 'sales-return', 'name' => 'Sales Return', 'class_name' => 'SalesReturn', 'has_detail' => 1),
             ),
             'report' => array(
 
+                array('url' => 'accounts-receivable', 'name' => 'Accounts Receivable', 'class_name' => 'Loans', 'has_detail' => 0),
                 array('url' => 'receivable-ledger', 'name' => 'Receivable Ledger', 'class_name' => 'ReceivableLedger', 'has_detail' => 0),
                 array('url' => 'loan-status-report', 'name' => 'Loan Status Report', 'class_name' => 'LoanReport', 'has_detail' => 0),
                 array('url' => 'loan-type-report', 'name' => 'Loan Type Report', 'class_name' => 'LoanReport', 'has_detail' => 0),

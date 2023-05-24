@@ -65,6 +65,7 @@
                 <div class="col-12 col-xl-12 card shadow mb-4">
                     <div id="report_container" class="card-body">
                         <center>
+                            <img src="./assets/img/logo2.png" alt="logo" width="200"><br>
                             <h5>Receivable Ledger</h5><br>
                         </center>
                         <div class="table-responsive">
@@ -80,7 +81,7 @@
                                     </tr>
                                     <tr>
                                         <td style="text-align:right"><strong>Account:</strong></td>
-                                        <td colspan="5"><span id="span_client"></span></td>
+                                        <td colspan="5"><span style="font-size:15px;font-weight: bold;" id="span_client"></span></td>
                                     </tr>
                                     <tr>
                                         <td colspan="5" style="text-align:right"><strong>Balance Fowarded:</strong></td>
