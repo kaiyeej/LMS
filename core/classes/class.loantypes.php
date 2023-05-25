@@ -67,4 +67,11 @@ class LoanTypes extends Connection
         $row = $result->fetch_assoc();
         return $row['loan_type'];
     }
+
+    public function total_per_month($primary_id,$month,$year){
+
+        $result = $this->select("tbl_loans", "sum(loan_amount) as total", "MONTH(loan_date) = '$month' AND YEAR(loan_date) = '$year' AND (status = 'R' OR status='F') AND $this->pk = '$primary_id'");
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
 }

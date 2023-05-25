@@ -2,81 +2,64 @@
 
 class IncomeStatement extends Connection
 {
-    private $table = 'tbl_chart_classification';
-    public $pk = 'chart_class_id';
-    public $name = 'chart_class_name';
-
-
-    public function show()
+    public function view()
     {
-        $start_date = $this->inputs['start_date'];
-        $end_date = $this->inputs['end_date'];
-        $years_ = ($end_date - $start_date) + 1;
+        $month = $this->inputs['report_month'];
+        $year = $this->inputs['report_year'];
 
-        $i = 0;
-        $th = "";
-        $th_year = $start_date;
-        $cl_span = 1;
-        while ($i < $years_) {
-            $th .= "<th style='color:#fff;text-align:right;'>" . $th_year . "</th>";
-            $i++;
-            $th_year++;
-            $cl_span++;
-        }
-        $data = '<table class="table table-bordered" id="dt_entries" width="100%" cellspacing="0">
-                    <thead style="background: #1f384b;">
-                        <tr>
-                            <th style="color:#fff;">CHART</th>' . $th . '
-                        </tr>
-                    </thead>
-                    <tbody>';
-        $JL = new JournalEntry;
-        $result = $this->select($this->table);
-        $total_td = "";
-        $counter = 0;
-        while ($row = $result->fetch_assoc()) {
-            $data .= '<tr>
-                        <td colspan="' . $cl_span . '"><strong>' . $row['chart_class_name'] . '</strong></td>
-                    </tr>';
-            $result_chart = $this->select('tbl_chart_of_accounts', '*', "chart_class_id='$row[chart_class_id]'");
-            $tf_total = 0;
-            
-            while ($chartRow = $result_chart->fetch_assoc()) {
-                $y = 0;
-                $td = "";
-                $td_year = $start_date;
-                while ($y < $years_) {
-                    $y_total = $JL->chart_per_year($td_year,$chartRow['chart_id']);
-                    $td .= "<td style='text-align:right;'>" . number_format($y_total,2) . "</td>";
-                    $y++;
-                    $td_year++;
-                    $tf_total += $y_total;
-                }
-                $data .= '<tr>
-                            <td>&emsp;&emsp;&emsp; ' . $chartRow['chart_name'] . '</td>
-                            '.$td.'
-                        </tr>';
-            }
+        $Collections = new Collections;
 
-            
-            if($counter > 0){
-                $total_td .= "<td>".number_format($tf_total,2)."</td>";
-            }
+        $collected = $Collections->monthly_collection($month,$year);
+        $loan_types = $this->loan_types($month,$year);
+        $expenses = $this->expenses($month,$year);
 
-            $counter++;
+        $gross_income = 0;
 
-            
-        }
 
-        $data .= "</tbody>
-                    <tfoot>
-                        <tr style='text-align:right;font-weight: bold;'>
-                            <td>Total:</td>
-                            ".$total_td."
-                        </tr>
-                    </tfoot>
-                </table>";
-
-        echo $data;
+        $rows = array();
+        $row['collected_total'] = number_format($collected,2);
+        $row['loan_releases_list'] = $loan_types[0];
+        $row['expenses_list'] = $expenses[0];
+        $row['expenses_total'] = $expenses[1];
+        $row['income_total'] = $gross_income-$expenses[1];
+        $rows = $row;
+        return $rows;
     }
+
+    
+    public function loan_types($month,$year){
+
+        $result = $this->select("tbl_loan_types", "*");
+        $list = "";
+        $total = 0;
+        $LoanTypes = new LoanTypes;
+        while($row = $result->fetch_array()){
+            $sum = $LoanTypes->total_per_month($row['loan_type_id'],$month,$year);
+            // if($sum > 0){
+                $list .= "<tr><td style='padding-left: 100px;'>".$row['loan_type']."</td><td style='text-align:right;'>".number_format($sum,2)."</td></tr>";
+            // }
+            $total += $sum;
+        }
+
+        return [$list,$total];
+    }
+
+    public function expenses($month,$year){
+
+        // $result = $this->select("tbl_expense_details as d, tbl_expenses as h", "d.expense_detail_id, d.expense_id, d.chart_id, d.expense_amount", "h.expense_id=d.expense_id AND MONTH(h.expense_date) = '$month' AND YEAR(h.expense_date) = '$year' AND h.status='F'");
+        $result = $this->select("tbl_chart_of_accounts", "*");
+        $list = "";
+        $total = 0;
+        while($row = $result->fetch_array()){
+            $fetch_sum = $this->select("tbl_expense_details as d, tbl_expenses as h", "sum(d.expense_amount)", "h.expense_id=d.expense_id AND MONTH(h.expense_date) = '$month' AND YEAR(h.expense_date) = '$year' AND h.status='F' AND d.chart_id='$row[chart_id]'");
+            $sum = $fetch_sum->fetch_array();
+            if($sum[0] > 0){
+                $list .= "<tr><td style='padding-left: 100px;'>".$row['chart_name']."</td><td style='text-align:right;'>".number_format($sum[0],2)."</td></tr>";
+            }
+            $total += $sum[0];
+        }
+
+        return [$list,$total];
+    }
+
 }

@@ -13,13 +13,15 @@
                 <div class="form-group row">
                     <div class="col-lg-4">
                         <label><strong>Month</strong></label>
-                        <select class="form-control select2" style="width: 100%;" id='start_date' name='start_date' required>
+                        <select class="form-control select2" style="width: 100%;" id='report_month' name='report_month' required>
                             <?php
-
                             for ($i = 0; $i < 12; $i++) {
-                                $date_str = date('M', strtotime("+ $i months"));
-                                echo "<option value=$i>" . $date_str . "</option>";
-                            } ?>
+                                $time = strtotime(sprintf('%d months', $i));
+                                $label = date('F', $time);
+                                $value = date('n', $time);
+                                echo "<option value='$value'>" . strtoupper($label) . "</option>";
+                            }
+                            ?>
                         </select>
                     </div>
                     <div class="col-lg-4">
@@ -72,29 +74,59 @@
                 <div class="col-12 col-xl-12 card shadow mb-4">
                     <div id="report_container" class="card-body">
                         <center>
-                            <img src="./assets/img/logo2.png" alt="logo" width="200"><br>
-                            <!-- <h5><span id="company_label"></span></h5> -->
-                            <h5>Financial Statements</h5>
+                            <img src="./assets/img/logo2.png" alt="logo" width="200"><br><br>
                             <strong> <span id='covered_date_label'></span></strong>
                         </center>
                         <br>
-                        <div class="table-responsive" id="financial_report">
-                            <table class="table table-bordered table-hover cell-border" id="dt_entries" width="100%" cellspacing="0">
-                                <thead style="background: #1f384b;">
-                                    <tr>
+                        <div class="table-responsive">
+                            <center>
+                                <table class="table table-bordered table-hover cell-border" id="dt_entries" width="100%" cellspacing="0">
+                                    <thead style="background: #90a4ae;">
+                                        <tr>
+                                            <th style="color:#fff;">COLLECTION</th>
+                                            <th style="text-align:right;font-weight:bold;color:#fff;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding-left: 100px;">FLC Collection</td>
+                                            <td style="text-align:right;"><span id="collected_total_label" class="label-item"></span></td>
+                                        </tr>
+                                    </tbody>
 
+                                    <thead style="background: #90a4ae;">
+                                        <tr>
+                                            <th style="color:#fff;">LOAN RELEASES</th>
+                                            <th style="text-align:right;font-weight:bold;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="loan_releases_list_label" class="label-item">
+
+                                    </tbody>
+
+                                    <thead style="background: #90a4ae;">
+                                        <tr>
+                                            <th style="color:#fff;">EXPENSES</th>
+                                            <th style="text-align:right;font-weight:bold;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="expenses_list_label" class="label-item">
+
+                                    </tbody>
+                                    <tr style="font-weight:bold;">
+                                        <td style="text-align:right;">Subtotal</td>
+                                        <td style="text-align:right;"><span id="expenses_total_label" class="label-item"></span></td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                                <tfoot>
-                                    <tr style="font-size: 15px;">
-                                        <th style="text-align:right;">TOTAL:</th>
-                                        <th></th>
-                                        <th></th>
+
+                                    <tr style="font-weight:bold;">
+                                        <td style="text-align:right;font-style: italic;font-size:15px;">NET INCOME , <span id="net_date_label"></span></td>
+                                        <td style="text-align:right;font-size:15px;"><span id="income_total_label" class="label-item"></span></td>
                                     </tr>
-                                </tfoot>
-                            </table>
+
+                                    </tbody>
+                                    <tfoot>
+                                    </tfoot>
+                                </table>
                         </div>
                     </div>
                 </div>
@@ -109,57 +141,42 @@
         getReport();
     });
 
-    function setTH() {
-        $("#dt_entries>thead>tr").html("<th style='color:#fff;'>CHART</th>");
-        $("#dt_entries>tfoot>tr").html("<th style='text-align:right;'>TOTAL</th>");
-
-        var start_date = $("#start_date").val();
-        var end_date = $("#end_date").val();
-        var y = (end_date - start_date) + 1;
-        var i = 0;
-        var year = start_date;
-        while (i < y) {
-            $("#dt_entries>thead>tr").append("<th style='color:#fff;text-align:right;'>" + year + "</th>");
-            $("#dt_entries>tfoot>tr").append("<th style='text-align:right;'></th>");
-            year++;
-            i++;
-        }
-    }
-
 
     function getReport() {
-        setTH();
-        var start_date = $("#start_date").val();
+        var report_month = $("#report_month").val();
         var report_year = $("#report_year").val();
-        var start_d = new Date(start_date);
-        var end_d = new Date(end_date);
 
-        var options = {
-            year: 'numeric',
-        };
+        var mnth = $('#report_month').find(":selected").text();
 
-        $("#covered_date_label").html("PERIOD COVERED " + start_d.toLocaleDateString('en-US', options).toUpperCase() + " TO " + end_d.toLocaleDateString('en-US', options).toUpperCase());
-
-        $("#financial_report").html("<center><h3><span class='fa fa-spinner fa-spin'></span> Loading ...</h3></center>");
+        $("#covered_date_label").html("LENDING OPERATION FOR THE MONTH OF " + mnth + " " + report_year);
+        $("#net_date_label").html(mnth + " " + report_year);
 
         $.ajax({
             type: "POST",
-            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=show",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=view",
             data: {
                 input: {
-                    start_date: start_date,
+                    report_month: report_month,
                     report_year: report_year
                 }
             },
             success: function(data) {
-                $("#financial_report").html(data.replace('{"data":null}', ''));
+                var jsonParse = JSON.parse(data);
+                const json = jsonParse.data;
 
+                $('.label-item').map(function() {
+                    const id_name = this.id;
+                    const new_id = id_name.replace('_label', '');
+                    this.innerHTML = json[new_id];
+                });
             }
         });
-
     }
 
     $(document).ready(function() {
         getReport();
+
+        // $("#company_name_label").html(company_profile.company_name);
+        // $("#company_address_label").html(company_profile.company_address);
     });
 </script>
