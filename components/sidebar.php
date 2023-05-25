@@ -70,7 +70,7 @@
 
         //REPORTS
         echo '<li class="menu-header">Reports</li>';
-        $Menus->sidebar('Accounts Receivables', 'accounts-receivable', 'fas fa-chart-bar');
+        $Menus->sidebar('Accounts Receivables', 'accounts-receivable', 'fas fa-poll-h');
         $Menus->sidebar('AR Ledger', 'receivable-ledger', 'fas fa-chart-bar');
         $Menus->sidebar('Collection Report', 'collection-report', 'fas fa-file-invoice-dollar');
         $Menus->sidebar_parent('Loan Report', 'fas fa-list-ol', array(
@@ -87,6 +87,7 @@
         $Menus->sidebar('Journal Entry', 'journal-entry', 'fas fa-book-open');
         $Menus->sidebar('Journal Book', 'journal-book', 'fa fa-book');
         $Menus->sidebar('Financial Statements', 'financial-statements', 'fas fa-chart-line');
+        $Menus->sidebar('Income Statement', 'income-statement', 'fas fa-file-invoice');
         $Menus->sidebar('Trial Balance', 'trial-balance', 'fas fa-balance-scale');
 
         // ADMIN

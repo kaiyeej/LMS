@@ -83,7 +83,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="5" style="text-align:right">TOTAL:</th>
+                                        <th colspan="7" style="text-align:right">TOTAL:</th>
                                         <th><span id="span_total"></span></th>
                                     </tr>
                                 </tfoot>
@@ -120,57 +120,64 @@
                     }
                 },
             },
-            // "footerCallback": function(row, data, start, end, display) {
-            //     var api = this.api();
+            "footerCallback": function(row, data, start, end, display) {
+                var api = this.api();
 
-            //     // Remove the formatting to get integer data for summation
-            //     var intVal = function(i) {
-            //         return typeof i === 'string' ?
-            //             i.replace(/[\$,]/g, '') * 1 :
-            //             typeof i === 'number' ?
-            //             i : 0;
-            //     };
+                // Remove the formatting to get integer data for summation
+                var intVal = function(i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
 
-            //     debitTotal = api
-            //         .column(5, {
-            //             page: 'current'
-            //         })
-            //         .data()
-            //         .reduce(function(a, b) {
-            //             return intVal(a) + intVal(b);
-            //         }, 0);
+                debitTotal = api
+                    .column(7, {
+                        page: 'current'
+                    })
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
 
-            //     // Update footer
-            //     $(api.column(5).footer()).html(
-            //         "&#x20B1; " + debitTotal.toLocaleString('en-US', {
-            //             minimumFractionDigits: 2
-            //         })
-            //     );
+                // Update footer
+                $(api.column(7).footer()).html(
+                    "&#x20B1; " + debitTotal.toLocaleString('en-US', {
+                        minimumFractionDigits: 2
+                    })
+                );
 
 
-            // },
+            },
             "columns": [{
                     "data": "loan_date"
-                },
-                {
-                    "data": "client"
                 },
                 {
                     "data": "reference_number"
                 },
                 {
-                    "data": "loan_type"
-                },
-                {
-                    "mRender": function(data, type, row) {
-                        return row.status == "P" ? '<a href="#" class="badge badge-light">Pending</a>' : row.status == "A" ? '<a href="#" class="badge badge-success">Approved</a>' :  row.status == "R" ? '<a href="#" class="badge badge-info">Released</a>' : row.status == "F" ? '<a href="#" class="badge badge-primary">Fully Paid</a>' : '<a href="#" class="badge badge-danger">Denied</a>';
-                    }
+                    "data": "client"
                 },
                 {
                     "data": "amount",
                     className: "text-right"
                 },
-
+                {
+                    "data": "total_payment",
+                    className: "text-right"
+                },
+                {
+                    "data": "amount_receivable",
+                    className: "text-right"
+                },
+                {
+                    "data": "total_penalties",
+                    className: "text-right"
+                },
+                {
+                    "data": "subtotal",
+                    className: "text-right"
+                }
             ]
 
         });

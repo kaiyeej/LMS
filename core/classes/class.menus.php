@@ -37,6 +37,7 @@ class Menus extends Connection
                 array('url' => 'journal-entry', 'name' => 'Journal Entry', 'class_name' => 'JournalEntry', 'has_detail' => 1),
                 array('url' => 'journal-book', 'name' => 'Journal Book', 'class_name' => 'JournalEntry', 'has_detail' => 0),
                 array('url' => 'financial-statements', 'name' => 'Financial Statements', 'class_name' => 'FinancialStatements', 'has_detail' => 0),
+                array('url' => 'income-statement', 'name' => 'Income Statement', 'class_name' => 'IncomeStatement', 'has_detail' => 0),
                 array('url' => 'trial-balance', 'name' => 'Trial Balance', 'class_name' => 'ChartOfAccounts', 'has_detail' => 0),
             ),
             'admin' => array(

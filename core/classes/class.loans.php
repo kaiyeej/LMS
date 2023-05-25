@@ -208,18 +208,23 @@ class Loans extends Connection
 
     public function accounts_receivable(){
         $report_year = $this->inputs['report_year'];
-
         $rows = array();
-        $result = $this->select($this->table, '*', "YEAR(loan_date) = '$report_year' AND status != 'D'");
-        while ($row = $result) {
-            
-            $loan_date = date('M d, Y', strtotime('+1 month', strtotime($loan_date)));
-
-
-            $row['date'] = $loan_date;
+        $Clients = new Clients;
+        $Collections = new Collections;
+        $result = $this->select($this->table, '*',"YEAR(loan_date) = '$report_year' AND status != 'D'");
+        while ($row = $result->fetch_assoc()) {
+            $payment = $Collections->total_collected($row['loan_id']);
+            $amount_receivable = $row['loan_amount']-$payment;
+            $penalty = 0;
+            $subtotal = $amount_receivable+$penalty;
+            $row['client'] = $Clients->name($row['client_id']);
+            $row['amount'] = number_format($row['loan_amount'],2);
+            $row['total_payment'] = number_format($payment,2);
+            $row['amount_receivable'] = number_format($amount_receivable,2);
+            $row['total_penalties'] = number_format($penalty,2);
+            $row['subtotal'] = number_format($subtotal,2);
             $rows[] = $row;
         }
-
         return $rows;
     }
 

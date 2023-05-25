@@ -27,4 +27,5 @@ $classes = array(
     'FinancialStatements'   => $pre_class . 'financialstatements.php',
     'ExpenseCategory'       => $pre_class . 'expensecategory.php',
     'Expenses'              => $pre_class . 'expenses.php',
+    'IncomeStatement'       => $pre_class . 'incomestatement.php',
 );
