@@ -25,4 +25,7 @@ $classes = array(
     'UserCategories'        => $pre_class . 'usercategories.php',
     'ChartClassification'   => $pre_class . 'chartclassification.php',
     'FinancialStatements'   => $pre_class . 'financialstatements.php',
+    'ExpenseCategory'       => $pre_class . 'expensecategory.php',
+    'Expenses'              => $pre_class . 'expenses.php',
+    'IncomeStatement'       => $pre_class . 'incomestatement.php',
 );

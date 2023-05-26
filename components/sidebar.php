@@ -55,6 +55,7 @@
         // MASTER DATA
         echo '<li class="menu-header">Master Data</li>';
         $Menus->sidebar('Clients', 'clients', 'fas fa-address-card');
+        $Menus->sidebar('Expense Category', 'expense-category', 'far fa-list-alt');
         $Menus->sidebar('Loan Types', 'loan-types', 'fas fa-list');
         $Menus->sidebar('Insurance', 'insurance', 'fas fa-shield-alt');
         $Menus->sidebar('Suppliers', 'suppliers', 'fas fa-address-book');
@@ -64,14 +65,15 @@
         echo '<li class="menu-header">Transactions</li>';
         $Menus->sidebar('Loans', 'loans', 'fa fa-folder');
         $Menus->sidebar('Collections', 'collections', 'fas fa-money-bill-wave');
+        $Menus->sidebar('Expenses', 'expenses', 'fas fa-coins');
         $Menus->sidebar('Vouchers', 'vouchers', 'fas fa-money-check');
 
         //REPORTS
         echo '<li class="menu-header">Reports</li>';
-        $Menus->sidebar('Accounts Receivables', 'accounts-receivable', 'fas fa-chart-bar');
+        $Menus->sidebar('Accounts Receivables', 'accounts-receivable', 'fas fa-poll-h');
         $Menus->sidebar('AR Ledger', 'receivable-ledger', 'fas fa-chart-bar');
         $Menus->sidebar('Collection Report', 'collection-report', 'fas fa-file-invoice-dollar');
-        $Menus->sidebar_parent('Loan Report', 'fas fa-list-ul', array(
+        $Menus->sidebar_parent('Loan Report', 'fas fa-list-ol', array(
             array('Loan Status', 'loan-status-report'),
             array('Loan Type', 'loan-type-report'),
         ));
@@ -85,6 +87,7 @@
         $Menus->sidebar('Journal Entry', 'journal-entry', 'fas fa-book-open');
         $Menus->sidebar('Journal Book', 'journal-book', 'fa fa-book');
         $Menus->sidebar('Financial Statements', 'financial-statements', 'fas fa-chart-line');
+        $Menus->sidebar('Income Statement', 'income-statement', 'fas fa-file-invoice');
         $Menus->sidebar('Trial Balance', 'trial-balance', 'fas fa-balance-scale');
 
         // ADMIN

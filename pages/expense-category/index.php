@@ -2,8 +2,8 @@
     <div class="section-header">
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="#">Transactions</a></div>
-            <div class="breadcrumb-item">Collections</div>
+            <div class="breadcrumb-item"><a href="#">Master Data</a></div>
+            <div class="breadcrumb-item">Expense Category</div>
         </div>
     </div>
 
@@ -11,8 +11,8 @@
         <div class="alert alert-light alert-has-icon" style="border: 1px dashed #3C84AB;">
             <div class="alert-icon"><i class="far fa-lightbulb"></i></div>
             <div class="alert-body">
-                <div class="alert-title">Collections</div>
-                Manage collections here.
+                <div class="alert-title">Expense Category</div>
+                Manage expense category here.
             </div>
             <div>
                 <a href="#" class="btn btn-icon icon-left btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</a>
@@ -35,11 +35,8 @@
                                             </div>
                                         </th>
                                         <th></th>
-                                        <th>Reference #</th>
-                                        <th>Loan ID</th>
-                                        <th>Client</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
+                                        <th>Expense Category</th>
+                                        <th>Remarks</th>
                                         <th>Date Added</th>
                                         <th>Date Modified</th>
                                     </tr>
@@ -52,45 +49,31 @@
         </div>
     </div>
 </section>
-<?php include "modal_collections.php"; ?>
+<?php include "modal_expense_category.php"; ?>
 <script type="text/javascript">
     function getEntries() {
         $("#dt_entries").DataTable().destroy();
         $("#dt_entries").DataTable({
             "processing": true,
-            "order": [
-                [2, 'desc']
-            ],
             "ajax": {
                 "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=show",
                 "dataSrc": "data"
             },
             "columns": [{
                     "mRender": function(data, type, row) {
-                        return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.collection_id + '" value=' + row.collection_id + '><label for="checkbox-b' + row.collection_id + '" class="custom-control-label">&nbsp;</label></div>';
+                        return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.expense_category_id + '" value=' + row.expense_category_id + '><label for="checkbox-b' + row.expense_category_id + '" class="custom-control-label">&nbsp;</label></div>';
                     }
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.collection_id + ")'><span class='fa fa-edit'></span></button></center>";
+                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.expense_category_id + ")'><span class='fa fa-edit'></span></button></center>";
                     }
                 },
                 {
-                    "data": "reference_number"
+                    "data": "expense_category"
                 },
                 {
-                    "data": "loan_ref_id"
-                },
-                {
-                    "data": "client"
-                },
-                {
-                    "data": "amount"
-                },
-                {
-                    "mRender": function(data, type, row) {
-                        return row.status == "P" ? '<a href="#" class="badge badge-light">Pending</a>' :(row.status == 'F' ? '<a href="#" class="badge badge-success">Finished</a>' : '<a href="#" class="badge badge-danger">Canceled</a>');
-                    }
+                    "data": "remarks"
                 },
                 {
                     "data": "date_added"
@@ -102,19 +85,7 @@
         });
     }
 
-    function getLoan() {
-        var client_id = $("#client_id").val();
-        var client_id = $("#client_id").val();
-        getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + client_id + "' AND status = 'R'");
-    }
-
-    $('#client_id').change(function() {
-        getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + $(this).val() + "' AND status = 'R'");
-    })
-
     $(document).ready(function() {
         getEntries();
-        getSelectOption('Clients', 'client_id', 'client_fullname');
-        getLoan();
     });
 </script>

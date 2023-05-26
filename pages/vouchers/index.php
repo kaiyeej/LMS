@@ -54,6 +54,7 @@
     </div>
 </section>
 <?php include "modal_vouchers.php"; ?>
+<?php include 'modal_print.php' ?>
 <script type="text/javascript">
     function getAccount() {
         var account_type = $("#account_type").val();
@@ -70,6 +71,9 @@
         $("#dt_entries").DataTable().destroy();
         $("#dt_entries").DataTable({
             "processing": true,
+            "order": [
+                [2, 'desc']
+            ],
             "ajax": {
                 "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=show",
                 "dataSrc": "data"
@@ -81,7 +85,7 @@
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails2(" + row.voucher_id + ")'><span class='fa fa-edit'></span></button></center>";
+                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails2(" + row.voucher_id + ")'><span class='fa fa-edit'></span></button><button onclick='printRecord("+ row.voucher_id +")' class='btn btn-secondary btn-sm'><span class='fa fa-print'></span></button></center>";
                     }
                 },
                 {

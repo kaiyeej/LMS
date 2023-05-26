@@ -80,6 +80,24 @@ class Loans extends Connection
         return $this->delete($this->table, "$this->pk IN($ids)");
     }
 
+    public function released()
+    {
+        $primary_id = $this->inputs['id'];
+        $form = array(
+            'status' => 'R',
+        );
+        return $this->update($this->table, $form, "$this->pk = '$primary_id'");
+    }
+
+    public function denied()
+    {
+        $primary_id = $this->inputs['id'];
+        $form = array(
+            'status' => 'D',
+        );
+        return $this->update($this->table, $form, "$this->pk = '$primary_id'");
+    }
+
     public function name($primary_id)
     {
         $result = $this->select($this->table, 'reference_number', "$this->pk = '$primary_id'");
@@ -197,6 +215,28 @@ class Loans extends Connection
         return $rows;
     }
 
+    public function accounts_receivable(){
+        $report_year = $this->inputs['report_year'];
+        $rows = array();
+        $Clients = new Clients;
+        $Collections = new Collections;
+        $result = $this->select($this->table, '*',"YEAR(loan_date) = '$report_year' AND status != 'D'");
+        while ($row = $result->fetch_assoc()) {
+            $payment = $Collections->total_collected($row['loan_id']);
+            $amount_receivable = $row['loan_amount']-$payment;
+            $penalty = 0;
+            $subtotal = $amount_receivable+$penalty;
+            $row['client'] = $Clients->name($row['client_id']);
+            $row['amount'] = number_format($row['loan_amount'],2);
+            $row['total_payment'] = number_format($payment,2);
+            $row['amount_receivable'] = number_format($amount_receivable,2);
+            $row['total_penalties'] = number_format($penalty,2);
+            $row['subtotal'] = number_format($subtotal,2);
+            $rows[] = $row;
+        }
+        return $rows;
+    }
+
     public function released_total(){
         $year = date('Y');
         $result = $this->select($this->table, "sum(loan_amount) as total", "YEAR(loan_date) = '$year' AND (status = 'R' OR status='F')");
@@ -227,7 +267,7 @@ class Loans extends Connection
 
     public function pending_loans(){
         $year = date('Y');
-        $result = $this->select($this->table, "count(loan_id) as total", "YEAR(loan_date) = '$year' AND status = 'R'");
+        $result = $this->select($this->table, "count(loan_id) as total", "YEAR(loan_date) = '$year' AND status = 'A'");
         $row = $result->fetch_assoc();
         return $row['total'];
     }

@@ -115,4 +115,16 @@ class Collections extends Connection
         return $row['total'];
     }
 
+    public function total_collected($loan_id){
+        $result = $this->select("tbl_collections as c, tbl_loans as l", 'sum(c.amount) as total', "l.loan_id='$loan_id' AND c.loan_id='$loan_id'");
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+
+    public function monthly_collection($month,$year){
+        $result = $this->select("tbl_collections", 'sum(amount) as total', "(MONTH(collection_date) = '$month' AND YEAR(collection_date)= '$year') AND status='F'");
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+
 }

@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <input type="hidden" id="hidden_id" name="input[loan_id]">
                     <div class="form-row">
-                        <div class="col-lg-7">
+                        <div class="col-lg-7" id="loan_container">
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label>Reference #</label>
@@ -76,6 +76,12 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" id="btn_submit" class="btn btn-primary">
                         Save
+                    </button>
+                    <button type="button" onclick="deniedLoan()" id="btn_deny" class="btn btn-danger">
+                        Deny
+                    </button>
+                    <button type="button" onclick="releasedLoan()" id="btn_release" class="btn btn-info">
+                        Release
                     </button>
                 </div>
             </div>

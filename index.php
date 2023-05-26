@@ -34,7 +34,7 @@ $User = new Users;
 
 
   <script src="assets/modules/jquery.min.js"></script>
-  
+
   <link rel="shortcut icon" href="assets/img/logo2.png" />
 
   <!-- JS Libraies -->
@@ -62,6 +62,7 @@ $User = new Users;
         max-width: 1200px;
       }
     }
+
   </style>
 </head>
 
@@ -71,7 +72,7 @@ $User = new Users;
       <div class="navbar-bg"></div>
       <nav class="navbar navbar-expand-lg main-navbar">
         <form class="form-inline mr-auto">
-          <ul class="navbar-nav mr-3">
+          <!-- <ul class="navbar-nav mr-3">
             <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
             <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li>
           </ul>
@@ -80,11 +81,11 @@ $User = new Users;
             <button class="btn" type="submit"><i class="fas fa-search"></i></button>
             <div class="search-backdrop"></div>
 
-          </div>
+          </div> -->
         </form>
         <ul class="navbar-nav navbar-right">
 
-          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
+          <!-- <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right">
               <div class="dropdown-header">Notifications
                 <div class="float-right">
@@ -142,7 +143,7 @@ $User = new Users;
                 <a href="#">View All <i class="fas fa-chevron-right"></i></a>
               </div>
             </div>
-          </li>
+          </li> -->
           <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
               <img alt="image" src="assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
               <div class="d-sm-none d-lg-inline-block">Hi, <?= $User->fullname($_SESSION['lms_user_id']); ?></div>
@@ -151,9 +152,9 @@ $User = new Users;
               <a href="profile" class="dropdown-item has-icon">
                 <i class="far fa-user"></i> Profile
               </a>
-              <a href="features-activities.html" class="dropdown-item has-icon">
+              <!-- <a href="features-activities.html" class="dropdown-item has-icon">
                 <i class="fas fa-bolt"></i> Activities
-              </a>
+              </a> -->
               <div class="dropdown-divider"></div>
               <a href="#" onclick="logout()" class="dropdown-item has-icon text-danger">
                 <i class="fas fa-sign-out-alt"></i> Logout
@@ -301,8 +302,14 @@ $User = new Users;
 
       if (route_settings.class_name == "Vouchers") {
         $("#journal_id").val(7).trigger('change');
-      }else if(route_settings.class_name == "Loans"){
+      } else if (route_settings.class_name == "Loans") {
+        $('#loan_container :input').attr('readonly', false);
+        $(".select2").prop("disabled", false);
         sampleCalculation();
+        $("#btn_submit").show();
+        $("#btn_release").hide();
+        $("#btn_deny").hide();
+
       }
 
 
@@ -408,6 +415,17 @@ $User = new Users;
             // $("#loan_id").val(json['loan_id']);
             $("#loan_id").select2().select2('val', json['loan_id']);
           } else if (route_settings.class_name == "Loans") {
+            if (jsonParse.data['status'] != "A") {
+              $('#loan_container :input').attr('readonly', true);
+              $(".select2").prop("disabled", true);
+              $("#btn_submit").hide();
+              $("#btn_release").hide();
+              $("#btn_deny").hide();
+            } else if (jsonParse.data['status'] == "A") {
+              $("#btn_submit").hide();
+              $("#btn_release").show();
+              $("#btn_deny").show();
+            }
             sampleCalculation();
           }
 
@@ -425,7 +443,6 @@ $User = new Users;
         modal_detail_status = 0;
       }
     }
-
 
 
     function deleteEntry() {
@@ -509,7 +526,7 @@ $User = new Users;
           var col_list = document.getElementById("col-list");
           var col_item = document.getElementById("col-item");
 
-          if(route_settings.class_name == "Vouchers"){
+          if (route_settings.class_name == "Vouchers") {
             journalID(id);
           }
 
@@ -779,7 +796,6 @@ $User = new Users;
       document.body.innerHTML = originalContents;
       window.close();
       location.reload();
-
     }
   </script>
 

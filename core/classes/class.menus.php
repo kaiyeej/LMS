@@ -6,6 +6,7 @@ class Menus extends Connection
         $this->menus = array(
             'master-data' => array(
                 array('url' => 'suppliers', 'name' => 'Suppliers', 'class_name' => 'Suppliers', 'has_detail' => 0),
+                array('url' => 'expense-category', 'name' => 'Expense Category', 'class_name' => 'ExpenseCategory', 'has_detail' => 0),
                 array('url' => 'clients', 'name' => 'Client', 'class_name' => 'Clients', 'has_detail' => 0),
                 array('url' => 'client-update', 'name' => 'Client Profile', 'class_name' => 'Clients', 'has_detail' => 0),
                 array('url' => 'product-price', 'name' => 'Product Price Notice', 'class_name' => 'ProductPrice', 'has_detail' => 1),
@@ -16,11 +17,12 @@ class Menus extends Connection
             'transaction' => array(
                 array('url' => 'loans', 'name' => 'Loans', 'class_name' => 'Loans', 'has_detail' => 0),
                 array('url' => 'collections', 'name' => 'Collections', 'class_name' => 'Collections', 'has_detail' => 0),
+                array('url' => 'expenses', 'name' => 'Expenses', 'class_name' => 'Expenses', 'has_detail' => 1),
                 array('url' => 'vouchers', 'name' => 'Vouchers', 'class_name' => 'Vouchers', 'has_detail' => 1),
-                array('url' => 'sales-return', 'name' => 'Sales Return', 'class_name' => 'SalesReturn', 'has_detail' => 1),
             ),
             'report' => array(
 
+                array('url' => 'accounts-receivable', 'name' => 'Accounts Receivable', 'class_name' => 'Loans', 'has_detail' => 0),
                 array('url' => 'receivable-ledger', 'name' => 'Receivable Ledger', 'class_name' => 'ReceivableLedger', 'has_detail' => 0),
                 array('url' => 'loan-status-report', 'name' => 'Loan Status Report', 'class_name' => 'LoanReport', 'has_detail' => 0),
                 array('url' => 'loan-type-report', 'name' => 'Loan Type Report', 'class_name' => 'LoanReport', 'has_detail' => 0),
@@ -35,6 +37,7 @@ class Menus extends Connection
                 array('url' => 'journal-entry', 'name' => 'Journal Entry', 'class_name' => 'JournalEntry', 'has_detail' => 1),
                 array('url' => 'journal-book', 'name' => 'Journal Book', 'class_name' => 'JournalEntry', 'has_detail' => 0),
                 array('url' => 'financial-statements', 'name' => 'Financial Statements', 'class_name' => 'FinancialStatements', 'has_detail' => 0),
+                array('url' => 'income-statement', 'name' => 'Income Statement', 'class_name' => 'IncomeStatement', 'has_detail' => 0),
                 array('url' => 'trial-balance', 'name' => 'Trial Balance', 'class_name' => 'ChartOfAccounts', 'has_detail' => 0),
             ),
             'admin' => array(

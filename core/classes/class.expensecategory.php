@@ -1,17 +1,16 @@
 <?php
 
-class LoanTypes extends Connection
+class ExpenseCategory extends Connection
 {
-    private $table = 'tbl_loan_types';
-    public $pk = 'loan_type_id';
-    public $name = 'loan_type';
+    private $table = 'tbl_expense_category';
+    public $pk = 'expense_category_id';
+    public $name = 'expense_category';
 
 
     public function add()
     {
         $form = array(
             $this->name     => $this->clean($this->inputs[$this->name]),
-            'loan_type_interest' => $this->clean($this->inputs['loan_type_interest']),
             'remarks'       => $this->clean($this->inputs['remarks']),
         );
 
@@ -21,15 +20,13 @@ class LoanTypes extends Connection
     public function edit()
     {
         $primary_id = $this->inputs[$this->pk];
-        $name = $this->clean($this->inputs['loan_type']);
         $is_exist = $this->select($this->table, $this->pk, "$this->name = '".$this->inputs[$this->name]."' AND $this->pk != '$primary_id'");
         if ($is_exist->num_rows > 0) {
             return 2;
         } else {
             $form = array(
                 $this->name     => $this->clean($this->inputs[$this->name]),
-                'loan_type_interest' => $this->clean($this->inputs['loan_type_interest']),
-                'remarks'       => $this->clean($this->inputs['remarks']),
+            'remarks'       => $this->clean($this->inputs['remarks']),
             );
 
             return $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");
@@ -63,15 +60,8 @@ class LoanTypes extends Connection
 
     public function name($primary_id)
     {
-        $result = $this->select($this->table, 'loan_type', "$this->pk = '$primary_id'");
+        $result = $this->select($this->table, 'expense_category', "$this->pk = '$primary_id'");
         $row = $result->fetch_assoc();
-        return $row['loan_type'];
-    }
-
-    public function total_per_month($primary_id,$month,$year){
-
-        $result = $this->select("tbl_loans", "sum(loan_amount) as total", "MONTH(loan_date) = '$month' AND YEAR(loan_date) = '$year' AND (status = 'R' OR status='F') AND $this->pk = '$primary_id'");
-        $row = $result->fetch_assoc();
-        return $row['total'];
+        return $row['expense_category'];
     }
 }

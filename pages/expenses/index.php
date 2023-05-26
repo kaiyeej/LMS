@@ -2,8 +2,8 @@
     <div class="section-header">
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="#">Accounting</a></div>
-            <div class="breadcrumb-item">Journal Entry</div>
+            <div class="breadcrumb-item"><a href="#">Transactions</a></div>
+            <div class="breadcrumb-item">Expenses</div>
         </div>
     </div>
 
@@ -11,8 +11,8 @@
         <div class="alert alert-light alert-has-icon" style="border: 1px dashed #3C84AB;">
             <div class="alert-icon"><i class="far fa-lightbulb"></i></div>
             <div class="alert-body">
-                <div class="alert-title">Journal Entry</div>
-                Manage journal entry here.
+                <div class="alert-title">Expenses</div>
+                Manage expenses here.
             </div>
             <div>
                 <a href="#" class="btn btn-icon icon-left btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</a>
@@ -35,9 +35,9 @@
                                             </div>
                                         </th>
                                         <th></th>
-                                        <th>General Reference</th>
-                                        <th>Cross Reference</th>
-                                        <th>Journal</th>
+                                        <th>Reference #</th>
+                                        <th>Expense Date</th>
+                                        <th>Credit Method</th>
                                         <th>Amount</th>
                                         <th>Status</th>
                                         <th>Encoded By</th>
@@ -53,7 +53,7 @@
         </div>
     </div>
 </section>
-<?php include "modal_journal_entry.php"; ?>
+<?php include "modal_expenses.php"; ?>
 <script type="text/javascript">
     function getEntries() {
         $("#dt_entries").DataTable().destroy();
@@ -68,22 +68,22 @@
             },
             "columns": [{
                     "mRender": function(data, type, row) {
-                        return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.journal_entry_id + '" value=' + row.journal_entry_id + '><label for="checkbox-b' + row.journal_entry_id + '" class="custom-control-label">&nbsp;</label></div>';
+                        return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.expense_id + '" value=' + row.expense_id + '><label for="checkbox-b' + row.expense_id + '" class="custom-control-label">&nbsp;</label></div>';
                     }
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails2(" + row.journal_entry_id + ")'><span class='fa fa-edit'></span></button></center>";
+                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails2(" + row.expense_id + ")'><span class='fa fa-edit'></span></button></center>";
                     }
                 },
                 {
                     "data": "reference_number"
                 },
                 {
-                    "data": "cross_reference"
+                    "data": "expense_date"
                 },
                 {
-                    "data": "journal"
+                    "data": "remarks"
                 },
                 {
                     "data": "amount",
@@ -109,7 +109,7 @@
 
     function getEntries2() {
         var hidden_id_2 = $("#hidden_id_2").val();
-        var param = "journal_entry_id = '" + hidden_id_2 + "'";
+        var param = "expense_id = '" + hidden_id_2 + "'";
         $("#dt_entries_2").DataTable().destroy();
         $("#dt_entries_2").DataTable({
             "processing": true,
@@ -133,18 +133,8 @@
                         typeof i === 'number' ?
                         i : 0;
                 };
-
-                debitTotal = api
-                    .column(3, {
-                        page: 'current'
-                    })
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
                 
-                creditTotal = api
+                total = api
                     .column(4, {
                         page: 'current'
                     })
@@ -153,17 +143,9 @@
                         return intVal(a) + intVal(b);
                     }, 0);
 
-                
-
-                // Update footer
-                $(api.column(3).footer()).html(
-                    "&#x20B1; " + debitTotal.toLocaleString('en-US', {
-                        minimumFractionDigits: 2
-                    })
-                );
 
                 $(api.column(4).footer()).html(
-                    "&#x20B1; " + creditTotal.toLocaleString('en-US', {
+                    "&#x20B1; " + total.toLocaleString('en-US', {
                         minimumFractionDigits: 2
                     })
                 );
@@ -172,21 +154,20 @@
             },
             "columns": [{
                     "mRender": function(data, type, row) {
-                        return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id_2" id="checkbox-b' + row.journal_entry_detail_id + '" value=' + row.journal_entry_detail_id + '><label for="checkbox-b' + row.journal_entry_detail_id + '" class="custom-control-label">&nbsp;</label></div>';
+                        return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id_2" id="checkbox-b' + row.expense_category_id + '" value=' + row.expense_category_id + '><label for="checkbox-b' + row.expense_category_id + '" class="custom-control-label">&nbsp;</label></div>';
                     }
                 },
                 {
                     "data": "chart"
                 },
                 {
-                    "data": "description"
+                    "data": "category"
                 },
                 {
-                    "data": "debit",
-                    className: "text-right"
+                    "data": "expense_desc"
                 },
                 {
-                    "data": "credit",
+                    "data": "expense_amount",
                     className: "text-right"
                 },
             ]
@@ -204,6 +185,8 @@
     $(document).ready(function() {
         getEntries();
         getSelectOption('Journals', 'journal_id', 'journal_name', '', ['journal_code']);
+        getSelectOption('ChartOfAccounts', 'credit_method', 'chart_name');
         getSelectOption('ChartOfAccounts', 'chart_id', 'chart_name');
+        getSelectOption('ExpenseCategory', 'expense_category_id', 'expense_category');
     });
 </script>

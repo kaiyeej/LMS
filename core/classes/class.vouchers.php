@@ -103,6 +103,8 @@ class Vouchers extends Connection
             $row = $result->fetch_assoc();
             $row['encoded_by'] = $Users->fullname($row['user_id']);
             $row['account'] = $row['account_type'] == "S"? $Suppliers->name($row['account_id']) : $Clients->name($row['account_id']);
+            $row['voucher_amount'] = number_format($row['amount'],2);
+            $row['amount_word'] = $this->convertNumberToWord($row['amount']);
             return $row;
         } else {
             return null;
