@@ -77,6 +77,9 @@
                     <button type="submit" id="btn_submit" class="btn btn-primary">
                         Save
                     </button>
+                    <button type="button" onclick="deniedLoan()" id="btn_deny" class="btn btn-danger">
+                        Deny
+                    </button>
                     <button type="button" onclick="releasedLoan()" id="btn_release" class="btn btn-info">
                         Release
                     </button>

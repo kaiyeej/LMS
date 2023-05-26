@@ -89,6 +89,15 @@ class Loans extends Connection
         return $this->update($this->table, $form, "$this->pk = '$primary_id'");
     }
 
+    public function denied()
+    {
+        $primary_id = $this->inputs['id'];
+        $form = array(
+            'status' => 'D',
+        );
+        return $this->update($this->table, $form, "$this->pk = '$primary_id'");
+    }
+
     public function name($primary_id)
     {
         $result = $this->select($this->table, 'reference_number', "$this->pk = '$primary_id'");

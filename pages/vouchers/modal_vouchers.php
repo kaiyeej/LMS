@@ -85,12 +85,12 @@
                             <div><b>Voucher #:</b> <span id="voucher_no_label" class="label-item"></span></div>
                             <div><b>Check #:</b> <span id="check_number_label" class="label-item"></span></div>
                             <div><b>A/C #:</b> <span id="ac_no_label" class="label-item"></span></div>
+                            <div><b>Encoded By:</b> <span id="encoded_by_label" class="label-item"></span></div>
                         </div>
                         <div class="col-3">
                             <div><b>Account:</b> <span id="account_label" class="label-item"></span></div>
-                            <div><b>Description:</b> <span id="description_label" class="label-item"></span></div>
                             <div><b>Date:</b> <span id="voucher_date_label" class="label-item"></span></div>
-                            <div><b>Encoded By:</b> <span id="encoded_by_label" class="label-item"></span></div>
+                            <div><b>Description:</b> <span id="description_label" class="label-item"></span></div>
                         </div>
                         <div class="col-6">
                             <ul class="nav justify-content-end">
