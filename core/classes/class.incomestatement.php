@@ -12,15 +12,18 @@ class IncomeStatement extends Connection
         $collected = $Collections->monthly_collection($month,$year);
         $loan_types = $this->loan_types($month,$year);
         $expenses = $this->expenses($month,$year);
+        $revenues = $this->revenues($month,$year);
 
-        $gross_income = 0;
+        $gross_income = $revenues[1];
 
 
         $rows = array();
         $row['collected_total'] = number_format($collected,2);
         $row['loan_releases_list'] = $loan_types[0];
+        $row['revenue_list'] = $revenues[0];
+        $row['revenue_total'] = number_format($revenues[1],2);
         $row['expenses_list'] = $expenses[0];
-        $row['expenses_total'] = $expenses[1];
+        $row['expenses_total'] = number_format($expenses[1],2);
         $row['income_total'] = $gross_income-$expenses[1];
         $rows = $row;
         return $rows;
@@ -57,6 +60,24 @@ class IncomeStatement extends Connection
                 $list .= "<tr><td style='padding-left: 100px;'>".$row['chart_name']."</td><td style='text-align:right;'>".number_format($sum[0],2)."</td></tr>";
             }
             $total += $sum[0];
+        }
+
+        return [$list,$total];
+    }
+
+    public function revenues($month,$year){
+
+        $result = $this->select("tbl_chart_of_accounts", "*", "chart_class_id='5'");
+        $list = "";
+        $total = 0;
+        while($row = $result->fetch_array()){
+            $fetch_sum = $this->select("tbl_journal_entry_details as d, tbl_journal_entries as h", "sum(d.debit) as total_debit, sum(d.credit) as total_credit", "h.journal_entry_id=d.journal_entry_id AND MONTH(h.journal_date) = '$month' AND YEAR(h.journal_date) = '$year' AND h.status='F' AND d.chart_id='$row[chart_id]'");
+            $sum = $fetch_sum->fetch_array();
+            $sub_total = $sum['total_debit'];
+            // if($sub_total > 0){
+                $list .= "<tr><td style='padding-left: 100px;'>".$row['chart_name']."</td><td style='text-align:right;'>".number_format($sub_total,2)."</td></tr>";
+            // }
+            $total += $sub_total;
         }
 
         return [$list,$total];

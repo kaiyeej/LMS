@@ -12,6 +12,7 @@ class LoanTypes extends Connection
         $form = array(
             $this->name     => $this->clean($this->inputs[$this->name]),
             'loan_type_interest' => $this->clean($this->inputs['loan_type_interest']),
+            'penalty_percentage' => $this->clean($this->inputs['penalty_percentage']),
             'remarks'       => $this->clean($this->inputs['remarks']),
         );
 
@@ -29,6 +30,7 @@ class LoanTypes extends Connection
             $form = array(
                 $this->name     => $this->clean($this->inputs[$this->name]),
                 'loan_type_interest' => $this->clean($this->inputs['loan_type_interest']),
+                'penalty_percentage' => $this->clean($this->inputs['penalty_percentage']),
                 'remarks'       => $this->clean($this->inputs['remarks']),
             );
 
@@ -66,6 +68,14 @@ class LoanTypes extends Connection
         $result = $this->select($this->table, 'loan_type', "$this->pk = '$primary_id'");
         $row = $result->fetch_assoc();
         return $row['loan_type'];
+    }
+
+    
+    public function penalty_percentage($primary_id)
+    {
+        $result = $this->select($this->table, 'penalty_percentage', "$this->pk = '$primary_id'");
+        $row = $result->fetch_assoc();
+        return $row['penalty_percentage'];
     }
 
     public function total_per_month($primary_id,$month,$year){

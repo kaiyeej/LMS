@@ -39,6 +39,7 @@
                                         <th>Loan ID</th>
                                         <th>Client</th>
                                         <th>Amount</th>
+                                        <th>Collection Date</th>
                                         <th>Status</th>
                                         <th>Date Added</th>
                                         <th>Date Modified</th>
@@ -88,6 +89,9 @@
                     "data": "amount"
                 },
                 {
+                    "data": "collection_date"
+                },
+                {
                     "mRender": function(data, type, row) {
                         return row.status == "P" ? '<a href="#" class="badge badge-light">Pending</a>' :(row.status == 'F' ? '<a href="#" class="badge badge-success">Finished</a>' : '<a href="#" class="badge badge-danger">Canceled</a>');
                     }
@@ -99,6 +103,25 @@
                     "data": "date_last_modified"
                 }
             ]
+        });
+    }
+
+    function getPenalty(){
+        var loan_id = $("#loan_id").val();
+        var collection_date = $("#collection_date").val();
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=Loans&q=penalty",
+            data: {
+                input: {
+                    loan_id: loan_id,
+                    collection_date:collection_date
+                }
+            },
+            success: function(data) {
+                var json = JSON.parse(data);
+                $("#penalty_amount").val(json.data);
+            }
         });
     }
 

@@ -15,9 +15,13 @@
                             <label>Loan Type</label>
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="Loan type" name="input[loan_type]" id="loan_type" required>
                         </div>
-                        <div class="form-group col-md-12">
+                        <div class="form-group col-md-6">
                             <label>Loan Interest</label>
                             <input type="number" step="0.1" max="100" min="0" class="form-control input-item" autocomplete="off" placeholder="Loan interest" name="input[loan_type_interest]" id="loan_type_interest" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Penalty %</label>
+                            <input type="number" step="0.1" max="100" min="0" class="form-control input-item" autocomplete="off" placeholder="Penalty percentage" name="input[penalty_percentage]" id="penalty_percentage" required>
                         </div>
                         <div class="form-group col-md-12">
                             <label>Remarks</label>

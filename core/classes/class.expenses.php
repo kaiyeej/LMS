@@ -195,7 +195,7 @@ class Expenses extends Connection
         $form = array(
             $this->pk               => $this->inputs[$this->pk],
             $this->fk_det           => $this->inputs[$this->fk_det],
-            'expense_category_id'   => $this->inputs['expense_category_id'],
+            // 'expense_category_id'   => $this->inputs['expense_category_id'],
             'expense_desc'          => $this->inputs['expense_desc'],
             'expense_amount'        => $this->inputs['expense_amount'],
         );
@@ -212,7 +212,7 @@ class Expenses extends Connection
         $result = $this->select($this->table_detail, '*', $param);
         while ($row = $result->fetch_assoc()) {
             $row['chart'] = $ChartOfAccounts->name($row['chart_id']);
-            $row['category'] = $ExpenseCategory->name($row['expense_category_id']);
+            // $row['category'] = $ExpenseCategory->name($row['expense_category_id']);
             $row['count'] = $count++;
             $rows[] = $row;
         }

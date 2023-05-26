@@ -100,12 +100,12 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <div class="col">
+                                        <!-- <div class="col">
                                             <label><strong>Category</strong></label>
                                             <div>
                                                 <select class="form-control form-control-sm select2" name="input[expense_category_id]" id="expense_category_id" style="width:100%;" required></select>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="col">
                                             <label><strong>Amount</strong></label>
                                             <div>
@@ -139,7 +139,7 @@
                                                     </div>
                                                 </th>
                                                 <th>Chart</th>
-                                                <th>Category</th>
+                                                <!-- <th>Category</th> -->
                                                 <th>Description</th>
                                                 <th>Amount</th>
                                             </tr>
@@ -148,7 +148,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr style="text-align: right;font-weight:bold">
-                                                <td colspan="3">Total:</td>
+                                                <td colspan="2">Total:</td>
                                                 <td></td>
                                                 <td></td>
                                             </tr>

@@ -50,12 +50,12 @@ class StatementOfAccounts extends Connection
                 $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
                 $monthly_interest = $loan_amount * $monthly_interest_rate;
                 $principal_amount = $loan_amount / $loan_period;
-                $penalty = 0;
+                $penalty = $Collection->penalty_per_month($loan_date,$row['loan_id']);
                 $payment = $Collection->collected_per_month($loan_date,$row['loan_id']);
                 
                 $total_payment += $payment;
                 $total_interest += $monthly_interest;
-                $balance -= ($payment);
+                $balance -= ($payment+$penalty);
 
 
                 $data .= "<tr>";

@@ -37,6 +37,7 @@
                                         <th></th>
                                         <th>Loan Type</th>
                                         <th>Loan Interest</th>
+                                        <th>Penalty Percentage</th>
                                         <th>Remarks</th>
                                         <th>Date Added</th>
                                         <th>Date Modified</th>
@@ -75,6 +76,9 @@
                 },
                 {
                     "data": "loan_type_interest"
+                },
+                {
+                    "data": "penalty_percentage"
                 },
                 {
                     "data": "remarks"

@@ -16,6 +16,7 @@ class Collections extends Connection
             'client_id'         => $this->clean($this->inputs['client_id']),
             'amount'            => $this->clean($this->inputs['amount']),
             'collection_date'   => $this->clean($this->inputs['collection_date']),
+            'penalty_amount'    => $this->clean($this->inputs['penalty_amount']),
             'remarks'           => $this->clean($this->inputs['remarks']),
             'user_id'           => $this->clean($_SESSION['lms_user_id']),
         );
@@ -111,6 +112,13 @@ class Collections extends Connection
 
     public function collected_per_month($date,$loan_id){
         $result = $this->select("tbl_collections as c, tbl_loans as l", 'sum(c.amount) as total', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND (MONTH(c.collection_date) = MONTH('$date') AND YEAR(c.collection_date)= YEAR('$date'))");
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+    
+    
+    public function penalty_per_month($date,$loan_id){
+        $result = $this->select("tbl_collections as c, tbl_loans as l", 'sum(c.penalty_amount) as total', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND (MONTH(c.collection_date) = MONTH('$date') AND YEAR(c.collection_date)= YEAR('$date'))");
         $row = $result->fetch_assoc();
         return $row['total'];
     }

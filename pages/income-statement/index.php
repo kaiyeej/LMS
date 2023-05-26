@@ -106,6 +106,20 @@
 
                                     <thead style="background: #90a4ae;">
                                         <tr>
+                                            <th style="color:#fff;">GROSS INCOME</th>
+                                            <th style="text-align:right;font-weight:bold;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="revenue_list_label" class="label-item">
+
+                                    </tbody>
+                                    <tr style="font-weight:bold;">
+                                        <td style="text-align:right;">Total Interest Income</td>
+                                        <td style="text-align:right;"><span id="revenue_total_label" class="label-item"></span></td>
+                                    </tr>
+
+                                    <thead style="background: #90a4ae;">
+                                        <tr>
                                             <th style="color:#fff;">EXPENSES</th>
                                             <th style="text-align:right;font-weight:bold;"></th>
                                         </tr>

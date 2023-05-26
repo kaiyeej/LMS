@@ -135,7 +135,7 @@
                 };
                 
                 total = api
-                    .column(4, {
+                    .column(3, {
                         page: 'current'
                     })
                     .data()
@@ -144,7 +144,7 @@
                     }, 0);
 
 
-                $(api.column(4).footer()).html(
+                $(api.column(3).footer()).html(
                     "&#x20B1; " + total.toLocaleString('en-US', {
                         minimumFractionDigits: 2
                     })
@@ -154,15 +154,15 @@
             },
             "columns": [{
                     "mRender": function(data, type, row) {
-                        return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id_2" id="checkbox-b' + row.expense_category_id + '" value=' + row.expense_category_id + '><label for="checkbox-b' + row.expense_category_id + '" class="custom-control-label">&nbsp;</label></div>';
+                        return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id_2" id="checkbox-b' + row.expense_detail_id + '" value=' + row.expense_detail_id + '><label for="checkbox-b' + row.expense_detail_id + '" class="custom-control-label">&nbsp;</label></div>';
                     }
                 },
                 {
                     "data": "chart"
                 },
-                {
-                    "data": "category"
-                },
+                // {
+                //     "data": "category"
+                // },
                 {
                     "data": "expense_desc"
                 },
@@ -187,6 +187,6 @@
         getSelectOption('Journals', 'journal_id', 'journal_name', '', ['journal_code']);
         getSelectOption('ChartOfAccounts', 'credit_method', 'chart_name');
         getSelectOption('ChartOfAccounts', 'chart_id', 'chart_name');
-        getSelectOption('ExpenseCategory', 'expense_category_id', 'expense_category');
+        // getSelectOption('ExpenseCategory', 'expense_category_id', 'expense_category');
     });
 </script>
