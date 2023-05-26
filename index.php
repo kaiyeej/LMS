@@ -422,7 +422,7 @@ $User = new Users;
               $("#btn_release").hide();
               $("#btn_deny").hide();
             } else if (jsonParse.data['status'] == "A") {
-              $("#btn_submit").hide();
+              $("#btn_submit").show();
               $("#btn_release").show();
               $("#btn_deny").show();
             }

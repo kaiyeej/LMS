@@ -499,7 +499,7 @@
                                                     </div>
                                                     <div class="col-lg-3" style="padding: 10px;">
                                                         <label class="text-md-right text-left">Age</label>
-                                                        <input type="number" class="c_required form-control" autocomplete="off" placeholder="Age" name="input[child_age]" id="child_age">
+                                                        <input type="number" class="c_required form-control" autocomplete="off" min="0" placeholder="Age" name="input[child_age]" id="child_age">
                                                     </div>
                                                     <div class="col-lg-4" style="padding: 10px;">
                                                         <label class="text-md-right text-left">Gender</label>
@@ -712,8 +712,8 @@
                     if (json.data == 1) {
                         $(".p_required").val("");
                         $("#property_improvement").val("");
-                        success_add();
                         getProperty();
+                        success_add();
                     } else if (json.data == 2) {
                         entry_already_exists();
                     } else {
@@ -786,8 +786,7 @@
     }
 
     function getProperty() {
-
-        var params = "client_id = '" + $("#hidden_id_2").val() + "'";
+        var param = "client_id = '" + $("#hidden_id").val() + "'";
 
         $("#dt_properties").DataTable().destroy();
         $("#dt_properties").DataTable({
@@ -801,7 +800,7 @@
                 "method": "POST",
                 "data": {
                     input: {
-                        params: params
+                        param: param
                     }
                 },
             },
@@ -913,7 +912,7 @@
 
     function getChildren() {
 
-        var params = "client_id = '" + $("#hidden_id_2").val() + "'";
+        var param = "client_id = '" + $("#hidden_id").val() + "'";
 
         $("#dt_children").DataTable().destroy();
         $("#dt_children").DataTable({
@@ -927,7 +926,7 @@
                 "method": "POST",
                 "data": {
                     input: {
-                        params: params
+                        param: param
                     }
                 },
             },

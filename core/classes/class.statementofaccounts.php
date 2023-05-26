@@ -20,7 +20,10 @@ class StatementOfAccounts extends Connection
             $loan_date = $row['loan_date'];
 
             $data .= '<div class="col-md-12 table-responsive" style="padding-top: 25px">
-                        <h4><center>' . $LoanTypes->name($row['loan_type_id']) . '</center></h4>
+                        <h4><center>' . $LoanTypes->name($row['loan_type_id']) . '</center></h4><br>
+                        <strong> Reference #: ' .$row['reference_number'] . '</strong><br>
+                        <strong> Date #: ' . date('M d, Y', strtotime($row['loan_date'])) . '</strong><br>
+                        <strong> Loan Amount : ' . number_format($row['loan_amount'],2) . '</strong><br><br>
                         <table class="table table-bordered" id="dt_entries" width="100%" cellspacing="0">
                             <thead>
                                 <tr>

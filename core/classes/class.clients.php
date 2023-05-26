@@ -339,28 +339,6 @@ class Clients extends Connection
     }
 
 
-    // public function getProperty()
-    // {
-    //     $primary_id = $this->inputs['client_id'];
-
-    //     $data = "";
-    //     $counter = 0;
-    //     $fetch_customer = $this->select("tbl_property_owned", "*", "$this->pk = '$primary_id'");
-    //     while ($row = $fetch_customer->fetch_array()) {
-
-    //         $data .= "<tr>";
-    //             $data .= "<td>" . $row['property_location'] . "</td>";
-    //             $data .= "<td>" . $row['property_location'] . "</td>";
-    //             $data .= "<td>" . $row['property_area'] . "</td>";
-    //             $data .= "<td>" . $row['property_acquisition_cost'] . "</td>";
-    //             $data .= "<td>" . $row['property_pres_market_val'] . "</td>";
-    //             $data .= "<td>" . $row['property_improvement'] . "</td>";
-    //         $data .= "</tr>";
-    //         $counter += 1;
-    //     }
-
-    //     echo $counter > 0 ? $data : "<tr><td colspan='5'><center style='color: #757575;'><h3>No details found.</h3></center></td><tr>";
-    // }
 
     public function showProperty()
     {
