@@ -43,7 +43,8 @@ class LoanReport extends Connection
             $loans = $this->select('tbl_loans', 'sum(loan_amount) as total', "loan_type_id = '$row[loan_type_id]' AND (status != 'D' OR status !='P')  AND YEAR(loan_date) = '$year'");
             $loan_row = $loans->fetch_assoc();
 
-            $count1 = $loan_row['total'] / $total_loans['total'];
+
+            $count1 = $total_loans['total'] > 0 ? $loan_row['total'] / $total_loans['total'] : 0;
             $count2 = $count1 * 100;
 
             $data .= '<div class="mb-4">

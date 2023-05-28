@@ -17,7 +17,7 @@
                         </div>
                         <div class="form-group col-md-12">
                             <label>Amount</label>
-                            <input type="number" step="0.1" class="form-control input-item" autocomplete="off" placeholder="Loan interest" name="input[insurance_amount]" id="insurance_amount" required>
+                            <input type="number" step="0.1" class="form-control input-item" autocomplete="off" placeholder="Insurance amount" name="input[insurance_amount]" id="insurance_amount" required>
                         </div>
                         <div class="form-group col-md-12">
                             <label>Description</label>

@@ -166,7 +166,7 @@
                             </div>
                             <div class="col-6" id="col-list">
                                 <div class="btn-group mb-3 btn-group-sm" role="group" aria-label="Basic example">
-                                    <button type="button" onclick="deleteEntry2()" id="btn_delete_task" class="btn btn-icon icon-left btn-danger"><i class="fas fa-trash"></i> Delete</button>
+                                    <button type="button" onclick="deleteEntry2()" id="btn_delete" class="btn btn-icon icon-left btn-danger"><i class="fas fa-trash"></i> Delete</button>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table table-striped" id="dt_entries_2" width="100%" cellspacing="0">

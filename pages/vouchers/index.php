@@ -132,9 +132,12 @@
                 var jsonParse = JSON.parse(data);
                 const json = jsonParse.data;
                 $("#journal_entry_id").val(json);
+                getEntries2();
             }
         });
     }
+
+    // $('#journal_entry_id').change(function() { getEntries2(); });
 
     function getEntries2() {
         var journal_entry_id = $("#journal_entry_id").val();

@@ -520,15 +520,17 @@ $User = new Users;
             this.innerHTML = json[new_id];
           });
 
+          
+          if (route_settings.class_name == "Vouchers") {
+            journalID(id);
+          }
+
           var transaction_edit = document.getElementById("menu-edit-transaction");
           var transaction_delete_items = document.getElementById("menu-delete-selected-items");
           var transaction_finish = document.getElementById("menu-finish-transaction");
           var col_list = document.getElementById("col-list");
           var col_item = document.getElementById("col-item");
 
-          if (route_settings.class_name == "Vouchers") {
-            journalID(id);
-          }
 
           if (json.status == 'F') {
             transaction_edit.classList.add('disabled');

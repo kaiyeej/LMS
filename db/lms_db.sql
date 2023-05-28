@@ -45,9 +45,9 @@ CREATE TABLE IF NOT EXISTS `tbl_chart_of_accounts` (
   `date_added` datetime NOT NULL DEFAULT current_timestamp(),
   `date_last_modified` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`chart_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_chart_of_accounts: ~33 rows (approximately)
+-- Dumping data for table lms_db.tbl_chart_of_accounts: ~31 rows (approximately)
 INSERT INTO `tbl_chart_of_accounts` (`chart_id`, `chart_code`, `chart_name`, `chart_type`, `main_chart_id`, `chart_class_id`, `date_added`, `date_last_modified`) VALUES
 	(1, '100100', 'Petty Cash Fund', 'M', 0, 1, '2023-05-05 09:07:51', '2023-05-18 14:46:22'),
 	(2, '100200', 'Revolving Fund', 'M', 0, 1, '2023-05-05 09:08:15', '2023-05-18 14:46:40'),
@@ -81,7 +81,8 @@ INSERT INTO `tbl_chart_of_accounts` (`chart_id`, `chart_code`, `chart_name`, `ch
 	(44, '401501', 'Electricity & Water - LA CARLOTA', 'S', 43, 6, '2023-05-27 00:57:50', '2023-05-27 00:57:50'),
 	(45, '401502', 'Electricity & Water - Talisay', 'S', 43, 6, '2023-05-27 00:58:19', '2023-05-27 00:58:19'),
 	(46, '401800', 'Advertisement', 'M', 0, 6, '2023-05-27 00:58:52', '2023-05-27 00:58:52'),
-	(47, '401900', 'Repairs and Maintenance', 'M', 0, 6, '2023-05-27 00:59:17', '2023-05-27 00:59:17');
+	(47, '401900', 'Repairs and Maintenance', 'M', 0, 6, '2023-05-27 00:59:17', '2023-05-27 00:59:17'),
+	(48, '100029', 'Service charge', 'M', 0, 6, '2023-05-27 09:28:12', '2023-05-27 09:28:12');
 
 -- Dumping structure for table lms_db.tbl_children
 CREATE TABLE IF NOT EXISTS `tbl_children` (
@@ -238,11 +239,12 @@ CREATE TABLE IF NOT EXISTS `tbl_expenses` (
   `user_id` int(11) NOT NULL,
   `credit_method` int(11) NOT NULL,
   PRIMARY KEY (`expense_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_expenses: ~1 rows (approximately)
+-- Dumping data for table lms_db.tbl_expenses: ~0 rows (approximately)
 INSERT INTO `tbl_expenses` (`expense_id`, `reference_number`, `expense_date`, `remarks`, `date_added`, `date_last_modified`, `journal_id`, `status`, `user_id`, `credit_method`) VALUES
-	(17, 'EXP-20230526190252', '2023-05-27', '', '2023-05-27 01:03:12', '2023-05-27 01:03:59', 7, 'F', 1, 5);
+	(17, 'EXP-20230526190252', '2023-05-27', '', '2023-05-27 01:03:12', '2023-05-27 01:03:59', 7, 'F', 1, 5),
+	(18, 'EXP-20230527051814', '2023-05-27', 'sample', '2023-05-27 11:19:05', '2023-05-27 11:21:11', 7, 'F', 1, 1);
 
 -- Dumping structure for table lms_db.tbl_expense_category
 CREATE TABLE IF NOT EXISTS `tbl_expense_category` (
@@ -268,7 +270,7 @@ CREATE TABLE IF NOT EXISTS `tbl_expense_details` (
   `expense_amount` decimal(12,3) NOT NULL,
   `expense_desc` varchar(250) NOT NULL,
   PRIMARY KEY (`expense_detail_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table lms_db.tbl_expense_details: ~21 rows (approximately)
 INSERT INTO `tbl_expense_details` (`expense_detail_id`, `expense_id`, `chart_id`, `expense_category_id`, `expense_amount`, `expense_desc`) VALUES
@@ -292,7 +294,8 @@ INSERT INTO `tbl_expense_details` (`expense_detail_id`, `expense_id`, `chart_id`
 	(18, 15, 12, 2, 213.000, ''),
 	(19, 15, 8, 3, 12.000, ''),
 	(21, 17, 41, 0, 1200.000, ''),
-	(22, 17, 47, 0, 900.000, '');
+	(22, 17, 47, 0, 900.000, ''),
+	(23, 18, 12, 0, 10000.000, '');
 
 -- Dumping structure for table lms_db.tbl_insurance
 CREATE TABLE IF NOT EXISTS `tbl_insurance` (
@@ -340,12 +343,16 @@ CREATE TABLE IF NOT EXISTS `tbl_journal_entries` (
   `date_last_modified` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `is_manual` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`journal_entry_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_journal_entries: ~2 rows (approximately)
+-- Dumping data for table lms_db.tbl_journal_entries: ~6 rows (approximately)
 INSERT INTO `tbl_journal_entries` (`journal_entry_id`, `reference_number`, `cross_reference`, `journal_id`, `remarks`, `journal_date`, `user_id`, `status`, `date_added`, `date_last_modified`, `is_manual`) VALUES
 	(54, 'CDJ-20230526190359', 'EXP-20230526190252', 7, '', '2023-05-27', 1, 'F', '2023-05-27 01:03:59', '2023-05-27 01:03:59', 'N'),
-	(55, 'CDJ-20230526190654', 'CV-20230526190617', 7, 'h', '2022-12-27', 1, 'S', '2023-05-27 01:06:54', '2023-05-27 01:06:54', 'N');
+	(55, 'CDJ-20230526190654', 'CV-20230526190617', 7, 'h', '2022-12-27', 1, 'F', '2023-05-27 01:06:54', '2023-05-27 09:36:08', 'N'),
+	(56, 'CDJ-20230527034411', 'CV-20230527034035', 7, 'TO RELEASE LOAN PROCEEDS FOR THE RENEWAL OF JUAN DELA CRUZ (THIS IS SAMPLE TEXT)', '2023-06-27', 1, 'F', '2023-05-27 09:44:11', '2023-05-27 09:45:19', 'N'),
+	(57, 'CDJ-20230527052111', 'EXP-20230527051814', 7, 'sample', '2023-05-27', 1, 'F', '2023-05-27 11:21:11', '2023-05-27 11:21:11', 'N'),
+	(58, 'CDJ-20230527052700', 'CV-20230527052404', 7, 'sample description', '2023-05-27', 1, 'S', '2023-05-27 11:27:00', '2023-05-27 11:27:00', 'N'),
+	(59, 'CDJ-20230527055256', '00254', 7, '', '2023-05-27', 1, 'S', '2023-05-27 11:53:29', '2023-05-27 11:53:29', 'Y');
 
 -- Dumping structure for table lms_db.tbl_journal_entry_details
 CREATE TABLE IF NOT EXISTS `tbl_journal_entry_details` (
@@ -356,9 +363,9 @@ CREATE TABLE IF NOT EXISTS `tbl_journal_entry_details` (
   `debit` decimal(12,3) NOT NULL DEFAULT 0.000,
   `credit` decimal(12,3) NOT NULL DEFAULT 0.000,
   PRIMARY KEY (`journal_entry_detail_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_journal_entry_details: ~14 rows (approximately)
+-- Dumping data for table lms_db.tbl_journal_entry_details: ~17 rows (approximately)
 INSERT INTO `tbl_journal_entry_details` (`journal_entry_detail_id`, `journal_entry_id`, `chart_id`, `description`, `debit`, `credit`) VALUES
 	(96, 51, 12, '', 2500.000, 0.000),
 	(97, 51, 13, '', 500.000, 0.000),
@@ -373,7 +380,12 @@ INSERT INTO `tbl_journal_entry_details` (`journal_entry_detail_id`, `journal_ent
 	(106, 54, 47, '', 900.000, 0.000),
 	(107, 54, 5, '', 0.000, 2100.000),
 	(108, 55, 13, '', 10000.000, 0.000),
-	(109, 55, 13, '', 0.000, 8000.000);
+	(109, 55, 13, '', 0.000, 8000.000),
+	(110, 55, 48, '', 0.000, 2000.000),
+	(111, 56, 13, '', 100000.000, 0.000),
+	(112, 56, 5, '', 0.000, 100000.000),
+	(113, 57, 12, '', 10000.000, 0.000),
+	(114, 57, 1, '', 0.000, 10000.000);
 
 -- Dumping structure for table lms_db.tbl_loans
 CREATE TABLE IF NOT EXISTS `tbl_loans` (
@@ -390,11 +402,13 @@ CREATE TABLE IF NOT EXISTS `tbl_loans` (
   `date_added` datetime NOT NULL DEFAULT current_timestamp(),
   `date_last_modified` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`loan_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table lms_db.tbl_loans: ~1 rows (approximately)
+-- Dumping data for table lms_db.tbl_loans: ~3 rows (approximately)
 INSERT INTO `tbl_loans` (`loan_id`, `reference_number`, `client_id`, `loan_type_id`, `loan_amount`, `loan_period`, `loan_interest`, `due_date`, `status`, `loan_date`, `date_added`, `date_last_modified`) VALUES
-	(7, 'LN-20230526084500', 45, 4, 10257.000, 12, 17.000, '0000-00-00', 'R', '2022-12-01', '2023-05-26 14:46:04', '2023-05-26 23:59:53');
+	(7, 'LN-20230526084500', 45, 4, 10257.000, 12, 17.000, '0000-00-00', 'R', '2022-12-01', '2023-05-26 14:46:04', '2023-05-26 23:59:53'),
+	(8, 'LN-20230527032027', 46, 1, 100000.000, 24, 18.000, '0000-00-00', 'R', '2023-05-27', '2023-05-27 09:20:53', '2023-05-27 09:21:00'),
+	(9, 'LN-20230527044548', 46, 1, 10000.000, 12, 18.000, '0000-00-00', 'R', '2023-05-31', '2023-05-27 10:48:44', '2023-05-27 10:53:22');
 
 -- Dumping structure for table lms_db.tbl_loan_types
 CREATE TABLE IF NOT EXISTS `tbl_loan_types` (
@@ -466,7 +480,7 @@ CREATE TABLE IF NOT EXISTS `tbl_suppliers` (
   PRIMARY KEY (`supplier_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_suppliers: ~1 rows (approximately)
+-- Dumping data for table lms_db.tbl_suppliers: ~0 rows (approximately)
 INSERT INTO `tbl_suppliers` (`supplier_id`, `supplier_name`, `supplier_address`, `supplier_contact_no`, `remarks`, `date_added`, `date_last_modified`) VALUES
 	(2, 'Lao Chan Corp.', '', '033222', '', '2023-05-12 13:22:48', '2023-05-12 13:22:48');
 
@@ -558,11 +572,13 @@ CREATE TABLE IF NOT EXISTS `tbl_vouchers` (
   `date_added` datetime NOT NULL DEFAULT current_timestamp(),
   `date_last_modified` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`voucher_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_vouchers: ~1 rows (approximately)
+-- Dumping data for table lms_db.tbl_vouchers: ~3 rows (approximately)
 INSERT INTO `tbl_vouchers` (`voucher_id`, `reference_number`, `account_type`, `account_id`, `voucher_no`, `description`, `check_number`, `ac_no`, `amount`, `voucher_date`, `status`, `user_id`, `journal_id`, `date_added`, `date_last_modified`) VALUES
-	(27, 'CV-20230526190617', 'C', 45, '0001', 'h', '00009', '0009991', 10000.000, '2022-12-27', 'S', 1, 7, '2023-05-27 01:06:54', '2023-05-27 01:06:54');
+	(27, 'CV-20230526190617', 'C', 45, '0001', 'TO RELEASE LOAN PROCEEDS FOR THE RENEWAL OF PEPE SMITH (THIS IS SAMPLE TEXT)', '00009', '0009991', 10000.000, '2022-12-27', 'F', 1, 7, '2023-05-27 01:06:54', '2023-05-27 09:36:08'),
+	(28, 'CV-20230527034035', 'C', 46, '00023', 'TO RELEASE LOAN PROCEEDS FOR THE RENEWAL OF JUAN DELA CRUZ (THIS IS SAMPLE TEXT)', '000299-2', '000000022', 1200.000, '2023-06-27', 'F', 1, 7, '2023-05-27 09:44:11', '2023-05-27 09:45:19'),
+	(29, 'CV-20230527052404', 'C', 46, '0002', 'sample description', '0002', '0003', 1000.000, '2023-05-27', 'S', 1, 7, '2023-05-27 11:27:00', '2023-05-27 11:27:00');
 
 -- Dumping structure for trigger lms_db.delete_client
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
