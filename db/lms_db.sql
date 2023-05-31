@@ -113,10 +113,9 @@ CREATE TABLE IF NOT EXISTS `tbl_children` (
   PRIMARY KEY (`child_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_children: ~4 rows (approximately)
+-- Dumping data for table lms_db.tbl_children: ~3 rows (approximately)
 /*!40000 ALTER TABLE `tbl_children` DISABLE KEYS */;
 INSERT INTO `tbl_children` (`child_id`, `client_id`, `child_name`, `child_sex`, `child_age`, `child_occupation`, `date_added`, `date_last_modified`) VALUES
-	(5, 47, '3', 'Male', 3, '3', '2023-04-25 09:00:58', '2023-04-25 09:00:58'),
 	(6, 45, 'q2', 'Male', 2, '2', '2023-05-09 21:01:32', '2023-05-09 21:01:32'),
 	(7, 48, '4', 'Female', 3, '43', '2023-05-26 13:55:32', '2023-05-26 13:55:32');
 /*!40000 ALTER TABLE `tbl_children` ENABLE KEYS */;
@@ -201,17 +200,14 @@ CREATE TABLE IF NOT EXISTS `tbl_clients` (
   PRIMARY KEY (`client_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table lms_db.tbl_clients: ~7 rows (approximately)
+-- Dumping data for table lms_db.tbl_clients: ~8 rows (approximately)
 /*!40000 ALTER TABLE `tbl_clients` DISABLE KEYS */;
 INSERT INTO `tbl_clients` (`client_id`, `branch_id`, `client_fname`, `client_mname`, `client_lname`, `client_name_extension`, `client_dob`, `client_contact_no`, `client_civil_status`, `client_address`, `client_address_status`, `client_res_cert_no`, `client_res_cert_issued_at`, `client_res_cert_date`, `client_employer`, `client_employer_address`, `client_employer_contact_no`, `client_emp_position`, `client_emp_income`, `client_emp_status`, `client_emp_length`, `client_prev_emp`, `client_spouse`, `client_spouse_address`, `client_spouse_res_cert_no`, `client_spouse_res_cert_issued_at`, `client_spouse_res_cert_date`, `client_spouse_employer`, `client_spouce_employer_address`, `client_spouse_position`, `client_spouse_income`, `client_spouce_employer_contact_no`, `client_spouse_emp_status`, `client_spouse_leng_emp`, `client_spouse_prev_employment`, `client_no_of_childred`, `client_no_of_child_dependent`, `client_no_of_child_college`, `client_no_of_child_hs`, `client_no_of_child_elem`, `client_soi`, `client_soi_by_whom`, `client_soi_monthly_income`, `client_credit_ref_name1`, `client_credit_ref_address1`, `client_credit_ref_name2`, `client_credit_ref_address2`, `client_credit_ref_name3`, `client_credit_ref_address3`, `client_approx_total_monthly_income`, `client_total_outstanding_obligation`, `client_business_name`, `client_business_address`, `client_business_tel_no`, `client_business_position`, `client_business_kind`, `client_business_length`, `client_business_capital_invested`, `client_business_type`, `insurance_id`, `client_insurance_amount`, `client_insurance_maturity`, `client_bank_transaction`, `client_unpaid_obligation`, `client_salary_withdrawal`, `client_paymaster_name`, `client_paymaster_residence`, `client_paymaster_res_cert_no`, `client_paymaster_res_cert_issued_at`, `client_paymaster_res_cert_date`, `client_paymaster_deduct_salary`, `client_paymaster_client_deduct_salary`, `client_paymaster_conformity`, `date_added`, `date_last_modified`) VALUES
 	(45, 0, 'Pepe', '', 'Smith', '', '2023-01-05', '021', 'Married', 'Purok Samuel, Barangay Zone 4, Bago City Negros Occidental', 'Owned', '0', '0', '2023-04-24', '0', '0', '0', '0', -1.000, '0', 0, '0', '0', '0', '0', '0', '2023-04-24', '0', '', '', '', '', '', '', '', 0, 0, 0, 0, 0, '0', '0', 0.000, '0', '0', '0', '0', '0', '0', 0.000, 0.000, '0', '0', '0', '0', '0', 0, 0.000, 'Owner', 1, 4.000, 4, '4', 4.000, 'Weekly', '4', '4', '4', '4', '2023-04-24', 'No', 'Yes', 'Yes', '2023-04-24 15:09:21', '2023-05-05 21:39:46'),
-	(47, 0, 'sa', 'a', 'a', '', '2017-01-12', '3', 'Married', 'Purok Samuel, Barangay Zone 4, Bago City Negros Occidental', 'Owned', '3', '3', '2023-04-25', '2', '2', '2', '2', 2.000, '2', 2, '', '2', '3', '3', '3', '2023-04-25', '3', '', '', '', '', '', '', '', 2, 3, 2, 3, 2, '3', '3', 2.000, '3', '3', '3', '3', '3', '3', 3.000, 3.000, '3', '3', '3', '3', '3', 3, 3.000, 'Sole', 1, 3.000, 3, '3', 3.000, 'Weekly', '3', '3', '3', '3', '2023-04-25', 'Yes', 'Yes', 'No', '2023-04-25 08:59:53', '2023-05-05 21:39:57'),
 	(48, 0, 'Pepe', 'Smith', 'Aguilar', '', '1996-01-30', '092544234', 'Single', 'Pulupandan', 'Owned', '123123', '13', '2023-05-26', '123', '123', '13', '13', 12000.000, '78', 6, '6', '', '', '', '', '0000-00-00', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0, '', '', 0.000, '', '', '', '', '', '', 0.000, 0.000, '', '', '', '', '', 0, 0.000, '', 0, 0.000, 0, '', 0.000, '', '', '', '', '', '0000-00-00', '', '', '', '2023-05-26 13:54:25', '2023-05-26 13:54:25'),
-	(50, 0, 'qweqwe', 'e', 'e', 'e', '2023-05-26', 'we', 'Single', 'e', 'Owned', 'qwe', 'e', '2023-05-26', 'qwe', 'wqe', 'qwe', 'wq', 32.000, 'we', 0, 'qe', '', '', '', '', '0000-00-00', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0, '', '', 0.000, '', '', '', '', '', '', 0.000, 0.000, '', '', '', '', '', 0, 0.000, '', 0, 0.000, 0, '', 0.000, '', '', '', '', '', '0000-00-00', '', '', '', '2023-05-26 14:03:21', '2023-05-26 14:03:21'),
-	(53, 0, 'renu', 'renu', 'renu', '', '2023-05-27', '2434', 'Single', '2', 'Owned', '234234', '234', '2023-05-26', '3', '3', '3', '3', 3.000, '3', 3, '3', '', '', '', '', '0000-00-00', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0, '', '', 0.000, '', '', '', '', '', '', 0.000, 0.000, '', '', '', '', '', 0, 0.000, '', 0, 0.000, 0, '', 0.000, '', '', '', '', '', '0000-00-00', '', '', '', '2023-05-26 14:14:55', '2023-05-26 14:14:55'),
-	(55, 0, 'rr', '3', '3', '', '2023-05-26', '3', 'Single', '3', 'Owned', '3', '3', '2023-05-26', '3', '3', '3', '3', 3.000, '3', 3, '3', '3', '3', '3', '3', '2023-05-26', '3', '3', '3', '3', '3', '3', '3', '3', 3, 3, 3, 3, 3, '3', '3', 3.000, '3', '3', '3', '3', '3', '3', 3.000, 3.000, '3', '3', '3', '3', '3', 3, 3.000, 'Sole', 1, 3.000, 3, '3', 3.000, 'Weekly', '3', '3', '3', '3', '2023-05-26', 'No', 'No', 'No', '2023-05-26 14:23:41', '2023-05-26 14:24:24'),
-	(59, 0, '423 4', ' ', '4', '', '2023-05-26', '3', 'Single', '3', 'Owned', '3', '3', '2023-05-26', '3', '3', '3', '3', 3.000, '3', 3, '3', '', '', '', '', '0000-00-00', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0, '3', '3', 3.000, '3', '3', '3', '3', '3', '3', 3.000, 3.000, '3', '3', '3', '3', '3', 3, 3.000, 'Sole', 1, 3.000, 3, '3', 3.000, 'Weekly', '3', '3', '3', '3', '2023-05-26', 'No', 'No', 'No', '2023-05-26 14:40:29', '2023-05-26 14:40:56'),
-	(60, 1, '2', '2', '2', '2', '2023-05-31', '2', 'Single', '2', 'Owned', '2', '2', '2023-05-31', '3', '23', '2', '2', 3.000, '3', 3, '3', '', '', '', '', '0000-00-00', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0, '', '', 0.000, '', '', '', '', '', '', 0.000, 0.000, '', '', '', '', '', 0, 0.000, '', 0, 0.000, 0, '', 0.000, '', '', '', '', '', '0000-00-00', '', '', '', '2023-05-31 11:36:12', '2023-05-31 11:36:12');
+	(50, 0, 'James', 'Ong', 'Lapas', 'III', '2023-05-26', 'we', 'Single', 'e', 'Owned', 'qwe', 'e', '2023-05-26', 'qwe', 'wqe', 'qwe', 'wq', 32.000, 'we', 0, 'qe', '', '', '', '', '0000-00-00', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0, '', '', 0.000, '', '', '', '', '', '', 0.000, 0.000, '', '', '', '', '', 0, 0.000, '', 0, 0.000, 0, '', 0.000, '', '', '', '', '', '0000-00-00', '', '', '', '2023-05-26 14:03:21', '2023-05-31 16:49:01'),
+	(59, 0, 'John', 'Santos', 'Ramos', '', '2023-05-26', '3', 'Single', '3', 'Owned', '3', '3', '2023-05-26', '3', '3', '3', '3', 3.000, '3', 3, '3', '', '', '', '', '0000-00-00', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0, '3', '3', 3.000, '3', '3', '3', '3', '3', '3', 3.000, 3.000, '3', '3', '3', '3', '3', 3, 3.000, 'Sole', 1, 3.000, 3, '3', 3.000, 'Weekly', '3', '3', '3', '3', '2023-05-26', 'No', 'No', 'No', '2023-05-26 14:40:29', '2023-05-31 16:47:47'),
+	(60, 1, 'Rianne', 'Canoy', 'Strella', '2', '2023-05-31', '2', 'Single', '2', 'Owned', '2', '2', '2023-05-31', '3', '23', '2', '2', 3.000, '3', 3, '3', '', '', '', '', '0000-00-00', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0, '', '', 0.000, '', '', '', '', '', '', 0.000, 0.000, '', '', '', '', '', 0, 0.000, '', 0, 0.000, 0, '', 0.000, '', '', '', '', '', '0000-00-00', '', '', '', '2023-05-31 11:36:12', '2023-05-31 16:48:19');
 /*!40000 ALTER TABLE `tbl_clients` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_collections
@@ -311,7 +307,7 @@ CREATE TABLE IF NOT EXISTS `tbl_expense_details` (
   PRIMARY KEY (`expense_detail_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_expense_details: ~17 rows (approximately)
+-- Dumping data for table lms_db.tbl_expense_details: ~19 rows (approximately)
 /*!40000 ALTER TABLE `tbl_expense_details` DISABLE KEYS */;
 INSERT INTO `tbl_expense_details` (`expense_detail_id`, `expense_id`, `chart_id`, `expense_category_id`, `expense_amount`, `expense_desc`) VALUES
 	(1, 1, 6, 2, 213.000, ''),
@@ -389,7 +385,7 @@ CREATE TABLE IF NOT EXISTS `tbl_journal_entries` (
   PRIMARY KEY (`journal_entry_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_journal_entries: ~1 rows (approximately)
+-- Dumping data for table lms_db.tbl_journal_entries: ~3 rows (approximately)
 /*!40000 ALTER TABLE `tbl_journal_entries` DISABLE KEYS */;
 INSERT INTO `tbl_journal_entries` (`journal_entry_id`, `reference_number`, `cross_reference`, `journal_id`, `remarks`, `journal_date`, `user_id`, `status`, `date_added`, `date_last_modified`, `is_manual`) VALUES
 	(51, 'BBJ-20230524092539', 'EXP-20230524091844', 3, '', '2023-05-24', 1, 'F', '2023-05-24 15:25:39', '2023-05-24 15:25:39', 'N'),
@@ -408,7 +404,7 @@ CREATE TABLE IF NOT EXISTS `tbl_journal_entry_details` (
   PRIMARY KEY (`journal_entry_detail_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_journal_entry_details: ~8 rows (approximately)
+-- Dumping data for table lms_db.tbl_journal_entry_details: ~9 rows (approximately)
 /*!40000 ALTER TABLE `tbl_journal_entry_details` DISABLE KEYS */;
 INSERT INTO `tbl_journal_entry_details` (`journal_entry_detail_id`, `journal_entry_id`, `chart_id`, `description`, `debit`, `credit`) VALUES
 	(96, 51, 12, '', 2500.000, 0.000),
@@ -519,7 +515,7 @@ CREATE TABLE IF NOT EXISTS `tbl_suppliers` (
   PRIMARY KEY (`supplier_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_suppliers: ~0 rows (approximately)
+-- Dumping data for table lms_db.tbl_suppliers: ~1 rows (approximately)
 /*!40000 ALTER TABLE `tbl_suppliers` DISABLE KEYS */;
 INSERT INTO `tbl_suppliers` (`supplier_id`, `supplier_name`, `supplier_address`, `supplier_contact_no`, `remarks`, `date_added`, `date_last_modified`) VALUES
 	(2, 'Lao Chan Corp.', '', '033222', '', '2023-05-12 13:22:48', '2023-05-12 13:22:48');
@@ -621,7 +617,7 @@ CREATE TABLE IF NOT EXISTS `tbl_vouchers` (
   PRIMARY KEY (`voucher_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_vouchers: ~0 rows (approximately)
+-- Dumping data for table lms_db.tbl_vouchers: ~1 rows (approximately)
 /*!40000 ALTER TABLE `tbl_vouchers` DISABLE KEYS */;
 INSERT INTO `tbl_vouchers` (`voucher_id`, `reference_number`, `account_type`, `account_id`, `voucher_no`, `description`, `check_number`, `ac_no`, `amount`, `voucher_date`, `status`, `user_id`, `journal_id`, `date_added`, `date_last_modified`) VALUES
 	(26, 'CV-20230526055830', 'C', 45, '213', 'TO RELEASE LOAN PROCEEDS FOR THE RENEWAL OF SHIELA', '213', '123', 200000.000, '2023-05-26', 'F', 1, 7, '2023-05-26 11:58:44', '2023-05-26 12:00:48');
