@@ -45,6 +45,7 @@
                 Manage clients here.
             </div>
             <div>
+                <a href="#" class="btn btn-icon icon-left btn-secondary" onclick="importClient()"><i class="fas fa-upload"></i> Import</a>
                 <a href="#" class="btn btn-icon icon-left btn-primary" onclick="addClient()"><i class="fas fa-plus"></i> Add</a>
                 <a href="#" class="btn btn-icon icon-left btn-danger" onclick='deleteEntry()'><i class="fas fa-trash"></i> Delete</a>
             </div>
@@ -81,6 +82,7 @@
     </div>
 </section>
 <?php include "modal_clients.php"; ?>
+<?php include "modal_import.php"; ?>
 <script type="text/javascript">
     function addClient() {
         modal_detail_status = 0;
