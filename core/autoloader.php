@@ -28,4 +28,5 @@ $classes = array(
     'ExpenseCategory'       => $pre_class . 'expensecategory.php',
     'Expenses'              => $pre_class . 'expenses.php',
     'IncomeStatement'       => $pre_class . 'incomestatement.php',
+    'Branches'              => $pre_class . 'branches.php',
 );

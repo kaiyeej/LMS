@@ -12,6 +12,7 @@ class Clients extends Connection
         $client_mname = $this->clean($this->inputs['client_mname']);
         $client_lname = $this->clean($this->inputs['client_lname']);
         $client_name_extension = $this->clean($this->inputs['client_name_extension']);
+        $branch_id = $this->clean($this->inputs['branch_id']);
 
         $is_exist = $this->select($this->table, $this->pk, "client_fname = '$client_fname' AND client_mname = '$client_mname' AND client_lname='$client_lname' AND client_name_extension='$client_name_extension'");
 
@@ -19,6 +20,7 @@ class Clients extends Connection
             return -2;
         } else {
             $form = array(
+                'branch_id'                         => $branch_id,
                 'client_fname'                      => $client_fname,
                 'client_mname'                      => $client_mname,
                 'client_lname'                      => $client_lname,
@@ -50,6 +52,8 @@ class Clients extends Connection
         $client_mname = $this->clean($this->inputs['client_mname']);
         $client_lname = $this->clean($this->inputs['client_lname']);
         $client_name_extension = $this->clean($this->inputs['client_name_extension']);
+        $client_name_extension = $this->clean($this->inputs['client_name_extension']);
+        $branch_id = $this->clean($this->inputs['branch_id']);
 
         $client_paymaster_deduct_salary = (!isset($this->inputs['client_paymaster_deduct_salary']) ? "No" : "Yes");
         $client_paymaster_client_deduct_salary = (!isset($this->inputs['client_paymaster_client_deduct_salary']) ? "No" : "Yes");
@@ -61,6 +65,7 @@ class Clients extends Connection
             return 2;
         } else {
             $form = array(
+                'branch_id'                         => $branch_id,
                 'client_fname'                      => $client_fname,
                 'client_mname'                      => $client_mname,
                 'client_lname'                      => $client_lname,

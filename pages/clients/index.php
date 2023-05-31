@@ -216,5 +216,6 @@
     $(document).ready(function() {
         getEntries();
         getSelectOption('Insurance', 'insurance_id', 'insurance_name');
+        getSelectOption('Branches', 'branch_id', 'branch_name');
     });
 </script>

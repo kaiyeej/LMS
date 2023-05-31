@@ -20,10 +20,12 @@
                         <div class="card-header">
                             <div class="col-md-12">
                                 <div class="author-box-name">
-                                    <a href="#"><h3><span class="client_span"></span></h3></a>
+                                    <a href="#">
+                                        <h3><span class="client_span"></span></h3>
+                                    </a>
                                     <strong>Update client profile</strong>
                                 </div>
-                                
+
                                 <a href="#" style="float: right;" onclick="getPreview()" class="btn btn-lg btn-icon icon-left btn-warning"><i class="fa fa-print"></i> Print</a>
                             </div>
                         </div>
@@ -53,6 +55,16 @@
                                     <div id="page_content_1" class="container">
                                         <form method='POST' id='frm_client_1'>
                                             <input type="hidden" name="input[client_id]" id="hidden_id_1">
+                                            <div class="form-group row">
+                                                <div class="col-lg-4" style="padding: 10px;">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><strong style="color:red;">*&nbsp;</strong> Branch</span>
+                                                        </div> <select class="select2 form-control input-item" id="branch_id" name="input[branch_id]" required>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="form-group row">
                                                 <div class="form-group col-lg-4">
                                                     <div class="input-group">
@@ -1225,6 +1237,7 @@
     var client_id = "<?= $_GET['c']; ?>";
 
     $(document).ready(function() {
+        getSelectOption('Branches', 'branch_id', 'branch_name');
         getSelectOption('Insurance', 'insurance_id', 'insurance_name');
         getEntryDetails(client_id);
         $("#hidden_id_1").val(client_id);
