@@ -415,4 +415,53 @@ class Clients extends Connection
 
         return $this->insertIfNotExist("tbl_children", $form, "child_name = '" . $child_name . "'");
     }
+
+    public function import()
+    {
+        $response = [];
+        $file = $_FILES['csv_file'];
+        $fileType = pathinfo($file['name'], PATHINFO_EXTENSION);
+        if ($fileType != 'csv') {
+            $response['status'] = -1;
+            $response['text'] = 'Invalid file format. Only CSV files are allowed.';
+            return $response;
+        }
+
+        // Read the CSV file data
+        $csvData = array();
+        if (($handle = fopen($file['tmp_name'], 'r')) !== false) {
+            while (($row = fgetcsv($handle)) !== false) {
+                $csvData[] = $row;
+            }
+            fclose($handle);
+        } else {
+            $response['status'] = -1;
+            $response['text'] = 'Failed to read the CSV file.';
+            return $response;
+        }
+
+        // Display the processed data
+        $clients_data = [];
+        $count = 0;
+        foreach ($csvData as $row) {
+            if($count > 0){
+                $form = [
+                    'branch_id'             => 1,
+                    'client_fname'          => $row[1],
+                    'client_mname'          => $row[2],
+                    'client_lname'          => $row[3],
+                    'client_name_extension' => $row[4],
+                    'client_civil_status'   => $row[5],
+                    'client_dob'            => $row[6],
+                    'client_contact_no'     => $row[7],
+                    'client_address'        => $row[8],
+                ];
+                $clients_data[] = $form;
+            }
+            $count++;
+        }
+        $response['status'] = 1;
+        $response['clients'] = $clients_data;
+        return $response;
+    }
 }
