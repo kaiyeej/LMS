@@ -21,6 +21,9 @@
                             <div class="col-md-12">
                                 <div class="author-box-name">
                                     <a href="#">
+                                        <span><i class="fa-solid fa-angles-left"></i> Back to Clients</span>
+                                    </a>
+                                    <a href="#">
                                         <h3><span class="client_span"></span></h3>
                                     </a>
                                     <strong>Update client profile</strong>
@@ -1237,8 +1240,8 @@
     var client_id = "<?= $_GET['c']; ?>";
 
     $(document).ready(function() {
-        getSelectOption('Branches', 'branch_id', 'branch_name');
         getSelectOption('Insurance', 'insurance_id', 'insurance_name');
+        getSelectOption('Branches', 'branch_id', 'branch_name');
         getEntryDetails(client_id);
         $("#hidden_id_1").val(client_id);
         $("#hidden_id_2").val(client_id);

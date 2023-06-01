@@ -17,7 +17,9 @@ $User = new Users;
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="assets/modules/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/modules/fontawesome/css/all.min.css">
+  <link href="assets/modules/fontawesome/css/fontawesome.css" rel="stylesheet">
+  <link href="assets/modules/fontawesome/css/brands.css" rel="stylesheet">
+  <link href="assets/modules/fontawesome/css/solid.css" rel="stylesheet">
 
   <!-- CSS Libraries -->
   <!-- <link rel="stylesheet" href="assets/modules/jqvmap/dist/jqvmap.min.css">

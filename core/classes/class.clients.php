@@ -152,6 +152,7 @@ class Clients extends Connection
             return 2;
         } else {
             $form = array(
+                'branch_id'                         => $this->clean($this->inputs['branch_id']),
                 'client_fname'                      => $client_fname,
                 'client_mname'                      => $client_mname,
                 'client_lname'                      => $client_lname,
