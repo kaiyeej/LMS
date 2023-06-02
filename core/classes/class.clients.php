@@ -6,6 +6,8 @@ class Clients extends Connection
     public $pk = 'client_id';
     public $name = 'client_fname';
 
+    public $inputs;
+
     public function add()
     {
         $client_fname = $this->clean($this->inputs['client_fname']);
@@ -16,33 +18,34 @@ class Clients extends Connection
 
         $is_exist = $this->select($this->table, $this->pk, "client_fname = '$client_fname' AND client_mname = '$client_mname' AND client_lname='$client_lname' AND client_name_extension='$client_name_extension'");
 
-        if ($is_exist->num_rows > 0) {
+        if ($is_exist->num_rows > 0)
             return -2;
-        } else {
-            $form = array(
-                'branch_id'                         => $branch_id,
-                'client_fname'                      => $client_fname,
-                'client_mname'                      => $client_mname,
-                'client_lname'                      => $client_lname,
-                'client_name_extension'             => $client_name_extension,
-                'client_address'                    => $this->clean($this->inputs['client_address']),
-                'client_dob'                        => $this->clean($this->inputs['client_dob']),
-                'client_contact_no'                 => $this->clean($this->inputs['client_contact_no']),     'client_civil_status'               => $this->clean($this->inputs['client_civil_status']),
-                'client_address'                    => $this->clean($this->inputs['client_address']),     'client_address_status'             => $this->clean($this->inputs['client_address_status']),
-                'client_res_cert_no'                => $this->clean($this->inputs['client_res_cert_no']),     'client_res_cert_issued_at'         => $this->clean($this->inputs['client_res_cert_issued_at']),
-                'client_res_cert_date'              => $this->clean($this->inputs['client_res_cert_date']),
-                'client_employer'                   => $this->clean($this->inputs['client_employer']),
-                'client_employer_address'           => $this->clean($this->inputs['client_employer_address']),
-                'client_employer_contact_no'        => $this->clean($this->inputs['client_employer_contact_no']),
-                'client_emp_position'               => $this->clean($this->inputs['client_emp_position']),
-                'client_emp_income'                 => $this->clean($this->inputs['client_emp_income']),
-                'client_emp_status'                 => $this->clean($this->inputs['client_emp_status']),
-                'client_emp_length'                 => $this->clean($this->inputs['client_emp_length']),
-                'client_prev_emp'                   => $this->clean($this->inputs['client_prev_emp']),
 
-            );
-            return $this->insert($this->table, $form, 'Y');
-        }
+        $form = array(
+            'branch_id'             => $branch_id,
+            'client_fname'          => $client_fname,
+            'client_mname'          => $client_mname,
+            'client_lname'          => $client_lname,
+            'client_name_extension' => $client_name_extension,
+            'client_dob'            => $this->clean($this->inputs['client_dob']),
+            'client_contact_no'     => $this->clean($this->inputs['client_contact_no']),
+            'client_civil_status'   => $this->clean($this->inputs['client_civil_status']),
+            'client_address'        => $this->clean($this->inputs['client_address']),
+            'client_address_status' => $this->clean($this->inputs['client_address_status']),
+            'client_res_cert_no'    => $this->clean($this->inputs['client_res_cert_no']),
+            'client_res_cert_issued_at'     => $this->clean($this->inputs['client_res_cert_issued_at']),
+            'client_res_cert_date'          => $this->clean($this->inputs['client_res_cert_date']),
+            'client_employer'               => $this->clean($this->inputs['client_employer']),
+            'client_employer_address'       => $this->clean($this->inputs['client_employer_address']),
+            'client_employer_contact_no'    => $this->clean($this->inputs['client_employer_contact_no']),
+            'client_emp_position'           => $this->clean($this->inputs['client_emp_position']),
+            'client_emp_income' => $this->clean($this->inputs['client_emp_income']),
+            'client_emp_status' => $this->clean($this->inputs['client_emp_status']),
+            'client_emp_length' => $this->clean($this->inputs['client_emp_length']),
+            'client_prev_emp'   => $this->clean($this->inputs['client_prev_emp']),
+
+        );
+        return $this->insert($this->table, $form, 'Y');
     }
 
     public function edit()
@@ -52,90 +55,91 @@ class Clients extends Connection
         $client_mname = $this->clean($this->inputs['client_mname']);
         $client_lname = $this->clean($this->inputs['client_lname']);
         $client_name_extension = $this->clean($this->inputs['client_name_extension']);
-        $client_name_extension = $this->clean($this->inputs['client_name_extension']);
         $branch_id = $this->clean($this->inputs['branch_id']);
 
         $client_paymaster_deduct_salary = (!isset($this->inputs['client_paymaster_deduct_salary']) ? "No" : "Yes");
         $client_paymaster_client_deduct_salary = (!isset($this->inputs['client_paymaster_client_deduct_salary']) ? "No" : "Yes");
         $client_paymaster_conformity = (!isset($this->inputs['client_paymaster_conformity']) ? "No" : "Yes");
 
-
         $is_exist = $this->select($this->table, $this->pk, "client_fname = '$client_fname' AND client_mname = '$client_mname' AND client_lname='$client_lname' AND client_name_extension='$client_name_extension' AND $this->pk != '$primary_id'");
-        if ($is_exist->num_rows > 0) {
+        if ($is_exist->num_rows > 0)
             return 2;
-        } else {
-            $form = array(
-                'branch_id'                         => $branch_id,
-                'client_fname'                      => $client_fname,
-                'client_mname'                      => $client_mname,
-                'client_lname'                      => $client_lname,
-                'client_name_extension'             => $client_name_extension,
-                'client_address'                    => $this->clean($this->inputs['client_address']),
-                'client_dob'                        => $this->clean($this->inputs['client_dob']),
-                'client_contact_no'                 => $this->clean($this->inputs['client_contact_no']),     'client_civil_status'               => $this->clean($this->inputs['client_civil_status']),
-                'client_address'                    => $this->clean($this->inputs['client_address']),     'client_address_status'             => $this->clean($this->inputs['client_address_status']),
-                'client_res_cert_no'                => $this->clean($this->inputs['client_res_cert_no']),     'client_res_cert_issued_at'         => $this->clean($this->inputs['client_res_cert_issued_at']),
-                'client_res_cert_date'              => $this->clean($this->inputs['client_res_cert_date']), 'client_employer'                   => $this->clean($this->inputs['client_employer']), 'client_employer_address'           => $this->clean($this->inputs['client_employer_address']), 'client_employer_contact_no'        => $this->clean($this->inputs['client_employer_contact_no']),
-                'client_emp_position'               => $this->clean($this->inputs['client_emp_position']), 'client_emp_income'                 => $this->clean($this->inputs['client_emp_income']), 'client_emp_status'                 => $this->clean($this->inputs['client_emp_status']), 'client_emp_length'                 => $this->clean($this->inputs['client_emp_length']), 'client_prev_emp'                   => $this->clean($this->inputs['client_prev_emp']),
 
-                'client_spouse'                     => $this->clean($this->inputs['client_spouse']),
-                'client_spouse_address'             => $this->clean($this->inputs['client_spouse_address']),
-                'client_spouse_res_cert_no'         => $this->clean($this->inputs['client_spouse_res_cert_no']),
-                'client_spouse_res_cert_issued_at'  => $this->clean($this->inputs['client_spouse_res_cert_issued_at']),
-                'client_spouse_res_cert_date'       => $this->clean($this->inputs['client_spouse_res_cert_date']),
-                'client_spouse_employer'            => $this->clean($this->inputs['client_spouse_employer']),
-                'client_spouce_employer_address'           => $this->clean($this->inputs['client_spouce_employer_address']),
-                'client_spouce_employer_contact_no' => $this->clean($this->inputs['client_spouce_employer_contact_no']),
-                'client_spouse_position'            => $this->clean($this->inputs['client_spouse_position']),
-                'client_spouse_income'              => $this->clean($this->inputs['client_spouse_income']),
-                'client_spouse_emp_status'          => $this->clean($this->inputs['client_spouse_emp_status']),
-                'client_spouse_leng_emp'            => $this->clean($this->inputs['client_spouse_leng_emp']),
-                'client_spouse_prev_employment'     => $this->clean($this->inputs['client_spouse_prev_employment']),
-                'client_no_of_childred'             => $this->clean($this->inputs['client_no_of_childred']),
-                'client_no_of_child_dependent'      => $this->clean($this->inputs['client_no_of_child_dependent']),
-                'client_no_of_child_college'        => $this->clean($this->inputs['client_no_of_child_college']),
-                'client_no_of_child_hs'             => $this->clean($this->inputs['client_no_of_child_hs']),
-                'client_no_of_child_elem'           => $this->clean($this->inputs['client_no_of_child_elem']),
-
-                'client_soi'                        => $this->clean($this->inputs['client_soi']),
-                'client_soi_by_whom'                => $this->clean($this->inputs['client_soi_by_whom']),
-                'client_soi_monthly_income'         => $this->clean($this->inputs['client_soi_monthly_income']),
-                'client_credit_ref_name1'           => $this->clean($this->inputs['client_credit_ref_name1']),
-                'client_credit_ref_name1'           => $this->clean($this->inputs['client_credit_ref_name1']),
-                'client_credit_ref_address1'        => $this->clean($this->inputs['client_credit_ref_address1']),
-                'client_credit_ref_name2'           => $this->clean($this->inputs['client_credit_ref_name2']),
-                'client_credit_ref_address2'        => $this->clean($this->inputs['client_credit_ref_address2']),
-                'client_credit_ref_name3'           => $this->clean($this->inputs['client_credit_ref_name3']),
-                'client_credit_ref_address3'        => $this->clean($this->inputs['client_credit_ref_address3']),
-                'client_approx_total_monthly_income' => $this->clean($this->inputs['client_approx_total_monthly_income']),
-                'client_total_outstanding_obligation' => $this->clean($this->inputs['client_total_outstanding_obligation']),
-                'client_business_name'              => $this->clean($this->inputs['client_business_name']),
-                'client_business_address'           => $this->clean($this->inputs['client_business_address']),
-                'client_business_tel_no'            => $this->clean($this->inputs['client_business_tel_no']),
-                'client_business_position'          => $this->clean($this->inputs['client_business_position']),
-                'client_business_kind'              => $this->clean($this->inputs['client_business_kind']),
-                'client_business_length'            => $this->clean($this->inputs['client_business_length']),
-                'client_business_capital_invested'  => $this->clean($this->inputs['client_business_capital_invested']),
-                'client_business_type'              => $this->clean($this->inputs['client_business_type']),
-
-                'insurance_id'                      => $this->clean($this->inputs['insurance_id']),
-                'client_insurance_amount'           => $this->clean($this->inputs['client_insurance_amount']),
-                'client_insurance_maturity'         => $this->clean($this->inputs['client_insurance_maturity']),
-                'client_bank_transaction'           => $this->clean($this->inputs['client_bank_transaction']),
-                'client_unpaid_obligation'          => $this->clean($this->inputs['client_unpaid_obligation']),
-                'client_salary_withdrawal'          => $this->clean($this->inputs['client_salary_withdrawal']),
-                'client_paymaster_name'             => $this->clean($this->inputs['client_paymaster_name']),
-                'client_paymaster_residence'        => $this->clean($this->inputs['client_paymaster_residence']),
-                'client_paymaster_res_cert_no'      => $this->clean($this->inputs['client_paymaster_res_cert_no']),
-                'client_paymaster_res_cert_issued_at'   => $this->clean($this->inputs['client_paymaster_res_cert_issued_at']),
-                'client_paymaster_res_cert_date'   => $this->clean($this->inputs['client_paymaster_res_cert_date']),
-                'client_paymaster_deduct_salary'   => $this->clean($client_paymaster_deduct_salary),
-                'client_paymaster_client_deduct_salary' => $this->clean($client_paymaster_client_deduct_salary),
-                'client_paymaster_conformity'           => $this->clean($client_paymaster_conformity)
-
-            );
-            return $this->update($this->table, $form, "$this->pk = '$primary_id'");
-        }
+        $form = array(
+            'branch_id'                         => $branch_id,
+            'client_fname'                      => $client_fname,
+            'client_mname'                      => $client_mname,
+            'client_lname'                      => $client_lname,
+            'client_name_extension'             => $client_name_extension,
+            'client_dob'                        => $this->clean($this->inputs['client_dob']),
+            'client_contact_no'                 => $this->clean($this->inputs['client_contact_no']),
+            'client_civil_status'               => $this->clean($this->inputs['client_civil_status']),
+            'client_address'                    => $this->clean($this->inputs['client_address']),
+            'client_address_status'             => $this->clean($this->inputs['client_address_status']),
+            'client_res_cert_no'                => $this->clean($this->inputs['client_res_cert_no']),
+            'client_res_cert_issued_at'         => $this->clean($this->inputs['client_res_cert_issued_at']),
+            'client_res_cert_date'              => $this->clean($this->inputs['client_res_cert_date']),
+            'client_employer'                   => $this->clean($this->inputs['client_employer']),
+            'client_employer_address'           => $this->clean($this->inputs['client_employer_address']),
+            'client_employer_contact_no'        => $this->clean($this->inputs['client_employer_contact_no']),
+            'client_emp_position'               => $this->clean($this->inputs['client_emp_position']),
+            'client_emp_income'                 => $this->clean($this->inputs['client_emp_income']),
+            'client_emp_status'                 => $this->clean($this->inputs['client_emp_status']),
+            'client_emp_length'                 => $this->clean($this->inputs['client_emp_length']),
+            'client_prev_emp'                   => $this->clean($this->inputs['client_prev_emp']),
+            'client_spouse'                     => $this->clean($this->inputs['client_spouse']),
+            'client_spouse_address'             => $this->clean($this->inputs['client_spouse_address']),
+            'client_spouse_res_cert_no'         => $this->clean($this->inputs['client_spouse_res_cert_no']),
+            'client_spouse_res_cert_issued_at'  => $this->clean($this->inputs['client_spouse_res_cert_issued_at']),
+            'client_spouse_res_cert_date'       => $this->clean($this->inputs['client_spouse_res_cert_date']),
+            'client_spouse_employer'            => $this->clean($this->inputs['client_spouse_employer']),
+            'client_spouce_employer_address'    => $this->clean($this->inputs['client_spouce_employer_address']),
+            'client_spouce_employer_contact_no' => $this->clean($this->inputs['client_spouce_employer_contact_no']),
+            'client_spouse_position'            => $this->clean($this->inputs['client_spouse_position']),
+            'client_spouse_income'              => $this->clean($this->inputs['client_spouse_income']),
+            'client_spouse_emp_status'          => $this->clean($this->inputs['client_spouse_emp_status']),
+            'client_spouse_leng_emp'            => $this->clean($this->inputs['client_spouse_leng_emp']),
+            'client_spouse_prev_employment'     => $this->clean($this->inputs['client_spouse_prev_employment']),
+            'client_no_of_children'             => $this->clean($this->inputs['client_no_of_children']),
+            'client_no_of_child_dependent'      => $this->clean($this->inputs['client_no_of_child_dependent']),
+            'client_no_of_child_college'        => $this->clean($this->inputs['client_no_of_child_college']),
+            'client_no_of_child_hs'             => $this->clean($this->inputs['client_no_of_child_hs']),
+            'client_no_of_child_elem'           => $this->clean($this->inputs['client_no_of_child_elem']),
+            'client_soi'                        => $this->clean($this->inputs['client_soi']),
+            'client_soi_by_whom'                => $this->clean($this->inputs['client_soi_by_whom']),
+            'client_soi_monthly_income'         => $this->clean($this->inputs['client_soi_monthly_income']),
+            'client_credit_ref_name1'           => $this->clean($this->inputs['client_credit_ref_name1']),
+            'client_credit_ref_address1'        => $this->clean($this->inputs['client_credit_ref_address1']),
+            'client_credit_ref_name2'           => $this->clean($this->inputs['client_credit_ref_name2']),
+            'client_credit_ref_address2'        => $this->clean($this->inputs['client_credit_ref_address2']),
+            'client_credit_ref_name3'           => $this->clean($this->inputs['client_credit_ref_name3']),
+            'client_credit_ref_address3'        => $this->clean($this->inputs['client_credit_ref_address3']),
+            'client_approx_total_monthly_income'    => $this->clean($this->inputs['client_approx_total_monthly_income']),
+            'client_total_outstanding_obligation'   => $this->clean($this->inputs['client_total_outstanding_obligation']),
+            'client_business_name'              => $this->clean($this->inputs['client_business_name']),
+            'client_business_address'           => $this->clean($this->inputs['client_business_address']),
+            'client_business_tel_no'            => $this->clean($this->inputs['client_business_tel_no']),
+            'client_business_position'          => $this->clean($this->inputs['client_business_position']),
+            'client_business_kind'              => $this->clean($this->inputs['client_business_kind']),
+            'client_business_length'            => $this->clean($this->inputs['client_business_length']),
+            'client_business_capital_invested'  => $this->clean($this->inputs['client_business_capital_invested']),
+            'client_business_type'              => $this->clean($this->inputs['client_business_type']),
+            'insurance_id'                      => $this->clean($this->inputs['insurance_id']),
+            'client_insurance_amount'           => $this->clean($this->inputs['client_insurance_amount']),
+            'client_insurance_maturity'         => $this->clean($this->inputs['client_insurance_maturity']),
+            'client_bank_transaction'           => $this->clean($this->inputs['client_bank_transaction']),
+            'client_unpaid_obligation'          => $this->clean($this->inputs['client_unpaid_obligation']),
+            'client_salary_withdrawal'          => $this->clean($this->inputs['client_salary_withdrawal']),
+            'client_paymaster_name'             => $this->clean($this->inputs['client_paymaster_name']),
+            'client_paymaster_residence'        => $this->clean($this->inputs['client_paymaster_residence']),
+            'client_paymaster_res_cert_no'      => $this->clean($this->inputs['client_paymaster_res_cert_no']),
+            'client_paymaster_res_cert_issued_at'   => $this->clean($this->inputs['client_paymaster_res_cert_issued_at']),
+            'client_paymaster_res_cert_date'        => $this->clean($this->inputs['client_paymaster_res_cert_date']),
+            'client_paymaster_deduct_salary'        => $this->clean($client_paymaster_deduct_salary),
+            'client_paymaster_client_deduct_salary' => $this->clean($client_paymaster_client_deduct_salary),
+            'client_paymaster_conformity'           => $this->clean($client_paymaster_conformity)
+        );
+        return $this->update($this->table, $form, "$this->pk = '$primary_id'");
     }
 
     public function update_1()
@@ -148,25 +152,34 @@ class Clients extends Connection
 
 
         $is_exist = $this->select($this->table, $this->pk, "client_fname = '$client_fname' AND client_mname = '$client_mname' AND client_lname='$client_lname' AND client_name_extension='$client_name_extension' AND $this->pk != '$primary_id'");
-        if ($is_exist->num_rows > 0) {
+        if ($is_exist->num_rows > 0)
             return 2;
-        } else {
-            $form = array(
-                'branch_id'                         => $this->clean($this->inputs['branch_id']),
-                'client_fname'                      => $client_fname,
-                'client_mname'                      => $client_mname,
-                'client_lname'                      => $client_lname,
-                'client_name_extension'             => $client_name_extension,
-                'client_address'                    => $this->clean($this->inputs['client_address']),
-                'client_dob'                        => $this->clean($this->inputs['client_dob']),
-                'client_contact_no'                 => $this->clean($this->inputs['client_contact_no']),     'client_civil_status'               => $this->clean($this->inputs['client_civil_status']),
-                'client_address'                    => $this->clean($this->inputs['client_address']),     'client_address_status'             => $this->clean($this->inputs['client_address_status']),
-                'client_res_cert_no'                => $this->clean($this->inputs['client_res_cert_no']),     'client_res_cert_issued_at'         => $this->clean($this->inputs['client_res_cert_issued_at']),
-                'client_res_cert_date'              => $this->clean($this->inputs['client_res_cert_date']), 'client_employer'                   => $this->clean($this->inputs['client_employer']), 'client_employer_address'           => $this->clean($this->inputs['client_employer_address']), 'client_employer_contact_no'        => $this->clean($this->inputs['client_employer_contact_no']),
-                'client_emp_position'               => $this->clean($this->inputs['client_emp_position']), 'client_emp_income'                 => $this->clean($this->inputs['client_emp_income']), 'client_emp_status'                 => $this->clean($this->inputs['client_emp_status']), 'client_emp_length'                 => $this->clean($this->inputs['client_emp_length']), 'client_prev_emp'                   => $this->clean($this->inputs['client_prev_emp']),
-            );
-            return $this->update($this->table, $form, "$this->pk = '$primary_id'");
-        }
+
+        $form = array(
+            'branch_id'                     => $this->clean($this->inputs['branch_id']),
+            'client_fname'                  => $client_fname,
+            'client_mname'                  => $client_mname,
+            'client_lname'                  => $client_lname,
+            'client_name_extension'         => $client_name_extension,
+            'client_address'                => $this->clean($this->inputs['client_address']),
+            'client_dob'                    => $this->clean($this->inputs['client_dob']),
+            'client_contact_no'             => $this->clean($this->inputs['client_contact_no']),
+            'client_civil_status'           => $this->clean($this->inputs['client_civil_status']),
+            'client_address'                => $this->clean($this->inputs['client_address']),
+            'client_address_status'         => $this->clean($this->inputs['client_address_status']),
+            'client_res_cert_no'            => $this->clean($this->inputs['client_res_cert_no']),
+            'client_res_cert_issued_at'     => $this->clean($this->inputs['client_res_cert_issued_at']),
+            'client_res_cert_date'          => $this->clean($this->inputs['client_res_cert_date']),
+            'client_employer'               => $this->clean($this->inputs['client_employer']),
+            'client_employer_address'       => $this->clean($this->inputs['client_employer_address']),
+            'client_employer_contact_no'    => $this->clean($this->inputs['client_employer_contact_no']),
+            'client_emp_position'           => $this->clean($this->inputs['client_emp_position']),
+            'client_emp_income'             => $this->clean($this->inputs['client_emp_income']),
+            'client_emp_status'             => $this->clean($this->inputs['client_emp_status']),
+            'client_emp_length'             => $this->clean($this->inputs['client_emp_length']),
+            'client_prev_emp'               => $this->clean($this->inputs['client_prev_emp']),
+        );
+        return $this->update($this->table, $form, "$this->pk = '$primary_id'");
     }
 
     public function update_2()
@@ -180,7 +193,7 @@ class Clients extends Connection
             'client_spouse_res_cert_issued_at'  => $this->clean($this->inputs['client_spouse_res_cert_issued_at']),
             'client_spouse_res_cert_date'       => $this->clean($this->inputs['client_spouse_res_cert_date']),
             'client_spouse_employer'            => $this->clean($this->inputs['client_spouse_employer']),
-            'client_spouce_employer_address'           => $this->clean($this->inputs['client_spouce_employer_address']),
+            'client_spouce_employer_address'    => $this->clean($this->inputs['client_spouce_employer_address']),
             'client_spouce_employer_contact_no' => $this->clean($this->inputs['client_spouce_employer_contact_no']),
             'client_spouse_position'            => $this->clean($this->inputs['client_spouse_position']),
             'client_spouse_income'              => $this->clean($this->inputs['client_spouse_income']),
@@ -230,7 +243,7 @@ class Clients extends Connection
     public function update_4()
     {
         $primary_id = $this->inputs[$this->pk];
-        
+
         $client_paymaster_deduct_salary = (!isset($this->inputs['client_paymaster_deduct_salary']) ? "No" : "Yes");
         $client_paymaster_client_deduct_salary = (!isset($this->inputs['client_paymaster_client_deduct_salary']) ? "No" : "Yes");
         $client_paymaster_conformity = (!isset($this->inputs['client_paymaster_conformity']) ? "No" : "Yes");
@@ -247,8 +260,8 @@ class Clients extends Connection
             'client_paymaster_residence'        => $this->clean($this->inputs['client_paymaster_residence']),
             'client_paymaster_res_cert_no'      => $this->clean($this->inputs['client_paymaster_res_cert_no']),
             'client_paymaster_res_cert_issued_at'   => $this->clean($this->inputs['client_paymaster_res_cert_issued_at']),
-            'client_paymaster_res_cert_date'   => $this->clean($this->inputs['client_paymaster_res_cert_date']),
-            'client_paymaster_deduct_salary'   => $this->clean($client_paymaster_deduct_salary),
+            'client_paymaster_res_cert_date'        => $this->clean($this->inputs['client_paymaster_res_cert_date']),
+            'client_paymaster_deduct_salary'        => $this->clean($client_paymaster_deduct_salary),
             'client_paymaster_client_deduct_salary' => $this->clean($client_paymaster_client_deduct_salary),
             'client_paymaster_conformity'           => $this->clean($client_paymaster_conformity)
 
@@ -298,10 +311,10 @@ class Clients extends Connection
     public function name($primary_id)
     {
         $result = $this->select($this->table, 'client_fname,client_mname,client_lname,client_name_extension', "$this->pk = '$primary_id'");
-        if($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             return $row['client_fname'] . " " . $row['client_mname'] . " " . $row['client_lname'] . " " . $row['client_name_extension'];
-        }else{
+        } else {
             return "---";
         }
     }
@@ -445,7 +458,7 @@ class Clients extends Connection
         $clients_data = [];
         $count = 0;
         foreach ($csvData as $row) {
-            if($count > 0){
+            if ($count > 0) {
                 $form = [
                     'branch_id'             => 1,
                     'client_fname'          => $row[1],
@@ -453,9 +466,69 @@ class Clients extends Connection
                     'client_lname'          => $row[3],
                     'client_name_extension' => $row[4],
                     'client_civil_status'   => $row[5],
-                    'client_dob'            => $row[6],
+                    'client_dob'            => date("Y-m-d", strtotime($row[6])),
                     'client_contact_no'     => $row[7],
                     'client_address'        => $row[8],
+                    'client_address_status' => $row[9],
+                    'client_res_cert_no'        => $row[10],
+                    'client_res_cert_issued_at' => $row[11],
+                    'client_res_cert_date'      => $row[12],
+                    'client_employer'           => $row[13],
+                    'client_employer_address'   => $row[14],
+                    'client_employer_contact_no'    => $row[15],
+                    'client_emp_position'           => $row[16],
+                    'client_emp_income'             => $row[17],
+                    'client_emp_status'             => $row[18],
+                    'client_emp_length'             => $row[19],
+                    'client_prev_emp'               => $row[20],
+                    'client_spouse'                 => $row[21],
+                    'client_spouse_address'         => $row[22],
+                    'client_spouse_res_cert_no'     => $row[23],
+                    'client_spouse_res_cert_issued_at'  => $row[24],
+                    'client_spouse_res_cert_date'       => $row[25],
+                    'client_spouse_employer'            => $row[26],
+                    'client_spouce_employer_address'    => $row[27],
+                    'client_spouce_employer_contact_no' => $row[28],
+                    'client_spouse_position'            => $row[29],
+                    'client_spouse_income'              => $row[30],
+                    'client_spouse_emp_status'          => $row[31],
+                    'client_spouse_leng_emp'            => $row[32],
+                    'client_spouse_prev_employment'     => $row[33],
+                    'client_no_of_children'             => $row[34],
+                    'client_no_of_child_dependent'      => $row[35],
+                    'client_no_of_child_college'        => $row[36],
+                    'client_no_of_child_hs'             => $row[37],
+                    'client_no_of_child_elem'           => $row[38],
+                    'client_soi'                        => $row[39],
+                    'client_soi_by_whom'                => $row[40],
+                    'client_soi_monthly_income'         => $row[41],
+                    'client_credit_ref_name1'           => $row[42],
+                    'client_credit_ref_address1'        => $row[43],
+                    'client_credit_ref_name2'           => $row[44],
+                    'client_credit_ref_address2'        => $row[45],
+                    'client_credit_ref_name3'           => $row[46],
+                    'client_credit_ref_address3'        => $row[47],
+                    'client_approx_total_monthly_income'    => $row[48],
+                    'client_total_outstanding_obligation'   => $row[49],
+                    'client_business_name'                  => $row[50],
+                    'client_business_address'               => $row[51],
+                    'client_business_tel_no'                => $row[52],
+                    'client_business_position'              => $row[53],
+                    'client_business_kind'                  => $row[54],
+                    'client_business_length'                => $row[55],
+                    'client_business_capital_invested'      => $row[56],
+                    'client_business_type'                  => $row[57],
+                    'insurance_id'                          => $row[58],
+                    'client_insurance_amount'               => $row[59],
+                    'client_insurance_maturity'             => $row[60],
+                    'client_bank_transaction'               => $row[61],
+                    'client_unpaid_obligation'              => $row[62],
+                    'client_salary_withdrawal'              => $row[63],
+                    'client_paymaster_name'                 => $row[64],
+                    'client_paymaster_residence'            => $row[65],
+                    'client_paymaster_res_cert_no'          => $row[66],
+                    'client_paymaster_res_cert_issued_at'   => $row[67],
+                    'client_paymaster_res_cert_date'        => $row[68]
                 ];
                 $clients_data[] = $form;
             }
