@@ -530,6 +530,29 @@ class Clients extends Connection
                     'client_paymaster_res_cert_issued_at'   => $row[67],
                     'client_paymaster_res_cert_date'        => $row[68]
                 ];
+
+                if ($row[69] == 'Yes')
+                    $form['client_paymaster_deduct_salary'] = "Yes";
+
+                if ($row[70] == 'Yes')
+                    $form['client_paymaster_client_deduct_salary'] = "Yes";
+
+                if ($row[71] == 'Yes')
+                    $form['client_paymaster_conformity'] = "Yes";
+
+                $Clients = new Clients;
+                $Clients->inputs = $form;
+                $client_id = $Clients->add();
+
+                if ($client_id == -2) {
+                    $form['import_status'] = 0;
+                } else {
+                    $form['import_status'] = 1;
+                    $form['client_id'] = $client_id;
+                    $Clients->inputs['client_id'] = $client_id;
+                    $Clients->edit();
+                }
+
                 $clients_data[] = $form;
             }
             $count++;

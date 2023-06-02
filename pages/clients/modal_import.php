@@ -64,7 +64,8 @@
                         for (var clientIndex = 0; clientIndex < res.data.clients.length; clientIndex++) {
                             const client = res.data.clients[clientIndex];
                             var client_name = client.client_fname + " " + client.client_mname + " " + client.client_lname + " " + client.client_name_extension;
-                            clients_tr += `<tr>
+                            var is_import_failed = client.import_status == 0 ? "import_failed" : "";
+                            clients_tr += `<tr class='${is_import_failed}'>
                                 <td>${clientIndex + 1}</td>
                                 <td>${client_name}</td>
                                 <td>${client.client_civil_status}</td>
