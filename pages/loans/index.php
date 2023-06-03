@@ -67,9 +67,8 @@
                 "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=show",
                 "dataSrc": "data"
             },
-            "columns": [
-                {
-                
+            "columns": [{
+
                     "mRender": function(data, type, row) {
                         return row.status == "D" || row.status == "A" ? '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.loan_id + '" value=' + row.loan_id + '><label for="checkbox-b' + row.loan_id + '" class="custom-control-label">&nbsp;</label></div>' : "";
                     }
@@ -103,6 +102,30 @@
                     "data": "date_last_modified"
                 }
             ]
+        });
+    }
+
+    function clients() {
+        getClients();
+
+        var id = $("#hidden_id").val();
+
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=client_id",
+            data: {
+                input: {
+                    id: id
+                }
+            },
+            success: function(data) {
+                var jsonParse = JSON.parse(data);
+                const json = jsonParse.data;
+                // alert(json.data);
+                $('.select2').select2().trigger('change');
+                $("#client_id").val(json).trigger('change');
+                
+            }
         });
     }
 
@@ -256,10 +279,16 @@
         });
     }
 
+    function getClients() {
+        var branch_id = $("#branch_id").val();
+
+        getSelectOption('Clients', 'client_id', 'client_fullname', "branch_id='" + branch_id + "'");
+    }
+
     var loan_type_interest = 0;
     $(document).ready(function() {
         getEntries();
+        getSelectOption('Branches', 'branch_id', 'branch_name');
         getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);
-        getSelectOption('Clients', 'client_id', 'client_fullname');
     });
 </script>

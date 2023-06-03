@@ -305,7 +305,7 @@ $User = new Users;
       if (route_settings.class_name == "Vouchers") {
         $("#journal_id").val(7).trigger('change');
       } else if (route_settings.class_name == "Loans") {
-        $('#loan_container :input').attr('readonly', false);
+        $('#loan_container :form-control').attr('readonly', false);
         $(".select2").prop("disabled", false);
         sampleCalculation();
         $("#btn_submit").show();
@@ -428,6 +428,8 @@ $User = new Users;
               $("#btn_release").show();
               $("#btn_deny").show();
             }
+            clients();
+            $("#client_id").select2().select2('val', json['client_id']);
             sampleCalculation();
           }
 
