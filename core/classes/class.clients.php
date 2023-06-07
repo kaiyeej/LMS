@@ -319,6 +319,17 @@ class Clients extends Connection
         }
     }
 
+    public function formal_name($primary_id)
+    {
+        $result = $this->select($this->table, 'client_fname,client_mname,client_lname,client_name_extension', "$this->pk = '$primary_id'");
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['client_lname'] . ", " . $row['client_fname'] . " " . $row['client_mname'] . " " . $row['client_name_extension'];
+        } else {
+            return "---";
+        }
+    }
+
     public function delete_entry()
     {
         $id = $this->inputs['id'];
@@ -432,6 +443,9 @@ class Clients extends Connection
 
     public function import()
     {
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 0);
+
         $response = [];
         $file = $_FILES['csv_file'];
         $fileType = pathinfo($file['name'], PATHINFO_EXTENSION);

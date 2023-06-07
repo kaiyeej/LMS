@@ -16,17 +16,17 @@ class Collections extends Connection
             'client_id'         => $this->clean($this->inputs['client_id']),
             'amount'            => $this->clean($this->inputs['amount']),
             'collection_date'   => $this->clean($this->inputs['collection_date']),
-            'penalty_amount'    => $this->clean($this->inputs['penalty_amount']), 
+            'penalty_amount'    => $this->clean($this->inputs['penalty_amount']),
             'user_id'           => $this->clean($_SESSION['lms_user_id']),
         );
 
-        return $this->insertIfNotExist($this->table, $form, "$this->name = '".$this->inputs[$this->name]."'");
+        return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
     }
 
     public function edit()
     {
         $primary_id = $this->inputs[$this->pk];
-        $is_exist = $this->select($this->table, $this->pk, "$this->name = '".$this->inputs[$this->name]."' AND $this->pk != '$primary_id'");
+        $is_exist = $this->select($this->table, $this->pk, "$this->name = '" . $this->inputs[$this->name] . "' AND $this->pk != '$primary_id'");
         if ($is_exist->num_rows > 0) {
             return 2;
         } else {
@@ -100,10 +100,10 @@ class Collections extends Connection
     public function data_row($primary_id, $field)
     {
         $result = $this->select($this->table, $field, "$this->pk = '$primary_id'");
-        if($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             $row = $result->fetch_array();
             return $row[$field];
-        }else{
+        } else {
             return "";
         }
     }
@@ -116,29 +116,52 @@ class Collections extends Connection
         return $row[$this->pk] * 1;
     }
 
-    public function collected_per_month($date,$loan_id){
+    public function collected_per_month($date, $loan_id)
+    {
         $result = $this->select("tbl_collections as c, tbl_loans as l", 'sum(c.amount) as total', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND (MONTH(c.collection_date) = MONTH('$date') AND YEAR(c.collection_date)= YEAR('$date'))");
         $row = $result->fetch_assoc();
         return $row['total'];
     }
-    
-    
-    public function penalty_per_month($date,$loan_id){
+
+
+    public function penalty_per_month($date, $loan_id)
+    {
         $result = $this->select("tbl_collections as c, tbl_loans as l", 'sum(c.penalty_amount) as total', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND (MONTH(c.collection_date) = MONTH('$date') AND YEAR(c.collection_date)= YEAR('$date'))");
         $row = $result->fetch_assoc();
         return $row['total'];
     }
 
-    public function total_collected($loan_id){
+    public function total_collected($loan_id)
+    {
         $result = $this->select("tbl_collections as c, tbl_loans as l", 'sum(c.amount) as total', "l.loan_id='$loan_id' AND c.loan_id='$loan_id'");
         $row = $result->fetch_assoc();
         return $row['total'];
     }
 
-    public function monthly_collection($month,$year){
+    public function monthly_collection($month, $year)
+    {
         $result = $this->select("tbl_collections", 'sum(amount) as total', "(MONTH(collection_date) = '$month' AND YEAR(collection_date)= '$year') AND status='F'");
         $row = $result->fetch_assoc();
         return $row['total'];
     }
 
+    public function init_mass_collection()
+    {
+        $Clients = new Clients;
+
+        $loan_type_id = $this->inputs['loan_type_id'];
+        $collection_date = $this->inputs['collection_date'];
+        $company_code = $this->inputs['company_code'];
+        $atm_charge = (float) $this->inputs['atm_charge'];
+
+        $rows = array();
+        $result = $this->select("tbl_loans", '*', "loan_type_id = '$loan_type_id'");
+        while ($row = $result->fetch_assoc()) {
+            $row['client_name'] = $Clients->formal_name($row['client_id']);
+            $row['atm_charge'] = $atm_charge;
+            $rows[] = $row;
+        }
+        $response['clients'] = $rows;
+        return $response;
+    }
 }

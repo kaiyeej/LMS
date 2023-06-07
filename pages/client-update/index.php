@@ -888,6 +888,8 @@
 </section>
 <?php include "modal_preview.php"; ?>
 <script type="text/javascript">
+    var client_id = "<?= $_GET['c']; ?>";
+
     function getPreview() {
         var id = client_id;
         $("#modalPreview").modal("show");
@@ -1236,8 +1238,6 @@
             ]
         });
     }
-
-    var client_id = "<?= $_GET['c']; ?>";
 
     $(document).ready(function() {
         getSelectOption('Insurance', 'insurance_id', 'insurance_name');

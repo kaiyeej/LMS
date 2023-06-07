@@ -15,6 +15,7 @@
                 Manage collections here.
             </div>
             <div>
+                <a href="#" class="btn btn-icon icon-left btn-secondary" onclick="addMassCollection()"><i class="fas fa-coins"></i> Mass Collection</a>
                 <a href="#" class="btn btn-icon icon-left btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</a>
                 <a href="#" class="btn btn-icon icon-left btn-danger" onclick='deleteEntry()'><i class="fas fa-trash"></i> Delete</a>
             </div>
@@ -54,6 +55,7 @@
     </div>
 </section>
 <?php include "modal_collections.php"; ?>
+<?php include "modal_mass_collections.php"; ?>
 <script type="text/javascript">
     function getEntries() {
         $("#dt_entries").DataTable().destroy();
@@ -152,5 +154,6 @@
     $(document).ready(function() {
         getEntries();
         getSelectOption('Clients', 'client_id', 'client_fullname');
+        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);
     });
 </script>
