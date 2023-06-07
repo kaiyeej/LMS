@@ -16,8 +16,7 @@ class Collections extends Connection
             'client_id'         => $this->clean($this->inputs['client_id']),
             'amount'            => $this->clean($this->inputs['amount']),
             'collection_date'   => $this->clean($this->inputs['collection_date']),
-            'penalty_amount'    => $this->clean($this->inputs['penalty_amount']),
-            'remarks'           => $this->clean($this->inputs['remarks']),
+            'penalty_amount'    => $this->clean($this->inputs['penalty_amount']), 
             'user_id'           => $this->clean($_SESSION['lms_user_id']),
         );
 
@@ -90,7 +89,14 @@ class Collections extends Connection
         return 'CL-' . date('YmdHis');
     }
 
-    
+    public function loan_id()
+    {
+        $primary_id = $this->inputs['id'];
+        $result = $this->select($this->table, "loan_id", "$this->pk = '$primary_id'");
+        $row = $result->fetch_assoc();
+        return $row['loan_id'];
+    }
+
     public function data_row($primary_id, $field)
     {
         $result = $this->select($this->table, $field, "$this->pk = '$primary_id'");

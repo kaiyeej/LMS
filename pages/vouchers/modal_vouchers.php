@@ -18,11 +18,11 @@
                             </div>
 
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
                             <label><strong style="color:red;">*</strong>Voucher #</label>
                             <input type="text" class="form-control input-item" autocomplete="off" name="input[voucher_no]" id="voucher_no" required>
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
                             <label><strong style="color:red;">*</strong>Account Type</label>
                             <select class="form-control select2 input-item" id="account_type" name="input[account_type]" style="width:100%;" onchange="getAccount()" required>
                                 <option value="">&mdash;Please Select&mdash;</option>
@@ -30,11 +30,19 @@
                                 <option value="C">Client</option>
                             </select>
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
                             <label><strong style="color:red;">*</strong>Account</label>
                             <select class="form-control select2 input-item" id="account_id" name="input[account_id]" style="width:100%;" required>
                             </select>
                         </div>
+                        <div id="div_loan" class="form-group col-md-6">
+                            <label><strong style="color:red;">*</strong>Loan</label>
+                            <select class="form-control select2 input-item" id="loan_id" name="input[loan_id]" style="width:100%;" required>
+                            </select>
+                        </div>
+                    </div>
+                    <div><hr style="margin-top: 0rem;"></div>
+                    <div class="form-row">
                         <div class="form-group col-md-4">
                             <label><strong style="color:red;">*</strong>Check #</label>
                             <input type="text" class="form-control input-item" autocomplete="off" name="input[check_number]" id="check_number" required>

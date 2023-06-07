@@ -3,7 +3,7 @@
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
             <div class="breadcrumb-item"><a href="#">Transactions</a></div>
-            <div class="breadcrumb-item">Expenses</div>
+            <div class="breadcrumb-item">Disbursement</div>
         </div>
     </div>
 
@@ -11,8 +11,8 @@
         <div class="alert alert-light alert-has-icon" style="border: 1px dashed #3C84AB;">
             <div class="alert-icon"><i class="far fa-lightbulb"></i></div>
             <div class="alert-body">
-                <div class="alert-title">Expenses</div>
-                Manage expenses here.
+                <div class="alert-title">Disbursement</div>
+                Manage disbursement here.
             </div>
             <div>
                 <a href="#" class="btn btn-icon icon-left btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</a>
@@ -37,7 +37,7 @@
                                         <th></th>
                                         <th>Reference #</th>
                                         <th>Expense Date</th>
-                                        <th>Credit Method</th>
+                                        <th>Payment Method</th>
                                         <th>Amount</th>
                                         <th>Status</th>
                                         <th>Encoded By</th>
