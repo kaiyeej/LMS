@@ -97,6 +97,7 @@
                         </div>
                         <div class="col-3">
                             <div><b>Account:</b> <span id="account_label" class="label-item"></span></div>
+                            <div><b>Amount:</b> <span id="voucher_amount_label" class="label-item"></span></div>
                             <div><b>Date:</b> <span id="voucher_date_label" class="label-item"></span></div>
                             <div><b>Description:</b> <span id="description_label" class="label-item"></span></div>
                         </div>

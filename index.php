@@ -679,6 +679,10 @@ $User = new Users;
                   if (json.data == 1) {
                     success_finish();
                     $("#modalEntry2").modal('hide');
+                  }else if(json.data == -1){
+                    swal("Cannot proceed!", "Total debt is not equivalent to total credit.", "warning");
+                  }else if(json.data == -2){
+                    swal("Cannot proceed!", "The total does not match the voucher amount.", "warning");
                   } else {
                     failed_query(json);
                   }
