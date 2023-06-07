@@ -93,6 +93,9 @@
               </tr>`;
         }
         $('#mass_collection_result_content').html(`<div style='width:100%'>
+            <center>
+                <img src="./assets/img/logo2.png" alt="logo" width="200">
+            </center>
             <table id="tbl_mass_collection">
               <tr>
                 <th>#</th>
@@ -113,7 +116,7 @@
 
     function solveCollection(ele, client_id, type) {
         var str = ele.innerHTML;
-        var num = parseFloat(str.replace(",", ""));
+        var num = parseFloat(str.replaceAll(",", ""));
 
         formated_num = numberFormat(num);
         ele.innerHTML = formated_num == "NaN" ? '' : formated_num;
@@ -124,18 +127,23 @@
         var atm_balance_before = stringToNum(client_id, 1);
         var atm_withdrawal = stringToNum(client_id, 2);
         var deduction = stringToNum(client_id, 3);
-        var emergency_loan = stringToNum(client_id, 4);
-        var atm_charge = stringToNum(client_id, 5);
+        var emergency_loan = stringToNum(client_id, 4)
+        var atm_charge = stringToNum(client_id, 5)
 
         var atm_balance = atm_balance_before - atm_withdrawal;
-        formated_num = numberFormat(atm_balance);
+        var formated_num = numberFormat(atm_balance);
         $("#mc6_" + client_id).html(formated_num == "NaN" ? '' : formated_num);
+
+        var excess = atm_withdrawal - deduction - emergency_loan - atm_charge;
+        var formated_num = numberFormat(excess);
+        $("#mc7_" + client_id).html(formated_num == "NaN" ? '' : formated_num);
+
     }
 
     function stringToNum(client_id, num) {
         var str = $("#mc" + num + "_" + client_id).html();
-        var num = parseFloat(str.replace(",", ""));
-        return num * 1;
+        var number = parseFloat(str.replaceAll(",", ""));
+        return number ? number : 0;
     }
 
     function numberFormat(y, n = 2) {
