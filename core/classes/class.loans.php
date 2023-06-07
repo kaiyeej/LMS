@@ -61,6 +61,7 @@ class Loans extends Connection
             $row['client'] = $Clients->name($row['client_id']);
             $row['loan_account'] = $Clients->name($row['client_id']) . " - " . $row['reference_number'];
             $row['loan_type'] = $LoanTypes->name($row['loan_type_id']);
+            $row['loan_ref_id'] = $row['reference_number']." (₱".number_format($row['loan_amount'],2).")";
             $rows[] = $row;
         }
         return $rows;

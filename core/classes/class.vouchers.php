@@ -21,6 +21,7 @@ class Vouchers extends Connection
             $this->name         => $this->clean($this->inputs[$this->name]),
             'account_type'      => $this->inputs['account_type'],
             'account_id'        => $this->inputs['account_id'],
+            'loan_id'           => $this->inputs['loan_id'],
             'voucher_no'        => $this->inputs['voucher_no'],
             'description'       => $this->inputs['description'],
             'check_number'      => $this->inputs['check_number'],
@@ -53,6 +54,7 @@ class Vouchers extends Connection
             $this->name         => $this->clean($this->inputs[$this->name]),
             'account_type'      => $this->inputs['account_type'],
             'account_id'        => $this->inputs['account_id'],
+            'loan_id'           => $this->inputs['loan_id'],
             'voucher_no'        => $this->inputs['voucher_no'],
             'description'       => $this->inputs['description'],
             'check_number'      => $this->inputs['check_number'],
@@ -223,5 +225,41 @@ class Vouchers extends Connection
     public function generate()
     {
         return 'CV-' . date('YmdHis');
+    }
+
+    public function schema()
+    {
+        if (DEVELOPMENT) {
+            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', '', 'ON UPDATE CURRENT_TIMESTAMP');
+            $default['user_id'] = $this->metadata('user_id', 'int', 11);
+
+
+            // TABLE HEADER
+            $tables[] = array(
+                'name'      => $this->table,
+                'primary'   => $this->pk,
+                'fields' => array(
+                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                    $this->metadata($this->name, 'varchar', 75),
+                    $this->metadata('account_type', 'int', 11),
+                    $this->metadata('account_id', 'int', 11),
+                    $this->metadata('loan_id', 'int', 11),
+                    $this->metadata('voucher_no', 'varchar', 50),
+                    $this->metadata('description', 'text'),
+                    $this->metadata('check_number', 'varchar', 30),
+                    $this->metadata('ac_no', 'varchar', 30),
+                    $this->metadata('amount', 'decimal', 12,3),
+                    $this->metadata('voucher_date', 'date'),
+                    $this->metadata('journal_id', 'int', 11),
+                    $this->metadata('status', 'varchar', 1, 'NOT NULL', "'S'", '', "S - Pendng; F - Posted"),
+                    $default['user_id'],
+                    $default['date_added'],
+                    $default['date_last_modified']
+                )
+            );
+
+            return $this->schemaCreator($tables);
+        }
     }
 }

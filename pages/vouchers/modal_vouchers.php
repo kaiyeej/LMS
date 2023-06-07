@@ -32,7 +32,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label><strong style="color:red;">*</strong>Account</label>
-                            <select class="form-control select2 input-item" id="account_id" name="input[account_id]" style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="account_id" onchange="getLoan()" name="input[account_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div id="div_loan" class="form-group col-md-6">
