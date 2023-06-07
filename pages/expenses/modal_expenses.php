@@ -25,7 +25,7 @@
                             </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <label><strong style="color:red;">*</strong>Credit Method</label>
+                            <label><strong style="color:red;">*</strong>Payment Method</label>
                             <select class="form-control select2 input-item" id="credit_method" name="input[credit_method]" style="width:100%;" required>
                             </select>
                         </div>
@@ -55,7 +55,7 @@
                     <div class="row alert alert-light alert-has-icon" style="padding-left: 0px;padding-right:0px;font-size: small;border: 1px dashed #17a2b8;">
                         <div class="col-3">
                             <div><b>Reference #:</b> <span id="reference_number_label" class="label-item"></span></div>
-                            <div><b>Credit Method:</b> <span id="credit_method_name_label" class="label-item"></span></div>
+                            <div><b>Payment Method:</b> <span id="credit_method_name_label" class="label-item"></span></div>
                             <div><b>Journal:</b> <span id="journal_name_label" class="label-item"></span></div>
                             <div><b>Date:</b> <span id="expense_date_label" class="label-item"></span></div>
                         </div>

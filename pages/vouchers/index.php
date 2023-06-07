@@ -59,11 +59,18 @@
     function getAccount() {
         var account_type = $("#account_type").val();
 
-        if (account_type == "S") {
+        if (account_type == "C") {
             getSelectOption('Suppliers', 'account_id', 'supplier_name');
+            $("#div_loan").show();
         } else {
             getSelectOption('Clients', 'account_id', 'client_fullname');
+            $("#div_loan").hide();
+            // $("#div_account").removeClass('col-md-12').addClass('col-md-6');
         }
+    }
+
+    function getLoan(){
+        
     }
 
 

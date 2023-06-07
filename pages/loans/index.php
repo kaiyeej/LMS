@@ -106,7 +106,6 @@
     }
 
     function clients() {
-        getClients();
 
         var id = $("#hidden_id").val();
 
@@ -121,10 +120,9 @@
             success: function(data) {
                 var jsonParse = JSON.parse(data);
                 const json = jsonParse.data;
-                // alert(json.data);
-                $('.select2').select2().trigger('change');
+                // $('.select2').select2().trigger('change');
+                // $("#client_id").val(json);
                 $("#client_id").val(json).trigger('change');
-                
             }
         });
     }
@@ -287,6 +285,7 @@
 
     var loan_type_interest = 0;
     $(document).ready(function() {
+        schema();
         getEntries();
         getSelectOption('Branches', 'branch_id', 'branch_name');
         getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);

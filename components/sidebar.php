@@ -66,7 +66,7 @@
         echo '<li class="menu-header">Transactions</li>';
         $Menus->sidebar('Loans', 'loans', 'fa fa-folder');
         $Menus->sidebar('Collections', 'collections', 'fas fa-money-bill-wave');
-        $Menus->sidebar('Expenses', 'expenses', 'fas fa-coins');
+        $Menus->sidebar('Disbursement', 'expenses', 'fas fa-coins');
         $Menus->sidebar('Vouchers', 'vouchers', 'fas fa-money-check');
 
         //REPORTS

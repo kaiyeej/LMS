@@ -93,7 +93,7 @@
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return row.status == "P" ? '<a href="#" class="badge badge-light">Pending</a>' :(row.status == 'F' ? '<a href="#" class="badge badge-success">Finished</a>' : '<a href="#" class="badge badge-danger">Canceled</a>');
+                        return row.status == "P" ? '<a href="#" class="badge badge-light">Pending</a>' : (row.status == 'F' ? '<a href="#" class="badge badge-success">Finished</a>' : '<a href="#" class="badge badge-danger">Canceled</a>');
                     }
                 },
                 {
@@ -106,7 +106,7 @@
         });
     }
 
-    function getPenalty(){
+    function getPenalty() {
         var loan_id = $("#loan_id").val();
         var collection_date = $("#collection_date").val();
         $.ajax({
@@ -115,7 +115,7 @@
             data: {
                 input: {
                     loan_id: loan_id,
-                    collection_date:collection_date
+                    collection_date: collection_date
                 }
             },
             success: function(data) {
@@ -125,11 +125,25 @@
         });
     }
 
-    function getLoan() {
-        var client_id = $("#client_id").val();
-        var client_id = $("#client_id").val();
-        getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + client_id + "' AND status = 'R'");
+    function loan_id() {
+        var id = $("#hidden_id").val();
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=loan_id",
+            data: {
+                input: {
+                    id: id
+                }
+            },
+            success: function(data) {
+                var jsonParse = JSON.parse(data);
+                const json = jsonParse.data;
+                $("#loan_id").val(json).trigger('change');
+            }
+        });
     }
+
+
 
     $('#client_id').change(function() {
         getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + $(this).val() + "' AND status = 'R'");
@@ -138,6 +152,5 @@
     $(document).ready(function() {
         getEntries();
         getSelectOption('Clients', 'client_id', 'client_fullname');
-        getLoan();
     });
 </script>
