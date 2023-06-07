@@ -22,18 +22,22 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <label>Loan ID</label>
                             <select class="form-control select2 input-item" id="loan_id" name="input[loan_id]" onchange="getPenalty()" style="width:100%;" required>
                             </select>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <label>Collection Date</label>
                             <input type="date" class="form-control input-item" autocomplete="off" name="input[collection_date]" id="collection_date" onchange="getPenalty()"  required>
                         </div>
+                        <div class="form-group col-md-4">
+                            <label>Bank</label>
+                            <input type="text" class="form-control input-item" placeholder="Bank"  autocomplete="off" name="input[bank]" id="bank" required>
+                        </div>
                         <div class="form-group col-md-6">
                             <label>Penalty</label>
-                            <input type="number" readonly step="0.01" class="form-control input-item" autocomplete="off" name="input[penalty_amount]" id="penalty_amount" required>
+                            <input type="number" step="0.01" class="form-control input-item" autocomplete="off" name="input[penalty_amount]" id="penalty_amount" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Amount</label>

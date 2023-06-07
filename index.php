@@ -305,12 +305,12 @@ $User = new Users;
       if (route_settings.class_name == "Vouchers") {
         $("#journal_id").val(7).trigger('change');
       } else if (route_settings.class_name == "Loans") {
-        $('#loan_container :input').attr('readonly', false);
+        $('#loan_container .form-control').attr('readonly', false);
         $(".select2").prop("disabled", false);
         sampleCalculation();
         $("#btn_submit").show();
         $("#btn_release").hide();
-        $("#btn_deny").hide();
+        // $("#btn_deny").hide();
 
       }
 
@@ -422,12 +422,14 @@ $User = new Users;
               $(".select2").prop("disabled", true);
               $("#btn_submit").hide();
               $("#btn_release").hide();
-              $("#btn_deny").hide();
+              // $("#btn_deny").hide();
             } else if (jsonParse.data['status'] == "A") {
               $("#btn_submit").show();
               $("#btn_release").show();
-              $("#btn_deny").show();
+              // $("#btn_deny").show();
             }
+            clients();
+            $("#client_id").select2().select2('val', json['client_id']);
             sampleCalculation();
           }
 
