@@ -155,13 +155,23 @@ class Collections extends Connection
         $atm_charge = (float) $this->inputs['atm_charge'];
 
         $rows = array();
-        $result = $this->select("tbl_loans", '*', "loan_type_id = '$loan_type_id'");
+        $result = $this->select("tbl_loans", '*', "loan_type_id = '$loan_type_id' AND status = 'R'");
         while ($row = $result->fetch_assoc()) {
             $row['client_name'] = $Clients->formal_name($row['client_id']);
             $row['atm_charge'] = $atm_charge;
             $rows[] = $row;
         }
         $response['clients'] = $rows;
+
+        $LoanTypes = new LoanTypes;
+        $response['headers'] = [
+            "loan_type_id" => $loan_type_id,
+            "loan_name" => $LoanTypes->name($loan_type_id),
+            "collection_date" => date("Y-m-d", strtotime($collection_date)),
+            "collection_date_label" => date("F d, Y", strtotime($collection_date)),
+            "company_code" => $company_code,
+            "prepared_by" => Users::name($_SESSION['lms_user_id']),
+        ];
         return $response;
     }
 }

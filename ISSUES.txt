@@ -1,0 +1,7 @@
+ISSUES
+ -> LOANS
+ 	- Monthly payment ga okey lang biskan wala pa sample calculation
+ 	- Monthly payment indi pwede ang decimal?
+ 	- Same client mka loan bsan may existing
+ 	- Loan Date dapat required
+

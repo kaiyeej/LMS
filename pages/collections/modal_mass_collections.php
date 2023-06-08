@@ -1,16 +1,13 @@
 <form id='frmMassCollection' method="POST">
     <div class="modal fade" id="modalMassCollection" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document" id="import_dialog">
+        <div class="modal-dialog" role="document" id="import_dialog" style="width: 100%;max-width: 1349px;margin: 0.5rem;">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" id="mass-modal-header">
                     <h5 class="modal-title"><span class='ion-compose'></span> Add Mass Collection</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" value="1" id="mass_collection_step">
-                    <div class="form-row" id="mass_collection_step_1">
+                    <input type="hidden" value="1" id="mass_collection_step">
+                    <div class="form-row w3-animate-left" id="mass_collection_step_1">
                         <div class="form-group col-md-3">
                             <label>Loan Type</label>
                             <select class="form-control select2 input-item" id="loan_type_id" name="input[loan_type_id]" style="width:100%;" required>
@@ -33,7 +30,7 @@
                     </div>
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="btn_mass_prev" class="btn btn-warning" onclick="goStep1()"><span class='fa fa-arrow-left'></span> Back</button>
                     <button type="submit" id="btn_mass_submit" class="btn btn-primary">
                         Save
                     </button>
@@ -43,13 +40,47 @@
     </div>
 </form>
 <script type="text/javascript">
+    var mc_client_data = [];
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            var activeElement = document.activeElement;
+            var nextElement = activeElement.nextElementSibling;
+
+            if (nextElement) {
+                nextElement.focus();
+                event.preventDefault();
+            }
+        }
+    });
+
     function addMassCollection() {
+        $("#mass-modal-header").html(`<h5 class="modal-title"><span class='ion-compose'></span> Add Mass Collection</h5>`);
+        $("#mass_collection_step_1").show();
         $("#mass_collection_step").val(1);
-        $("#btn_mass_submit").html("Next");
+        $("#loan_type_id").val("").select2().trigger('change');
+        document.getElementById("collection_date").value = "";
+        $("#company_code").val('');
+        $("#atm_charge").val('');
+        $("#btn_mass_submit").html("<span class='fa fa-arrow-right'></span> Next");
 
         $('#mass_collection_result_content').html("");
+        $("#btn_mass_prev").hide();
+
         // get_mass_collections();
-        $("#modalMassCollection").modal('show');
+        // $("#modalMassCollection").modal('show');
+        $('#modalMassCollection').modal({
+            backdrop: 'static',
+            keyboard: false
+        }, 'show');
+    }
+
+    function goStep1() {
+        $("#mass-modal-header").html(`<h5 class="modal-title"><span class='ion-compose'></span> Add Mass Collection</h5>`);
+        $("#mass_collection_step_1").show();
+        $("#mass_collection_step").val(1);
+        $("#btn_mass_submit").html("<span class='fa fa-arrow-right'></span> Next");
+        $('#mass_collection_result_content').html("");
+        $("#btn_mass_prev").hide();
     }
     $('#frmMassCollection').submit(function(e) {
         e.preventDefault(); // Prevent form submission
@@ -66,36 +97,62 @@
                     const json = jsonParse.data;
                     get_mass_collections(json);
                     $("#mass_collection_step").val(2);
-                    $("#btn_mass_submit").html("Save");
+                    $("#btn_mass_submit").html("<span class='fa fa-check-circle'></span> Save");
                     $("#mass_collection_step_1").hide();
+                    $("#btn_mass_prev").show();
                 }
             });
         } else {
-
+            if (mc_client_data.length > 0) {
+                console.log(mc_client_data);
+            } else {
+                swal("Cannot proceed!", "No Entry found!", "warning");
+            }
         }
     });
 
     function get_mass_collections(json) {
+        $("#mass-modal-header").html(`
+        <div class='col-md-12 row' style="color:#0a0a0a;">
+            <div class='col-md-2'>
+                <img src="./assets/img/logo2.png" alt="logo" width="90%">
+            </div>
+            <div class='col-md-10'>
+                <span>LOAN TYPE: <b>${json.headers.loan_name}</b></span><br>
+                <span>COLLECTION DATE: <b>${json.headers.collection_date_label}</b></span><br>
+                <span>COMPANY CODE: <b>${json.headers.company_code}</b></span><br>
+            </div>
+        </div>`);
         var client_tds = "";
+        mc_client_data = [];
         for (var clientIndex = 0; clientIndex < json.clients.length; clientIndex++) {
             const client = json.clients[clientIndex];
+            var client_data = {
+                client_id: client.client_id * 1,
+                loan_id: client.loan_id * 1,
+                atm_balance_before_withdraw: 0,
+                atm_withdrawal: 0,
+                deduction: client.monthly_payment * 1,
+                emergency_loan: 0,
+                atm_charge: client.atm_charge * 1,
+                atm_balance: 0,
+                excess: 0
+            };
+            mc_client_data.push(client_data);
             client_tds += `<tr>
                 <td>${clientIndex+1}</td>
                 <td>${client.client_name}</td>
-                <td onblur="solveCollection(this,${client.client_id},1)" id="mc1_${client.client_id}" contenteditable="true" class='right'></td>
-                <td onblur="solveCollection(this,${client.client_id},2)" id="mc2_${client.client_id}" contenteditable="true" class='right'></td>
-                <td onblur="solveCollection(this,${client.client_id},3)" id="mc3_${client.client_id}" contenteditable="true" class='right'></td>
-                <td onblur="solveCollection(this,${client.client_id},4)" id="mc4_${client.client_id}" contenteditable="true" class='right'></td>
-                <td onblur="solveCollection(this,${client.client_id},5)" id="mc5_${client.client_id}" contenteditable="true" class='right'>${client.atm_charge}</td>
-                <td id="mc6_${client.client_id}" class='right'></td>
-                <td id="mc7_${client.client_id}" class='right'></td>
-                <td id="mc8_${client.client_id}">00100-5011-01798-1</td>
+                <td onblur="solveCollection(this,${clientIndex},1)" id="mc1_${clientIndex}" contenteditable="true" class='right mc_1'></td>
+                <td onblur="solveCollection(this,${clientIndex},2)" id="mc2_${clientIndex}" contenteditable="true" class='right mc_2'></td>
+                <td onblur="solveCollection(this,${clientIndex},3)" id="mc3_${clientIndex}" contenteditable="true" class='right mc_3'>${numberFormat(client.monthly_payment)}</td>
+                <td onblur="solveCollection(this,${clientIndex},4)" id="mc4_${clientIndex}" contenteditable="true" class='right mc_4'></td>
+                <td onblur="solveCollection(this,${clientIndex},5)" id="mc5_${clientIndex}" contenteditable="true" class='right mc_5'>${numberFormat(client.atm_charge)}</td>
+                <td id="mc6_${clientIndex}" class='right'></td>
+                <td id="mc7_${clientIndex}" class='right mc_7'></td>
+                <td id="mc8_${clientIndex}" class='center'>00100-5011-01798-1</td>
               </tr>`;
         }
-        $('#mass_collection_result_content').html(`<div style='width:100%'>
-            <center>
-                <img src="./assets/img/logo2.png" alt="logo" width="200">
-            </center>
+        $('#mass_collection_result_content').html(`<div style='width:100%' class='w3-animate-left'>
             <table id="tbl_mass_collection">
               <tr>
                 <th>#</th>
@@ -110,7 +167,28 @@
                 <th>ACCOUNT NO</th>
               </tr>
               ${client_tds}
+              <tr>
+                <th colspan="2">TOTAL</th>
+                <th id="mc_total_1" class="right"></th>
+                <th id="mc_total_2" class="right"></th>
+                <th id="mc_total_3" class="right"></th>
+                <th id="mc_total_4" class="right"></th>
+                <th id="mc_total_5" class="right"></th>
+                <th id="mc_total_6" class="right"></th>
+                <th id="mc_total_7" class="right"></th>
+                <th></th>
+              </tr>
         </table>
+        <div class='col-md-12 row' style="color:#0a0a0a;">
+            <div class='col-md-6'>
+                <span>PREPARED BY: </span><br>
+                <span><b>${json.headers.prepared_by}</b></span>
+            </div>
+            <div class='col-md-6'>
+                <span>CHECKED BY: </span><br>
+                <span><b>MITOS SHEILA GARFIL</b></span>
+            </div>
+        </div>
         </div>`);
     }
 
@@ -120,23 +198,60 @@
 
         formated_num = numberFormat(num);
         ele.innerHTML = formated_num == "NaN" ? '' : formated_num;
+        totalComputer(type);
         balanceComputer(client_id);
+    }
+
+    function totalComputer(type) {
+        var elements = document.getElementsByClassName("mc_" + type);
+        var total_amount = 0;
+        // Loop through the collection of elements
+        for (var i = 0; i < elements.length; i++) {
+            var element = elements[i];
+            var number = parseFloat(element.innerHTML.replaceAll(",", ""));
+            number = number ? number : 0;
+            total_amount += number;
+        }
+        $("#mc_total_" + type).html(numberFormat(total_amount));
     }
 
     function balanceComputer(client_id) {
         var atm_balance_before = stringToNum(client_id, 1);
+        mc_client_data[client_id].atm_balance_before_withdraw = atm_balance_before;
+
         var atm_withdrawal = stringToNum(client_id, 2);
+        mc_client_data[client_id].atm_withdrawal = atm_withdrawal;
+
         var deduction = stringToNum(client_id, 3);
+        mc_client_data[client_id].deduction = deduction;
+
         var emergency_loan = stringToNum(client_id, 4)
+        mc_client_data[client_id].emergency_loan = emergency_loan;
+
         var atm_charge = stringToNum(client_id, 5)
+        mc_client_data[client_id].atm_charge = atm_charge;
 
         var atm_balance = atm_balance_before - atm_withdrawal;
+        mc_client_data[client_id].atm_balance = atm_balance;
         var formated_num = numberFormat(atm_balance);
-        $("#mc6_" + client_id).html(formated_num == "NaN" ? '' : formated_num);
+        $("#mc6_" + client_id).html(formated_num);
+        if (atm_balance < 0) {
+            $("#mc6_" + client_id).addClass("negative");
+        } else {
+            $("#mc6_" + client_id).removeClass("negative");
+        }
+        totalComputer(6);
 
         var excess = atm_withdrawal - deduction - emergency_loan - atm_charge;
+        mc_client_data[client_id].excess = excess;
         var formated_num = numberFormat(excess);
-        $("#mc7_" + client_id).html(formated_num == "NaN" ? '' : formated_num);
+        $("#mc7_" + client_id).html(formated_num);
+        if (excess < 0) {
+            $("#mc7_" + client_id).addClass("negative");
+        } else {
+            $("#mc7_" + client_id).removeClass("negative");
+        }
+        totalComputer(7);
 
     }
 
@@ -186,8 +301,67 @@
         text-align: right !important;
     }
 
+    .center {
+        text-align: center !important;
+    }
+
     .select2-container--default .select2-selection--single .select2-selection__rendered {
         color: #444;
         line-height: 42px;
+    }
+
+    .negative {
+        background: red;
+        color: #fff;
+    }
+</style>
+
+<style>
+    .w3-animate-left {
+        position: relative;
+        animation: animateleft 0.8s
+    }
+
+    @keyframes animateleft {
+        from {
+            left: -300px;
+            opacity: 0
+        }
+
+        to {
+            left: 0;
+            opacity: 1
+        }
+    }
+
+    .w3-animate-zoom {
+        animation: animatezoom 0.8s
+    }
+
+    @keyframes animatezoom {
+        from {
+            transform: scale(0)
+        }
+
+        to {
+            transform: scale(1)
+        }
+    }
+
+    .w3-animate-top {
+        position: relative;
+        animation: animatetop 0.4s
+    }
+
+    @keyframes animatetop {
+        from {
+            top: -300px;
+            opacity: 0
+        }
+
+        to {
+            top: 0;
+            opacity: 1
+        }
     }
 </style>
