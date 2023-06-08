@@ -15,8 +15,14 @@
                 Manage insurance here.
             </div>
             <div>
-                <a href="#" class="btn btn-icon icon-left btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</a>
-                <a href="#" class="btn btn-icon icon-left btn-danger" onclick='deleteEntry()'><i class="fas fa-trash"></i> Delete</a>
+                <div class="btn-group btn-group" role="group" aria-label="Basic example">
+                  <button type="button" class="btn btn-info" onclick="exportTemplate()"><i class="fas fa-download"></i> Export</button>
+                  <button type="button" class="btn btn-info" onclick="importTemplate()"><i class="fas fa-upload"></i> Import</button>
+                </div>
+                <div class="btn-group btn-group" role="group" aria-label="Basic example">
+                  <button type="button" class="btn btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</button>
+                  <button type="button" class="btn btn-danger" onclick="deleteEntry()"><i class="fas fa-trash"></i> Delete</button>
+                </div>
             </div>
         </div>
 

@@ -1,6 +1,6 @@
 <form id='frmMassCollection' method="POST">
     <div class="modal fade" id="modalMassCollection" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" id="import_dialog" style="width: 100%;max-width: 1349px;margin: 0.5rem;">
+        <div class="modal-dialog" role="document" id="import_dialog" style="width: 100%;max-width: 2000px;margin: 0.5rem;">
             <div class="modal-content">
                 <div class="modal-header" id="mass-modal-header">
                     <h5 class="modal-title"><span class='ion-compose'></span> Add Mass Collection</h5>
