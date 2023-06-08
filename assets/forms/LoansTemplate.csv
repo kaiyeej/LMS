@@ -1,1 +1,2 @@
-Reference,Branch,Client,Loan Type,Loan Date,Loan Amount,Interest,Loan Terms,Service Fee,Monthly Payment
+"Branch(BCD,LC)",Reference,Client,Loan Type,Loan Date,Loan Amount,Interest,Loan Terms,Service Fee,Monthly Payment
+BCD,LN-202306080001,Eduard Rino Questo Carton 1,,,,,,,
