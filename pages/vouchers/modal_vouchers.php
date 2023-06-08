@@ -32,7 +32,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label><strong style="color:red;">*</strong>Account</label>
-                            <select class="form-control select2 input-item" id="account_id" name="input[account_id]" style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="account_id" onchange="getLoan()" name="input[account_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div id="div_loan" class="form-group col-md-6">
@@ -97,6 +97,7 @@
                         </div>
                         <div class="col-3">
                             <div><b>Account:</b> <span id="account_label" class="label-item"></span></div>
+                            <div><b>Amount:</b> <span id="voucher_amount_label" class="label-item"></span></div>
                             <div><b>Date:</b> <span id="voucher_date_label" class="label-item"></span></div>
                             <div><b>Description:</b> <span id="description_label" class="label-item"></span></div>
                         </div>

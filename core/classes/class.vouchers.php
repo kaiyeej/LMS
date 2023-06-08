@@ -21,6 +21,7 @@ class Vouchers extends Connection
             $this->name         => $this->clean($this->inputs[$this->name]),
             'account_type'      => $this->inputs['account_type'],
             'account_id'        => $this->inputs['account_id'],
+            'loan_id'           => $this->inputs['loan_id'],
             'voucher_no'        => $this->inputs['voucher_no'],
             'description'       => $this->inputs['description'],
             'check_number'      => $this->inputs['check_number'],
@@ -53,6 +54,7 @@ class Vouchers extends Connection
             $this->name         => $this->clean($this->inputs[$this->name]),
             'account_type'      => $this->inputs['account_type'],
             'account_id'        => $this->inputs['account_id'],
+            'loan_id'           => $this->inputs['loan_id'],
             'voucher_no'        => $this->inputs['voucher_no'],
             'description'       => $this->inputs['description'],
             'check_number'      => $this->inputs['check_number'],
@@ -84,25 +86,26 @@ class Vouchers extends Connection
     }
 
     function total_details($primary_id){
-        $result = $this->select($this->table_detail, "sum(debit) as total_debit, sum(credit) as total_credit", "$this->pk = '$primary_id'");
+        $result = $this->select($this->table_detail, "sum(debit) as total_debit, sum(credit) as total_credit", "journal_entry_id = '$primary_id'");
         $row = $result->fetch_assoc();
 
         $status = $row['total_debit'] == $row['total_credit'] ? 0 : 1;
         
-        return [$row['total_debit'],$row['total_credit'], $status];
+        return [$row['total_debit']*1,$row['total_credit']*1, $status];
     }
 
-    public function view()
+    public function view($primary_id = null)
     {
-        $primary_id = $this->inputs['id'];
+        $primary_id = $primary_id == null ? $this->inputs['id'] : $primary_id;
         $Users = new Users;
         $Suppliers = new Suppliers;
         $Clients = new Clients;
+        $Loans = new Loans;
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $row['encoded_by'] = $Users->fullname($row['user_id']);
-            $row['account'] = $row['account_type'] == "S"? $Suppliers->name($row['account_id']) : $Clients->name($row['account_id']);
+            $row['account'] = $row['account_type'] == "S"? $Suppliers->name($row['account_id']) : $Clients->name($row['account_id'])." (".$Loans->name($row['loan_id'])."";
             $row['voucher_amount'] = number_format($row['amount'],2);
             $row['amount_word'] = $this->convertNumberToWord($row['amount']);
             return $row;
@@ -120,10 +123,31 @@ class Vouchers extends Connection
     public function finish()
     {
         $primary_id = $this->inputs['id'];
-        $form = array(
-            'status' => 'F',
-        );
-        return $this->update($this->table, $form, "$this->pk = '$primary_id'");
+        $jl_id = $this->journal_id($primary_id);
+        $total = $this->total_details($jl_id);
+        $row = $this->view($primary_id);
+        $amount = $row['amount'];
+        $loan_id = $row['loan_id'];
+        if($total[0] == $total[1]){
+            if($amount != $total[0]){
+                return -2; //not equal amount
+            }else{
+                $form = array(
+                    'status' => 'F',
+                );
+                $this->update($this->table, $form, "$this->pk = '$primary_id'");
+
+                $form_loan = array(
+                    'status' => 'R',
+                );
+                return $this->update('tbl_loans', $form_loan, "loan_id = '$loan_id'");
+            }
+            
+        }else{
+            return -1; //not equal
+        }
+
+        
     }
 
     public function pk_by_name($name = null)
@@ -223,5 +247,41 @@ class Vouchers extends Connection
     public function generate()
     {
         return 'CV-' . date('YmdHis');
+    }
+
+    public function schema()
+    {
+        if (DEVELOPMENT) {
+            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', '', 'ON UPDATE CURRENT_TIMESTAMP');
+            $default['user_id'] = $this->metadata('user_id', 'int', 11);
+
+
+            // TABLE HEADER
+            $tables[] = array(
+                'name'      => $this->table,
+                'primary'   => $this->pk,
+                'fields' => array(
+                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                    $this->metadata($this->name, 'varchar', 75),
+                    $this->metadata('account_type', 'int', 11),
+                    $this->metadata('account_id', 'int', 11),
+                    $this->metadata('loan_id', 'int', 11),
+                    $this->metadata('voucher_no', 'varchar', 50),
+                    $this->metadata('description', 'text'),
+                    $this->metadata('check_number', 'varchar', 30),
+                    $this->metadata('ac_no', 'varchar', 30),
+                    $this->metadata('amount', 'decimal', '12,3'),
+                    $this->metadata('voucher_date', 'date'),
+                    $this->metadata('journal_id', 'int', 11),
+                    $this->metadata('status', 'varchar', 1, 'NOT NULL', "'S'", '', "S - Pendng; F - Posted"),
+                    $default['user_id'],
+                    $default['date_added'],
+                    $default['date_last_modified']
+                )
+            );
+
+            return $this->schemaCreator($tables);
+        }
     }
 }
