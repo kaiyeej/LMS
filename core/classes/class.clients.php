@@ -469,12 +469,15 @@ class Clients extends Connection
         }
 
         // Display the processed data
+        $branches = ["BCD" => 1, "LC" => 2];
         $clients_data = [];
         $count = 0;
+        $success_import = 0;
+        $unsuccess_import = 0;
         foreach ($csvData as $row) {
             if ($count > 0) {
                 $form = [
-                    'branch_id'             => 1,
+                    'branch_id'             => $row[0] ? $branches[$row[0]] : 1,
                     'client_fname'          => $row[1],
                     'client_mname'          => $row[2],
                     'client_lname'          => $row[3],
@@ -556,60 +559,70 @@ class Clients extends Connection
 
                 $Clients = new Clients;
                 $Clients->inputs = $form;
-                $client_id = $Clients->add();
+                $client_id = $row[1] != '' ? $Clients->add() : 0;
 
                 if ($client_id == -2) {
                     $form['import_status'] = 0;
+                    $unsuccess_import += 1;
+                } else if ($client_id == 0) {
+                    $form['import_status'] = 0;
+                    $unsuccess_import += 1;
                 } else {
                     $form['import_status'] = 1;
+                    $success_import += 1;
                     $form['client_id'] = $client_id;
                     $Clients->inputs['client_id'] = $client_id;
                     $Clients->edit();
                 }
 
-                $locations = [72, 77];
                 $location_list = [];
-                foreach ($locations as $location) {
-                    $property_location = $row[$location];
-                    $property_area = $row[$location + 1];
-                    $property_acquisition_cost = $row[$location + 2];
-                    $property_pres_market_val = $row[$location + 3];
-                    $property_improvement = $row[$location + 4];
-
-                    $Clients = new Clients;
-                    if ($property_location != "") {
-                        $Clients->inputs['client_id'] = $client_id;
-                        $Clients->inputs['property_location'] = $property_location;
-                        $Clients->inputs['property_area'] = $property_area;
-                        $Clients->inputs['property_acquisition_cost'] = $property_acquisition_cost;
-                        $Clients->inputs['property_pres_market_val'] = $property_pres_market_val;
-                        $Clients->inputs['property_improvement'] = $property_improvement;
-                        $Clients->addProperty();
-                        $location_list[] = $property_location;
-                    }
-                }
-                $form['locations'] = $location_list;
-
-
-                $childrens = [82, 86, 90, 94, 98];
                 $children_list = [];
-                foreach ($childrens as $children) {
-                    $child_name = $row[$children];
-                    $child_age = $row[$children + 1];
-                    $child_sex = $row[$children + 2];
-                    $child_occupation = $row[$children + 3];
 
-                    $Clients = new Clients;
-                    if ($child_name != "") {
-                        $Clients->inputs['client_id'] = $client_id;
-                        $Clients->inputs['child_name'] = $child_name;
-                        $Clients->inputs['child_age'] = $child_age;
-                        $Clients->inputs['child_sex'] = $child_sex;
-                        $Clients->inputs['child_occupation'] = $child_occupation;
-                        $Clients->addChildren();
-                        $children_list[] = $child_name;
+                if ($client_id > 0) {
+
+                    $locations = [72, 77];
+                    foreach ($locations as $location) {
+                        $property_location = $row[$location];
+                        $property_area = $row[$location + 1];
+                        $property_acquisition_cost = $row[$location + 2];
+                        $property_pres_market_val = $row[$location + 3];
+                        $property_improvement = $row[$location + 4];
+
+                        $Clients = new Clients;
+                        if ($property_location != "") {
+                            $Clients->inputs['client_id'] = $client_id;
+                            $Clients->inputs['property_location'] = $property_location;
+                            $Clients->inputs['property_area'] = $property_area;
+                            $Clients->inputs['property_acquisition_cost'] = $property_acquisition_cost;
+                            $Clients->inputs['property_pres_market_val'] = $property_pres_market_val;
+                            $Clients->inputs['property_improvement'] = $property_improvement;
+                            $Clients->addProperty();
+                            $location_list[] = $property_location;
+                        }
+                    }
+
+
+                    $childrens = [82, 86, 90, 94, 98];
+                    foreach ($childrens as $children) {
+                        $child_name = $row[$children];
+                        $child_age = $row[$children + 1];
+                        $child_sex = $row[$children + 2];
+                        $child_occupation = $row[$children + 3];
+
+                        $Clients = new Clients;
+                        if ($child_name != "") {
+                            $Clients->inputs['client_id'] = $client_id;
+                            $Clients->inputs['child_name'] = $child_name;
+                            $Clients->inputs['child_age'] = $child_age;
+                            $Clients->inputs['child_sex'] = $child_sex;
+                            $Clients->inputs['child_occupation'] = $child_occupation;
+                            $Clients->addChildren();
+                            $children_list[] = $child_name;
+                        }
                     }
                 }
+
+                $form['locations'] = $location_list;
                 $form['childrens'] = $children_list;
                 $clients_data[] = $form;
             }
@@ -617,6 +630,8 @@ class Clients extends Connection
         }
         $response['status'] = 1;
         $response['clients'] = $clients_data;
+        $response['success_import'] = $success_import;
+        $response['unsuccess_import'] = $unsuccess_import;
         return $response;
     }
 }

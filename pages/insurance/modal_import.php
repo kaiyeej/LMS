@@ -1,9 +1,9 @@
 <form id='frm_import' method="POST" enctype="multipart/form-data">
-    <div class="modal fade" id="modalImportClient" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document" id="import_dialog">
+    <div class="modal fade" id="modalImport" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document" id="import_dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><span class='ion-compose'></span> Import Clients</h5>
+                    <h5 class="modal-title"><span class='ion-compose'></span> Import Insurance</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -12,7 +12,7 @@
                     <div class="col-md-12" id="import_file">
                         <div class="form-group">
                             <div class="col-lg-12" style="padding: 10px;">
-                                <label class="text-md-right text-left">Client Template (CSV)</label>
+                                <label class="text-md-right text-left">Insurance Template (CSV)</label>
                                 <input type="file" name="csv_file" accept=".csv" class="form-control" required>
                             </div>
                         </div>
@@ -33,12 +33,10 @@
 </form>
 <script type="text/javascript">
     function importTemplate() {
-        $("#import_dialog").removeClass('modal-md modal-xl');
-        $("#import_dialog").addClass('modal-md');
         $('#import_result_content').html("");
         $("#import_file").show();
         $("#btn_import").show();
-        $("#modalImportClient").modal('show');
+        $("#modalImport").modal('show');
     }
     $('#frm_import').submit(function(e) {
         e.preventDefault(); // Prevent form submission
@@ -62,24 +60,18 @@
                 } else if (res.data.status == 1) {
                     getEntries();
                     $("#btn_import").hide();
-                    if (res.data.clients.length > 0) {
-                        $("#import_dialog").removeClass('modal-md');
-                        $("#import_dialog").addClass('modal-xl');
-                        var clients_tr = "";
-                        for (var clientIndex = 0; clientIndex < res.data.clients.length; clientIndex++) {
-                            const client = res.data.clients[clientIndex];
-                            var client_name = client.client_fname + " " + client.client_mname + " " + client.client_lname + " " + client.client_name_extension;
-                            var is_import_failed = client.import_status == 0 ? "import_failed" : "";
-                            clients_tr += `<tr class='${is_import_failed}'>
-                                <td>${clientIndex + 1}</td>
-                                <td>${client_name}</td>
-                                <td>${client.client_civil_status}</td>
-                                <td>${client.client_dob}</td>
-                                <td>${client.client_contact_no}</td>
-                                <td>${client.client_address}</td>
-                                <td>(${client.client_emp_status}) ${client.client_emp_position} @${client.client_employer}</td>
-                                <td>${client.locations.length}</td>
-                                <td>${client.childrens.length}</td>
+                    if (res.data.insurances.length > 0) {
+                        var insurances_tr = "";
+                        for (var insuranceIndex = 0; insuranceIndex < res.data.insurances.length; insuranceIndex++) {
+                            const insurance = res.data.insurances[insuranceIndex];
+                            var is_import_failed = insurance.import_status == 0 ? "import_failed" : "";
+                            var branch_name = insurance.branch_id == 2 ? "La Carlota" : "Bacolod";
+                            insurances_tr += `<tr class='${is_import_failed}'>
+                                <td>${insuranceIndex + 1}</td>
+                                <td>${branch_name}</td>
+                                <td>${insurance.insurance_name}</td>
+                                <td>${insurance.insurance_amount}</td>
+                                <td>${insurance.insurance_desc}</td>
                               </tr>`;
                         }
                         $('#import_result_content').html(`<div style='width:100%'>
@@ -91,24 +83,20 @@
                             </div>
                             <table id="tbl_import_result">
                               <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Civil Status</th>
-                                <th>Birth Date</th>
-                                <th>Contact Number</th>
-                                <th>Adress</th>
-                                <th>Employment</th>
-                                <th>Properties</th>
-                                <th>Children</th>
+                                <th style="min-width:5%;">#</th>
+                                <th style="min-width:150px;">Branch</th>
+                                <th style="min-width:200px;">Insurance</th>
+                                <th style="min-width:100px;">Amount</th>
+                                <th style="min-width:200px;">Description</th>
                               </tr>
-                              ${clients_tr}
+                              ${insurances_tr}
                         </table>
                         </div>`);
                     } else {
-                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">No clients</div>`);
+                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">No insurance</div>`);
                     }
                 } else {
-                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing clients</div>`);
+                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing insurance</div>`);
                 }
             },
             error: function(xhr, ajaxOptions, thrownError) {

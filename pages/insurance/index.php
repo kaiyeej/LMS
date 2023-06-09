@@ -61,6 +61,7 @@
 </section>
 <?php include "modal_insurance.php"; ?>
 <?php include "modal_export.php"; ?>
+<?php include "modal_import.php"; ?>
 <script type="text/javascript">
     function getEntries() {
         $("#dt_entries").DataTable().destroy();
