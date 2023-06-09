@@ -11,13 +11,13 @@
                 <div class="row">
                     <h3 class="text-info">Template Overview</h3>
                     <div style='width:100%' class='w3-animate-left'>
-                        <table id="tbl_import_template">
+                        <table id="tbl_export_template">
                             <tr>
                                 <th>Branch (BCD,LC)</th>
-                                <th>Loan Reference</th>
+                                <th>Loan Reference #</th>
                                 <th>Client Fullname</th>
                                 <th>Loan Type</th>
-                                <th>Loan Date</th>
+                                <th>Loan Date (mm/dd/YYYY)</th>
                                 <th>Loan Amount</th>
                                 <th>Interest (%)</th>
                                 <th>Loan Terms (mo)</th>
@@ -36,23 +36,18 @@
                                 <td contenteditable="true"></td>
                                 <td contenteditable="true"></td>
                             </tr>
-                            <tr>
-                                <td contenteditable="true">&nbsp;</td>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
-                            </tr>
                         </table>
                     </div>
                 </div>
                 <div class="row mt-2">
-                    <h3 class="text-danger">Notes</h3>
+                    <h6 class="text-danger">Notes: Please open exported file (.csv) in Microsoft Excel Application</h6>
+                </div>
+                <div class="row">
+                    <ul class="text-danger">
+                        <li>Branches : BCD (Bacolod), LC (La Carlota)</li>
+                        <li>Dates : mm/dd/YYYY format</li>
+                        <li>Amount : Encode in no comma (e.g 1000)</li>
+                    </ul>
                 </div>
             </div>
             <div class="modal-footer bg-whitesmoke br">
@@ -73,7 +68,7 @@
         // window.location = "assets/forms/LoansTemplate.csv";
 
         // Get the table by ID
-        let table = document.getElementById('tbl_import_template');
+        let table = document.getElementById('tbl_export_template');
 
         // Convert table to CSV format
         let csvData = convertTableToCSV(table);
@@ -111,7 +106,7 @@
 </script>
 
 <style>
-    #tbl_import_template {
+    #tbl_export_template {
         font-family: arial, sans-serif;
         border-collapse: collapse;
         overflow-x: scroll;
@@ -122,13 +117,13 @@
         white-space: nowrap;
     }
 
-    #tbl_import_template td,
+    #tbl_export_template td,
     th {
         border: 1px solid #dddddd;
         padding: 8px;
     }
 
-    #tbl_import_template th {
+    #tbl_export_template th {
         text-align: center;
     }
 </style>

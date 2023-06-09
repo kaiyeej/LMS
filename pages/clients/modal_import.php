@@ -1,6 +1,6 @@
 <form id='frm_import' method="POST" enctype="multipart/form-data">
-    <div class="modal fade" id="modalImportClient" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document" id="import_dialog">
+    <div class="modal fade" id="modalImport" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document" id="import_dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><span class='ion-compose'></span> Import Clients</h5>
@@ -33,12 +33,10 @@
 </form>
 <script type="text/javascript">
     function importTemplate() {
-        $("#import_dialog").removeClass('modal-md modal-xl');
-        $("#import_dialog").addClass('modal-md');
         $('#import_result_content').html("");
         $("#import_file").show();
         $("#btn_import").show();
-        $("#modalImportClient").modal('show');
+        $("#modalImport").modal('show');
     }
     $('#frm_import').submit(function(e) {
         e.preventDefault(); // Prevent form submission
@@ -63,8 +61,6 @@
                     getEntries();
                     $("#btn_import").hide();
                     if (res.data.clients.length > 0) {
-                        $("#import_dialog").removeClass('modal-md');
-                        $("#import_dialog").addClass('modal-xl');
                         var clients_tr = "";
                         for (var clientIndex = 0; clientIndex < res.data.clients.length; clientIndex++) {
                             const client = res.data.clients[clientIndex];

@@ -1,6 +1,6 @@
 <form id='frm_import' method="POST" enctype="multipart/form-data">
-    <div class="modal fade" id="modalImportClient" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document" id="import_dialog">
+    <div class="modal fade" id="modalImport" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document" id="import_dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><span class='ion-compose'></span> Import Loans</h5>
@@ -12,7 +12,7 @@
                     <div class="col-md-12" id="import_file">
                         <div class="form-group">
                             <div class="col-lg-12" style="padding: 10px;">
-                                <label class="text-md-right text-left">Loan Template (CSV)</label>
+                                <label class="text-md-right text-left">Loans Template (CSV)</label>
                                 <input type="file" name="csv_file" accept=".csv" class="form-control" required>
                             </div>
                         </div>
@@ -23,7 +23,7 @@
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" id="btn_submit" class="btn btn-primary">
+                    <button type="submit" id="btn_import" class="btn btn-primary">
                         Save
                     </button>
                 </div>
@@ -32,17 +32,16 @@
     </div>
 </form>
 <script type="text/javascript">
-    function importClient() {
-        $("#import_dialog").removeClass('modal-md modal-xl');
-        $("#import_dialog").addClass('modal-md');
+    function importTemplate() {
         $('#import_result_content').html("");
-        $("#modalImportClient").modal('show');
+        $("#import_file").show();
+        $("#btn_import").show();
+        $("#modalImport").modal('show');
     }
     $('#frm_import').submit(function(e) {
         e.preventDefault(); // Prevent form submission
 
         var formData = new FormData(this);
-
         $('#import_result_content').html(`<center><img src="assets/icons/loader.gif"></center>`);
         $.ajax({
             url: "controllers/sql.php?c=" + route_settings.class_name + "&q=import",
@@ -54,46 +53,61 @@
             processData: false,
             success: function(response) {
                 var res = JSON.parse(response);
+
+                $("#import_file").hide();
                 if (res.data.status == -1) {
                     $('#import_result_content').html(`<div class="alert alert-danger" role="alert">${res.data.text}</div>`);
                 } else if (res.data.status == 1) {
-                    if (res.data.clients.length > 0) {
-                        $("#import_dialog").removeClass('modal-md');
-                        $("#import_dialog").addClass('modal-xl');
-                        var clients_tr = "";
-                        for (var clientIndex = 0; clientIndex < res.data.clients.length; clientIndex++) {
-                            const client = res.data.clients[clientIndex];
-                            var client_name = client.client_fname + " " + client.client_mname + " " + client.client_lname + " " + client.client_name_extension;
-                            var is_import_failed = client.import_status == 0 ? "import_failed" : "";
-                            clients_tr += `<tr class='${is_import_failed}'>
-                                <td>${clientIndex + 1}</td>
-                                <td>${client_name}</td>
-                                <td>${client.client_civil_status}</td>
-                                <td>${client.client_dob}</td>
-                                <td>${client.client_contact_no}</td>
-                                <td>${client.client_address}</td>
-                                <td>(${client.client_emp_status}) ${client.client_emp_position} @${client.client_employer}</td>
+                    getEntries();
+                    $("#btn_import").hide();
+                    if (res.data.loans.length > 0) {
+                        var loans_tr = "";
+                        for (var loanIndex = 0; loanIndex < res.data.loans.length; loanIndex++) {
+                            const loan = res.data.loans[loanIndex];
+                            var is_import_failed = loan.import_status == 0 ? "import_failed" : "";
+                            loans_tr += `<tr class='${is_import_failed}'>
+                                <td>${loanIndex + 1}</td>
+                                <td>${loan.branch_id}</td>
+                                <td>${loan.reference_number}</td>
+                                <td>${loan.client_id}</td>
+                                <td>${loan.loan_type_id}</td>
+                                <td>${loan.loan_date}</td>
+                                <td>${loan.loan_amount}</td>
+                                <td>${loan.loan_interest}</td>
+                                <td>${loan.loan_period}</td>
+                                <td>${loan.service_fee}</td>
+                                <td>${loan.monthly_payment}</td>
                               </tr>`;
                         }
                         $('#import_result_content').html(`<div style='width:100%'>
+                            <div class="mb-2">
+                                <button type="button" class="btn btn-primary">Successful imports <span class="badge badge-transparent">${res.data.success_import}</span>
+                                </button>
+                                <button type="button" class="btn btn-danger">Unsuccessful imports <span class="badge badge-transparent">${res.data.unsuccess_import}</span>
+                                </button>
+                            </div>
                             <table id="tbl_import_result">
                               <tr>
                                 <th>#</th>
-                                <th>Name</th>
-                                <th>Civil Status</th>
-                                <th>Birth Date</th>
-                                <th>Contact Number</th>
-                                <th>Adress</th>
-                                <th>Employment</th>
+                                <th>Branch</th>
+                                <th>Reference #</th>
+                                <th>Client</th>
+                                <th>Loan Type</th>
+                                <th>Load Date</th>
+                                <th>Loan Amount</th>
+                                <th>Interest</th>
+                                <th>Loan Terms</th>
+                                <th>Service Fee</th>
+                                <th>Monthly Payment</th>
                               </tr>
-                              ${clients_tr}
+                              ${loans_tr}
                         </table>
                         </div>`);
                     } else {
-                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">No clients</div>`);
+                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">No loans</div>`);
                     }
                 } else {
-                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing clients</div>`);
+                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing loans</div>`);
                 }
             },
             error: function(xhr, ajaxOptions, thrownError) {

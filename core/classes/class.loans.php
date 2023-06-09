@@ -6,6 +6,7 @@ class Loans extends Connection
     public $pk = 'loan_id';
     public $name = 'reference_number';
 
+    public $inputs;
 
     public function add()
     {
@@ -21,6 +22,9 @@ class Loans extends Connection
             'service_fee'       => $this->clean($this->inputs['service_fee']),
             'monthly_payment'   => $this->clean($this->inputs['monthly_payment']),
         );
+
+        if (isset($this->inputs['status']))
+            $form['status'] = $this->inputs['status'];
 
         return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
     }
@@ -61,7 +65,7 @@ class Loans extends Connection
             $row['client'] = $Clients->name($row['client_id']);
             $row['loan_account'] = $Clients->name($row['client_id']) . " - " . $row['reference_number'];
             $row['loan_type'] = $LoanTypes->name($row['loan_type_id']);
-            $row['loan_ref_id'] = $row['reference_number']." (₱".number_format($row['loan_amount'],2).")";
+            $row['loan_ref_id'] = $row['reference_number'] . " (₱" . number_format($row['loan_amount'], 2) . ")";
             $rows[] = $row;
         }
         return $rows;
@@ -342,17 +346,17 @@ class Loans extends Connection
             $monthly_interest_rate = ($loan_interest / 100) / 12;
             $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
             $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
-            $payment = $Collection->collected_per_month($loan_date,$loan_id);
-            
+            $payment = $Collection->collected_per_month($loan_date, $loan_id);
+
             $suggested_total += $suggested_payment;
             $payment_total += $payment;
-            
+
             $count++;
         }
 
-        $pending = $suggested_total-$payment_total;
+        $pending = $suggested_total - $payment_total;
 
-        return $pending*($penalty_per/100);
+        return $pending * ($penalty_per / 100);
 
         // return $suggested_total." ".$payment_total;
     }
@@ -392,6 +396,78 @@ class Loans extends Connection
             return $this->schemaCreator($tables);
         }
     }
-    
-}
 
+    public function import()
+    {
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 0);
+
+        $response = [];
+        $file = $_FILES['csv_file'];
+        $fileType = pathinfo($file['name'], PATHINFO_EXTENSION);
+        if ($fileType != 'csv') {
+            $response['status'] = -1;
+            $response['text'] = 'Invalid file format. Only CSV files are allowed.';
+            return $response;
+        }
+
+        // Read the CSV file data
+        $csvData = array();
+        if (($handle = fopen($file['tmp_name'], 'r')) !== false) {
+            while (($row = fgetcsv($handle)) !== false) {
+                $csvData[] = $row;
+            }
+            fclose($handle);
+        } else {
+            $response['status'] = -1;
+            $response['text'] = 'Failed to read the CSV file.';
+            return $response;
+        }
+
+        // Display the processed data
+        $branches = ["BCD" => 1, "LC" => 2];
+        $loans_data = [];
+        $count = 0;
+        $success_import = 0;
+        $unsuccess_import = 0;
+        foreach ($csvData as $row) {
+            if ($count > 0) {
+                $form = [
+                    'branch_id'         => $row[0] ? $branches[$row[0]] : 1,
+                    'reference_number'  => $row[1],
+                    'client_id'         => $row[2],
+                    'loan_type_id'      => $row[3],
+                    'loan_date'         => $row[4],
+                    'loan_amount'       => $row[5],
+                    'loan_interest'     => $row[6],
+                    'loan_period'       => $row[7],
+                    'service_fee'       => $row[8],
+                    'monthly_payment'   => $row[9],
+                ];
+
+                $Loans = new Loans;
+                $Loans->inputs = $form;
+                $client_id = $row[0] != '' ? $Loans->add() : 0;
+
+                if ($client_id == 2) {
+                    $form['import_status'] = 0;
+                    $unsuccess_import += 1;
+                } else if ($client_id == 0) {
+                    $form['import_status'] = 0;
+                    $unsuccess_import += 1;
+                } else {
+                    $form['import_status'] = 1;
+                    $success_import += 1;
+                }
+
+                $loans_data[] = $form;
+            }
+            $count++;
+        }
+        $response['status'] = 1;
+        $response['loans'] = $loans_data;
+        $response['success_import'] = $success_import;
+        $response['unsuccess_import'] = $unsuccess_import;
+        return $response;
+    }
+}
