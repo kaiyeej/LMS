@@ -23,9 +23,9 @@ class Insurance extends Connection
     {
         $primary_id = $this->inputs[$this->pk];
         $form = array(
-            $this->name     => $this->clean($this->inputs[$this->name]),
-            'insurance_desc' => $this->clean($this->inputs['insurance_desc']),
-            'insurance_amount'       => $this->clean($this->inputs['insurance_amount']),
+            $this->name         => $this->clean($this->inputs[$this->name]),
+            'insurance_desc'    => $this->clean($this->inputs['insurance_desc']),
+            'insurance_amount'  => $this->clean($this->inputs['insurance_amount']),
         );
 
         return $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");

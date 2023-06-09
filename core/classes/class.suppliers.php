@@ -6,6 +6,7 @@ class Suppliers extends Connection
     public $pk = 'supplier_id';
     public $name = 'supplier_name';
 
+    public $inputs;
 
     public function add()
     {
@@ -16,7 +17,7 @@ class Suppliers extends Connection
             'remarks'               => $this->clean($this->inputs['remarks']),
         );
 
-        return $this->insertIfNotExist($this->table, $form, "$this->name = '".$this->inputs[$this->name]."'");
+        return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
     }
 
     public function edit()
@@ -63,5 +64,72 @@ class Suppliers extends Connection
         $result = $this->select($this->table, 'supplier_name', "$this->pk = '$primary_id'");
         $row = $result->fetch_assoc();
         return $row['supplier_name'];
+    }
+
+    public function import()
+    {
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 0);
+
+        $response = [];
+        $file = $_FILES['csv_file'];
+        $fileType = pathinfo($file['name'], PATHINFO_EXTENSION);
+        if ($fileType != 'csv') {
+            $response['status'] = -1;
+            $response['text'] = 'Invalid file format. Only CSV files are allowed.';
+            return $response;
+        }
+
+        // Read the CSV file data
+        $csvData = array();
+        if (($handle = fopen($file['tmp_name'], 'r')) !== false) {
+            while (($row = fgetcsv($handle)) !== false) {
+                $csvData[] = $row;
+            }
+            fclose($handle);
+        } else {
+            $response['status'] = -1;
+            $response['text'] = 'Failed to read the CSV file.';
+            return $response;
+        }
+
+        // Display the processed data
+        $suppliers_data = [];
+        $count = 0;
+        $success_import = 0;
+        $unsuccess_import = 0;
+        foreach ($csvData as $row) {
+            if ($count > 0) {
+                $form = [
+                    'supplier_name'         => $row[0],
+                    'supplier_contact_no'   => $row[1],
+                    'supplier_address'      => $row[2],
+                    'remarks'               => $row[3]
+                ];
+
+                $Suppliers = new Suppliers;
+                $Suppliers->inputs = $form;
+                $client_id = $row[0] != '' ? $Suppliers->add() : 0;
+
+                if ($client_id == 2) {
+                    $form['import_status'] = 0;
+                    $unsuccess_import += 1;
+                } else if ($client_id == 0) {
+                    $form['import_status'] = 0;
+                    $unsuccess_import += 1;
+                } else {
+                    $form['import_status'] = 1;
+                    $success_import += 1;
+                }
+
+                $suppliers_data[] = $form;
+            }
+            $count++;
+        }
+        $response['status'] = 1;
+        $response['suppliers'] = $suppliers_data;
+        $response['success_import'] = $success_import;
+        $response['unsuccess_import'] = $unsuccess_import;
+        return $response;
     }
 }
