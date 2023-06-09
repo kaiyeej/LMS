@@ -15,13 +15,16 @@
                 Manage vouchers here.
             </div>
             <div>
-                <div class="btn-group btn-group" role="group" aria-label="Basic example">
-                  <button type="button" class="btn btn-info" onclick="exportTemplate()"><i class="fas fa-download"></i> Export</button>
-                  <button type="button" class="btn btn-info" onclick="importTemplate()"><i class="fas fa-upload"></i> Import</button>
-                </div>
-                <div class="btn-group btn-group" role="group" aria-label="Basic example">
-                  <button type="button" class="btn btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</button>
-                  <button type="button" class="btn btn-danger" onclick="deleteEntry()"><i class="fas fa-trash"></i> Delete</button>
+                <div class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="btn btn-info dropdown-toggle"><i class="fas fa-file-excel"></i> Template</a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item has-icon" onclick="exportTemplate()"><i class="fas fa-download"></i> Export</a>
+                        <a href="#" class="dropdown-item has-icon" onclick="importClient()"><i class="far fa-upload"></i> Import</a>
+                    </div>
+                    <div class="btn-group btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteEntry()"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -61,6 +64,7 @@
 </section>
 <?php include "modal_vouchers.php"; ?>
 <?php include 'modal_print.php' ?>
+<?php include 'modal_export.php' ?>
 <script type="text/javascript">
     function getAccount() {
         var account_type = $("#account_type").val();
@@ -68,21 +72,21 @@
         if (account_type == "C") {
             getSelectOption('Clients', 'account_id', 'client_fullname');
             $("#div_loan").show();
-            $("#loan_id").prop('required',true);
+            $("#loan_id").prop('required', true);
         } else {
             getSelectOption('Suppliers', 'account_id', 'supplier_name');
             $("#div_loan").hide();
-            $("#loan_id").prop('required',false);
+            $("#loan_id").prop('required', false);
             // $("#div_account").removeClass('col-md-12').addClass('col-md-6');
         }
     }
 
-    function getLoan(){
+    function getLoan() {
         var account_type = $("#account_type").val();
 
         if (account_type == "C") {
             var account_id = $("#account_id").val();
-            getSelectOption('Loans', 'loan_id', 'loan_ref_id', 'client_id = "'+account_id+'" AND status="A"');
+            getSelectOption('Loans', 'loan_id', 'loan_ref_id', 'client_id = "' + account_id + '" AND status="A"');
         }
     }
 
@@ -104,7 +108,7 @@
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails2(" + row.voucher_id + ")'><span class='fa fa-edit'></span></button><button onclick='printRecord("+ row.voucher_id +")' class='btn btn-secondary btn-sm'><span class='fa fa-print'></span></button></center>";
+                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails2(" + row.voucher_id + ")'><span class='fa fa-edit'></span></button><button onclick='printRecord(" + row.voucher_id + ")' class='btn btn-secondary btn-sm'><span class='fa fa-print'></span></button></center>";
                     }
                 },
                 {
@@ -122,7 +126,7 @@
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return row.status == "F" ?  '<a href="#" class="badge badge-primary">Finished</a>' : row.status == "C" ? '<a href="#" class="badge badge-danger">Canceled</a>' : '<a href="#" class="badge badge-light">Saved</a>';
+                        return row.status == "F" ? '<a href="#" class="badge badge-primary">Finished</a>' : row.status == "C" ? '<a href="#" class="badge badge-danger">Canceled</a>' : '<a href="#" class="badge badge-light">Saved</a>';
                     }
                 },
                 {

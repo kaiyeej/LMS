@@ -12,35 +12,81 @@
                     <h3 class="text-info">Template Overview</h3>
                     <div style='width:100%' class='w3-animate-left'>
                         <table id="tbl_import_template">
-                              <tr>
-                                <th>#</th>
-                                <th>NAME</th>
-                                <th>ATM BALANCE BEFORE WITHDRAWAL</th>
-                                <th>ATM WITHDRAWAL</th>
-                                <th>DEDUCTION</th>
-                                <th>EMERGENCY LOAN</th>
-                                <th>ATM CHARGE</th>
-                                <th>ATM BALANCE</th>
-                                <th>EXCESS</th>
-                                <th>ACCOUNT NO</th>
-                                <th>ATM CHARGE</th>
-                                <th>ATM BALANCE</th>
-                                <th>EXCESS</th>
-                                <th>ACCOUNT NO</th>
-                                <th>ATM CHARGE</th>
-                                <th>ATM BALANCE</th>
-                                <th>EXCESS</th>
-                                <th>ACCOUNT NO</th>
-                                <th>ATM CHARGE</th>
-                                <th>ATM BALANCE</th>
-                                <th>EXCESS</th>
-                                <th>ACCOUNT NO</th>
-                                <th>ATM CHARGE</th>
-                                <th>ATM BALANCE</th>
-                                <th>EXCESS</th>
-                                <th>ACCOUNT NO</th>
-                              </tr>
-                              <tr>
+                            <tr>
+                                <th>*Branch (BCD,LC)</th>
+                                <th>*First Name</th>
+                                <th>Middle Name</th>
+                                <th>*Last Name</th>
+                                <th>Suffix</th>
+                                <th>*Civil Status(Single,Married,Widowed,Seperated)</th>
+                                <th>*Birth Date(mm/dd/YYYY)</th>
+                                <th>*Contact Number</th>
+                                <th>*Address</th>
+                                <th>*Address Status (Owned,Rented,Free Use)</th>
+                                <th>*Certificate #</th>
+                                <th>*Issued at</th>
+                                <th>*Certificate Date</th>
+                                <th>*Employer</th>
+                                <th>*Employer Address</th>
+                                <th>*Employer Contact #</th>
+                                <th>*Position</th>
+                                <th>*Income</th>
+                                <th>*Employment Status</th>
+                                <th>*Length</th>
+                                <th>Previous Employment</th>
+                                <th>Spouse</th>
+                                <th>Residence</th>
+                                <th>Certificate #</th>
+                                <th>Issued At</th>
+                                <th>Certificate Date(mm/dd/YYYY)</th>
+                                <th>Spouse Employer</th>
+                                <th>Business Address</th>
+                                <th>Telephone #</th>
+                                <th>Position</th>
+                                <th>Income</th>
+                                <th>Length of Employment</th>
+                                <th>Prev Employment</th>
+                                <th>Status</th>
+                                <th>No. of Child</th>
+                                <th>Dependent</th>
+                                <th>College</th>
+                                <th>High School</th>
+                                <th>Elementary</th>
+                                <th>*Source of Income</th>
+                                <th>*Source of income by whom</th>
+                                <th>*Monthly Income</th>
+                                <th>*Reference Name 1</th>
+                                <th>*Reference Address 1</th>
+                                <th>*Reference Name 2</th>
+                                <th>Reference Address 2</th>
+                                <th>*Reference Name 3</th>
+                                <th>*Reference Address 3</th>
+                                <th>*Aprox Total Income</th>
+                                <th>*Total Outstanding Obligation</th>
+                                <th>*Business Name</th>
+                                <th>*Address</th>
+                                <th>*Telephone No.</th>
+                                <th>*Position</th>
+                                <th>*Kind</th>
+                                <th>*Length</th>
+                                <th>*Capital Invested</th>
+                                <th>*Business Type (Sole,Owner,Partner)</th>
+                                <th>*Insurance</th>
+                                <th>*Amount</th>
+                                <th>*Maturity</th>
+                                <th>*Bank Transaction</th>
+                                <th>*Unpaid Obligation</th>
+                                <th>*Salary Withdrawal(Weekly,Semi-Monthly,Monthly)</th>
+                                <th>*Paymaster Name</th>
+                                <th>*Residence</th>
+                                <th>*Certificate #</th>
+                                <th>*Issued At</th>
+                                <th>*Certificate Date(mm/dd/yyyy)</th>
+                                <th>Payment Deduct Salary (Yes,No)</th>
+                                <th>Client Deduct Salary (Yes,No)</th>
+                                <th>Paymaster Conformity (Yes,No)</th>
+                            </tr>
+                            <tr>
                                 <td contenteditable="true">&nbsp;</td>
                                 <td contenteditable="true"></td>
                                 <td contenteditable="true"></td>
@@ -67,9 +113,6 @@
                                 <td contenteditable="true"></td>
                                 <td contenteditable="true"></td>
                                 <td contenteditable="true"></td>
-                              </tr>
-                              <tr>
-                                <td contenteditable="true">&nbsp;</td>
                                 <td contenteditable="true"></td>
                                 <td contenteditable="true"></td>
                                 <td contenteditable="true"></td>
@@ -95,7 +138,28 @@
                                 <td contenteditable="true"></td>
                                 <td contenteditable="true"></td>
                                 <td contenteditable="true"></td>
-                              </tr>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                            </tr>
                         </table>
                     </div>
                 </div>
@@ -117,8 +181,45 @@
         $("#modalExport").modal('show');
     }
 
-    function exportFile(){
-        window.location = "assets/forms/ClientsTemplate.csv";
+
+    function exportFile() {
+        // window.location = "assets/forms/CollectionsTemplate.csv";
+
+        // Get the table by ID
+        let table = document.getElementById('tbl_import_template');
+
+        // Convert table to CSV format
+        let csvData = convertTableToCSV(table);
+
+        // Create a hidden anchor element to download the CSV file
+        let downloadLink = document.createElement('a');
+        downloadLink.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvData));
+        downloadLink.setAttribute('download', 'ClientsTemplate.csv');
+        downloadLink.style.display = 'none';
+
+        // Append the anchor element to the document body and click it to trigger the download
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+
+    function convertTableToCSV(table) {
+        let csv = [];
+        let rows = table.querySelectorAll('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+            let row = [],
+                cols = rows[i].querySelectorAll('td, th');
+
+            for (let j = 0; j < cols.length; j++) {
+                let cellValue = cols[j].innerText.trim().replace(/"/g, '""');
+                row.push('"' + cellValue + '"');
+            }
+
+            csv.push(row.join(','));
+        }
+
+        return csv.join('\n');
     }
 </script>
 

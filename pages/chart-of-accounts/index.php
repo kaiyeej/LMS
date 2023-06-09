@@ -15,8 +15,17 @@
                 Manage chart of accounts here.
             </div>
             <div>
-                <a href="#" class="btn btn-icon icon-left btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</a>
-                <a href="#" class="btn btn-icon icon-left btn-danger" onclick='deleteEntry()'><i class="fas fa-trash"></i> Delete</a>
+                <div class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="btn btn-info dropdown-toggle"><i class="fas fa-file-excel"></i> Template</a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item has-icon" onclick="exportTemplate()"><i class="fas fa-download"></i> Export</a>
+                        <a href="#" class="dropdown-item has-icon" onclick="importClient()"><i class="far fa-upload"></i> Import</a>
+                    </div>
+                    <div class="btn-group btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteEntry()"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -53,6 +62,7 @@
     </div>
 </section>
 <?php include "modal_chart_of_accounts.php"; ?>
+<?php include "modal_export.php"; ?>
 <script type="text/javascript">
     function getEntries() {
         $("#dt_entries").DataTable().destroy();
@@ -102,19 +112,19 @@
         getSelectOption('ChartOfAccounts', 'main_chart_id', "chart_name", "chart_type = 'M'", ['chart_name']);
     }
 
-    function changeChartType(){
+    function changeChartType() {
         var chart_type = $("#chart_type").val();
 
-        if(chart_type == "S"){
+        if (chart_type == "S") {
             $("#div_main_chart").show();
             $("#div_sub_class").hide();
-            $("#main_chart_id").prop('required',true);
-            $("#chart_class_id").prop('required',false);
-        }else{
+            $("#main_chart_id").prop('required', true);
+            $("#chart_class_id").prop('required', false);
+        } else {
             $("#div_main_chart").hide();
             $("#div_sub_class").show();
-            $("#main_chart_id").prop('required',false);
-            $("#chart_class_id").prop('required',true);
+            $("#main_chart_id").prop('required', false);
+            $("#chart_class_id").prop('required', true);
             $("#chart_name").val("");
         }
     }
@@ -122,14 +132,14 @@
     function changeChart() {
         var chart_type = $("#chart_type").val();
 
-        if(chart_type == "S"){
+        if (chart_type == "S") {
             var optionSelected = $("#main_chart_id").find('option:selected').attr('chart_name');
             chart_name = optionSelected;
-            $("#chart_name").val(chart_name+" - ");
-        }else{
+            $("#chart_name").val(chart_name + " - ");
+        } else {
             $("#chart_name").val("");
         }
-        
+
     }
 
     $(document).ready(function() {

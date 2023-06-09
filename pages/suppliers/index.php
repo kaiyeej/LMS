@@ -15,13 +15,16 @@
                 Manage suppliers here.
             </div>
             <div>
-                <div class="btn-group btn-group" role="group" aria-label="Basic example">
-                  <button type="button" class="btn btn-info" onclick="exportTemplate()"><i class="fas fa-download"></i> Export</button>
-                  <button type="button" class="btn btn-info" onclick="importTemplate()"><i class="fas fa-upload"></i> Import</button>
-                </div>
-                <div class="btn-group btn-group" role="group" aria-label="Basic example">
-                  <button type="button" class="btn btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</button>
-                  <button type="button" class="btn btn-danger" onclick="deleteEntry()"><i class="fas fa-trash"></i> Delete</button>
+                <div class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="btn btn-info dropdown-toggle"><i class="fas fa-file-excel"></i> Template</a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item has-icon" onclick="exportTemplate()"><i class="fas fa-download"></i> Export</a>
+                        <a href="#" class="dropdown-item has-icon" onclick="importTemplate()"><i class="far fa-upload"></i> Import</a>
+                    </div>
+                    <div class="btn-group btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteEntry()"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,6 +60,7 @@
     </div>
 </section>
 <?php include "modal_suppliers.php"; ?>
+<?php include "modal_export.php"; ?>
 <script type="text/javascript">
     function getEntries() {
         $("#dt_entries").DataTable().destroy();
