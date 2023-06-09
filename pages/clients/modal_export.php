@@ -85,9 +85,69 @@
                                 <th>Payment Deduct Salary (Yes,No)</th>
                                 <th>Client Deduct Salary (Yes,No)</th>
                                 <th>Paymaster Conformity (Yes,No)</th>
+                                <th>Location 1</th>
+                                <th>Location 1 Area</th>
+                                <th>Location 1 Cost</th>
+                                <th>Location 1 Market Value</th>
+                                <th>Location 1 Improvement</th>
+                                <th>Location 2</th>
+                                <th>Location 2 Area</th>
+                                <th>Location 2 Cost</th>
+                                <th>Location 2 Market Value</th>
+                                <th>Location 2 Improvement</th>
+                                <th>Children 1 Name</th>
+                                <th>Children 1 Age</th>
+                                <th>Children 1 Gender (Male/Female)</th>
+                                <th>Children 1 Occupation</th>
+                                <th>Children 2 Name</th>
+                                <th>Children 2 Age</th>
+                                <th>Children 2 Gender (Male/Female)</th>
+                                <th>Children 2 Occupation</th>
+                                <th>Children 3 Name</th>
+                                <th>Children 3 Age</th>
+                                <th>Children 3 Gender (Male/Female)</th>
+                                <th>Children 3 Occupation</th>
+                                <th>Children 4 Name</th>
+                                <th>Children 4 Age</th>
+                                <th>Children 4 Gender (Male/Female)</th>
+                                <th>Children 4 Occupation</th>
+                                <th>Children 5 Name</th>
+                                <th>Children 5 Age</th>
+                                <th>Children 5 Gender (Male/Female)</th>
+                                <th>Children 5 Occupation</th>
                             </tr>
                             <tr>
                                 <td contenteditable="true">&nbsp;</td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
                                 <td contenteditable="true"></td>
                                 <td contenteditable="true"></td>
                                 <td contenteditable="true"></td>
@@ -164,7 +224,20 @@
                     </div>
                 </div>
                 <div class="row mt-2">
-                    <h3 class="text-danger">Notes</h3>
+                    <h6 class="text-danger">Notes: Please open exported file in Microsoft Excel Application</h6>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="text-danger">
+                                    <li>Branches : BCD (Bacolod), LC (La Carlota)</li>
+                                    <li>Location : Leave blank if not applicable</li>
+                                    <li>Children : Leave blank if not applicable</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer bg-whitesmoke br">
