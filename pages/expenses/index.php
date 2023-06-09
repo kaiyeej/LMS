@@ -45,6 +45,7 @@
                                         </th>
                                         <th></th>
                                         <th>Reference #</th>
+                                        <th>Branch</th>
                                         <th>Expense Date</th>
                                         <th>Payment Method</th>
                                         <th>Amount</th>
@@ -70,7 +71,7 @@
         $("#dt_entries").DataTable({
             "processing": true,
             "order": [
-                [8, 'desc']
+                [9, 'desc']
             ],
             "ajax": {
                 "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=show",
@@ -88,6 +89,9 @@
                 },
                 {
                     "data": "reference_number"
+                },
+                {
+                    "data": "branch_name"
                 },
                 {
                     "data": "expense_date"
@@ -194,6 +198,7 @@
 
     $(document).ready(function() {
         getEntries();
+        getSelectOption('Branches', 'branch_id', 'branch_name');
         getSelectOption('Journals', 'journal_id', 'journal_name', '', ['journal_code']);
         getSelectOption('ChartOfAccounts', 'credit_method', 'chart_name');
         getSelectOption('ChartOfAccounts', 'chart_id', 'chart_name');

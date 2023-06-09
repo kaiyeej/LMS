@@ -138,9 +138,9 @@ class Collections extends Connection
         return $row['total'];
     }
 
-    public function monthly_collection($month, $year)
-    {
-        $result = $this->select("tbl_collections", 'sum(amount) as total', "(MONTH(collection_date) = '$month' AND YEAR(collection_date)= '$year') AND status='F'");
+    public function monthly_collection($month,$year,$branch_id = null){
+        $query = $branch_id == "" ? "" : "AND branch_id='$branch_id'";
+        $result = $this->select("tbl_collections", 'sum(amount) as total', "(MONTH(collection_date) = '$month' AND YEAR(collection_date)= '$year') AND status='F' $query");
         $row = $result->fetch_assoc();
         return $row['total'];
     }

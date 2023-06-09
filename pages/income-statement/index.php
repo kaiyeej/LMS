@@ -11,7 +11,12 @@
         <div class="alert alert-light alert-has-icon" style="border: 1px dashed #3C84AB;">
             <form id='frm_generate'>
                 <div class="form-group row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
+                        <label><strong>Branch</strong></label>
+                        <select class="form-control select2" style="width: 100%;" id='branch_id' name='branch_id' required>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
                         <label><strong>Month</strong></label>
                         <select class="form-control select2" style="width: 100%;" id='report_month' name='report_month' required>
                             <?php
@@ -24,7 +29,7 @@
                             ?>
                         </select>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <label><strong>Year</strong></label>
                         <select class="form-control select2" style="width: 100%;" id='report_year' name='report_year' required>
                             <?php
@@ -40,7 +45,7 @@
                             ?>
                         </select>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <label>&nbsp;</label>
                         <div>
                             <div class="btn-group pull-right">
@@ -133,7 +138,7 @@
                                     </tr>
 
                                     <tr style="font-weight:bold;">
-                                        <td style="text-align:right;font-style: italic;font-size:15px;">NET INCOME , <span id="net_date_label"></span></td>
+                                        <td style="text-align:right;font-style: italic;font-size:15px;">NET INCOME, <span id="net_date_label"></span></td>
                                         <td style="text-align:right;font-size:15px;"><span id="income_total_label" class="label-item"></span></td>
                                     </tr>
 
@@ -159,11 +164,12 @@
     function getReport() {
         var report_month = $("#report_month").val();
         var report_year = $("#report_year").val();
+        var branch_id = $("#branch_id").val();
 
         var mnth = $('#report_month').find(":selected").text();
+        var branch = $('#branch_id').find(":selected").text();
 
-        $("#covered_date_label").html("LENDING OPERATION FOR THE MONTH OF " + mnth + " " + report_year);
-        $("#net_date_label").html(mnth + " " + report_year);
+        $("#covered_date_label").html("LENDING OPERATION FOR THE MONTH OF " + mnth + " " + report_year+"<h6>"+branch+"</h6>");
 
         $.ajax({
             type: "POST",
@@ -171,7 +177,8 @@
             data: {
                 input: {
                     report_month: report_month,
-                    report_year: report_year
+                    report_year: report_year,
+                    branch_id:branch_id
                 }
             },
             success: function(data) {
@@ -188,9 +195,7 @@
     }
 
     $(document).ready(function() {
+        getSelectOption('Branches', 'branch_id', 'branch_name', '', [], -1, 'All');
         getReport();
-
-        // $("#company_name_label").html(company_profile.company_name);
-        // $("#company_address_label").html(company_profile.company_address);
     });
 </script>

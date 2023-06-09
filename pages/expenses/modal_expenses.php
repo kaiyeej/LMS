@@ -11,9 +11,17 @@
                 <div class="modal-body">
                     <input type="hidden" id="hidden_id" name="input[expense_id]">
                     <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <div>
+                                <label style="color: #6777ef;font-weight: bold;">Ref. #: </label>
+                                <input type="text" class="input-item" autocomplete="off" name="input[reference_number]" id="reference_number" style="background: transparent;border: none;outline: none;color: #6777ef;font-size: 18px;font-weight: bold;" readonly required>
+                            </div>
+
+                        </div>
                         <div class="form-group col-md-6">
-                            <label>Reference #</label>
-                            <input type="text" class="form-control input-item" autocomplete="off" name="input[reference_number]" id="reference_number" readonly required>
+                            <label><strong style="color:red;">*</strong>Branch</label>
+                            <select class="form-control select2 input-item" id="branch_id" name="input[branch_id]" style="width:100%;" required>
+                            </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label><strong style="color:red;">*</strong>Date</label>
@@ -60,6 +68,7 @@
                             <div><b>Date:</b> <span id="expense_date_label" class="label-item"></span></div>
                         </div>
                         <div class="col-3">
+                            <div><b>Branch:</b> <span id="branch_name_label" class="label-item"></span></div>
                             <div><b>Remarks:</b> <span id="remarks_label" class="label-item"></span></div>
                             <div><b>Encoded By:</b> <span id="encoded_by_label" class="label-item"></span></div>
                         </div>

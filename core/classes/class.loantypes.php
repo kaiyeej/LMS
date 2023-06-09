@@ -78,9 +78,11 @@ class LoanTypes extends Connection
         return $row['penalty_percentage'];
     }
 
-    public function total_per_month($primary_id,$month,$year){
+    public function total_per_month($primary_id,$month,$year,$branch_id = null){
 
-        $result = $this->select("tbl_loans", "sum(loan_amount) as total", "MONTH(loan_date) = '$month' AND YEAR(loan_date) = '$year' AND (status = 'R' OR status='F') AND $this->pk = '$primary_id'");
+        $query = $branch_id == "" ? "" : "AND branch_id='$branch_id'";
+
+        $result = $this->select("tbl_loans", "sum(loan_amount) as total", "MONTH(loan_date) = '$month' AND YEAR(loan_date) = '$year' AND (status = 'R' OR status='F') AND $this->pk = '$primary_id' $query");
         $row = $result->fetch_assoc();
         return $row['total'];
     }

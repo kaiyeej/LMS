@@ -6,13 +6,14 @@ class IncomeStatement extends Connection
     {
         $month = $this->inputs['report_month'];
         $year = $this->inputs['report_year'];
+        $branch_id = $this->inputs['branch_id'] == -1 ? "" : $this->inputs['branch_id'];
 
         $Collections = new Collections;
 
-        $collected = $Collections->monthly_collection($month,$year);
-        $loan_types = $this->loan_types($month,$year);
-        $expenses = $this->expenses($month,$year);
-        $revenues = $this->revenues($month,$year);
+        $collected = $Collections->monthly_collection($month,$year,$branch_id);
+        $loan_types = $this->loan_types($month,$year,$branch_id);
+        $expenses = $this->expenses($month,$year,$branch_id);
+        $revenues = $this->revenues($month,$year,$branch_id);
 
         $gross_income = $revenues[1];
 
@@ -30,14 +31,14 @@ class IncomeStatement extends Connection
     }
 
     
-    public function loan_types($month,$year){
+    public function loan_types($month,$year,$branch_id){
 
         $result = $this->select("tbl_loan_types", "*");
         $list = "";
         $total = 0;
         $LoanTypes = new LoanTypes;
         while($row = $result->fetch_array()){
-            $sum = $LoanTypes->total_per_month($row['loan_type_id'],$month,$year);
+            $sum = $LoanTypes->total_per_month($row['loan_type_id'],$month,$year,$branch_id);
             // if($sum > 0){
                 $list .= "<tr><td style='padding-left: 100px;'>".$row['loan_type']."</td><td style='text-align:right;'>".number_format($sum,2)."</td></tr>";
             // }
@@ -47,14 +48,14 @@ class IncomeStatement extends Connection
         return [$list,$total];
     }
 
-    public function expenses($month,$year){
+    public function expenses($month,$year,$branch_id){
 
         // $result = $this->select("tbl_expense_details as d, tbl_expenses as h", "d.expense_detail_id, d.expense_id, d.chart_id, d.expense_amount", "h.expense_id=d.expense_id AND MONTH(h.expense_date) = '$month' AND YEAR(h.expense_date) = '$year' AND h.status='F'");
         $result = $this->select("tbl_chart_of_accounts", "*");
         $list = "";
         $total = 0;
         while($row = $result->fetch_array()){
-            $fetch_sum = $this->select("tbl_expense_details as d, tbl_expenses as h", "sum(d.expense_amount)", "h.expense_id=d.expense_id AND MONTH(h.expense_date) = '$month' AND YEAR(h.expense_date) = '$year' AND h.status='F' AND d.chart_id='$row[chart_id]'");
+            $fetch_sum = $this->select("tbl_expense_details as d, tbl_expenses as h", "sum(d.expense_amount)", "h.expense_id=d.expense_id AND MONTH(h.expense_date) = '$month' AND YEAR(h.expense_date) = '$year' AND h.status='F' AND d.chart_id='$row[chart_id]' AND h.branch_id = '$branch_id'");
             $sum = $fetch_sum->fetch_array();
             if($sum[0] > 0){
                 $list .= "<tr><td style='padding-left: 100px;'>".$row['chart_name']."</td><td style='text-align:right;'>".number_format($sum[0],2)."</td></tr>";
@@ -65,13 +66,13 @@ class IncomeStatement extends Connection
         return [$list,$total];
     }
 
-    public function revenues($month,$year){
+    public function revenues($month,$year,$branch_id){
 
         $result = $this->select("tbl_chart_of_accounts", "*", "chart_class_id='5'");
         $list = "";
         $total = 0;
         while($row = $result->fetch_array()){
-            $fetch_sum = $this->select("tbl_journal_entry_details as d, tbl_journal_entries as h", "sum(d.debit) as total_debit, sum(d.credit) as total_credit", "h.journal_entry_id=d.journal_entry_id AND MONTH(h.journal_date) = '$month' AND YEAR(h.journal_date) = '$year' AND h.status='F' AND d.chart_id='$row[chart_id]'");
+            $fetch_sum = $this->select("tbl_journal_entry_details as d, tbl_journal_entries as h", "sum(d.debit) as total_debit, sum(d.credit) as total_credit", "h.journal_entry_id=d.journal_entry_id AND MONTH(h.journal_date) = '$month' AND YEAR(h.journal_date) = '$year' AND h.status='F' AND d.chart_id='$row[chart_id]' AND h.branch_id = '$branch_id'");
             $sum = $fetch_sum->fetch_array();
             $sub_total = $sum['total_debit'];
             // if($sub_total > 0){

@@ -14,6 +14,7 @@ class Expenses extends Connection
     {
         $form = array(
             $this->name         => $this->clean($this->inputs[$this->name]),
+            'branch_id'         => $this->inputs['branch_id'],
             'expense_date'      => $this->inputs['expense_date'],
             'remarks'           => $this->inputs['remarks'],
             'credit_method'     => $this->inputs['credit_method'],
@@ -27,6 +28,7 @@ class Expenses extends Connection
     {
         $form = array(
             $this->name         => $this->clean($this->inputs[$this->name]),
+            'branch_id'         => $this->inputs['branch_id'],
             'expense_date'      => $this->inputs['expense_date'],
             'remarks'           => $this->inputs['remarks'],
             'credit_method'     => $this->inputs['credit_method'],
@@ -40,12 +42,14 @@ class Expenses extends Connection
     {
         $Users = new Users;
         $Journals = new Journals;
+        $Branches = new Branches;
         $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
         $rows = array();
         $result = $this->select($this->table, '*', $param);
         while ($row = $result->fetch_assoc()) {
             $row['encoded_by'] = $Users->fullname($row['user_id']);
             $row['journal'] = $Journals->name($row['journal_id']);
+            $row['branch_name'] = $Branches->name($row['branch_id']);
             $row['amount'] = number_format($this->total($row['expense_id']), 2);
             $rows[] = $row;
         }
@@ -65,12 +69,14 @@ class Expenses extends Connection
         $primary_id = $this->inputs['id'];
         $Users = new Users;
         $Journals = new Journals;
+        $Branches = new Branches;
         $ChartOfAccounts = new ChartOfAccounts;
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $row['encoded_by'] = $Users->fullname($row['user_id']);
             $row['journal_name'] = $Journals->name($row['journal_id']);
+            $row['branch_name'] = $Branches->name($row['branch_id']);
             $row['credit_method_name'] = $ChartOfAccounts->name($row['credit_method']);
             return $row;
         } else {
