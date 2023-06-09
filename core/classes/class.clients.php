@@ -505,9 +505,9 @@ class Clients extends Connection
                     'client_spouce_employer_contact_no' => $row[28],
                     'client_spouse_position'            => $row[29],
                     'client_spouse_income'              => $row[30],
-                    'client_spouse_emp_status'          => $row[31],
-                    'client_spouse_leng_emp'            => $row[32],
-                    'client_spouse_prev_employment'     => $row[33],
+                    'client_spouse_leng_emp'            => $row[31],
+                    'client_spouse_prev_employment'     => $row[32],
+                    'client_spouse_emp_status'          => $row[33],
                     'client_no_of_children'             => $row[34],
                     'client_no_of_child_dependent'      => $row[35],
                     'client_no_of_child_college'        => $row[36],
@@ -567,6 +567,50 @@ class Clients extends Connection
                     $Clients->edit();
                 }
 
+                $locations = [72, 77];
+                $location_list = [];
+                foreach ($locations as $location) {
+                    $property_location = $row[$location];
+                    $property_area = $row[$location + 1];
+                    $property_acquisition_cost = $row[$location + 2];
+                    $property_pres_market_val = $row[$location + 3];
+                    $property_improvement = $row[$location + 4];
+
+                    $Clients = new Clients;
+                    if ($property_location != "") {
+                        $Clients->inputs['client_id'] = $client_id;
+                        $Clients->inputs['property_location'] = $property_location;
+                        $Clients->inputs['property_area'] = $property_area;
+                        $Clients->inputs['property_acquisition_cost'] = $property_acquisition_cost;
+                        $Clients->inputs['property_pres_market_val'] = $property_pres_market_val;
+                        $Clients->inputs['property_improvement'] = $property_improvement;
+                        $Clients->addProperty();
+                        $location_list[] = $property_location;
+                    }
+                }
+                $form['locations'] = $location_list;
+
+
+                $childrens = [82, 86, 90, 94, 98];
+                $children_list = [];
+                foreach ($childrens as $children) {
+                    $child_name = $row[$children];
+                    $child_age = $row[$children + 1];
+                    $child_sex = $row[$children + 2];
+                    $child_occupation = $row[$children + 3];
+
+                    $Clients = new Clients;
+                    if ($child_name != "") {
+                        $Clients->inputs['client_id'] = $client_id;
+                        $Clients->inputs['child_name'] = $child_name;
+                        $Clients->inputs['child_age'] = $child_age;
+                        $Clients->inputs['child_sex'] = $child_sex;
+                        $Clients->inputs['child_occupation'] = $child_occupation;
+                        $Clients->addChildren();
+                        $children_list[] = $child_name;
+                    }
+                }
+                $form['childrens'] = $children_list;
                 $clients_data[] = $form;
             }
             $count++;

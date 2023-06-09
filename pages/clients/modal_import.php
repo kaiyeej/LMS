@@ -57,6 +57,7 @@
                 if (res.data.status == -1) {
                     $('#import_result_content').html(`<div class="alert alert-danger" role="alert">${res.data.text}</div>`);
                 } else if (res.data.status == 1) {
+                    getEntries();
                     if (res.data.clients.length > 0) {
                         $("#import_dialog").removeClass('modal-md');
                         $("#import_dialog").addClass('modal-xl');
@@ -73,6 +74,8 @@
                                 <td>${client.client_contact_no}</td>
                                 <td>${client.client_address}</td>
                                 <td>(${client.client_emp_status}) ${client.client_emp_position} @${client.client_employer}</td>
+                                <td>${client.locations.length}</td>
+                                <td>${client.childrens.length}</td>
                               </tr>`;
                         }
                         $('#import_result_content').html(`<div style='width:100%'>
@@ -85,6 +88,8 @@
                                 <th>Contact Number</th>
                                 <th>Adress</th>
                                 <th>Employment</th>
+                                <th>Locations</th>
+                                <th>Childrens</th>
                               </tr>
                               ${clients_tr}
                         </table>

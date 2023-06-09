@@ -224,20 +224,16 @@
                     </div>
                 </div>
                 <div class="row mt-2">
-                    <h6 class="text-danger">Notes: Please open exported file in Microsoft Excel Application</h6>
+                    <h6 class="text-danger">Notes: Please open exported file (.csv) in Microsoft Excel Application</h6>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-md-6 col-lg-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <ul class="text-danger">
-                                    <li>Branches : BCD (Bacolod), LC (La Carlota)</li>
-                                    <li>Location : Leave blank if not applicable</li>
-                                    <li>Children : Leave blank if not applicable</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    <ul class="text-danger">
+                        <li>Branches : BCD (Bacolod), LC (La Carlota)</li>
+                        <li>Dates : mm/dd/YYYY format</li>
+                        <li>Insurance : Insurance Name</li>
+                        <li>Location : Leave blank if not applicable</li>
+                        <li>Children : Leave blank if not applicable</li>
+                    </ul>
                 </div>
             </div>
             <div class="modal-footer bg-whitesmoke br">

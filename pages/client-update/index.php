@@ -1088,7 +1088,7 @@
                 "method": "POST",
                 "data": {
                     input: {
-                        params: params
+                        param: params
                     }
                 },
             },
@@ -1214,7 +1214,7 @@
                 "method": "POST",
                 "data": {
                     input: {
-                        params: params
+                        param: params
                     }
                 },
             },
