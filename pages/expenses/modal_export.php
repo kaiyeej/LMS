@@ -11,30 +11,56 @@
                 <div class="row">
                     <h3 class="text-info">Template Overview</h3>
                     <div style='width:100%' class='w3-animate-left'>
-                        <table id="tbl_import_template">
+                        <table id="tbl_export_template">
                             <tr>
+                                <th>EXPENSE REFERENCE #</th>
+                                <th>Branch (BCD,LC)</th>
                                 <th>Date</th>
                                 <th>Journal Code</th>
-                                <th>Payment Method (Chart of Accounts Code)</th>
+                                <th>Payment Method</th>
                                 <th>Remarks</th>
+                                <th>Chart (Details only)</th>
+                                <th>Description (Details only)</th>
+                                <th>Amount (Details only)</th>
                             </tr>
                             <tr>
-                                <td contenteditable="true">&nbsp;</td>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
+                                <td contenteditable="true">EXP-20230601000001</td>
+                                <td contenteditable="true">BCD</td>
+                                <td contenteditable="true">06/01/2023</td>
+                                <td contenteditable="true">Cash in Bank</td>
+                                <td contenteditable="true">BBJ</td>
+                                <td contenteditable="true">For test purposes only</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true">&nbsp;</td>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
-                                <td contenteditable="true"></td>
+                                <td contenteditable="true">EXP-20230601000001</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td contenteditable="true">101000</td>
+                                <td contenteditable="true">Test Description</td>
+                                <td contenteditable="true">1975.75</td>
                             </tr>
                         </table>
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <h3 class="text-danger">Notes</h3>
+                <div class="row">
+                    <h6 class="text-danger">Notes: Please open exported file (.csv) in Microsoft Excel Application</h6>
+
+                </div>
+                <div class="row">
+                    <ul class="text-danger">
+                        <li>Branches : BCD (Bacolod), LC (La Carlota)</li>
+                        <li>Dates : mm/dd/YYYY format</li>
+                        <li>Journal Code : Please refer to Journal Code in Journals Module</li>
+                        <li>Payment Method : Please refer to Chart of Accounts</li>
+                        <li>Chart : Please refer to Chart of Accounts, for details only</li>
+                        <li>Amount : Encode in no comma (e.g 1000)</li>
+                    </ul>
                 </div>
             </div>
             <div class="modal-footer bg-whitesmoke br">
@@ -55,7 +81,7 @@
         // window.location = "assets/forms/CollectionsTemplate.csv";
 
         // Get the table by ID
-        let table = document.getElementById('tbl_import_template');
+        let table = document.getElementById('tbl_export_template');
 
         // Convert table to CSV format
         let csvData = convertTableToCSV(table);
@@ -93,7 +119,7 @@
 </script>
 
 <style>
-    #tbl_import_template {
+    #tbl_export_template {
         font-family: arial, sans-serif;
         border-collapse: collapse;
         overflow-x: scroll;
@@ -104,13 +130,13 @@
         white-space: nowrap;
     }
 
-    #tbl_import_template td,
+    #tbl_export_template td,
     th {
         border: 1px solid #dddddd;
         padding: 8px;
     }
 
-    #tbl_import_template th {
+    #tbl_export_template th {
         text-align: center;
     }
 </style>

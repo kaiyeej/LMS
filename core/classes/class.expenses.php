@@ -10,6 +10,8 @@ class Expenses extends Connection
     public $pk2 = 'expense_detail_id';
     public $fk_det = 'chart_id';
 
+    public $inputs;
+
     public function add()
     {
         $form = array(
@@ -146,10 +148,9 @@ class Expenses extends Connection
             }
 
             return $sql;
-        }else{
+        } else {
             return -2;
         }
-
     }
 
     public function pk_by_name($name = null)
@@ -286,5 +287,90 @@ class Expenses extends Connection
         }
 
         return $rows;
+    }
+
+    public function import()
+    {
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 0);
+
+        $response = [];
+        $file = $_FILES['csv_file'];
+        $fileType = pathinfo($file['name'], PATHINFO_EXTENSION);
+        if ($fileType != 'csv') {
+            $response['status'] = -1;
+            $response['text'] = 'Invalid file format. Only CSV files are allowed.';
+            return $response;
+        }
+
+        // Read the CSV file data
+        $csvData = array();
+        if (($handle = fopen($file['tmp_name'], 'r')) !== false) {
+            while (($row = fgetcsv($handle)) !== false) {
+                $csvData[] = $row;
+            }
+            fclose($handle);
+        } else {
+            $response['status'] = -1;
+            $response['text'] = 'Failed to read the CSV file.';
+            return $response;
+        }
+
+        // Display the processed data
+        $branches = ["BCD" => 1, "LC" => 2];
+        $loans_data = [];
+        $count = 0;
+        $success_import = 0;
+        $unsuccess_import = 0;
+        $Clients = new Clients();
+        foreach ($csvData as $row) {
+            if ($count > 0) {
+
+                $Loans = new Loans();
+                $loan_id = $Loans->idByName($this->clean($row[1]));
+                $Loans->inputs['id'] = $loan_id;
+                $client_id = $Loans->client_id();
+
+                $form = [
+                    'branch_id' => $row[0] ? $branches[$row[0]] : 1,
+                    'reference_number' => $row[0],
+                    'loan_id' => $loan_id,
+                    'client_id' => $client_id,
+                    'expense_date' => $Clients->name($client_id),
+                    'remarks' => (float) str_replace(',', '', $row[5]),
+                    'credit_method' => date("Y-m-d", strtotime($row[2])),
+                    'journal_id' => (float) str_replace(',', '', $row[4]),
+                    'remarks' => $this->clean($row[6]),
+                    'bank' => $this->clean($row[3]),
+                ];
+
+                if ($client_id > 0 && $loan_id > 0) {
+                    $Collections = new Collections;
+                    $Collections->inputs = $form;
+                    $loan_id = $row[0] != '' ? $Collections->add() : 0;
+                    if ($loan_id == 2) {
+                        $form['import_status'] = 0;
+                        $unsuccess_import += 1;
+                    } else if ($loan_id == 0) {
+                        $form['import_status'] = 0;
+                        $unsuccess_import += 1;
+                    } else {
+                        $form['import_status'] = 1;
+                        $success_import += 1;
+                    }
+                } else {
+                    $form['import_status'] = 0;
+                    $unsuccess_import += 1;
+                }
+
+                $loans_data[] = $form;
+            }
+            $count++;
+        }
+        $response['status'] = 1;
+        $response['collections'] = $loans_data;
+        $response['success_import'] = $success_import;
+        $response['unsuccess_import'] = $unsuccess_import;
+        return $response;
     }
 }
