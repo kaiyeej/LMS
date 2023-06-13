@@ -1,5 +1,5 @@
 <div class="modal fade" id="modalExport" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document" style="width: 100%;max-width: 2000px;margin: 0.5rem;">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"><span class='ion-compose'></span> Export Collection Template</h5>
@@ -13,12 +13,13 @@
                     <div style='width:100%' class='w3-animate-left'>
                         <table id="tbl_import_template">
                             <tr>
-                                <th>Loan Reference #</th>
+                                <th style="min-width: 100px;">BRANCH (BCD,LC)</th>
+                                <th style="min-width: 100px;">Loan Reference #</th>
                                 <th>Collection Date</th>
-                                <th>Bank</th>
+                                <th style="min-width: 80px;">Bank</th>
                                 <th>Penalty</th>
                                 <th>Amount</th>
-                                <th>Remarks</th>
+                                <th style="min-width: 150px;">Remarks</th>
                             </tr>
                             <tr>
                                 <td contenteditable="true">&nbsp;</td>
@@ -27,9 +28,11 @@
                                 <td contenteditable="true"></td>
                                 <td contenteditable="true"></td>
                                 <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
                             </tr>
                             <tr>
                                 <td contenteditable="true">&nbsp;</td>
+                                <td contenteditable="true"></td>
                                 <td contenteditable="true"></td>
                                 <td contenteditable="true"></td>
                                 <td contenteditable="true"></td>
@@ -39,8 +42,17 @@
                         </table>
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <h3 class="text-danger">Notes</h3>
+                <div class="row">
+                    <h6 class="text-danger">Notes: Please open exported file (.csv) in Microsoft Excel Application</h6>
+
+                </div>
+                <div class="row">
+                    <ul class="text-danger">
+                        <li>Branches : BCD (Bacolod), LC (La Carlota)</li>
+                        <li>Loan Reference : Please refer to Loan Reference Number in Loans Module</li>
+                        <li>Dates : mm/dd/YYYY format</li>
+                        <li>Amount : Encode in no comma (e.g 1000)</li>
+                    </ul>
                 </div>
             </div>
             <div class="modal-footer bg-whitesmoke br">

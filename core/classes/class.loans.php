@@ -366,6 +366,17 @@ class Loans extends Connection
         // return $suggested_total." ".$payment_total;
     }
 
+    public function idByName($reference_number)
+    {
+        $result = $this->select($this->table, 'loan_id', "reference_number = '$reference_number'");
+
+        if ($result->num_rows < 1)
+            return 0;
+
+        $row = $result->fetch_assoc();
+        return $row['loan_id'];
+    }
+
     public function schema()
     {
         if (DEVELOPMENT) {
@@ -445,19 +456,20 @@ class Loans extends Connection
                 $loan_type_id = $LoanTypes->idByName($this->clean($row[3]));
                 $branch_name = $row[0] == 'BCD' ? "Bacolod" : "La Carlota";
                 $form = [
-                    'branch_id'         => $row[0] ? $branches[$row[0]] : 1,
-                    'branch_name'       => $branch_name,
-                    'reference_number'  => $row[1],
-                    'client_id'         => $client_id,
-                    'client_name'       => $this->clean($row[2]),
-                    'loan_type_id'      => $loan_type_id,
-                    'loan_type'         => $this->clean($row[3]),
-                    'loan_date'         => date("Y-m-d", strtotime($row[4])),
-                    'loan_amount'       => (float) str_replace(',', '', $row[5]),
-                    'loan_interest'     => (float) str_replace(',', '', $row[6]),
-                    'loan_period'       => (float) str_replace(',', '', $row[7]),
-                    'service_fee'       => (float) str_replace(',', '', $row[8]),
-                    'monthly_payment'   => (float) str_replace(',', '', $row[9]),
+                    'branch_id' => $row[0] ? $branches[$row[0]] : 1,
+                    'branch_name' => $branch_name,
+                    'reference_number' => $row[1],
+                    'client_id' => $client_id,
+                    'client_name' => $this->clean($row[2]),
+                    'loan_type_id' => $loan_type_id,
+                    'loan_type' => $this->clean($row[3]),
+                    'loan_date' => date("Y-m-d", strtotime($row[4])),
+                    'loan_amount' => (float) str_replace(',', '', $row[5]),
+                    'loan_interest' => (float) str_replace(',', '', $row[6]),
+                    'loan_period' => (float) str_replace(',', '', $row[7]),
+                    'service_fee' => (float) str_replace(',', '', $row[8]),
+                    'monthly_payment' => (float) str_replace(',', '', $row[9]),
+                    'status' => "R",
                 ];
 
                 if ($client_id > 0 && $loan_type_id > 0) {

@@ -7,6 +7,7 @@ class Collections extends Connection
     public $name = 'reference_number';
     public $fk = 'loan_id';
 
+    public $inputs;
 
     public function add()
     {
@@ -239,35 +240,92 @@ class Collections extends Connection
         return $response;
     }
 
-    public function schema()
+    public function import()
     {
-        if (DEVELOPMENT) {
-            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
-            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', '', 'ON UPDATE CURRENT_TIMESTAMP');
-            $default['user_id'] = $this->metadata('user_id', 'int', 11);
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 0);
 
-
-            // TABLE HEADER
-            $tables[] = array(
-                'name'      => $this->table,
-                'primary'   => $this->pk,
-                'fields' => array(
-                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
-                    $this->metadata($this->name, 'varchar', 50),
-                    $this->metadata('branch_id', 'int', 11),
-                    $this->metadata('client_id', 'int', 11),
-                    $this->metadata('loan_id', 'int', 11),
-                    $this->metadata('chart_id', 'int', 11),
-                    $this->metadata('penalty_amount', 'decimal', '12,3'),
-                    $this->metadata('amount', 'decimal', '12,3'),
-                    $this->metadata('remarks', 'text'),
-                    $default['user_id'],
-                    $default['date_added'],
-                    $default['date_last_modified']
-                )
-            );
-
-            return $this->schemaCreator($tables);
+        $response = [];
+        $file = $_FILES['csv_file'];
+        $fileType = pathinfo($file['name'], PATHINFO_EXTENSION);
+        if ($fileType != 'csv') {
+            $response['status'] = -1;
+            $response['text'] = 'Invalid file format. Only CSV files are allowed.';
+            return $response;
         }
+
+        // Read the CSV file data
+        $csvData = array();
+        if (($handle = fopen($file['tmp_name'], 'r')) !== false) {
+            while (($row = fgetcsv($handle)) !== false) {
+                $csvData[] = $row;
+            }
+            fclose($handle);
+        } else {
+            $response['status'] = -1;
+            $response['text'] = 'Failed to read the CSV file.';
+            return $response;
+        }
+
+        // Display the processed data
+        $branches = ["BCD" => 1, "LC" => 2];
+        $loans_data = [];
+        $count = 0;
+        $success_import = 0;
+        $unsuccess_import = 0;
+        $Clients = new Clients();
+        foreach ($csvData as $row) {
+            if ($count > 0) {
+
+                $Loans = new Loans();
+                $loan_id = $Loans->idByName($this->clean($row[1]));
+                $Loans->inputs['id'] = $loan_id;
+                $client_id = $Loans->client_id();
+
+                $branch_name = $row[0] == 'BCD' ? "Bacolod" : "La Carlota";
+                $reference_number = "CL-" . date("Ymd", strtotime($row[2])) . sprintf("%'.06d", $count);
+                $form = [
+                    'branch_id' => $row[0] ? $branches[$row[0]] : 1,
+                    'branch_name' => $branch_name,
+                    'loan_reference_number' => $this->clean($row[1]),
+                    'reference_number' => $reference_number,
+                    'loan_id' => $loan_id,
+                    'client_id' => $client_id,
+                    'client_name' => $Clients->name($client_id),
+                    'amount' => (float) str_replace(',', '', $row[5]),
+                    'collection_date' => date("Y-m-d", strtotime($row[2])),
+                    'penalty_amount' => (float) str_replace(',', '', $row[4]),
+                    'remarks' => $this->clean($row[6]),
+                    'bank' => $this->clean($row[3]),
+                ];
+
+                if ($client_id > 0 && $loan_id > 0) {
+                    $Collections = new Collections;
+                    $Collections->inputs = $form;
+                    $loan_id = $row[0] != '' ? $Collections->add() : 0;
+                    if ($loan_id == 2) {
+                        $form['import_status'] = 0;
+                        $unsuccess_import += 1;
+                    } else if ($loan_id == 0) {
+                        $form['import_status'] = 0;
+                        $unsuccess_import += 1;
+                    } else {
+                        $form['import_status'] = 1;
+                        $success_import += 1;
+                    }
+                } else {
+                    $form['import_status'] = 0;
+                    $unsuccess_import += 1;
+                }
+
+                $loans_data[] = $form;
+            }
+            $count++;
+        }
+        $response['status'] = 1;
+        $response['collections'] = $loans_data;
+        $response['success_import'] = $success_import;
+        $response['unsuccess_import'] = $unsuccess_import;
+        return $response;
     }
 }
