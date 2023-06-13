@@ -6,6 +6,7 @@ class LoanTypes extends Connection
     public $pk = 'loan_type_id';
     public $name = 'loan_type';
 
+    public $inputs;
 
     public function add()
     {
@@ -16,14 +17,14 @@ class LoanTypes extends Connection
             'remarks'       => $this->clean($this->inputs['remarks']),
         );
 
-        return $this->insertIfNotExist($this->table, $form, "$this->name = '".$this->inputs[$this->name]."'");
+        return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
     }
 
     public function edit()
     {
         $primary_id = $this->inputs[$this->pk];
         $name = $this->clean($this->inputs['loan_type']);
-        $is_exist = $this->select($this->table, $this->pk, "$this->name = '".$this->inputs[$this->name]."' AND $this->pk != '$primary_id'");
+        $is_exist = $this->select($this->table, $this->pk, "$this->name = '" . $this->inputs[$this->name] . "' AND $this->pk != '$primary_id'");
         if ($is_exist->num_rows > 0) {
             return 2;
         } else {
@@ -70,7 +71,7 @@ class LoanTypes extends Connection
         return $row['loan_type'];
     }
 
-    
+
     public function penalty_percentage($primary_id)
     {
         $result = $this->select($this->table, 'penalty_percentage', "$this->pk = '$primary_id'");
@@ -78,7 +79,20 @@ class LoanTypes extends Connection
         return $row['penalty_percentage'];
     }
 
-    public function total_per_month($primary_id,$month,$year,$branch_id = null){
+    public function idByName($loan_type)
+    {
+        $result = $this->select($this->table, 'loan_type_id', "UCASE(loan_type) = UCASE('$loan_type')");
+
+        if ($result->num_rows < 1)
+            return 0;
+
+        $row = $result->fetch_assoc();
+        return $row['loan_type_id'];
+    }
+
+
+    public function total_per_month($primary_id, $month, $year, $branch_id = null)
+    {
 
         $query = $branch_id == "" ? "" : "AND branch_id='$branch_id'";
 

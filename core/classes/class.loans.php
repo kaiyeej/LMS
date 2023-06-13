@@ -430,34 +430,48 @@ class Loans extends Connection
         $count = 0;
         $success_import = 0;
         $unsuccess_import = 0;
+
+        $Clients = new Clients();
+        $LoanTypes = new LoanTypes();
+
         foreach ($csvData as $row) {
             if ($count > 0) {
+                $client_id = $Clients->idByFullname($this->clean($row[2]));
+                $loan_type_id = $LoanTypes->idByName($this->clean($row[3]));
+                $branch_name = $row[0] == 'BCD' ? "Bacolod" : "La Carlota";
                 $form = [
                     'branch_id'         => $row[0] ? $branches[$row[0]] : 1,
+                    'branch_name'       => $branch_name,
                     'reference_number'  => $row[1],
-                    'client_id'         => $row[2],
-                    'loan_type_id'      => $row[3],
-                    'loan_date'         => $row[4],
-                    'loan_amount'       => $row[5],
-                    'loan_interest'     => $row[6],
-                    'loan_period'       => $row[7],
-                    'service_fee'       => $row[8],
-                    'monthly_payment'   => $row[9],
+                    'client_id'         => $client_id,
+                    'client_name'       => $this->clean($row[2]),
+                    'loan_type_id'      => $loan_type_id,
+                    'loan_type'         => $this->clean($row[3]),
+                    'loan_date'         => date("Y-m-d", strtotime($row[4])),
+                    'loan_amount'       => (float) str_replace(',', '', $row[5]),
+                    'loan_interest'     => (float) str_replace(',', '', $row[6]),
+                    'loan_period'       => (float) str_replace(',', '', $row[7]),
+                    'service_fee'       => (float) str_replace(',', '', $row[8]),
+                    'monthly_payment'   => (float) str_replace(',', '', $row[9]),
                 ];
 
-                $Loans = new Loans;
-                $Loans->inputs = $form;
-                $client_id = $row[0] != '' ? $Loans->add() : 0;
-
-                if ($client_id == 2) {
-                    $form['import_status'] = 0;
-                    $unsuccess_import += 1;
-                } else if ($client_id == 0) {
-                    $form['import_status'] = 0;
-                    $unsuccess_import += 1;
+                if ($client_id > 0 && $loan_type_id > 0) {
+                    $Loans = new Loans;
+                    $Loans->inputs = $form;
+                    $loan_id = $row[0] != '' ? $Loans->add() : 0;
+                    if ($loan_id == 2) {
+                        $form['import_status'] = 0;
+                        $unsuccess_import += 1;
+                    } else if ($loan_id == 0) {
+                        $form['import_status'] = 0;
+                        $unsuccess_import += 1;
+                    } else {
+                        $form['import_status'] = 1;
+                        $success_import += 1;
+                    }
                 } else {
-                    $form['import_status'] = 1;
-                    $success_import += 1;
+                    $form['import_status'] = 0;
+                    $unsuccess_import += 1;
                 }
 
                 $loans_data[] = $form;

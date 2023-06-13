@@ -67,10 +67,10 @@
                             var is_import_failed = loan.import_status == 0 ? "import_failed" : "";
                             loans_tr += `<tr class='${is_import_failed}'>
                                 <td>${loanIndex + 1}</td>
-                                <td>${loan.branch_id}</td>
+                                <td>${loan.branch_name}</td>
                                 <td>${loan.reference_number}</td>
-                                <td>${loan.client_id}</td>
-                                <td>${loan.loan_type_id}</td>
+                                <td>${loan.client_name}</td>
+                                <td>${loan.loan_type}</td>
                                 <td>${loan.loan_date}</td>
                                 <td>${loan.loan_amount}</td>
                                 <td>${loan.loan_interest}</td>
@@ -120,10 +120,12 @@
     #tbl_import_result {
         font-family: arial, sans-serif;
         border-collapse: collapse;
-        width: 100%;
-        overflow-y: scroll;
-        height: 350px;
+        overflow-x: scroll;
+        color: #0a0a0a;
         display: block;
+        width: max-content;
+        max-width: 100%;
+        white-space: nowrap;
     }
 
     #tbl_import_result td,

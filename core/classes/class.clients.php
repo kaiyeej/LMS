@@ -441,6 +441,17 @@ class Clients extends Connection
         return $this->insertIfNotExist("tbl_children", $form, "child_name = '" . $child_name . "'");
     }
 
+    public function idByFullname($fullname)
+    {
+        $result = $this->select($this->table, 'client_id', "UCASE(CONCAT(client_fname,IF(client_mname != '', CONCAT(' ',client_mname),''),' ',client_lname,IF(client_name_extension != '', CONCAT(' ',client_name_extension),''))) = UCASE('$fullname')");
+
+        if ($result->num_rows < 1)
+            return 0;
+
+        $row = $result->fetch_assoc();
+        return $row['client_id'];
+    }
+
     public function import()
     {
         ini_set('memory_limit', '-1');
