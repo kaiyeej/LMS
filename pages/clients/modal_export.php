@@ -11,7 +11,7 @@
                 <div class="row">
                     <h3 class="text-info">Template Overview</h3>
                     <div style='width:100%' class='w3-animate-left'>
-                        <table id="tbl_export_template">
+                        <table id="tbl_import_template">
                             <tr>
                                 <th>*Branch (BCD,LC)</th>
                                 <th>*First Name</th>
@@ -272,8 +272,6 @@
         document.body.removeChild(downloadLink);
     }
 
-    ex
-
     function convertTableToCSV(table) {
         let csv = [];
         let rows = table.querySelectorAll('tr');
@@ -295,7 +293,7 @@
 </script>
 
 <style>
-    #tbl_export_template {
+    #tbl_import_template {
         font-family: arial, sans-serif;
         border-collapse: collapse;
         overflow-x: scroll;
@@ -306,13 +304,13 @@
         white-space: nowrap;
     }
 
-    #tbl_export_template td,
+    #tbl_import_template td,
     th {
         border: 1px solid #dddddd;
         padding: 8px;
     }
 
-    #tbl_export_template th {
+    #tbl_import_template th {
         text-align: center;
     }
 </style>
