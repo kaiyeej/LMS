@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-xl" role="document" id="import_dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><span class='ion-compose'></span> Import Loans</h5>
+                    <h5 class="modal-title"><span class='ion-compose'></span> Import Collections</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -12,7 +12,7 @@
                     <div class="col-md-12" id="import_file">
                         <div class="form-group">
                             <div class="col-lg-12" style="padding: 10px;">
-                                <label class="text-md-right text-left">Loans Template (CSV)</label>
+                                <label class="text-md-right text-left">Collections Template (CSV)</label>
                                 <input type="file" name="csv_file" accept=".csv" class="form-control" required>
                             </div>
                         </div>
@@ -60,23 +60,21 @@
                 } else if (res.data.status == 1) {
                     getEntries();
                     $("#btn_import").hide();
-                    if (res.data.loans.length > 0) {
+                    if (res.data.collections.length > 0) {
                         var loans_tr = "";
-                        for (var loanIndex = 0; loanIndex < res.data.loans.length; loanIndex++) {
-                            const loan = res.data.loans[loanIndex];
-                            var is_import_failed = loan.import_status == 0 ? "import_failed" : "";
+                        for (var loanIndex = 0; loanIndex < res.data.collections.length; loanIndex++) {
+                            const collection = res.data.collections[loanIndex];
+                            var is_import_failed = collection.import_status == 0 ? "import_failed" : "";
                             loans_tr += `<tr class='${is_import_failed}'>
                                 <td>${loanIndex + 1}</td>
-                                <td>${loan.branch_name}</td>
-                                <td>${loan.reference_number}</td>
-                                <td>${loan.client_name}</td>
-                                <td>${loan.loan_type}</td>
-                                <td>${loan.loan_date}</td>
-                                <td>${loan.loan_amount}</td>
-                                <td>${loan.loan_interest}</td>
-                                <td>${loan.loan_period}</td>
-                                <td>${loan.service_fee}</td>
-                                <td>${loan.monthly_payment}</td>
+                                <td>${collection.branch_name}</td>
+                                <td>${collection.loan_reference_number}</td>
+                                <td>${collection.client_name}</td>
+                                <td>${collection.collection_date}</td>
+                                <td>${collection.bank}</td>
+                                <td>${collection.penalty_amount}</td>
+                                <td>${collection.amount}</td>
+                                <td>${collection.remarks}</td>
                               </tr>`;
                         }
                         $('#import_result_content').html(`<div style='width:100%'>
@@ -90,24 +88,22 @@
                               <tr>
                                 <th>#</th>
                                 <th>Branch</th>
-                                <th>Reference #</th>
+                                <th>Loan Reference #</th>
                                 <th>Client</th>
-                                <th>Loan Type</th>
-                                <th>Load Date</th>
-                                <th>Loan Amount</th>
-                                <th>Interest</th>
-                                <th>Loan Terms</th>
-                                <th>Service Fee</th>
-                                <th>Monthly Payment</th>
+                                <th>Collection Date</th>
+                                <th style="min-width: 150px;">Bank</th>
+                                <th>Penalty</th>
+                                <th>Collection Amount</th>
+                                <th style="min-width: 150px;">Remarks</th>
                               </tr>
                               ${loans_tr}
                         </table>
                         </div>`);
                     } else {
-                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">No loans</div>`);
+                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">No collections</div>`);
                     }
                 } else {
-                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing loans</div>`);
+                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing collections</div>`);
                 }
             },
             error: function(xhr, ajaxOptions, thrownError) {
