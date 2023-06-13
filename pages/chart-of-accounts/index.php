@@ -143,6 +143,7 @@
     }
 
     $(document).ready(function() {
+        schema();
         getEntries();
         getSelectOption('ChartOfAccounts', 'main_chart_id', "chart_name", "chart_type = 'M'", ['chart_name']);
         getSelectOption('ChartClassification', 'chart_class_id', "chart_class_name");

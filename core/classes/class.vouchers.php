@@ -72,12 +72,13 @@ class Vouchers extends Connection
         $Journals = new Journals;
         $Suppliers = new Suppliers;
         $Clients = new Clients;
+        $Loans = new Loans;
         $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
         $rows = array();
         $result = $this->select($this->table, '*', $param);
         while ($row = $result->fetch_assoc()) {
             // $details = $this->total_details($row['journal_entry_id']);
-            $row['account'] = $row['account_type'] == "S"? $Suppliers->name($row['account_id']) : $Clients->name($row['account_id']);
+            $row['account'] = $row['account_type'] == "S"? $Suppliers->name($row['account_id']) : $Clients->name($row['account_id'])." <strong style='color:#4caf50;'>(".$Loans->name($row['loan_id']).")</strong>";
             $row['encoded_by'] = $Users->fullname($row['user_id']);
             $row['amount'] = 0;
             $rows[] = $row;
@@ -105,8 +106,9 @@ class Vouchers extends Connection
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $row['encoded_by'] = $Users->fullname($row['user_id']);
-            $row['account'] = $row['account_type'] == "S"? $Suppliers->name($row['account_id']) : $Clients->name($row['account_id'])." (".$Loans->name($row['loan_id'])."";
+            $row['account'] = $row['account_type'] == "S"? $Suppliers->name($row['account_id']) : $Clients->name($row['account_id'])." (".$Loans->name($row['loan_id']).")";
             $row['voucher_amount'] = number_format($row['amount'],2);
+            $row['cv_date'] = date('F d, Y', strtotime($row["voucher_date"]));
             $row['amount_word'] = $this->convertNumberToWord($row['amount']);
             return $row;
         } else {
@@ -146,8 +148,6 @@ class Vouchers extends Connection
         }else{
             return -1; //not equal
         }
-
-        
     }
 
     public function pk_by_name($name = null)

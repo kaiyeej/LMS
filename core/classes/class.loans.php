@@ -163,6 +163,11 @@ class Loans extends Connection
         return $row['total'];
     }
 
+    public function loan_data($primary_id)
+    {
+        $result = $this->select($this->table, '*', "$this->pk = '$primary_id'");
+        return $result->fetch_assoc();
+    }
 
     public function sample_calculation()
     {
