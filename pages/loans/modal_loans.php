@@ -50,7 +50,7 @@
 
                                 <div class="form-group col-md-4">
                                     <label>Loan Terms</label>
-                                    <input type="number" class="form-control input-item" autocomplete="off" onchange="calculateInterest()" name="input[loan_period]" id="loan_period" required>
+                                    <input type="number" class="form-control input-item" autocomplete="off"  name="input[loan_period]" id="loan_period" required>
                                 </div>
                                 
                                 <div class="form-group col-md-4">
@@ -60,7 +60,7 @@
 
                                 <div class="form-group col-md-4">
                                     <label>Monthly Payment</label>
-                                    <input type="number" class="form-control input-item" autocomplete="off"  name="input[monthly_payment]" id="monthly_payment" required>
+                                    <input type="number" class="form-control input-item" autocomplete="off"  name="input[monthly_payment]" id="monthly_payment" step="0.01" required>
                                 </div>
 
                             </div>
