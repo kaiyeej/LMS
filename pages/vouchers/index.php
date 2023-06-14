@@ -103,7 +103,7 @@
             },
             "columns": [{
                     "mRender": function(data, type, row) {
-                        return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.voucher_id + '" value=' + row.voucher_id + '><label for="checkbox-b' + row.voucher_id + '" class="custom-control-label">&nbsp;</label></div>';
+                        return row.status == "F" ? "" : '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.voucher_id + '" value=' + row.voucher_id + '><label for="checkbox-b' + row.voucher_id + '" class="custom-control-label">&nbsp;</label></div>';
                     }
                 },
                 {

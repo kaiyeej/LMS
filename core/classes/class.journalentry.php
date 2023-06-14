@@ -48,6 +48,7 @@ class JournalEntry extends Connection
             $row['encoded_by'] = $Users->fullname($row['user_id']);
             $row['journal'] = $Journals->name($row['journal_id']);
             $row['amount'] = $details[2] == 0 ? number_format($details[0],2) : "<strong style='color:#F44336;'>".number_format($details[0],2)."</strong>";
+
             $rows[] = $row;
         }
         return $rows;
@@ -165,6 +166,8 @@ class JournalEntry extends Connection
         while ($row = $result->fetch_assoc()) {
             $row['chart'] = $ChartOfAccounts->name($row['chart_id']);
             $row['count'] = $count++;
+            $row['debit'] = number_format($row['debit'],2);
+            $row['credit'] = number_format($row['credit'],2);
             $rows[] = $row;
         }
         return $rows;

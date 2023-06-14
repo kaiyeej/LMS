@@ -67,6 +67,9 @@
                                     <a id="menu-edit-transaction" class="nav-link" href="#" style="font-size: small;"><i class='ti ti-pencil'></i> Edit Journal Entry</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a id="menu-delete-selected-items" class="nav-link" href="#" style="font-size: small;"><i class='ti ti-trash'></i> Delete Selected</a>
+                                </li>
+                                <li class="nav-item">
                                     <a id="menu-finish-transaction" class="nav-link" href="#" style="font-size: small;"><i class='ti ti-check'></i> Finish Transaction</a>
                                 </li>
                                 <li class="nav-item">
@@ -133,9 +136,6 @@
                                 </form>
                             </div>
                             <div class="col-6" id="col-list">
-                                <div class="btn-group mb-3 btn-group-sm" role="group" aria-label="Basic example">
-                                    <button type="button" onclick="deleteEntry2()" id="btn_delete_task" class="btn btn-icon icon-left btn-danger"><i class="fas fa-trash"></i> Delete</button>
-                                </div>
                                 <div class="table-responsive">
                                     <table class="table table-striped" id="dt_entries_2" width="100%" cellspacing="0">
                                         <thead>
