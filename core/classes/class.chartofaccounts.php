@@ -188,7 +188,12 @@ class ChartOfAccounts extends Connection
     public function chart_data($code)
     {
         $result = $this->select($this->table, '*', "chart_name like '%$code%'");
-        return $result->fetch_assoc();
+        if($result->num_rows > 0){
+            return $result->fetch_assoc();
+        }else{
+            return 0;
+        }
+        
     }
 
 
