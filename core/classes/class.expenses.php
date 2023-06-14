@@ -21,6 +21,7 @@ class Expenses extends Connection
             'remarks'           => $this->inputs['remarks'],
             'credit_method'     => $this->inputs['credit_method'],
             'journal_id'        => $this->inputs['journal_id'],
+            'status'            => isset($this->inputs['status']) ? $this->inputs['status'] : "S",
             'user_id'           => $_SESSION['lms_user_id']
         );
         return $this->insertIfNotExist($this->table, $form, '', 'Y');
@@ -289,6 +290,17 @@ class Expenses extends Connection
         return $rows;
     }
 
+    public function idByName($name)
+    {
+        $result = $this->select($this->table, $this->pk, "UCASE($this->name) = UCASE('$name')");
+
+        if ($result->num_rows < 1)
+            return 0;
+
+        $row = $result->fetch_assoc();
+        return $row[$this->pk];
+    }
+
     public function import()
     {
         ini_set('memory_limit', '-1');
@@ -318,57 +330,92 @@ class Expenses extends Connection
 
         // Display the processed data
         $branches = ["BCD" => 1, "LC" => 2];
-        $loans_data = [];
+        $expenses_data = [];
         $count = 0;
         $success_import = 0;
         $unsuccess_import = 0;
-        $Clients = new Clients();
+        $ChartOfAccounts = new ChartOfAccounts();
+        $Journals = new Journals();
         foreach ($csvData as $row) {
             if ($count > 0) {
 
-                $Loans = new Loans();
-                $loan_id = $Loans->idByName($this->clean($row[1]));
-                $Loans->inputs['id'] = $loan_id;
-                $client_id = $Loans->client_id();
+                $journal_id = $Journals->idByName($row[3]);
+                $credit_method = $ChartOfAccounts->idByName($row[4]);
+                $chart_id = $ChartOfAccounts->idByName($row[6]);
 
-                $form = [
-                    'branch_id' => $row[0] ? $branches[$row[0]] : 1,
-                    'reference_number' => $row[0],
-                    'loan_id' => $loan_id,
-                    'client_id' => $client_id,
-                    'expense_date' => $Clients->name($client_id),
-                    'remarks' => (float) str_replace(',', '', $row[5]),
-                    'credit_method' => date("Y-m-d", strtotime($row[2])),
-                    'journal_id' => (float) str_replace(',', '', $row[4]),
-                    'remarks' => $this->clean($row[6]),
-                    'bank' => $this->clean($row[3]),
-                ];
+                if ($credit_method > 0 && $journal_id > 0) {
 
-                if ($client_id > 0 && $loan_id > 0) {
-                    $Collections = new Collections;
-                    $Collections->inputs = $form;
-                    $loan_id = $row[0] != '' ? $Collections->add() : 0;
-                    if ($loan_id == 2) {
-                        $form['import_status'] = 0;
-                        $unsuccess_import += 1;
-                    } else if ($loan_id == 0) {
+                    $form = [
+                        'reference_number' => $row[0],
+                        'branch_id' => $row[1] ? $branches[$row[1]] : 1,
+                        'branch_name' => $row[1] == 'BCD' ? "Bacolod" : "La Carlota",
+                        'expense_date' => date("Y-m-d", strtotime($row[2])),
+                        'journal_id' => $journal_id,
+                        'journal_name' => $this->clean($row[3]),
+                        'credit_method' => $credit_method,
+                        'payment_method' => $this->clean($row[4]),
+                        'remarks' => $this->clean($row[5]),
+                        'status' => "F",
+                        'chart_id' => "", //$chart_id,
+                        'chart_name' => "", //$this->clean($row[6]),
+                        'expense_desc' => "", //$this->clean($row[7]),
+                        'expense_amount' => "", //(float) str_replace(',', '', $row[8]),
+                    ];
+
+                    $Expenses = new Expenses;
+                    $Expenses->inputs = $form;
+                    $expense_id = $row[0] != '' ? $Expenses->add() : 0;
+                    if ($expense_id > 0) {
+                        $form['import_status'] = 1;
+                        $success_import += 1;
+                    } else if ($expense_id == -2) {
                         $form['import_status'] = 0;
                         $unsuccess_import += 1;
                     } else {
-                        $form['import_status'] = 1;
-                        $success_import += 1;
+                        $form['import_status'] = 0;
+                        $unsuccess_import += 1;
                     }
                 } else {
-                    $form['import_status'] = 0;
-                    $unsuccess_import += 1;
+                    $expense_id = $this->idByName($row[0]);
+                    $form = [
+                        'reference_number' => $row[0],
+                        'expense_id' => $expense_id,
+                        'branch_id' => "",
+                        'branch_name' => "",
+                        'expense_date' => "",
+                        'journal_id' => "",
+                        'journal_name' => "",
+                        'credit_method' => "",
+                        'payment_method' => "",
+                        'remarks' => "",
+                        'chart_id' => $chart_id,
+                        'chart_name' => $this->clean($row[6]),
+                        'expense_desc' => $this->clean($row[7]),
+                        'expense_amount' => (float) str_replace(',', '', $row[8]),
+                    ];
+                    if ($chart_id > 0 && $expense_id) {
+                        $Expenses = new Expenses;
+                        $Expenses->inputs = $form;
+                        $expense_detail_status = $row[0] != '' ? $Expenses->add_detail() : 0;
+                        if ($expense_detail_status > 0) {
+                            $form['import_status'] = 1;
+                            $success_import += 1;
+                        } else {
+                            $form['import_status'] = 0;
+                            $unsuccess_import += 1;
+                        }
+                    } else {
+                        $form['import_status'] = 0;
+                        $unsuccess_import += 1;
+                    }
                 }
 
-                $loans_data[] = $form;
+                $expenses_data[] = $form;
             }
             $count++;
         }
         $response['status'] = 1;
-        $response['collections'] = $loans_data;
+        $response['disbursements'] = $expenses_data;
         $response['success_import'] = $success_import;
         $response['unsuccess_import'] = $unsuccess_import;
         return $response;

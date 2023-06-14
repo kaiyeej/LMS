@@ -6,6 +6,7 @@ class Journals extends Connection
     public $pk = 'journal_id';
     public $name = 'journal_name';
 
+    public $inputs;
 
     public function add()
     {
@@ -14,7 +15,7 @@ class Journals extends Connection
             'journal_code'  => $this->clean($this->inputs['journal_code']),
         );
 
-        return $this->insertIfNotExist($this->table, $form, "$this->name = '".$this->inputs[$this->name]."'");
+        return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
     }
 
     public function edit()
@@ -69,7 +70,18 @@ class Journals extends Connection
 
     public function jl_data($code)
     {
-        $result = $this->select($this->table, '*',"journal_name like '%$code%'");
+        $result = $this->select($this->table, '*', "journal_name like '%$code%'");
         return $result->fetch_assoc();
+    }
+
+    public function idByName($name)
+    {
+        $result = $this->select($this->table, $this->pk, "UCASE($this->name) = UCASE('$name')");
+
+        if ($result->num_rows < 1)
+            return 0;
+
+        $row = $result->fetch_assoc();
+        return $row[$this->pk];
     }
 }

@@ -1,6 +1,7 @@
 <form id='frm_import' method="POST" enctype="multipart/form-data">
     <div class="modal fade" id="modalImport" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document" id="import_dialog">
+        <div class="modal-dialog" role="document" id="import_dialog"
+            style="width: 100%;max-width: 2000px;margin: 0.5rem;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><span class='ion-compose'></span> Import Disbursement</h5>
@@ -65,15 +66,15 @@
                         for (var dataIndex = 0; dataIndex < res.data.disbursements.length; dataIndex++) {
                             const disbursement = res.data.disbursements[dataIndex];
                             var is_import_failed = disbursement.import_status == 0 ? "import_failed" : "";
-                            var branch_name = disbursement.branch_id == 2 ? "La Carlota" : "Bacolod";
                             disbursement_tr += `<tr class='${is_import_failed}'>
                                 <td>${dataIndex + 1}</td>
                                 <td>${disbursement.reference_number}</td>
-                                <td>${branch_name}</td>
+                                <td>${disbursement.branch_name}</td>
                                 <td>${disbursement.expense_date}</td>
-                                <td>${disbursement.credit_method}</td>
-                                <td>${disbursement.journal_id}</td>
-                                <td>${disbursement.amount}</td>
+                                <td>${disbursement.journal_name}</td>
+                                <td>${disbursement.payment_method}</td>
+                                <td>${disbursement.chart_name}</td>
+                                <td>${disbursement.expense_amount}</td>
                               </tr>`;
                         }
                         $('#import_result_content').html(`<div style='width:100%'>
@@ -89,8 +90,9 @@
                                 <th style="min-width:150px;">Reference</th>
                                 <th style="min-width:150px;">Branch</th>
                                 <th style="min-width:200px;">Expense Date</th>
-                                <th style="min-width:100px;">Payment Method</th>
                                 <th style="min-width:100px;">Journal</th>
+                                <th style="min-width:100px;">Payment Method</th>
+                                <th style="min-width:200px;">Chart</th>
                                 <th style="min-width:200px;">Amount</th>
                               </tr>
                               ${disbursement_tr}

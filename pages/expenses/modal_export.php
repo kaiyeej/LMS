@@ -16,7 +16,7 @@
                                 <th>EXPENSE REFERENCE #</th>
                                 <th>Branch (BCD,LC)</th>
                                 <th>Date</th>
-                                <th>Journal Code</th>
+                                <th>Journal Name</th>
                                 <th>Payment Method</th>
                                 <th>Remarks</th>
                                 <th>Chart (Details only)</th>
@@ -27,8 +27,8 @@
                                 <td contenteditable="true">EXP-20230601000001</td>
                                 <td contenteditable="true">BCD</td>
                                 <td contenteditable="true">06/01/2023</td>
+                                <td contenteditable="true">Beginning Balance</td>
                                 <td contenteditable="true">Cash in Bank</td>
-                                <td contenteditable="true">BBJ</td>
                                 <td contenteditable="true">For test purposes only</td>
                                 <td></td>
                                 <td></td>
@@ -41,7 +41,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td contenteditable="true">101000</td>
+                                <td contenteditable="true">Prepaid Rent</td>
                                 <td contenteditable="true">Test Description</td>
                                 <td contenteditable="true">1975.75</td>
                             </tr>
@@ -56,9 +56,9 @@
                     <ul class="text-danger">
                         <li>Branches : BCD (Bacolod), LC (La Carlota)</li>
                         <li>Dates : mm/dd/YYYY format</li>
-                        <li>Journal Code : Please refer to Journal Code in Journals Module</li>
-                        <li>Payment Method : Please refer to Chart of Accounts</li>
-                        <li>Chart : Please refer to Chart of Accounts, for details only</li>
+                        <li>Journal : Please refer in Journals Module</li>
+                        <li>Payment Method : Please refer in Chart of Accounts Module</li>
+                        <li>Chart : Please refer to Chart of Accounts Module, for details only</li>
                         <li>Amount : Encode in no comma (e.g 1000)</li>
                     </ul>
                 </div>
