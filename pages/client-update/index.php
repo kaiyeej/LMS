@@ -67,6 +67,15 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                                <div class="col-lg-4" style="padding: 10px;">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><strong style="color:red;">*&nbsp;</strong> Type</span>
+                                                        </div>
+                                                        <select class="select2 form-control input-item" id="client_type_id" name="input[client_type_id]" required>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="form-group col-lg-4">
@@ -1242,6 +1251,7 @@
     $(document).ready(function() {
         getSelectOption('Insurance', 'insurance_id', 'insurance_name');
         getSelectOption('Branches', 'branch_id', 'branch_name');
+        getSelectOption('ClientTypes', 'client_type_id', 'client_type');
         getEntryDetails(client_id);
         $("#hidden_id_1").val(client_id);
         $("#hidden_id_2").val(client_id);

@@ -55,6 +55,7 @@
         // MASTER DATA
         echo '<li class="menu-header">Master Data</li>';
         $Menus->sidebar('Branches', 'branches', 'fas fa-building');
+        $Menus->sidebar('Client Types', 'client-types', 'fas fa-user-cog');
         $Menus->sidebar('Clients', 'clients', 'fas fa-address-card');
         // $Menus->sidebar('Expense Category', 'expense-category', 'far fa-list-alt');
         $Menus->sidebar('Loan Types', 'loan-types', 'fas fa-list');

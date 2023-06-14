@@ -74,6 +74,11 @@
                                                 <select class="required select2 form-control input-item" id="branch_id" name="input[branch_id]" style="width:100%;">
                                                 </select>
                                             </div>
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left">Type</label>
+                                                <select class="required select2 form-control input-item" id="client_type_id" name="input[client_type_id]" style="width:100%;">
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-lg-4" style="padding: 10px;">

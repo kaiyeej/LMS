@@ -228,5 +228,6 @@
         getEntries();
         getSelectOption('Insurance', 'insurance_id', 'insurance_name');
         getSelectOption('Branches', 'branch_id', 'branch_name');
+        getSelectOption('ClientTypes', 'client_type_id', 'client_type');
     });
 </script>
