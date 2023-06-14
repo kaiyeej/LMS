@@ -157,7 +157,9 @@
         });
     }
 
-
+    $('#branch_id').change(function() {
+        getSelectOption('Clients', 'client_id', 'client_fullname', "branch_id='" + $(this).val() + "'");
+    })
 
     $('#client_id').change(function() {
         getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + $(this).val() + "' AND status = 'R'");
@@ -165,7 +167,7 @@
 
     $(document).ready(function() {
         getEntries();
-        getSelectOption('Clients', 'client_id', 'client_fullname');
-        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);
+        getSelectOption('Branches', 'branch_id', 'branch_name');
+        getSelectOption('ChartOfAccounts', 'chart_id', 'chart_name', "chart_name LIKE '%Bank%'");
     });
 </script>

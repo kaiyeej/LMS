@@ -14,6 +14,8 @@ class Collections extends Connection
         $form = array(
             $this->name         => $this->clean($this->inputs[$this->name]),
             $this->fk           => $this->clean($this->inputs[$this->fk]),
+            'branch_id'         => $this->clean($this->inputs['branch_id']),
+            'chart_id'          => $this->clean($this->inputs['chart_id']),
             'client_id'         => $this->clean($this->inputs['client_id']),
             'amount'            => $this->clean($this->inputs['amount']),
             'collection_date'   => $this->clean($this->inputs['collection_date']),
@@ -22,7 +24,65 @@ class Collections extends Connection
             'user_id'           => $this->clean($_SESSION['lms_user_id']),
         );
 
-        return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
+        $cl_id = $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
+
+        $Loans = new Loans;
+        $Branches = new Branches;
+        $ChartOfAccounts = new ChartOfAccounts;
+        $Journals = new Journals;
+        $LoanTypes = new LoanTypes;
+        $jl = $Journals->jl_data('Collection');
+        $ref_code = $jl['journal_code'] . "-" . date('YmdHis');
+
+        $loan_row = $Loans->loan_data($this->inputs['loan_id']);
+
+        $form_journal = array(
+            'reference_number'  => $ref_code,
+            'cross_reference'   => $this->clean($this->inputs[$this->name]),
+            'journal_id'        => $jl['journal_id'],
+            'remarks'           => $this->inputs['remarks'],
+            'journal_date'      => $this->inputs['collection_date'],
+            'status'            => 'F',
+            'user_id'           => $_SESSION['lms_user_id'],
+            'is_manual'         => 'N'
+        );
+
+        $journal_entry_id = $this->insert("tbl_journal_entries", $form_journal, 'Y');
+
+        // FOR CASH IN BANK
+        $cnb_total = $this->clean($this->inputs['amount'])+$this->inputs['penalty_amount'];
+        $form_cnb = array('journal_entry_id' => $journal_entry_id,'chart_id' => $this->clean($this->inputs['chart_id']),'debit' => $cnb_total);
+        $this->insert('tbl_journal_entry_details', $form_cnb);
+
+
+        // FOR INTEREST
+        $monthly_interest_rate = ($loan_row['loan_interest'] / 100) / 12;
+        $monthly_interest = $this->inputs['amount'] * $monthly_interest_rate;
+        $branch_name = $Branches->name($this->clean($this->inputs['branch_id']));
+        
+        $int_chart = $ChartOfAccounts->chart_data('Interest Income - '.$branch_name);
+        $form_interest = array('journal_entry_id' => $journal_entry_id,'chart_id' => $int_chart['chart_id'],'credit' => $monthly_interest);
+        $this->insert('tbl_journal_entry_details', $form_interest);
+
+
+        // FOR PENALTY
+        if($this->inputs['penalty_amount'] > 0){
+        
+            $penalty_chart = $ChartOfAccounts->chart_data('Penalty Income - '.$branch_name);
+            $form_penalty = array('journal_entry_id' => $journal_entry_id,'chart_id' => $penalty_chart['chart_id'],'credit' => $this->inputs['penalty_amount']);
+            $this->insert('tbl_journal_entry_details', $form_penalty);
+        }
+
+
+        // FOR LOANS RECEIVABLE
+        $lr_total = $cnb_total-($this->inputs['penalty_amount']+$monthly_interest);
+        $loan_type = $LoanTypes->name($loan_row['loan_type_id']);
+        $lr_chart = $ChartOfAccounts->chart_data('Loans Receivable - '.$loan_type." - ".$branch_name);
+        $form_penalty = array('journal_entry_id' => $journal_entry_id,'chart_id' => $lr_chart['chart_id'],'credit' => $lr_total);
+        $this->insert('tbl_journal_entry_details', $form_penalty);
+        
+        return $cl_id;
+
     }
 
     public function edit()
@@ -34,6 +94,8 @@ class Collections extends Connection
         } else {
             $form = array(
                 'amount'            => $this->clean($this->inputs['amount']),
+                'branch_id'         => $this->clean($this->inputs['branch_id']),
+                'chart_id'          => $this->clean($this->inputs['chart_id']),
                 'collection_date'   => $this->clean($this->inputs['collection_date']),
                 'remarks'           => $this->clean($this->inputs['remarks']),
                 'user_id'           => $this->clean($_SESSION['lms_user_id']),

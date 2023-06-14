@@ -11,9 +11,14 @@
                 <div class="modal-body">
                     <input type="hidden" id="hidden_id" name="input[collection_id]">
                     <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label style="color: #6777ef;font-weight: bold;">Ref. #: </label>
+                            <input type="text" class="input-item" autocomplete="off" name="input[reference_number]" id="reference_number" style="background: transparent;border: none;outline: none;color: #6777ef;font-size: 18px;font-weight: bold;" readonly required>
+                        </div>
                         <div class="form-group col-md-6">
-                            <label>Reference #</label>
-                            <input type="text" class="form-control input-item" readonly autocomplete="off" name="input[reference_number]" id="reference_number" required>
+                            <label>Branch</label>
+                            <select class="form-control select2 input-item" id="branch_id" name="input[branch_id]" style="width:100%;" required>
+                            </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Client</label>
@@ -29,11 +34,12 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label>Collection Date</label>
-                            <input type="date" class="form-control input-item" autocomplete="off" name="input[collection_date]" id="collection_date" onchange="getPenalty()"  required>
+                            <input type="date" class="form-control input-item" autocomplete="off" name="input[collection_date]" id="collection_date" onchange="getPenalty()" required>
                         </div>
                         <div class="form-group col-md-4">
                             <label>Bank</label>
-                            <input type="text" class="form-control input-item" placeholder="Bank"  autocomplete="off" name="input[bank]" id="bank" required>
+                            <select class="form-control select2 input-item" id="chart_id" name="input[chart_id]"  style="width:100%;" required>
+                            </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Penalty</label>
@@ -41,7 +47,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label>Amount</label>
-                            <input type="number" step="0.01" class="form-control input-item" placeholder="Collection amount"  autocomplete="off" name="input[amount]" id="amount" required>
+                            <input type="number" step="0.01" class="form-control input-item" placeholder="Collection amount" autocomplete="off" name="input[amount]" id="amount" required>
                         </div>
                         <div class="form-group col-md-12">
                             <label>Remarks</label>

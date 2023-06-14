@@ -66,4 +66,10 @@ class Journals extends Connection
         $row = $result->fetch_assoc();
         return $row['journal_code'];
     }
+
+    public function jl_data($code)
+    {
+        $result = $this->select($this->table, '*',"journal_name like '%$code%'");
+        return $result->fetch_assoc();
+    }
 }

@@ -154,6 +154,9 @@
                         </div>
                         <div class="col-sm-6">
                             <hr style="margin-top: 0rem;">
+                            <div style="text-align: right;">
+                                <span class="label-print" id="cv_date_label_print"></span>
+                            </div>
                             Received the sum of pesos <span class="label-print" style="text-decoration: underline;" id="amount_word_label_print"></span> in full payment of the above account.
 
                             <div style="text-align: right;padding-top: 100px;">
