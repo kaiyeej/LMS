@@ -30,4 +30,5 @@ $classes = array(
     'IncomeStatement'       => $pre_class . 'incomestatement.php',
     'Branches'              => $pre_class . 'branches.php',
     'ClientTypes'           => $pre_class . 'clienttypes.php',
+    'Employers'             => $pre_class . 'employers.php',
 );

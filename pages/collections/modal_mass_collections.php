@@ -351,11 +351,6 @@
         text-align: center !important;
     }
 
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-        color: #444;
-        line-height: 42px;
-    }
-
     .negative {
         background: red;
         color: #fff;

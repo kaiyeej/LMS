@@ -2,6 +2,10 @@
     .input-group-text {
         font-weight: bold;
     }
+
+    .form-group {
+        margin-bottom: 1rem !important;
+    }
 </style>
 <section class="section">
     <div class="section-header">
@@ -59,15 +63,16 @@
                                         <form method='POST' id='frm_client_1'>
                                             <input type="hidden" name="input[client_id]" id="hidden_id_1">
                                             <div class="form-group row">
-                                                <div class="col-lg-4" style="padding: 10px;">
+                                                <div class="col-lg-6" style="padding: 10px;">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><strong style="color:red;">*&nbsp;</strong> Branch</span>
-                                                        </div> <select class="select2 form-control input-item" id="branch_id" name="input[branch_id]" required>
+                                                        </div>
+                                                        <select class="select2 form-control input-item" id="branch_id" name="input[branch_id]" required>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-4" style="padding: 10px;">
+                                                <div class="col-lg-6" style="padding: 10px;">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><strong style="color:red;">*&nbsp;</strong> Type</span>
@@ -77,7 +82,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
+                                            <div class="section-title">Basic Information</div>
+                                            <div class="row">
                                                 <div class="form-group col-lg-4">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -110,7 +116,8 @@
                                                         <input type="text" class="form-control input-item" autocomplete="off" name="input[client_name_extension]" id="client_name_extension">
                                                     </div>
                                                 </div>
-
+                                            </div>
+                                            <div class="row">
                                                 <div class="form-group col-lg-4">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -141,12 +148,15 @@
                                                         <input type="text" class="form-control input-item" autocomplete="off" name="input[client_contact_no]" id="client_contact_no" required>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="section-title">Residence Information</div>
+                                            <div class="row">
                                                 <div class="form-group col-lg-8">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span style="height: 64px;" class="input-group-text"><strong style="color:red;">*&nbsp;</strong>Address</span>
+                                                            <span class="input-group-text"><strong style="color:red;">*&nbsp;</strong>Address</span>
                                                         </div>
-                                                        <textarea class="form-control input-item" autocomplete="off" name="input[client_address]" id="client_address" required></textarea>
+                                                        <input type="text" class="form-control input-item" autocomplete="off" name="input[client_address]" id="client_address" required>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-lg-4">
@@ -186,6 +196,9 @@
                                                         <input type="date" class="form-control input-item" autocomplete="off" name="input[client_res_cert_date]" id="client_res_cert_date" required>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="section-title">Employment Information</div>
+                                            <div class="row">
                                                 <div class="form-group col-lg-6">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -252,7 +265,7 @@
                                                 </div>
                                                 <div class="form-group col-lg-12">
                                                     <button type="submit" id="btn_submit_1" class="btn btn-primary" style="float: right;">
-                                                        Update Entry
+                                                        <span class="fa fa-check-circle"></span> Update Entry
                                                     </button>
                                                 </div>
                                             </div>
@@ -263,7 +276,8 @@
                                     <div id="page_content_2" class="container">
                                         <form method='POST' id='frm_client_2'>
                                             <input type="hidden" name="input[client_id]" id="hidden_id_2">
-                                            <div class="form-group row">
+                                            <div class="section-title" style="margin-top: 0px;">Spouse Residence Information</div>
+                                            <div class="row">
                                                 <div class="form-group col-lg-6">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -305,6 +319,9 @@
                                                         <input type="date" class="form-control input-item" autocomplete="off" name="input[client_spouse_res_cert_date]" id="client_spouse_res_cert_date">
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="section-title">Spouse Employer Information</div>
+                                            <div class="row">
                                                 <div class="form-group col-lg-4">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -369,6 +386,9 @@
                                                         <input type="text" class="form-control input-item" autocomplete="off" name="input[client_spouse_emp_status]" id="client_spouse_emp_status">
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="section-title">Dependents Information</div>
+                                            <div class="row">
                                                 <div class="form-group col-lg-4">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -377,7 +397,7 @@
                                                         <input type="number" min="0" class="form-control input-item" autocomplete="off" name="input[client_no_of_childred]" id="client_no_of_childred">
                                                     </div>
                                                 </div>
-                                                <div class="form-group col-lg-3">
+                                                <div class="form-group col-lg-4">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">Dependent on you</span>
@@ -385,7 +405,7 @@
                                                         <input type="number" min="0" class="form-control input-item" autocomplete="off" name="input[client_no_of_child_dependent]" id="client_no_of_child_dependent">
                                                     </div>
                                                 </div>
-                                                <div class="form-group col-lg-3">
+                                                <div class="form-group col-lg-4">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">College</span>
@@ -393,7 +413,7 @@
                                                         <input type="number" min="0" class="form-control input-item" autocomplete="off" name="input[client_no_of_child_college]" id="client_no_of_child_college">
                                                     </div>
                                                 </div>
-                                                <div class="form-group col-lg-3">
+                                                <div class="form-group col-lg-4">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">High School</span>
@@ -401,7 +421,7 @@
                                                         <input type="number" min="0" class="form-control input-item" autocomplete="off" name="input[client_no_of_child_hs]" id="client_no_of_child_hs">
                                                     </div>
                                                 </div>
-                                                <div class="form-group col-lg-3">
+                                                <div class="form-group col-lg-4">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">Elementary</span>
@@ -411,7 +431,7 @@
                                                 </div>
                                                 <div class="form-group col-lg-12">
                                                     <button type="submit" id="btn_submit_2" class="btn btn-primary" style="float: right;">
-                                                        Update Entry
+                                                        <span class="fa fa-check-circle"></span> Update Entry
                                                     </button>
                                                 </div>
                                             </div>
@@ -422,8 +442,9 @@
                                     <form method='POST' id='frm_client_3'>
                                         <input type="hidden" name="input[client_id]" id="hidden_id_3">
                                         <div id="page_content_3" class="tab wizard-pane">
-                                            <div class="form-group row">
-                                                <div class="form-group col-lg-4">
+                                            <div class="section-title" style="margin-top: 0px;">Income Details</div>
+                                            <div class="row">
+                                                <div class="form-group col-lg-6">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><strong style="color:red;">*&nbsp;</strong>Source Of Income</span>
@@ -431,7 +452,7 @@
                                                         <input type="text" class="form-control input-item" autocomplete="off" name="input[client_soi]" id="client_soi" required>
                                                     </div>
                                                 </div>
-                                                <div class="form-group col-lg-4">
+                                                <div class="form-group col-lg-6">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><strong style="color:red;">*&nbsp;</strong>Source of income by whom</span>
@@ -447,6 +468,45 @@
                                                         <input type="number" min="0" step="0.01" class="form-control input-item" autocomplete="off" placeholder="" name="input[client_soi_monthly_income]" id="client_soi_monthly_income" required>
                                                     </div>
                                                 </div>
+
+                                                <div class="form-group col-lg-4">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><strong style="color:red;">*&nbsp;</strong>Aprox Total Income</span>
+                                                        </div>
+                                                        <input type="number" min="0" step="0.01" class="form-control input-item" autocomplete="off" name="input[client_approx_total_monthly_income]" id="client_approx_total_monthly_income" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><strong style="color:red;">*&nbsp;</strong>Total Oustanding Obligation</span>
+                                                        </div>
+                                                        <input type="number" min="0" step="0.01" class="form-control input-item" autocomplete="off" name="input[client_total_outstanding_obligation]" id="client_total_outstanding_obligation" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="section-title">ATM Details</div>
+                                            <div class="row">
+                                                <div class="form-group col-lg-6">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><strong style="color:red;">*&nbsp;</strong>Bank</span>
+                                                        </div>
+                                                        <input type="text" class="form-control input-item" autocomplete="off" name="input[atm_bank]" id="atm_bank" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><strong style="color:red;">*&nbsp;</strong>Account No.</span>
+                                                        </div>
+                                                        <input type="text" class="form-control input-item" autocomplete="off" name="input[atm_account_no]" id="atm_account_no" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="section-title">References</div>
+                                            <div class="row">
                                                 <div class="form-group col-lg-6">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -495,22 +555,9 @@
                                                         <input type="text" class="form-control input-item" autocomplete="off" name="input[client_credit_ref_address3]" id="client_credit_ref_address3" required>
                                                     </div>
                                                 </div>
-                                                <div class="form-group col-lg-6">
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text"><strong style="color:red;">*&nbsp;</strong>Aprox Total Income</span>
-                                                        </div>
-                                                        <input type="number" min="0" step="0.01" class="form-control input-item" autocomplete="off" name="input[client_approx_total_monthly_income]" id="client_approx_total_monthly_income" required>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group col-lg-6">
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text"><strong style="color:red;">*&nbsp;</strong>Total Oustanding Obligation</span>
-                                                        </div>
-                                                        <input type="number" min="0" step="0.01" class="form-control input-item" autocomplete="off" name="input[client_total_outstanding_obligation]" id="client_total_outstanding_obligation" required>
-                                                    </div>
-                                                </div>
+                                            </div>
+                                            <div class="section-title">Business Details</div>
+                                            <div class="row">
                                                 <div class="form-group col-lg-6">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -581,7 +628,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-lg-12">
-                                                    <button type="submit" id="btn_submit_3" class="btn btn-primary" style="float: right;">
+                                                    <button type="submit" id="btn_submit_3" class="btn btn-primary" style="float: right;"><span class="fa fa-check-circle"></span>
                                                         Update Entry
                                                     </button>
                                                 </div>
@@ -734,7 +781,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-lg-12">
-                                                    <button type="submit" id="btn_submit_4" class="btn btn-primary" style="float: right;">
+                                                    <button type="submit" id="btn_submit_4" class="btn btn-primary" style="float: right;"><span class="fa fa-check-circle"></span>
                                                         Update Entry
                                                     </button>
                                                 </div>

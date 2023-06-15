@@ -1,9 +1,9 @@
 <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
-        <img style="width: 100px;" src="assets/img/logo2.png"> 
+        <img style="width: 100px;" src="assets/img/logo2.png">
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
-        <img style="width: 100px;" src="assets/img/logo2.png"> 
+        <img style="width: 100px;" src="assets/img/logo2.png">
     </div>
     <!-- <ul class="sidebar-menu">
         <li><a class="nav-link" href="homepage"><i class="fas fa-th-large"></i> <span>Dashboard</span></a></li>
@@ -47,7 +47,7 @@
         <li><a class="nav-link" href="users"><i class="fas fa-user-cog"></i> <span>Users</span></a></li>
     </ul> -->
     <ul class="sidebar-menu" style="padding-top: 15px;">
-    <?php
+        <?php
         $Menus = new Menus();
 
         $Menus->sidebar('Dashboard', 'homepage', 'fas fa-th-large');
@@ -58,6 +58,7 @@
         $Menus->sidebar('Client Types', 'client-types', 'fas fa-user-cog');
         $Menus->sidebar('Clients', 'clients', 'fas fa-address-card');
         // $Menus->sidebar('Expense Category', 'expense-category', 'far fa-list-alt');
+        $Menus->sidebar('Employers', 'employers', 'fas fa-briefcase');
         $Menus->sidebar('Loan Types', 'loan-types', 'fas fa-list');
         $Menus->sidebar('Insurance', 'insurance', 'fas fa-shield-alt');
         $Menus->sidebar('Suppliers', 'suppliers', 'fas fa-address-book');
@@ -96,7 +97,7 @@
         echo '<li class="menu-header">Security</li>';
         $Menus->sidebar('User Categories', 'user-categories', 'fas fa-user-tag');
         $Menus->sidebar('User Accounts', 'users', 'fas fa-users-cog');
-    ?>
+        ?>
         <br>
     </ul>
 </aside>

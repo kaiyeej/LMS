@@ -12,6 +12,7 @@ class Menus extends Connection
                 array('url' => 'clients', 'name' => 'Client', 'class_name' => 'Clients', 'has_detail' => 0),
                 array('url' => 'client-update', 'name' => 'Client Profile', 'class_name' => 'Clients', 'has_detail' => 0),
                 array('url' => 'product-price', 'name' => 'Product Price Notice', 'class_name' => 'ProductPrice', 'has_detail' => 1),
+                array('url' => 'employers', 'name' => 'Employers', 'class_name' => 'Employers', 'has_detail' => 0),
                 array('url' => 'loan-types', 'name' => 'Loan Types', 'class_name' => 'LoanTypes', 'has_detail' => 0),
                 array('url' => 'insurance', 'name' => 'Insurance', 'class_name' => 'Insurance', 'has_detail' => 0),
                 array('url' => 'user-categories', 'name' => 'User Categories', 'class_name' => 'UserCategories', 'has_detail' => 0),
@@ -111,21 +112,21 @@ class Menus extends Connection
         $child_label = "";
         foreach ($child as $row) {
             if ($UserPrivileges->check($row[1], $_SESSION['lms_user_category_id']) == 1) {
-                
+
                 $child_label .=  '<li><a class="nav-link" href="./' . $row[1] . '">' . $row[0] . '</a></li>';
             }
         }
         if ($child_label != '') {
-        //     echo '<li class="nav-item">
-        //     <a class="nav-link" data-toggle="collapse" href="#ui-' . $ui . '" aria-expanded="false" aria-controls="ui-' . $ui . '">
-        //         <i class="ti ti-' . $ti . ' menu-icon"></i>
-        //         <span class="menu-title">' . $name . '</span>
-        //         <i class="menu-arrow"></i>
-        //     </a>
-        //     <div class="collapse" id="ui-' . $ui . '">
-        //         <ul class="nav flex-column sub-menu">' . $child_label . '</ul>
-        //     </div>
-        // </li>';
+            //     echo '<li class="nav-item">
+            //     <a class="nav-link" data-toggle="collapse" href="#ui-' . $ui . '" aria-expanded="false" aria-controls="ui-' . $ui . '">
+            //         <i class="ti ti-' . $ti . ' menu-icon"></i>
+            //         <span class="menu-title">' . $name . '</span>
+            //         <i class="menu-arrow"></i>
+            //     </a>
+            //     <div class="collapse" id="ui-' . $ui . '">
+            //         <ul class="nav flex-column sub-menu">' . $child_label . '</ul>
+            //     </div>
+            // </li>';
 
             echo '<li class="dropdown">
                     <a href="#" class="nav-link has-dropdown"><i class="' . $ti . '"></i> <span>' . $name . '</span></a>
