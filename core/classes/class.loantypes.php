@@ -67,8 +67,13 @@ class LoanTypes extends Connection
     public function name($primary_id)
     {
         $result = $this->select($this->table, 'loan_type', "$this->pk = '$primary_id'");
-        $row = $result->fetch_assoc();
-        return $row['loan_type'];
+        if($result->num_rows > 0){
+            $row = $result->fetch_assoc();
+            return $row['loan_type'];
+        }else{
+            return "---";
+        }
+       
     }
 
 

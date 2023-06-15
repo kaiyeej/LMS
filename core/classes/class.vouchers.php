@@ -80,7 +80,7 @@ class Vouchers extends Connection
             // $details = $this->total_details($row['journal_entry_id']);
             $row['account'] = $row['account_type'] == "S"? $Suppliers->name($row['account_id']) : $Clients->name($row['account_id'])." <strong style='color:#4caf50;'>(".$Loans->name($row['loan_id']).")</strong>";
             $row['encoded_by'] = $Users->fullname($row['user_id']);
-            $row['amount'] = 0;
+            $row['amount'] = number_format($row['amount'],2);
             $rows[] = $row;
         }
         return $rows;
@@ -253,7 +253,7 @@ class Vouchers extends Connection
     {
         if (DEVELOPMENT) {
             $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
-            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', '', 'ON UPDATE CURRENT_TIMESTAMP');
+            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
             $default['user_id'] = $this->metadata('user_id', 'int', 11);
 
 

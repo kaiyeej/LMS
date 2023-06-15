@@ -86,7 +86,7 @@
 
         if (account_type == "C") {
             var account_id = $("#account_id").val();
-            getSelectOption('Loans', 'loan_id', 'loan_ref_id', 'client_id = "' + account_id + '" AND status="A"');
+            getSelectOption('Loans', 'loan_id', 'reference_number', 'client_id = "' + account_id + '" AND status="A"');
         }
     }
 
