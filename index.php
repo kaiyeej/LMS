@@ -262,6 +262,10 @@ $User = new Users;
       swal("Success!", "Successfully deleted entry!", "success");
     }
 
+    function success_cancel() {
+      swal("Success!", "Successfully cancelled entry!", "success");
+    }
+
     function entry_already_exists() {
       swal("Cannot proceed!", "Entry already exists!", "warning");
     }
@@ -526,9 +530,15 @@ $User = new Users;
             this.innerHTML = json[new_id];
           });
 
-          
+
           if (route_settings.class_name == "Vouchers") {
             journalID(id);
+
+            if (json.status == 'F') {
+              $("#menu-cancel-transaction").show();
+            } else {
+              $("#menu-cancel-transaction").hide();
+            }
           }
 
           var transaction_edit = document.getElementById("menu-edit-transaction");
@@ -683,9 +693,9 @@ $User = new Users;
                   if (json.data == 1) {
                     success_finish();
                     $("#modalEntry2").modal('hide');
-                  }else if(json.data == -1){
+                  } else if (json.data == -1) {
                     swal("Cannot proceed!", "Total debt is not equivalent to total credit.", "warning");
-                  }else if(json.data == -2){
+                  } else if (json.data == -2) {
                     swal("Cannot proceed!", "The total does not match the voucher amount.", "warning");
                   } else {
                     failed_query(json);
