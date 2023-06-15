@@ -259,6 +259,49 @@
         $("#reference_number").val(optionSelected + "-" + newStr[1]);
     }
 
+    function cancelVoucher(){
+        var journal_entry_id = $("#journal_entry_id").val();
+        var voucher_id = $("#hidden_id_2").val();
+
+        swal({
+            title: 'Are you sure?',
+            text: 'This entries will be cancelled!',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              $.ajax({
+                type: "POST",
+                url: "controllers/sql.php?c=" + route_settings.class_name + "&q=cancel",
+                data: {
+                  input: {
+                    journal_entry_id : journal_entry_id,
+                    voucher_id : voucher_id
+                  }
+                },
+                success: function(data) {
+                  getEntries();
+                  var json = JSON.parse(data);
+                  if (json.data == 1) {
+                    success_cancel();
+                    $("#modalEntry2").modal('hide');
+                  }else {
+                    failed_query(json);
+                  }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                  errorLogger('Error:', textStatus, errorThrown);
+                }
+              });
+            } else {
+              swal("Cancelled", "Entries are safe :)", "error");
+            }
+          });
+
+    }
+
     $(document).ready(function() {
         schema();
         getEntries();

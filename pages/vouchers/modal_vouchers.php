@@ -115,6 +115,9 @@
                                     <a id="menu-finish-transaction" class="nav-link" href="#" style="font-size: small;"><i class='ti ti-check'></i> Finish Transaction</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a id="menu-cancel-transaction" onclick="cancelVoucher()" class="nav-link" href="#" style="font-size: small;color: #C62828;font-weight: bold;"><i class='ti ti-check'></i> Cancel</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="#" data-dismiss="modal" style="font-size: small;"><i class='ti ti-close'></i> Close</a>
                                 </li>
                                 <!--<li class="nav-item">

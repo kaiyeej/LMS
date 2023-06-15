@@ -66,6 +66,12 @@ class Vouchers extends Connection
         return $this->updateIfNotExist($this->table, $form);
     }
 
+    public function cancel(){
+        $Journals = new Journals;
+        $code = $Journals->journal_code($this->inputs['journal_id']);
+        $ref_code = $code."-". date('YmdHis');
+    }
+
     public function show()
     {
         $Users = new Users;
@@ -233,6 +239,8 @@ class Vouchers extends Connection
         while ($row = $result->fetch_assoc()) {
             $row['chart'] = $ChartOfAccounts->name($row['chart_id']);
             $row['count'] = $count++;
+            $row['debit'] = number_format($row['debit'],2);
+            $row['credit'] = number_format($row['credit'],2);
             $rows[] = $row;
         }
         return $rows;
