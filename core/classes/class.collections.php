@@ -65,20 +65,16 @@ class Collections extends Connection
         // FOR INTEREST
 
         $int_chart = $ChartOfAccounts->chart_data('Interest Income - ' . $branch_name);
-        if ($int_chart != 0) {
-            $form_interest = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $int_chart['chart_id'], 'credit' => $interest);
-            $this->insert('tbl_journal_entry_details', $form_interest);
-        }
+        $form_interest = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $int_chart['chart_id'], 'credit' => $interest);
+        $this->insert('tbl_journal_entry_details', $form_interest);
 
 
         // FOR PENALTY
         if ($this->inputs['penalty_amount'] > 0) {
 
             $penalty_chart = $ChartOfAccounts->chart_data('Penalty Income - ' . $branch_name);
-            if ($penalty_chart != 0) {
-                $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $penalty_chart['chart_id'], 'credit' => $this->inputs['penalty_amount']);
-                $this->insert('tbl_journal_entry_details', $form_penalty);
-            }
+            $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $penalty_chart['chart_id'], 'credit' => $this->inputs['penalty_amount']);
+            $this->insert('tbl_journal_entry_details', $form_penalty);
         }
 
 
@@ -86,11 +82,8 @@ class Collections extends Connection
         $lr_total = $cnb_total - ($this->inputs['penalty_amount'] + $interest);
         $loan_type = $LoanTypes->name($loan_row['loan_type_id']);
         $lr_chart = $ChartOfAccounts->chart_data('Loans Receivable - ' . $loan_type . " - " . $branch_name);
-        if($lr_chart != 0){
-            $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $lr_chart['chart_id'], 'credit' => $lr_total);
-            $this->insert('tbl_journal_entry_details', $form_penalty);
-    
-        }
+        $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $lr_chart['chart_id'], 'credit' => $lr_total);
+        $this->insert('tbl_journal_entry_details', $form_penalty);
 
         return $cl_id;
     }
@@ -223,10 +216,14 @@ class Collections extends Connection
     public function init_mass_collection()
     {
         $Clients = new Clients;
+        $ChartOfAccounts = new ChartOfAccounts;
+        $Branches = new Branches;
 
         $loan_type_id = $this->inputs['loan_type_id'];
         $collection_date = $this->inputs['collection_date'];
         $company_code = $this->inputs['company_code'];
+        $chart_id = $this->inputs['chart_id'];
+        $branch_id = $this->inputs['branch_id'];
         $atm_charge = (float) $this->inputs['atm_charge'];
 
         $rows = array();
@@ -246,8 +243,41 @@ class Collections extends Connection
             "collection_date_label" => date("F d, Y", strtotime($collection_date)),
             "company_code" => $company_code,
             "prepared_by" => Users::name($_SESSION['lms_user_id']),
+            "chart_id" => $chart_id,
+            "chart_name" => $ChartOfAccounts->name($chart_id),
+            "branch_id" => $branch_id,
+            "branch_name" => $Branches->name($branch_id),
         ];
         return $response;
+    }
+
+    public function add_mass_collection()
+    {
+        $loan_type_id = $this->inputs['loan_type_id'];
+        $collection_date = $this->inputs['collection_date'];
+        $company_code = $this->inputs['company_code'];
+        $chart_id = $this->inputs['chart_id'];
+        $branch_id = $this->inputs['branch_id'];
+        $details = $this->inputs['details'];
+
+        foreach ($details as $row) {
+            $reference_number = "CL-" . date("Ymd") . $row['loan_id'];
+            $form = [
+                'branch_id' => $branch_id,
+                'reference_number' => $reference_number,
+                'chart_id' => $chart_id,
+                'collection_date' => $collection_date,
+                'loan_id' => $row['loan_id'],
+                'client_id' => $row['client_id'],
+                'amount' => $row['deduction'],
+                'penalty_amount' => 0,
+                'remarks' => "",
+            ];
+
+            $Collections = new Collections;
+            $Collections->inputs = $form;
+            $Collections->add();
+        }
     }
 
     public function import()

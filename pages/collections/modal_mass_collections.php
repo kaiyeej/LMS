@@ -9,8 +9,18 @@
                     <input type="hidden" value="1" id="mass_collection_step">
                     <div class="form-row w3-animate-left" id="mass_collection_step_1">
                         <div class="form-group col-md-3">
+                            <label>Branch</label>
+                            <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]" style="width:100%;" required>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
                             <label>Loan Type</label>
                             <select class="form-control select2 input-item" id="loan_type_id" name="input[loan_type_id]" style="width:100%;" required>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Bank</label>
+                            <select class="form-control select2 input-item" id="mass_chart_id" name="input[chart_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col-md-3">
@@ -23,13 +33,14 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label>ATM Charge</label>
-                            <input min="0" type="number" class="form-control input-item" autocomplete="off" name="input[atm_charge]" id="atm_charge" required>
+                            <input min="0" type="number" class="form-control input-item" autocomplete="off" name="input[atm_charge]" id="atm_charge">
                         </div>
                     </div>
                     <div class="row" id="mass_collection_result_content">
                     </div>
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" id="btn_mass_prev" class="btn btn-warning" onclick="goStep1()"><span class='fa fa-arrow-left'></span> Back</button>
                     <button type="submit" id="btn_mass_submit" class="btn btn-primary">
                         Save
@@ -40,7 +51,8 @@
     </div>
 </form>
 <script type="text/javascript">
-    var mc_client_data = [];
+    var mc_client_data = [],
+        mc_header_data = [];
     document.addEventListener("keydown", function(event) {
         if (event.key === "Enter") {
             var activeElement = document.activeElement;
@@ -54,6 +66,10 @@
     });
 
     function addMassCollection() {
+        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);
+        $("#mass_chart_id").html($("#chart_id").html());
+        $("#mass_branch_id").html($("#branch_id").html());
+
         $("#mass-modal-header").html(`<h5 class="modal-title"><span class='ion-compose'></span> Add Mass Collection</h5>`);
         $("#mass_collection_step_1").show();
         $("#mass_collection_step").val(1);
@@ -95,6 +111,7 @@
                 success: function(data) {
                     var jsonParse = JSON.parse(data);
                     const json = jsonParse.data;
+                    mc_header_data = json.headers;
                     get_mass_collections(json);
                     $("#mass_collection_step").val(2);
                     $("#btn_mass_submit").html("<span class='fa fa-check-circle'></span> Save");
@@ -104,7 +121,26 @@
             });
         } else {
             if (mc_client_data.length > 0) {
-                console.log(mc_client_data);
+                if ($(".negative").length > 0) {
+                    swal("Cannot proceed!", "Negative values are found!", "warning");
+                } else {
+                    var form_mass_collection = mc_header_data;
+                    form_mass_collection.details = mc_client_data;
+                    $.ajax({
+                        type: "POST",
+                        url: "controllers/sql.php?c=" + route_settings.class_name + "&q=add_mass_collection",
+                        data: {
+                            input: form_mass_collection
+                        },
+                        success: function(data) {
+                            var jsonParse = JSON.parse(data);
+                            const json = jsonParse.data;
+                            $('#modalMassCollection').modal('hide');
+                            getEntries();
+                            success_add();
+                        }
+                    });
+                }
             } else {
                 swal("Cannot proceed!", "No Entry found!", "warning");
             }
@@ -118,7 +154,9 @@
                 <img src="./assets/img/logo2.png" alt="logo" width="90%">
             </div>
             <div class='col-md-10'>
+                <span>BRANCH: <b>${json.headers.branch_name}</b></span><br>
                 <span>LOAN TYPE: <b>${json.headers.loan_name}</b></span><br>
+                <span>BANK: <b>${json.headers.chart_name}</b></span><br>
                 <span>COLLECTION DATE: <b>${json.headers.collection_date_label}</b></span><br>
                 <span>COMPANY CODE: <b>${json.headers.company_code}</b></span><br>
             </div>
@@ -127,16 +165,22 @@
         mc_client_data = [];
         for (var clientIndex = 0; clientIndex < json.clients.length; clientIndex++) {
             const client = json.clients[clientIndex];
+
+            var deduction = client.monthly_payment * 1;
+            var atm_charge = client.atm_charge * 1;
+            var excess = 0 - deduction - 0 - atm_charge;
+            var nega_excess = excess < 0 ? "negative" : "";
+
             var client_data = {
                 client_id: client.client_id * 1,
                 loan_id: client.loan_id * 1,
                 atm_balance_before_withdraw: 0,
                 atm_withdrawal: 0,
-                deduction: client.monthly_payment * 1,
+                deduction: deduction,
                 emergency_loan: 0,
-                atm_charge: client.atm_charge * 1,
+                atm_charge: atm_charge,
                 atm_balance: 0,
-                excess: 0
+                excess: excess
             };
             mc_client_data.push(client_data);
             client_tds += `<tr>
@@ -148,7 +192,7 @@
                 <td onblur="solveCollection(this,${clientIndex},4)" id="mc4_${clientIndex}" contenteditable="true" class='right mc_4'></td>
                 <td onblur="solveCollection(this,${clientIndex},5)" id="mc5_${clientIndex}" contenteditable="true" class='right mc_5'>${numberFormat(client.atm_charge)}</td>
                 <td id="mc6_${clientIndex}" class='right'></td>
-                <td id="mc7_${clientIndex}" class='right mc_7'></td>
+                <td id="mc7_${clientIndex}" class='right mc_7 ${nega_excess}'>${numberFormat(excess)}</td>
                 <td id="mc8_${clientIndex}" class='center'>00100-5011-01798-1</td>
               </tr>`;
         }
@@ -190,6 +234,8 @@
             </div>
         </div>
         </div>`);
+        totalComputer(6);
+        totalComputer(7);
     }
 
     function solveCollection(ele, client_id, type) {
