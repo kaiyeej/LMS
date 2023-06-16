@@ -42,6 +42,13 @@ class Collections extends Connection
 
         $cl_id = $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
 
+        if($Loans->loan_balance($this->inputs['loan_id']) <= 0){
+            $form_finished = array(
+                'status' => 'F'
+            );
+            return $this->update("tbl_loans", $form_finished,'loan_id="'.$this->inputs['loan_id'].'"');
+        }
+
 
         $form_journal = array(
             'reference_number'  => $ref_code,
@@ -63,7 +70,6 @@ class Collections extends Connection
 
 
         // FOR INTEREST
-
         $int_chart = $ChartOfAccounts->chart_data('Interest Income - ' . $branch_name);
         $form_interest = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $int_chart['chart_id'], 'credit' => $interest);
         $this->insert('tbl_journal_entry_details', $form_interest);
@@ -84,6 +90,7 @@ class Collections extends Connection
         $lr_chart = $ChartOfAccounts->chart_data('Loans Receivable - ' . $loan_type . " - " . $branch_name);
         $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $lr_chart['chart_id'], 'credit' => $lr_total);
         $this->insert('tbl_journal_entry_details', $form_penalty);
+        
 
         return $cl_id;
     }
@@ -200,7 +207,7 @@ class Collections extends Connection
 
     public function total_collected($loan_id)
     {
-        $result = $this->select("tbl_collections as c, tbl_loans as l", 'sum(c.amount) as total', "l.loan_id='$loan_id' AND c.loan_id='$loan_id'");
+        $result = $this->select($this->table, 'sum(amount) as total', "loan_id='$loan_id' AND status='F'");
         $row = $result->fetch_assoc();
         return $row['total'];
     }

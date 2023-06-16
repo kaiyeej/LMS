@@ -213,24 +213,29 @@ class Loans extends Connection
 
         $count = 1;
         $rows = array();
+        $balance = $loan_amount;
         $Collection = new Collections;
         while ($count <= $loan_period) {
 
-            $loan_date = date('M d, Y', strtotime('+1 month', strtotime($loan_date)));
+            $loan_date = date('Y-m-d', strtotime('+1 month', strtotime($loan_date)));
 
             $monthly_interest_rate = ($loan_interest / 100) / 12;
             $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
             $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
             $monthly_interest = $loan_amount * $monthly_interest_rate;
             $principal_amount = $loan_amount / $loan_period;
+            $penalty = $Collection->penalty_per_month($loan_date,$row['loan_id']);
+            $payment = $Collection->collected_per_month($loan_date,$row['loan_id']);
+            
+            $balance -= ($payment+$penalty);
 
 
-
-            $row['date'] = $loan_date;
-            $row['payment'] = number_format($Collection->collected_per_month($loan_date), 2);
+            $row['date'] = date('F Y', strtotime($loan_date));
+            $row['payment'] = number_format($payment, 2);
             $row['interest'] = number_format($monthly_interest, 2);
-            $row['penalty'] = number_format(0, 2);
+            $row['penalty'] = number_format($penalty, 2);
             $row['applicable_principal'] =  number_format($principal_amount, 2);
+            $row['balance'] =  number_format($balance, 2);
             $rows[] = $row;
 
             $count++;
@@ -364,6 +369,24 @@ class Loans extends Connection
         return $pending * ($penalty_per / 100);
 
         // return $suggested_total." ".$payment_total;
+    }
+
+    public function total_loan($loan_id){
+        
+        $result = $this->select($this->table, 'loan_amount,loan_interest,loan_period', "loan_id='$loan_id'");
+        $row = $result->fetch_assoc();
+        
+        $monthly_interest_rate = ($row['loan_interest'] / 100) / 12;
+        $total = ($row['loan_amount'] * $monthly_interest_rate)*$row['loan_period'];
+
+        return $total;
+    }
+
+    public function loan_balance($primary_id){
+        $Collections = new Collections;
+        $bal = $this->total_loan($primary_id)-$Collections->total_collected($primary_id);
+
+        return $bal;
     }
 
     public function idByName($reference_number)

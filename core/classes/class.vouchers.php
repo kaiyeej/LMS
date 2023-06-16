@@ -40,6 +40,7 @@ class Vouchers extends Connection
             'remarks'           => $this->inputs['description'],
             'journal_date'      => $this->inputs['voucher_date'],
             'user_id'           => $_SESSION['lms_user_id'],
+            'status'            => 'S',
             'is_manual'         => 'N'
         );
         
@@ -67,9 +68,42 @@ class Vouchers extends Connection
     }
 
     public function cancel(){
+        $journal_entry_id = $this->inputs['journal_entry_id'];
+        $voucher_id = $this->inputs['voucher_id'];
+        $row = $this->view($voucher_id);
         $Journals = new Journals;
-        $code = $Journals->journal_code($this->inputs['journal_id']);
+        $code = $Journals->journal_code($row['journal_id']);
         $ref_code = $code."-". date('YmdHis');
+        $form_journal = array(
+            'reference_number'  => $ref_code,
+            'cross_reference'   => "C".$row['reference_number'],
+            'journal_id'        => $row['journal_id'],
+            'remarks'           => "Reverse Entry for Cancelled Voucher (".$row['reference_number'].").",
+            'journal_date'      => $row['voucher_date'],
+            'status'            => 'F',
+            'user_id'           => $_SESSION['lms_user_id'],
+            'is_manual'         => 'N'
+        );
+        
+        $j_id = $this->insert('tbl_journal_entries', $form_journal, 'Y');
+
+        $jlFetch = $this->select("tbl_journal_entry_details", '*', "journal_entry_id='$journal_entry_id'");
+        while ($jlRow = $jlFetch->fetch_assoc()) {
+            $form_details = array(
+                'journal_entry_id'      => $j_id,
+                'chart_id'              => $jlRow['chart_id'],
+                'debit'                 => $jlRow['credit'],
+                'credit'                => $jlRow['debit'],
+                'description'           => $jlRow['description']." (Reverse Entry)",
+            );
+            
+            $this->insert("tbl_journal_entry_details", $form_details);
+        }
+
+        $form = array(
+            'status' => 'C'
+        );
+        return $this->update($this->table, $form,'voucher_id="'.$voucher_id.'"');
     }
 
     public function show()
