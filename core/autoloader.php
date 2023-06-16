@@ -31,4 +31,13 @@ $classes = array(
     'Branches'              => $pre_class . 'branches.php',
     'ClientTypes'           => $pre_class . 'clienttypes.php',
     'Employers'             => $pre_class . 'employers.php',
+    'ClientResidence'       => $pre_class . 'clientresidence.php',
+    'ClientEmployment'      => $pre_class . 'clientemployment.php',
+    'ClientSpouse'          => $pre_class . 'clientspouse.php',
+    'ClientDependent'       => $pre_class . 'clientdependent.php',
+    'ClientSoi'             => $pre_class . 'clientsoi.php',
+    'ClientAtm'             => $pre_class . 'clientatm.php',
+    'ClientBusiness'        => $pre_class . 'clientbusiness.php',
+    'ClientInsurance'       => $pre_class . 'clientinsurance.php',
+    'ClientReference'       => $pre_class . 'clientreference.php',
 );

@@ -126,6 +126,7 @@ INSERT INTO `tbl_children` (`child_id`, `client_id`, `child_name`, `child_sex`, 
 CREATE TABLE IF NOT EXISTS `tbl_clients` (
   `client_id` int(11) NOT NULL AUTO_INCREMENT,
   `branch_id` int(11) NOT NULL,
+  `client_type_id` int(11) NOT NULL,
   `client_fname` varchar(50) NOT NULL,
   `client_mname` varchar(50) NOT NULL,
   `client_lname` varchar(50) NOT NULL,
@@ -133,79 +134,17 @@ CREATE TABLE IF NOT EXISTS `tbl_clients` (
   `client_dob` date NOT NULL,
   `client_contact_no` varchar(30) NOT NULL,
   `client_civil_status` varchar(10) NOT NULL COMMENT 'Single, Married, Widowed, Seperated',
-  `client_address` varchar(250) NOT NULL,
-  `client_address_status` varchar(10) NOT NULL COMMENT 'Owned, Rented, Free use',
-  `client_res_cert_no` varchar(30) NOT NULL,
-  `client_res_cert_issued_at` varchar(30) NOT NULL,
-  `client_res_cert_date` date NOT NULL,
-  `client_employer` varchar(50) NOT NULL,
-  `client_employer_address` varchar(250) NOT NULL,
-  `client_employer_contact_no` varchar(15) NOT NULL,
-  `client_emp_position` varchar(30) NOT NULL,
-  `client_emp_income` decimal(12,3) NOT NULL DEFAULT '0.000',
-  `client_emp_status` varchar(15) NOT NULL,
-  `client_emp_length` int(2) NOT NULL DEFAULT '0',
-  `client_prev_emp` varchar(50) NOT NULL,
-  `client_spouse` varchar(50) NOT NULL,
-  `client_spouse_address` varchar(250) NOT NULL,
-  `client_spouse_res_cert_no` varchar(50) NOT NULL,
-  `client_spouse_res_cert_issued_at` varchar(50) NOT NULL,
-  `client_spouse_res_cert_date` date NOT NULL,
-  `client_spouse_employer` varchar(50) NOT NULL DEFAULT '',
-  `client_spouce_employer_address` varchar(250) NOT NULL,
-  `client_spouse_position` varchar(50) NOT NULL,
-  `client_spouse_income` varchar(50) NOT NULL,
-  `client_spouce_employer_contact_no` varchar(50) NOT NULL,
-  `client_spouse_emp_status` varchar(50) NOT NULL,
-  `client_spouse_leng_emp` varchar(50) NOT NULL,
-  `client_spouse_prev_employment` varchar(50) NOT NULL,
-  `client_no_of_children` int(3) NOT NULL DEFAULT '0',
-  `client_no_of_child_dependent` int(3) NOT NULL DEFAULT '0',
-  `client_no_of_child_college` int(3) NOT NULL DEFAULT '0',
-  `client_no_of_child_hs` int(3) NOT NULL DEFAULT '0',
-  `client_no_of_child_elem` int(3) NOT NULL DEFAULT '0',
-  `client_soi` varchar(50) NOT NULL COMMENT 'source of income',
-  `client_soi_by_whom` varchar(50) NOT NULL,
-  `client_soi_monthly_income` decimal(12,3) NOT NULL DEFAULT '0.000',
-  `client_credit_ref_name1` varchar(50) NOT NULL,
-  `client_credit_ref_address1` varchar(250) NOT NULL,
-  `client_credit_ref_name2` varchar(50) NOT NULL,
-  `client_credit_ref_address2` varchar(250) NOT NULL,
-  `client_credit_ref_name3` varchar(50) NOT NULL,
-  `client_credit_ref_address3` varchar(250) NOT NULL,
-  `client_approx_total_monthly_income` decimal(12,3) NOT NULL DEFAULT '0.000',
-  `client_total_outstanding_obligation` decimal(12,3) NOT NULL DEFAULT '0.000',
-  `client_business_name` varchar(50) NOT NULL,
-  `client_business_address` varchar(250) NOT NULL,
-  `client_business_tel_no` varchar(15) NOT NULL,
-  `client_business_position` varchar(50) NOT NULL,
-  `client_business_kind` varchar(50) NOT NULL,
-  `client_business_length` int(3) NOT NULL DEFAULT '0',
-  `client_business_capital_invested` decimal(12,3) NOT NULL DEFAULT '0.000',
-  `client_business_type` varchar(50) NOT NULL COMMENT 'Sole; Owner; Partner',
-  `insurance_id` int(11) NOT NULL DEFAULT '0',
-  `client_insurance_amount` decimal(12,3) NOT NULL DEFAULT '0.000',
-  `client_insurance_maturity` int(11) NOT NULL DEFAULT '0',
-  `client_bank_transaction` varchar(50) NOT NULL,
-  `client_unpaid_obligation` decimal(12,3) NOT NULL DEFAULT '0.000',
-  `client_salary_withdrawal` varchar(20) NOT NULL,
-  `client_paymaster_name` varchar(150) NOT NULL,
-  `client_paymaster_residence` varchar(250) NOT NULL,
-  `client_paymaster_res_cert_no` varchar(50) NOT NULL,
-  `client_paymaster_res_cert_issued_at` varchar(50) NOT NULL,
-  `client_paymaster_res_cert_date` date NOT NULL,
-  `client_paymaster_deduct_salary` varchar(3) NOT NULL COMMENT 'Yes or No',
-  `client_paymaster_client_deduct_salary` varchar(3) NOT NULL COMMENT 'Yes or No',
-  `client_paymaster_conformity` varchar(3) NOT NULL COMMENT 'Yes or No',
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`client_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table lms_db.tbl_clients: ~2 rows (approximately)
-INSERT INTO `tbl_clients` (`client_id`, `branch_id`, `client_fname`, `client_mname`, `client_lname`, `client_name_extension`, `client_dob`, `client_contact_no`, `client_civil_status`, `client_address`, `client_address_status`, `client_res_cert_no`, `client_res_cert_issued_at`, `client_res_cert_date`, `client_employer`, `client_employer_address`, `client_employer_contact_no`, `client_emp_position`, `client_emp_income`, `client_emp_status`, `client_emp_length`, `client_prev_emp`, `client_spouse`, `client_spouse_address`, `client_spouse_res_cert_no`, `client_spouse_res_cert_issued_at`, `client_spouse_res_cert_date`, `client_spouse_employer`, `client_spouce_employer_address`, `client_spouse_position`, `client_spouse_income`, `client_spouce_employer_contact_no`, `client_spouse_emp_status`, `client_spouse_leng_emp`, `client_spouse_prev_employment`, `client_no_of_children`, `client_no_of_child_dependent`, `client_no_of_child_college`, `client_no_of_child_hs`, `client_no_of_child_elem`, `client_soi`, `client_soi_by_whom`, `client_soi_monthly_income`, `client_credit_ref_name1`, `client_credit_ref_address1`, `client_credit_ref_name2`, `client_credit_ref_address2`, `client_credit_ref_name3`, `client_credit_ref_address3`, `client_approx_total_monthly_income`, `client_total_outstanding_obligation`, `client_business_name`, `client_business_address`, `client_business_tel_no`, `client_business_position`, `client_business_kind`, `client_business_length`, `client_business_capital_invested`, `client_business_type`, `insurance_id`, `client_insurance_amount`, `client_insurance_maturity`, `client_bank_transaction`, `client_unpaid_obligation`, `client_salary_withdrawal`, `client_paymaster_name`, `client_paymaster_residence`, `client_paymaster_res_cert_no`, `client_paymaster_res_cert_issued_at`, `client_paymaster_res_cert_date`, `client_paymaster_deduct_salary`, `client_paymaster_client_deduct_salary`, `client_paymaster_conformity`, `date_added`, `date_last_modified`) VALUES
-	(1, 1, 'Eduard Rino', 'Questo', 'Carton', '', '1997-09-30', '9096836075', 'Married', 'Sagay City', 'Owned', '1', 'Sagay', '0000-00-00', 'JCIS', 'Bacolod', '123', 'Software Developer', 20000.000, 'Regular', 6, '', 'Meralyn Carton', 'Bago City', '2', 'Bago', '0000-00-00', 'BPFC', 'BC', 'Office Staff', '10000', '123546', 'Regular', '4', '', 2, 2, 0, 0, 0, 'Employment', 'Eduard Rino Carton', 20000.000, 'Judywen Guapin', 'Bacolod', 'Ginery Songaling', 'Pulupandan', 'Rafa Claveria', 'Sagay', 1000.000, 100.000, 'Zech Solutions', 'Bacolod', '123456789', 'Owner', 'IT', 2, 10000.000, 'Owner', 0, 500.000, 0, '', 0.000, '', '', '', '', '', '0000-00-00', 'No', 'No', 'No', '2023-06-09 15:33:26', '2023-06-09 15:33:26'),
-	(2, 2, 'John Mark', 'G', 'Amar', 'Jr', '1995-06-08', '9999121511', 'Single', 'Cauayan', 'Rented', '2', 'Bacolod', '0000-00-00', 'BPFC', 'Bacolod', '456', 'Designer', 25000.000, 'Regular', 5, '', '', '', '', '', '0000-00-00', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0, '', '', 0.000, 'Judywen Guapin', 'Bacolod', 'Ginery Songaling', 'Pulupandan', 'Rafa Claveria', 'Sagay', 1001.000, 101.000, 'NA', 'NA', 'NA', 'NA', 'NA', 0, 0.000, 'NA', 0, 800.000, 0, '', 0.000, '', '', '', '', '', '0000-00-00', 'Yes', 'Yes', 'Yes', '2023-06-09 15:33:26', '2023-06-13 09:25:28');
+-- Dumping data for table lms_db.tbl_clients: ~4 rows (approximately)
+INSERT INTO `tbl_clients` (`client_id`, `branch_id`, `client_type_id`, `client_fname`, `client_mname`, `client_lname`, `client_name_extension`, `client_dob`, `client_contact_no`, `client_civil_status`, `date_added`, `date_last_modified`) VALUES
+	(1, 1, 0, 'Eduard Rino', 'Questo', 'Carton', '', '1997-09-30', '9096836075', 'Married', '2023-06-09 15:33:26', '2023-06-09 15:33:26'),
+	(8, 1, 1, 'Ginery', 'E', 'Songaling', '', '2023-06-16', '0891', 'Married', '2023-06-16 10:04:18', '2023-06-16 10:04:18'),
+	(9, 1, 1, 'Rafael ', 'a', 'Claveria', '', '2023-06-16', 'a', 'Married', '2023-06-16 10:23:47', '2023-06-16 10:23:47'),
+	(10, 1, 1, 'Jerry1', 'A1', 'Saydoquis1', 'Jr1', '2023-06-17', 'a1', 'Married', '2023-06-16 11:10:20', '2023-06-16 11:45:23');
 
 -- Dumping structure for table lms_db.tbl_client_atm
 CREATE TABLE IF NOT EXISTS `tbl_client_atm` (
@@ -217,13 +156,17 @@ CREATE TABLE IF NOT EXISTS `tbl_client_atm` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`atm_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_client_atm: ~0 rows (approximately)
+-- Dumping data for table lms_db.tbl_client_atm: ~2 rows (approximately)
+INSERT INTO `tbl_client_atm` (`atm_id`, `client_id`, `atm_account_no`, `atm_bank`, `atm_balance`, `date_added`, `date_last_modified`) VALUES
+	(1, 9, '01001101', 'BDO', 0.000, '2023-06-16 10:45:17', '2023-06-16 10:45:17'),
+	(2, 10, '10010121', 'BDO', 0.000, '2023-06-16 11:11:40', '2023-06-16 11:14:38');
 
 -- Dumping structure for table lms_db.tbl_client_business
 CREATE TABLE IF NOT EXISTS `tbl_client_business` (
   `business_id` int(11) NOT NULL AUTO_INCREMENT,
+  `client_id` int(11) NOT NULL DEFAULT '0',
   `business_name` varchar(150) DEFAULT NULL,
   `business_address` varchar(150) DEFAULT NULL,
   `business_contact` varchar(50) DEFAULT NULL,
@@ -235,30 +178,62 @@ CREATE TABLE IF NOT EXISTS `tbl_client_business` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`business_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_client_business: ~0 rows (approximately)
+-- Dumping data for table lms_db.tbl_client_business: ~2 rows (approximately)
+INSERT INTO `tbl_client_business` (`business_id`, `client_id`, `business_name`, `business_address`, `business_contact`, `business_position`, `business_kind`, `business_length`, `business_capital`, `business_type`, `date_added`, `date_last_modified`) VALUES
+	(1, 9, 'asda', 'sdasdas', 'dasd', 'asdasd', 'adasdasd', '5', 1000.000, 'Owner', '2023-06-16 10:50:04', '2023-06-16 10:50:04'),
+	(2, 10, 'IT Slutiopns', 'Bacolod', '0912', 'Owner', 'IT', '3', 10000.000, 'Owner', '2023-06-16 11:11:40', '2023-06-16 11:14:38');
+
+-- Dumping structure for table lms_db.tbl_client_dependents
+CREATE TABLE IF NOT EXISTS `tbl_client_dependents` (
+  `dependent_id` int(11) NOT NULL AUTO_INCREMENT,
+  `client_id` int(11) NOT NULL DEFAULT '0',
+  `no_of_children` int(11) NOT NULL DEFAULT '0',
+  `dep_no_of_child` int(11) NOT NULL DEFAULT '0',
+  `dep_college` int(11) NOT NULL DEFAULT '0',
+  `dep_hs` int(11) NOT NULL DEFAULT '0',
+  `dep_elem` int(11) NOT NULL DEFAULT '0',
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`dependent_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table lms_db.tbl_client_dependents: ~3 rows (approximately)
+INSERT INTO `tbl_client_dependents` (`dependent_id`, `client_id`, `no_of_children`, `dep_no_of_child`, `dep_college`, `dep_hs`, `dep_elem`, `date_added`, `date_last_modified`) VALUES
+	(1, 8, 3, 1, 2, 2, 2, '2023-06-16 10:09:21', '2023-06-16 10:09:21'),
+	(2, 9, 5, 5, 1, 5, 6, '2023-06-16 10:24:13', '2023-06-16 10:24:13'),
+	(3, 10, 5, 6, 7, 8, 9, '2023-06-16 11:11:40', '2023-06-16 11:11:40');
 
 -- Dumping structure for table lms_db.tbl_client_employment
 CREATE TABLE IF NOT EXISTS `tbl_client_employment` (
   `employment_id` int(11) NOT NULL AUTO_INCREMENT,
   `client_id` int(11) NOT NULL DEFAULT '0',
   `employer_id` int(11) NOT NULL DEFAULT '0',
+  `employer_address` varchar(150) DEFAULT NULL,
+  `employer_contact_no` varchar(50) DEFAULT NULL,
   `employment_position` varchar(50) DEFAULT NULL,
   `employment_income` decimal(15,3) NOT NULL DEFAULT '0.000',
   `employment_status` varchar(15) DEFAULT NULL,
   `employment_length` varchar(15) NOT NULL DEFAULT '0',
   `last_employment` varchar(50) DEFAULT NULL,
+  `current_status` int(1) NOT NULL DEFAULT '0',
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`employment_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_client_employment: ~0 rows (approximately)
+-- Dumping data for table lms_db.tbl_client_employment: ~4 rows (approximately)
+INSERT INTO `tbl_client_employment` (`employment_id`, `client_id`, `employer_id`, `employer_address`, `employer_contact_no`, `employment_position`, `employment_income`, `employment_status`, `employment_length`, `last_employment`, `current_status`, `date_added`, `date_last_modified`) VALUES
+	(1, 8, 1, 'Alijis', '09096836075', 'a', 30.000, 'a', 'a', 'a', 0, '2023-06-16 10:09:21', '2023-06-16 10:09:21'),
+	(2, 9, 1, 'Alijis', '09096836075', 'as', 500.000, 'a', 'a', 'a', 0, '2023-06-16 10:23:48', '2023-06-16 10:23:48'),
+	(3, 10, 1, 'Bago', '09096836075', 'A', 1000.000, 'Part Time', 'a', 'NA', 1, '2023-06-16 11:10:20', '2023-06-16 11:51:26'),
+	(4, 10, 3, 'a', '0912', 'Office', 1000.000, 'Part Time', '1', 'NA', 0, '2023-06-16 11:45:24', '2023-06-16 11:51:26');
 
 -- Dumping structure for table lms_db.tbl_client_insurance
 CREATE TABLE IF NOT EXISTS `tbl_client_insurance` (
   `client_insurance_id` int(11) NOT NULL AUTO_INCREMENT,
+  `client_id` int(11) NOT NULL DEFAULT '0',
   `insurance_id` int(11) NOT NULL DEFAULT '0',
   `insurance_amount` decimal(15,3) NOT NULL DEFAULT '0.000',
   `insurance_maturity` int(11) NOT NULL DEFAULT '0',
@@ -267,31 +242,42 @@ CREATE TABLE IF NOT EXISTS `tbl_client_insurance` (
   `insurance_salary_withdrawal` varchar(50) DEFAULT NULL,
   `paymaster_name` varchar(150) DEFAULT NULL,
   `paymaster_address` varchar(150) DEFAULT NULL,
-  `certificate_no` varchar(150) DEFAULT NULL,
-  `certificate_issued_at` varchar(150) DEFAULT NULL,
-  `certificate_date` date NOT NULL DEFAULT '0000-00-00',
+  `paymaster_res_cert_no` varchar(150) DEFAULT NULL,
+  `paymaster_res_cert_issued_at` varchar(150) DEFAULT NULL,
+  `paymaster_res_cert_date` date NOT NULL DEFAULT '0000-00-00',
   `paymaster_deduct_salary` varchar(3) DEFAULT NULL COMMENT 'Yes,No',
   `paymaster_client_deduct_salary` varchar(3) DEFAULT NULL COMMENT 'Yes,No',
   `paymaster_conformity` varchar(3) DEFAULT NULL COMMENT 'Yes,No',
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`client_insurance_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_client_insurance: ~0 rows (approximately)
+-- Dumping data for table lms_db.tbl_client_insurance: ~2 rows (approximately)
+INSERT INTO `tbl_client_insurance` (`client_insurance_id`, `client_id`, `insurance_id`, `insurance_amount`, `insurance_maturity`, `insurance_bank_transaction`, `insurance_unpaid_obligation`, `insurance_salary_withdrawal`, `paymaster_name`, `paymaster_address`, `paymaster_res_cert_no`, `paymaster_res_cert_issued_at`, `paymaster_res_cert_date`, `paymaster_deduct_salary`, `paymaster_client_deduct_salary`, `paymaster_conformity`, `date_added`, `date_last_modified`) VALUES
+	(1, 9, 5, 10.000, 20, 'sadas', 10.000, 'Semi-monthly', 'dsfsdfsdf', 'sdfsdf', 'ssdfs', 'dfsdf', '2023-06-16', 'Yes', 'No', 'No', '2023-06-16 10:50:04', '2023-06-16 10:51:39'),
+	(2, 10, 5, 1000.000, 230, 'Sds', 100.000, 'Semi-monthly', 'Mery', 'Bacolod', 'A', 'a', '2023-06-16', 'No', 'Yes', 'No', '2023-06-16 11:11:40', '2023-06-16 11:15:09');
 
 -- Dumping structure for table lms_db.tbl_client_reference
 CREATE TABLE IF NOT EXISTS `tbl_client_reference` (
   `reference_id` int(11) NOT NULL AUTO_INCREMENT,
   `client_id` int(11) NOT NULL DEFAULT '0',
+  `reference_no` int(11) NOT NULL DEFAULT '0',
   `reference_name` varchar(150) DEFAULT NULL,
   `reference_address` varchar(150) DEFAULT NULL,
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`reference_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_client_reference: ~0 rows (approximately)
+-- Dumping data for table lms_db.tbl_client_reference: ~6 rows (approximately)
+INSERT INTO `tbl_client_reference` (`reference_id`, `client_id`, `reference_no`, `reference_name`, `reference_address`, `date_added`, `date_last_modified`) VALUES
+	(1, 9, 1, 'Jude', 'Mansi', '2023-06-16 11:05:15', '2023-06-16 11:05:30'),
+	(2, 9, 2, 'Rafa', 'East Homes', '2023-06-16 11:05:15', '2023-06-16 11:05:30'),
+	(3, 9, 3, 'Mark', 'East', '2023-06-16 11:05:15', '2023-06-16 11:05:30'),
+	(4, 10, 1, 'Ginery', 'Pulupandan', '2023-06-16 11:11:40', '2023-06-16 11:14:38'),
+	(5, 10, 2, 'Mark', 'Bacolod', '2023-06-16 11:11:40', '2023-06-16 11:14:38'),
+	(6, 10, 3, 'Rafa', 'Sagay', '2023-06-16 11:11:40', '2023-06-16 11:14:38');
 
 -- Dumping structure for table lms_db.tbl_client_residence
 CREATE TABLE IF NOT EXISTS `tbl_client_residence` (
@@ -305,31 +291,60 @@ CREATE TABLE IF NOT EXISTS `tbl_client_residence` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`residence_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_client_residence: ~0 rows (approximately)
+-- Dumping data for table lms_db.tbl_client_residence: ~3 rows (approximately)
+INSERT INTO `tbl_client_residence` (`residence_id`, `client_id`, `residence`, `residence_status`, `residence_certificate_no`, `certificate_issued_at`, `certificate_date`, `date_added`, `date_last_modified`) VALUES
+	(1, 8, 'Asada', 'Owned', '1', 'a', '2023-06-16', '2023-06-16 10:09:21', '2023-06-16 10:09:21'),
+	(2, 9, 'adsads', 'Owned', 'asd', 'asd', '2023-06-16', '2023-06-16 10:23:47', '2023-06-16 10:23:47'),
+	(3, 10, 'Tangub1', 'Owned', 'asd1', 'asd1', '2023-01-01', '2023-06-16 11:10:20', '2023-06-16 11:45:24');
+
+-- Dumping structure for table lms_db.tbl_client_soi
+CREATE TABLE IF NOT EXISTS `tbl_client_soi` (
+  `soi_id` int(11) NOT NULL AUTO_INCREMENT,
+  `client_id` int(11) NOT NULL DEFAULT '0',
+  `soi_name` varchar(50) DEFAULT NULL,
+  `soi_by` varchar(50) DEFAULT NULL,
+  `soi_monthly` decimal(12,3) NOT NULL DEFAULT '0.000',
+  `soi_total` decimal(12,3) NOT NULL DEFAULT '0.000',
+  `soi_obligation` decimal(12,3) NOT NULL DEFAULT '0.000',
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`soi_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table lms_db.tbl_client_soi: ~2 rows (approximately)
+INSERT INTO `tbl_client_soi` (`soi_id`, `client_id`, `soi_name`, `soi_by`, `soi_monthly`, `soi_total`, `soi_obligation`, `date_added`, `date_last_modified`) VALUES
+	(1, 9, 'asdasda', 'sdadasd', 150.000, 100.000, 200.000, '2023-06-16 10:45:17', '2023-06-16 10:45:17'),
+	(2, 10, 'EMployment', 'Jerry Saydoquis', 30000.000, 50000.000, 10000.000, '2023-06-16 11:11:40', '2023-06-16 11:14:38');
 
 -- Dumping structure for table lms_db.tbl_client_spouse
 CREATE TABLE IF NOT EXISTS `tbl_client_spouse` (
   `spouse_id` int(11) NOT NULL AUTO_INCREMENT,
+  `client_id` int(11) NOT NULL DEFAULT '0',
   `spouse_name` varchar(50) DEFAULT NULL,
   `spouse_residence` varchar(150) DEFAULT NULL,
-  `certificate_no` varchar(50) DEFAULT NULL,
-  `certificate_issued_at` varchar(150) DEFAULT NULL,
-  `certificate_date` date NOT NULL DEFAULT '0000-00-00',
+  `spouse_res_cert_no` varchar(50) DEFAULT NULL,
+  `spouse_res_cert_issued_at` varchar(150) DEFAULT NULL,
+  `spouse_res_cert_date` date NOT NULL DEFAULT '0000-00-00',
   `spouse_employer` varchar(150) DEFAULT NULL,
   `spouse_employer_address` varchar(150) DEFAULT NULL,
   `spouse_employer_contact` varchar(50) DEFAULT NULL,
   `spouse_employment_status` varchar(10) DEFAULT NULL,
+  `spouse_employment_position` varchar(50) DEFAULT NULL,
   `spouse_employment_length` varchar(10) DEFAULT NULL,
   `spouse_employment_income` decimal(15,3) DEFAULT NULL,
   `spouse_last_employment` varchar(50) DEFAULT NULL,
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`spouse_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_client_spouse: ~0 rows (approximately)
+-- Dumping data for table lms_db.tbl_client_spouse: ~3 rows (approximately)
+INSERT INTO `tbl_client_spouse` (`spouse_id`, `client_id`, `spouse_name`, `spouse_residence`, `spouse_res_cert_no`, `spouse_res_cert_issued_at`, `spouse_res_cert_date`, `spouse_employer`, `spouse_employer_address`, `spouse_employer_contact`, `spouse_employment_status`, `spouse_employment_position`, `spouse_employment_length`, `spouse_employment_income`, `spouse_last_employment`, `date_added`, `date_last_modified`) VALUES
+	(1, 8, 'Roel dfgdf', 'asdasd', 'asdas', 'dasdasd', '2023-06-16', 'asdasd', 'asdasd', 'asdasdasd', 'dasdasd', NULL, 'asdasd', 0.000, 'asdasd', '2023-06-16 10:09:21', '2023-06-16 10:09:44'),
+	(2, 9, 'asdas', 'dasdasd', 'asdasd', 'asdasd', '2023-06-16', 'asdas', 'dasd', 'asdsd', 'asdasd', NULL, 'asdas', 0.000, 'dasd', '2023-06-16 10:24:13', '2023-06-16 10:24:13'),
+	(3, 10, 'Mary Grace1', 'Saydoquis1', '123', 'Bacoldo', '2023-06-16', 'BPFC', 'Bacolod', '123', 'Regular', NULL, '5', 1000.000, 'NA', '2023-06-16 11:11:40', '2023-06-16 12:00:53');
 
 -- Dumping structure for table lms_db.tbl_client_types
 CREATE TABLE IF NOT EXISTS `tbl_client_types` (
@@ -342,7 +357,7 @@ CREATE TABLE IF NOT EXISTS `tbl_client_types` (
   PRIMARY KEY (`client_type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_client_types: ~1 rows (approximately)
+-- Dumping data for table lms_db.tbl_client_types: ~0 rows (approximately)
 INSERT INTO `tbl_client_types` (`client_type_id`, `client_type`, `remarks`, `user_id`, `date_added`, `date_last_modified`) VALUES
 	(1, 'Pension', '', 1, '2023-06-15 09:04:44', '0000-00-00 00:00:00');
 
@@ -366,7 +381,7 @@ CREATE TABLE IF NOT EXISTS `tbl_collections` (
   PRIMARY KEY (`collection_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table lms_db.tbl_collections: ~1 rows (approximately)
+-- Dumping data for table lms_db.tbl_collections: ~0 rows (approximately)
 INSERT INTO `tbl_collections` (`collection_id`, `reference_number`, `branch_id`, `client_id`, `loan_id`, `amount`, `penalty_amount`, `interest`, `remarks`, `collection_date`, `status`, `user_id`, `chart_id`, `date_added`, `date_last_modified`) VALUES
 	(1, 'CL-202306151', 1, 1, 1, 838.000, 0.000, 212.627, '', '2023-06-15', 'F', 1, 5, '2023-06-15 10:06:11', '2023-06-15 10:06:11');
 
@@ -401,7 +416,7 @@ CREATE TABLE IF NOT EXISTS `tbl_employers` (
   PRIMARY KEY (`employer_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_employers: ~0 rows (approximately)
+-- Dumping data for table lms_db.tbl_employers: ~2 rows (approximately)
 INSERT INTO `tbl_employers` (`employer_id`, `employer_name`, `employer_address`, `employer_contact_no`, `date_added`, `date_last_modified`) VALUES
 	(1, 'CHMSC - Alijis', 'Alijis', '09096836075', '2023-06-15 16:35:11', '2023-06-15 16:41:21'),
 	(3, 'saasd', 'a', 'asdas', '2023-06-15 16:37:05', '2023-06-15 16:41:12');
@@ -540,7 +555,7 @@ CREATE TABLE IF NOT EXISTS `tbl_journal_entries` (
   PRIMARY KEY (`journal_entry_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_journal_entries: ~1 rows (approximately)
+-- Dumping data for table lms_db.tbl_journal_entries: ~0 rows (approximately)
 INSERT INTO `tbl_journal_entries` (`journal_entry_id`, `reference_number`, `cross_reference`, `journal_id`, `remarks`, `journal_date`, `user_id`, `status`, `date_added`, `date_last_modified`, `is_manual`) VALUES
 	(1, 'CRJ-20230615040611', 'CL-202306151', 4, '', '2023-06-15', 1, 'F', '2023-06-15 10:06:11', '2023-06-15 10:06:11', 'N');
 
@@ -555,7 +570,7 @@ CREATE TABLE IF NOT EXISTS `tbl_journal_entry_details` (
   PRIMARY KEY (`journal_entry_detail_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_journal_entry_details: ~3 rows (approximately)
+-- Dumping data for table lms_db.tbl_journal_entry_details: ~2 rows (approximately)
 INSERT INTO `tbl_journal_entry_details` (`journal_entry_detail_id`, `journal_entry_id`, `chart_id`, `description`, `debit`, `credit`) VALUES
 	(1, 1, 5, '', 838.000, 0.000),
 	(2, 1, 38, '', 0.000, 212.627),

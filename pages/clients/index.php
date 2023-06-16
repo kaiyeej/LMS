@@ -46,14 +46,19 @@
             </div>
             <div>
                 <div class="dropdown">
-                    <a href="#" data-toggle="dropdown" class="btn btn-info dropdown-toggle"><i class="fas fa-file-excel"></i> Template</a>
+                    <a href="#" data-toggle="dropdown" class="btn btn-info dropdown-toggle"><i
+                            class="fas fa-file-excel"></i> Template</a>
                     <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item has-icon" onclick="exportTemplate()"><i class="fas fa-download"></i> Export</a>
-                        <a href="#" class="dropdown-item has-icon" onclick="importTemplate()"><i class="far fa-upload"></i> Import</a>
+                        <a href="#" class="dropdown-item has-icon" onclick="exportTemplate()"><i
+                                class="fas fa-download"></i> Export</a>
+                        <a href="#" class="dropdown-item has-icon" onclick="importTemplate()"><i
+                                class="far fa-upload"></i> Import</a>
                     </div>
                     <div class="btn-group btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-primary" onclick="addClient()"><i class="fas fa-plus"></i> Add</button>
-                        <button type="button" class="btn btn-danger" onclick="deleteEntry()"><i class="fas fa-trash"></i> Delete</button>
+                        <button type="button" class="btn btn-primary" onclick="addClient()"><i class="fas fa-plus"></i>
+                            Add</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteEntry()"><i
+                                class="fas fa-trash"></i> Delete</button>
                     </div>
                 </div>
             </div>
@@ -69,7 +74,9 @@
                                     <tr>
                                         <th style="width:10px;">
                                             <div class="custom-checkbox custom-control">
-                                                <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1" onchange="checkAll(this, 'dt_id')">
+                                                <input type="checkbox" data-checkboxes="mygroup"
+                                                    class="custom-control-input" id="checkbox-1"
+                                                    onchange="checkAll(this, 'dt_id')">
                                                 <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
                                             </div>
                                         </th>
@@ -118,31 +125,31 @@
                 "dataSrc": "data"
             },
             "columns": [{
-                    "mRender": function(data, type, row) {
-                        return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.client_id + '" value=' + row.client_id + '><label for="checkbox-b' + row.client_id + '" class="custom-control-label">&nbsp;</label></div>';
-                    }
-                },
-                {
-                    "mRender": function(data, type, row) {
-                        var update_client = "window.location='u'";
-                        return "<center><button class='btn btn-sm btn-info' onclick='window.location=\"client-update?c=" + row.client_id + "\" '><span class='fa fa-edit'></span></button></center>";
-                    }
-                },
-                {
-                    "data": "client_fullname"
-                },
-                {
-                    "data": "client_address"
-                },
-                {
-                    "data": "client_contact_no"
-                },
-                {
-                    "data": "date_added"
-                },
-                {
-                    "data": "date_last_modified"
+                "mRender": function(data, type, row) {
+                    return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.client_id + '" value=' + row.client_id + '><label for="checkbox-b' + row.client_id + '" class="custom-control-label">&nbsp;</label></div>';
                 }
+            },
+            {
+                "mRender": function(data, type, row) {
+                    var update_client = "window.location='u'";
+                    return "<center><button class='btn btn-sm btn-info' onclick='window.location=\"client-update?c=" + row.client_id + "\" '><span class='fa fa-edit'></span></button></center>";
+                }
+            },
+            {
+                "data": "client_fullname"
+            },
+            {
+                "data": "client_address"
+            },
+            {
+                "data": "client_contact_no"
+            },
+            {
+                "data": "date_added"
+            },
+            {
+                "data": "date_last_modified"
+            }
             ]
         });
     }
@@ -229,5 +236,6 @@
         getSelectOption('Insurance', 'insurance_id', 'insurance_name');
         getSelectOption('Branches', 'branch_id', 'branch_name');
         getSelectOption('ClientTypes', 'client_type_id', 'client_type');
+        getSelectOption('Employers', 'employer_id', 'employer_name', '', ['employer_address', 'employer_contact_no']);
     });
 </script>
