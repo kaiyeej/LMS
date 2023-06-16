@@ -198,7 +198,7 @@
                     "data": "applicable_principal"
                 },
                 {
-                    "data": "applicable_principal"
+                    "data": "balance"
                 }
             ]
         });

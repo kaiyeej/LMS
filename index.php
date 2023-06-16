@@ -313,7 +313,7 @@ $User = new Users;
         sampleCalculation();
         $("#btn_submit").show();
         $("#btn_release").hide();
-        // $("#btn_deny").hide();
+        $("#btn_reloan").hide();
 
       }
 
@@ -424,11 +424,11 @@ $User = new Users;
               $(".select2").prop("disabled", true);
               $("#btn_submit").hide();
               $("#btn_release").hide();
-              // $("#btn_deny").hide();
+              $("#btn_reloan").hide();
             } else if (jsonParse.data['status'] == "A") {
               $("#btn_submit").show();
               $("#btn_release").show();
-              // $("#btn_deny").show();
+              $("#btn_reloan").show();
             }
             clients();
             sampleCalculation();

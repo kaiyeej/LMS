@@ -319,7 +319,7 @@ class Loans extends Connection
 
     public function penalty()
     {
-        $loan_id = $this->inputs['loan_id'];
+        $loan_id = isset($this->inputs['loan_id']) ? $this->inputs['loan_id'] : null;
         $collection_date = $this->inputs['collection_date'];
 
         $result = $this->select($this->table, '*', "loan_id='$loan_id'");

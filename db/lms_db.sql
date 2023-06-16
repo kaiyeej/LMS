@@ -548,7 +548,7 @@ CREATE TABLE IF NOT EXISTS `tbl_suppliers` (
   PRIMARY KEY (`supplier_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_suppliers: ~0 rows (approximately)
+-- Dumping data for table lms_db.tbl_suppliers: ~1 rows (approximately)
 INSERT INTO `tbl_suppliers` (`supplier_id`, `supplier_name`, `supplier_address`, `supplier_contact_no`, `remarks`, `date_added`, `date_last_modified`) VALUES
 	(2, 'Lao Chan Corp.', '', '033222', '', '2023-05-12 13:22:48', '2023-05-12 13:22:48');
 
