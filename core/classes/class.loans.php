@@ -76,11 +76,14 @@ class Loans extends Connection
         $primary_id = $this->inputs['id'];
         $LoanTypes = new LoanTypes;
         $Clients = new Clients;
+        $Branches = new Branches;
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
         $row = $result->fetch_assoc();
         $row['loan_type'] = $LoanTypes->name($row['loan_type_id']);
         $row['amount'] = number_format($row['loan_amount'], 2);
         $row['client'] = $Clients->name($row['client_id']);
+        $row['branch_name'] = $Branches->name($row['branch_id']);
+        $row['loan_type'] = $LoanTypes->name($row['branch_id']);
         return $row;
     }
 
@@ -213,15 +216,17 @@ class Loans extends Connection
 
         $count = 1;
         $rows = array();
-        $balance = $loan_amount;
+
+        $monthly_interest_rate = ($loan_interest / 100) / 12;
+        $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
+
+        $balance = $total_amount_with_interest;
         $Collection = new Collections;
         while ($count <= $loan_period) {
 
             $loan_date = date('Y-m-d', strtotime('+1 month', strtotime($loan_date)));
 
-            $monthly_interest_rate = ($loan_interest / 100) / 12;
-            $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
-            $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
+            // $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
             $monthly_interest = $loan_amount * $monthly_interest_rate;
             $principal_amount = $loan_amount / $loan_period;
             $penalty = $Collection->penalty_per_month($loan_date,$row['loan_id']);
@@ -376,10 +381,14 @@ class Loans extends Connection
         $result = $this->select($this->table, 'loan_amount,loan_interest,loan_period', "loan_id='$loan_id'");
         $row = $result->fetch_assoc();
         
-        $monthly_interest_rate = ($row['loan_interest'] / 100) / 12;
-        $total = ($row['loan_amount'] * $monthly_interest_rate)*$row['loan_period'];
+        $loan_interest = $row['loan_interest'];
+        $loan_period = $row['loan_period'];
+        $loan_amount = $row['loan_amount'];
 
-        return $total;
+        $monthly_interest_rate = ($loan_interest / 100) / 12;
+        $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
+
+        return $total_amount_with_interest;
     }
 
     public function loan_balance($primary_id){

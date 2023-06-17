@@ -67,6 +67,7 @@
     </div>
 </section>
 <?php include "modal_loans.php"; ?>
+<?php include "modal_renew.php"; ?>
 <?php include "modal_export.php"; ?>
 <?php include "modal_import.php"; ?>
 <script type="text/javascript">
@@ -288,9 +289,168 @@
         });
     }
 
+    function sampleCalculation2() {
+        var loan_date = $("#loan_date").val();
+        var loan_amount = $("#loan_amount").val();
+        var loan_period = $("#loan_period").val();
+        var loan_interest = $("#loan_interest").val();
+
+        $("#dt_calculation2").DataTable().destroy();
+        $("#dt_calculation2").DataTable({
+            "processing": true,
+            "bPaginate": false,
+            "bFilter": false,
+            "bInfo": false,
+            "ordering": false,
+            "ajax": {
+                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=sample_calculation",
+                "dataSrc": "data",
+                "method": "POST",
+                "data": {
+                    input: {
+                        loan_interest: loan_interest,
+                        loan_period: loan_period,
+                        loan_amount: loan_amount,
+                        loan_date: loan_date
+                    }
+                },
+            },
+            "columns": [{
+                    "data": "date"
+                },
+                {
+                    "data": "payment",
+                    className: "text-right"
+                },
+                {
+                    "data": "interest",
+                    className: "text-right"
+                },
+                {
+                    "data": "applicable_principal",
+                    className: "text-right"
+                }
+            ]
+        });
+    }
+
+    function loanDetails(){
+        var loan_id = $("#hidden_id").val();
+        var param = "loan_id= '"+loan_id+"' ";
+        $("#dt_loan_details").DataTable().destroy();
+        $("#dt_loan_details").DataTable({
+            "processing": true,
+            "searching": false,
+            "paging": false,
+            "ordering": false,
+            "info": false,
+            "order": [
+                [2, 'desc']
+            ],
+            "ajax": {
+                "url": "controllers/sql.php?c=Loans&q=statement_of_accounts",
+                "dataSrc": "data",
+                "method": "POST",
+                "data": {
+                    input: {
+                        param: param
+                    }
+                },
+            },
+            "columns": [
+                {
+                    "data": "date"
+                },
+                {
+                    "data": "payment"
+                },
+                {
+                    "data": "interest"
+                },
+                {
+                    "data": "penalty"
+                },
+                {
+                    "data": "applicable_principal"
+                },
+                {
+                    "data": "balance"
+                }
+            ]
+        });
+    }
+
+    // function reloan(){
+    //     $("#btn_reloan").prop('disabled', true);
+    //     var loan_id = $("#hidden_id").val();
+    //     var param = "loan_id= '"+loan_id+"' ";
+    //     swal({
+    //             title: 'Are you sure?',
+    //             text: 'You will not be able to recover these entries!',
+    //             icon: 'warning',
+    //             buttons: true,
+    //             dangerMode: true,
+    //         })
+    //         .then((willDelete) => {
+    //             if (willDelete) {
+    //                 var loan_id = $("#hidden_id").val();
+
+    //                 $.ajax({
+    //                     type: "POST",
+    //                     url: "controllers/sql.php?c=" + route_settings.class_name + "&q=reloan",
+    //                     data: {
+    //                         input: {
+    //                             param: param
+    //                         }
+    //                     },
+    //                     success: function(data) {
+    //                         getEntries();
+    //                         var json = JSON.parse(data);
+    //                         console.log(json);
+    //                         if (json.data == 1) {
+    //                             swal("Success!", "Successfully reloan!", "success");
+    //                         } else {
+    //                             failed_query(json);
+    //                         }
+    //                     },
+    //                     error: function(jqXHR, textStatus, errorThrown) {
+    //                         errorLogger('Error:', textStatus, errorThrown);
+    //                     }
+    //                 });
+    //                 // $("#btn_reloan").prop('disabled', false);
+
+    //                 $("#modalEntry").modal("hide");
+    //             } else {
+    //                 swal("Cancelled", "Entries are safe :)", "error");
+    //                 $("#btn_reloan").prop('disabled', false);
+    //             }
+    //         });
+    // }
+
+    function reloan(){
+        var loan_id = $("#loan_id").val();
+        getSelectOption('ChartOfAccounts', 'chart_id', 'chart_name', "chart_name LIKE '%Bank%'");
+        generateReference2();
+        sampleCalculation2();
+        $("#chart_id").prop("disabled", true);
+        $("#modalEntryRenew").modal("show");
+    }
+
+    function generateReference2() {
+      $.ajax({
+        type: "POST",
+        url: "controllers/sql.php?c=" + route_settings.class_name + "&q=generate",
+        data: [],
+        success: function(data) {
+          var json = JSON.parse(data);
+          $("#new_reference_number").val(json.data);
+        }
+      });
+    }
+
+
     function getClients() {
         var branch_id = $("#branch_id").val();
-
         getSelectOption('Clients', 'client_id', 'client_fullname', "branch_id='" + branch_id + "'");
     }
 
