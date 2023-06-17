@@ -59,7 +59,7 @@
                                     <label><strong style="color:red;">*</strong> Monthly Payment</label>
                                     <input type="number" class="form-control input-item" autocomplete="off"  name="input[monthly_payment]" id="monthly_payment" step="0.01" required>
                                 </div>
-                                <div class="form-group col-md-12"><hr style="margin-top: 0rem;margin-bottom: 0rem;"></div>
+                                <div class="form-group col-md-12"><hr style="margin-top: 0rem;margin-bottom: 0rem;border-top: 1.5px solid;"></div>
                                 <div class="form-group col-md-4">
                                     <label>Bank</label>
                                     <select class="form-control select2 input-item" id="chart_id" name="input[chart_id]" style="width:100%;" required>

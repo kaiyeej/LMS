@@ -444,6 +444,7 @@ $User = new Users;
             $("#div_sample_calculation").hide();
             $("#div_soa").show();
             loanDetails();
+            $("#hidden_id_2").val(id);
           }
 
 

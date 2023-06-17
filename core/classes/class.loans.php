@@ -391,12 +391,14 @@ class Loans extends Connection
         return $total_amount_with_interest;
     }
 
-    public function loan_balance($primary_id){
+    public function loan_balance($primary_id = null){
+        $primary_id = $primary_id == "" ? $this->inputs[$this->pk] : $primary_id;
         $Collections = new Collections;
         $bal = $this->total_loan($primary_id)-$Collections->total_collected($primary_id);
 
         return $bal;
     }
+
 
     public function idByName($reference_number)
     {

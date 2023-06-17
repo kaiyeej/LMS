@@ -380,59 +380,49 @@
         });
     }
 
-    // function reloan(){
-    //     $("#btn_reloan").prop('disabled', true);
-    //     var loan_id = $("#hidden_id").val();
-    //     var param = "loan_id= '"+loan_id+"' ";
-    //     swal({
-    //             title: 'Are you sure?',
-    //             text: 'You will not be able to recover these entries!',
-    //             icon: 'warning',
-    //             buttons: true,
-    //             dangerMode: true,
-    //         })
-    //         .then((willDelete) => {
-    //             if (willDelete) {
-    //                 var loan_id = $("#hidden_id").val();
+    function getPenalty() {
+        var loan_id = $("#hidden_id_2").val();
+        var collection_date = $("#loan_date").val();
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=Loans&q=penalty",
+            data: {
+                input: {
+                    loan_id: loan_id,
+                    collection_date: collection_date
+                }
+            },
+            success: function(data) {
+                var json = JSON.parse(data);
+                $("#penalty_amount").val(json.data);
+            }
+        });
+    }
 
-    //                 $.ajax({
-    //                     type: "POST",
-    //                     url: "controllers/sql.php?c=" + route_settings.class_name + "&q=reloan",
-    //                     data: {
-    //                         input: {
-    //                             param: param
-    //                         }
-    //                     },
-    //                     success: function(data) {
-    //                         getEntries();
-    //                         var json = JSON.parse(data);
-    //                         console.log(json);
-    //                         if (json.data == 1) {
-    //                             swal("Success!", "Successfully reloan!", "success");
-    //                         } else {
-    //                             failed_query(json);
-    //                         }
-    //                     },
-    //                     error: function(jqXHR, textStatus, errorThrown) {
-    //                         errorLogger('Error:', textStatus, errorThrown);
-    //                     }
-    //                 });
-    //                 // $("#btn_reloan").prop('disabled', false);
-
-    //                 $("#modalEntry").modal("hide");
-    //             } else {
-    //                 swal("Cancelled", "Entries are safe :)", "error");
-    //                 $("#btn_reloan").prop('disabled', false);
-    //             }
-    //         });
-    // }
+    function getBalance(loan_id) {
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=Loans&q=loan_balance",
+            data: {
+                input: {
+                    loan_id: loan_id
+                }
+            },
+            success: function(data) {
+                var json = JSON.parse(data);
+                $("#amount").val(json.data);
+            }
+        });
+    }
 
     function reloan(){
-        var loan_id = $("#loan_id").val();
+        var loan_id = $("#hidden_id_2").val();
         getSelectOption('ChartOfAccounts', 'chart_id', 'chart_name', "chart_name LIKE '%Bank%'");
+        getBalance(loan_id);
         generateReference2();
         sampleCalculation2();
-        $("#chart_id").prop("disabled", true);
+        getPenalty(loan_id);
+        $("#chart_id").prop("disabled", false);
         $("#modalEntryRenew").modal("show");
     }
 
