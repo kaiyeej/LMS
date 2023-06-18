@@ -247,7 +247,7 @@
 
                                             <div class="col-lg-3" style="padding: 10px;">
                                                 <label class="text-md-right text-left">No. of Children</label>
-                                                <input type="number" class="form-control input-item" autocomplete="off" placeholder="Number of children" name="input[client_no_of_childred]" id="client_no_of_childred">
+                                                <input type="number" class="form-control input-item" autocomplete="off" placeholder="Number of children" name="input[client_no_of_children]" id="client_no_of_children">
                                             </div>
                                             <div class="col-lg-3" style="padding: 10px;">
                                                 <label class="text-md-right text-left">No. of Children Dependent on you</label>

@@ -9,10 +9,17 @@ class ReceivableLedger extends Connection
         $client_id = $this->inputs['client_id'];
         $start_date = $this->inputs['start_date'];
         $end_date = $this->inputs['end_date'];
+
+        if($start_date == 0 OR $end_date == 0){
+            $query_collection = "";
+            $query_loan = "";
+        }else{
+            $query_collection = " AND (collection_date >= '$start_date' AND collection_date <= '$end_date')";
+            $query_loan = "AND (loan_date >= '$start_date' AND loan_date <= '$end_date')";
+        }
         
         $rows = array();
-
-        $result = $this->select("tbl_loans","reference_number","client_id='$client_id' AND (loan_date >= '$start_date' AND loan_date <= '$end_date') AND (status!='D' OR status!='P') UNION ALL SELECT reference_number FROM tbl_collections WHERE client_id='$client_id' AND (collection_date >= '$start_date' AND collection_date <= '$end_date') AND status='F'");
+        $result = $this->select("tbl_loans","reference_number","client_id='$client_id' $query_loan AND (status!='D' OR status!='P') UNION ALL SELECT reference_number FROM tbl_collections WHERE client_id='$client_id' AND status='F' $query_collection");
         
         $Loans = new Loans;
         $Collections = new Collections;

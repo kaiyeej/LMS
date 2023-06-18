@@ -125,6 +125,7 @@ class Collections extends Connection
         while ($row = $result->fetch_assoc()) {
             $row['client'] = $Clients->name($Loans->loan_client($row['loan_id']));
             $row['loan_ref_id'] = $Loans->name($row['loan_id']);
+            $row['amount'] = number_format($row['amount'],2);
             $rows[] = $row;
         }
         return $rows;
@@ -140,6 +141,15 @@ class Collections extends Connection
     public function remove()
     {
         $ids = implode(",", $this->inputs['ids']);
+
+        //update loan status
+        $result = $this->select($this->table, "loan_id", "$this->pk IN($ids) AND status = 'F'");
+        while ($row = $result->fetch_assoc()) {
+            $form_ = array(
+                'status'   => 'R',
+            );
+            $this->update('tbl_loans', $form_, "loan_id = '$row[loan_id]'");
+        }
 
         return $this->delete($this->table, "$this->pk IN($ids)");
     }

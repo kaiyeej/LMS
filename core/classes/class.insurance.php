@@ -47,6 +47,7 @@ class Insurance extends Connection
         $primary_id = $this->inputs['id'];
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
         return $result->fetch_assoc();
+        
     }
 
     public function remove()
@@ -59,8 +60,12 @@ class Insurance extends Connection
     public function name($primary_id)
     {
         $result = $this->select($this->table, 'insurance_name', "$this->pk = '$primary_id'");
-        $row = $result->fetch_assoc();
-        return $row['insurance_name'];
+        if($result->num_rows > 0){
+            $row = $result->fetch_assoc();
+            return $row['insurance_name'];
+        }else{
+            return null;
+        }
     }
 
     public function import()

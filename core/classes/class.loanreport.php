@@ -6,18 +6,26 @@ class LoanReport extends Connection
 
     public function view()
     {
-
+        
         $start_date = $this->inputs['start_date'];
         $end_date = $this->inputs['end_date'];
+        $date_range = $this->inputs['date_range'];
+        
 
         if ($this->inputs['report_type'] == "type") {
-            $query = $this->inputs['loan_type_id'] == -1 ? "" : 'AND loan_type_id= "' . $this->inputs['loan_type_id'] . '"';
+            $query = $this->inputs['loan_type_id'] == -1 ? "" : ' AND loan_type_id= "' . $this->inputs['loan_type_id'] . '"';
         } else {
-            $query = $this->inputs['loan_status'] == -1 ? "" : 'AND status= "' . $this->inputs['loan_status'] . '"';
+            $query = $this->inputs['loan_status'] == -1 ? "" : ' AND status= "' . $this->inputs['loan_status'] . '"';
         }
 
         $rows = array();
-        $result = $this->select("tbl_loans", "*", "(loan_date >= '$start_date' AND loan_date <= '$end_date') $query");
+        if($date_range == 1){
+            $result = $this->select("tbl_loans", "*", "$query");
+        }else{
+            $result = $this->select("tbl_loans", "*", "(loan_date >= '$start_date' AND loan_date <= '$end_date') $query");
+
+        }
+        
 
         $Clients = new Clients;
         $LoanTypes = new LoanTypes;

@@ -1,5 +1,4 @@
-
-<form method='POST' id='frm_submit'>
+<form method='POST' id='frm_renew'>
     <div class="modal fade" id="modalEntryRenew" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -20,7 +19,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label style="color: #607D8B;font-weight: bold;">Old Loan #: </label>
-                                    <input type="text" class="input-item" autocomplete="off" name="input[reference_number]" id="reference_number" style="background: transparent;border: none;outline: none;color: #607D8B;font-size: 18px;font-weight: bold;" readonly required>
+                                    <input type="text" class="input-item" autocomplete="off" id="reference_number" style="background: transparent;border: none;outline: none;color: #607D8B;font-size: 18px;font-weight: bold;" readonly required>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Branch</label>
@@ -49,7 +48,7 @@
 
                                 <div class="form-group col-md-4">
                                     <label><strong style="color:red;">*</strong> Loan Terms</label>
-                                    <input type="number" class="form-control input-item" autocomplete="off"  name="input[loan_period]" id="loan_period" required>
+                                    <input type="number" class="form-control input-item" autocomplete="off" name="input[loan_period]" id="loan_period" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label><strong style="color:red;">*</strong> Service Fee</label>
@@ -57,23 +56,35 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label><strong style="color:red;">*</strong> Monthly Payment</label>
-                                    <input type="number" class="form-control input-item" autocomplete="off"  name="input[monthly_payment]" id="monthly_payment" step="0.01" required>
+                                    <input type="number" class="form-control input-item" autocomplete="off" name="input[monthly_payment]" id="monthly_payment" step="0.01" required>
                                 </div>
-                                <div class="form-group col-md-12"><hr style="margin-top: 0rem;margin-bottom: 0rem;border-top: 1.5px solid;"></div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-12">
+                                    <hr style="margin-top: 0rem;margin-bottom: 0rem;border-top: 1.5px solid;">
+                                </div>
+                                <div class="col-lg-12">
+                                    <label class="text-md-right text-left">Deduct to loan</label>
+                                    <div class="form-group">
+                                        <label class="custom-switch mt-2">
+                                            <span class="custom-switch-description"> No &nbsp;</span>
+                                            <input type="checkbox" onchange="deductToLoan()" value="1" id="deduct_to_loan" name="input[deduct_to_loan]" class="input-item custom-switch-input">
+                                            <span class="custom-switch-indicator"></span>
+                                            <span class="custom-switch-description">Yes</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="div_collection form-group col-md-4">
                                     <label>Bank</label>
                                     <select class="form-control select2 input-item" id="chart_id" name="input[chart_id]" style="width:100%;" required>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="div_collection form-group col-md-4">
                                     <label>Penalty</label>
                                     <input type="number" step="0.01" class="form-control input-item" autocomplete="off" name="input[penalty_amount]" id="penalty_amount" required>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="div_collection form-group col-md-4">
                                     <label>Amount</label>
                                     <input type="number" step="0.01" class="form-control input-item" placeholder="Collection amount" autocomplete="off" name="input[amount]" id="amount" required>
                                 </div>
-                                
                             </div>
                         </div>
                         <div class="col-lg-5" style="padding: 10px;border: 1px dashed #ff9800;border-radius: 5px;">
@@ -97,7 +108,7 @@
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" id="btn_submit" class="btn btn-primary">
+                    <button type="submit" id="btn_submit_renew" class="btn btn-primary">
                         Add
                     </button>
                 </div>
@@ -105,3 +116,50 @@
         </div>
     </div>
 </form>
+<script>
+    function deductToLoan(){
+        if($("#deduct_to_loan").prop("checked")){
+            $(".div_collection").hide();
+            $('#chart_id').prop('required',false);
+            $('#penalty_amount').prop('required',false);
+            $('#amount').prop('required',false);
+        }else{
+            $(".div_collection").show();
+            $('#chart_id').prop('required',true);
+            $('#penalty_amount').prop('required',true);
+            $('#amount').prop('required',true);
+        }
+    }
+
+    $("#frm_renew").submit(function(e) {
+        e.preventDefault();
+
+        $("#btn_submit_renew").prop('disabled', true);
+        $("#btn_submit_renew").html("<span class='fa fa-spinner fa-spin'></span> Submitting ...");
+
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=renew",
+            data: $("#frm_renew").serialize(),
+            success: function(data) {
+                getEntries();
+                var json = JSON.parse(data);
+                if (json.data > 0) {
+                    $("#modalEntryRenew").modal('hide');
+                    $("#modalEntry").modal('hide');
+                    success_add();
+                } else if (json.data == -2) {
+                    entry_already_exists();
+                } else {
+                    failed_query(json);
+                }
+
+                $("#btn_submit_renew").prop('disabled', false);
+                $("#btn_submit_renew").html("Add");
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                errorLogger('Error:', textStatus, errorThrown);
+            }
+        });
+    });
+</script>

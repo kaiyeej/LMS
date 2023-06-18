@@ -11,19 +11,19 @@
         <div class="alert alert-light alert-has-icon" style="border: 1px dashed #3C84AB;">
             <form id='frm_generate'>
                 <div class="form-group row">
-                    <div class="col-lg-3">
+                    <div class="col col_date">
                         <label><strong>Start Date</strong></label>
                         <div>
                             <input type="date" required class="form-control" value="<?php echo date('Y-m-01', strtotime(date("Y-m-d"))); ?>" id="start_date" name="input[start_date]">
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col col_date">
                         <label><strong>End Date</strong></label>
                         <div>
                             <input type="date" required class="form-control" value="<?php echo date('Y-m-t', strtotime(date("Y-m-d"))) ?>" id="end_date" name="input[end_date]">
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col">
                         <label><strong>Status</strong></label>
                         <div>
                             <select class="form-control form-control-sm select2" required id="loan_status" name="input[loan_status]">
@@ -37,7 +37,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col">
                         <label>&nbsp;</label>
                         <div>
                             <div class="btn-group pull-right">
@@ -60,6 +60,12 @@
                                     <span class="text"> Print</span>
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="date_range" onchange="setDateRange()" class="custom-control-input" id="date_range">
+                            <label style="font-size: 12px;" class="custom-control-label" for="date_range">Hide Date Range</label>
                         </div>
                     </div>
                 </div>
@@ -103,6 +109,15 @@
     </div>
 </section>
 <script type="text/javascript">
+    
+    function setDateRange(){
+        if($("#date_range").prop("checked")){
+            $(".col_date").hide();
+        }else{
+            $(".col_date").show();
+        }
+    }
+    
     $("#frm_generate").submit(function(e) {
         e.preventDefault();
         getReport();
@@ -112,6 +127,13 @@
         var loan_status = $("#loan_status").val();
         var start_date = $("#start_date").val();
         var end_date = $("#end_date").val();
+        
+        if($("#date_range").prop("checked")){
+            var date_range = 1;
+        }else{
+            var date_range = 0;
+        }
+
         $("#dt_entries").DataTable().destroy();
         $("#dt_entries").DataTable({
             "processing": true,
@@ -128,7 +150,8 @@
                         loan_status: loan_status,
                         start_date: start_date,
                         end_date: end_date,
-                        report_type: "status"
+                        report_type: "status",
+                        date_range:date_range
                     }
                 },
             },

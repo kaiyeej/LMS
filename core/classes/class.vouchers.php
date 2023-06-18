@@ -16,12 +16,13 @@ class Vouchers extends Connection
         $Journals = new Journals;
         $code = $Journals->journal_code($this->inputs['journal_id']);
         $ref_code = $code."-". date('YmdHis');
+        $loan_id = (!isset($this->inputs['loan_id']) ? "" : $this->inputs['loan_id']);
         
         $form = array(
             $this->name         => $this->clean($this->inputs[$this->name]),
             'account_type'      => $this->inputs['account_type'],
             'account_id'        => $this->inputs['account_id'],
-            'loan_id'           => $this->inputs['loan_id'],
+            'loan_id'           => $loan_id,
             'voucher_no'        => $this->inputs['voucher_no'],
             'description'       => $this->inputs['description'],
             'check_number'      => $this->inputs['check_number'],

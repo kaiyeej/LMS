@@ -80,8 +80,13 @@ class LoanTypes extends Connection
     public function penalty_percentage($primary_id)
     {
         $result = $this->select($this->table, 'penalty_percentage', "$this->pk = '$primary_id'");
-        $row = $result->fetch_assoc();
-        return $row['penalty_percentage'];
+        if($result->num_rows > 0){
+            $row = $result->fetch_assoc();
+            return $row['penalty_percentage'];
+        }else{
+            return null;
+        }
+        
     }
 
     public function idByName($loan_type)
