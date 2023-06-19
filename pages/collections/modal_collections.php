@@ -49,6 +49,18 @@
                                     <label>Amount</label>
                                     <input type="number" step="0.01" class="form-control input-item" placeholder="Collection amount" autocomplete="off" name="input[amount]" id="amount" required>
                                 </div>
+                                <div class="form-group col-md-4">
+                                    <label>ATM Balance</label>
+                                    <input type="number" step="0.01" class="form-control input-item" placeholder="ATM Balance" autocomplete="off" name="input[atm_balance]" id="atm_balance" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>ATM Withdrawal</label>
+                                    <input type="number" step="0.01" class="form-control input-item" placeholder="ATM Balance" autocomplete="off" name="input[atm_withdrawal]" id="atm_withdrawal" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>ATM Charge</label>
+                                    <input type="number" step="0.01" class="form-control input-item" placeholder="ATM Charge" autocomplete="off" name="input[atm_charge]" id="atm_charge" required>
+                                </div>
                                 <div class="form-group col-md-12">
                                     <label>Remarks</label>
                                     <textarea class="form-control input-item" autocomplete="off" name="input[remarks]" id="remarks"></textarea>

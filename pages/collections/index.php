@@ -213,6 +213,7 @@
     })
 
     $(document).ready(function() {
+        schema();
         getEntries();
         getSelectOption('Branches', 'branch_id', 'branch_name');
         getSelectOption('ChartOfAccounts', 'chart_id', 'chart_name', "chart_name LIKE '%Bank%'");
