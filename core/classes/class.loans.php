@@ -567,6 +567,8 @@ class Loans extends Connection
                     $this->metadata('loan_interest', 'int', 11),
                     $this->metadata('due_date', 'date'),
                     $this->metadata('loan_date', 'date'),
+                    $this->metadata('main_loan_id',  'int', 11),
+                    $this->metadata('deduct_to_loan',  'int', 1),
                     $this->metadata('status', 'varchar', 1, 'NOT NULL', "'A'", '', "P - Pending; A - Approved; R - Released; D - Denied; F- Fully paid"),
                     $default['user_id'],
                     $default['date_added'],
