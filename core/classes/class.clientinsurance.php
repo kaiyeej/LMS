@@ -60,6 +60,43 @@ class ClientInsurance extends Connection
         $row['insurance'] = $Insurance->name($row['insurance_id']);
         return $row;
     }
+
+    public function schema()
+    {
+        if (DEVELOPMENT) {
+            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
+
+
+            // TABLE HEADER
+            $tables[] = array(
+                'name'      => $this->table,
+                'primary'   => $this->pk,
+                'fields' => array(
+                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                    $this->metadata('client_id', 'int', 11),
+                    $this->metadata('insurance_id', 'int', 11),
+                    $this->metadata('insurance_amount', 'decimal', '15,3'),
+                    $this->metadata('insurance_maturity', 'int', 11),
+                    $this->metadata('insurance_bank_transaction', 'varchar', 50),
+                    $this->metadata('insurance_unpaid_obligation', 'decimal', '15,3'),
+                    $this->metadata('insurance_salary_withdrawal', 'varchar', 50),
+                    $this->metadata('paymaster_name', 'varchar', 50),
+                    $this->metadata('paymaster_address', 'varchar', 50),
+                    $this->metadata('paymaster_res_cert_no', 'varchar', 50),
+                    $this->metadata('paymaster_res_cert_issued_at', 'varchar', 50),
+                    $this->metadata('paymaster_res_cert_date', 'date'),
+                    $this->metadata('paymaster_deduct_salary', 'varchar', 3, 'NOT NULL', 'NULL', '', "'Yes,No'"),
+                    $this->metadata('paymaster_client_deduct_salary', 'varchar', 3, 'NOT NULL', 'NULL', '', "'Yes,No'"),
+                    $this->metadata('paymaster_conformity', 'varchar', 3, 'NOT NULL', 'NULL', '', "'Yes,No'"),
+                    $default['date_added'],
+                    $default['date_last_modified']
+                )
+            );
+
+            return $this->schemaCreator($tables);
+        }
+    }
 }
 
 // CREATE TABLE `tbl_client_insurance` (

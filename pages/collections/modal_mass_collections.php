@@ -195,7 +195,7 @@
                 <td onblur="solveCollection(this,${clientIndex},5)" id="mc5_${clientIndex}" contenteditable="true" class='right mc_5'>${numberFormat(client.atm_charge)}</td>
                 <td id="mc6_${clientIndex}" class='right'></td>
                 <td id="mc7_${clientIndex}" class='right mc_7 ${nega_excess}'>${numberFormat(excess)}</td>
-                <td id="mc8_${clientIndex}" class='center'>00100-5011-01798-1</td>
+                <td id="mc8_${clientIndex}" class='center'>${client.atm_account_no}</td>
               </tr>`;
         }
         $('#mass_collection_result_content').html(`<div style='width:100%' class='w3-animate-left'>

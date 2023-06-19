@@ -51,6 +51,38 @@ class ClientEmployment extends Connection
         $row['employer'] = $Employers->name($row['employer_id']);
         return $row;
     }
+
+    public function schema()
+    {
+        if (DEVELOPMENT) {
+            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
+
+
+            // TABLE HEADER
+            $tables[] = array(
+                'name'      => $this->table,
+                'primary'   => $this->pk,
+                'fields' => array(
+                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                    $this->metadata('client_id', 'int', 11),
+                    $this->metadata('employer_id', 'int', 11),
+                    $this->metadata('employer_address', 'varchar', 150),
+                    $this->metadata('employer_contact_no', 'varchar', 50),
+                    $this->metadata('employment_position', 'varchar', 50),
+                    $this->metadata('employment_income', 'decimal', '15,3'),
+                    $this->metadata('employment_status', 'varchar', 15),
+                    $this->metadata('employment_length', 'varchar', 15),
+                    $this->metadata('last_employment', 'varchar', 50),
+                    $this->metadata('current_status', 'int', 1),
+                    $default['date_added'],
+                    $default['date_last_modified']
+                )
+            );
+
+            return $this->schemaCreator($tables);
+        }
+    }
 }
 
 // CREATE TABLE `tbl_client_employment` (
@@ -64,11 +96,12 @@ class ClientEmployment extends Connection
 //     `employment_status` VARCHAR(15) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
 //     `employment_length` VARCHAR(15) NOT NULL DEFAULT '0' COLLATE 'latin1_swedish_ci',
 //     `last_employment` VARCHAR(50) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+//     `current_status` INT(1) NOT NULL DEFAULT '0',
 //     `date_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 //     `date_last_modified` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 //     PRIMARY KEY (`employment_id`) USING BTREE
 // )
 // COLLATE='latin1_swedish_ci'
 // ENGINE=InnoDB
-// AUTO_INCREMENT=2
+// AUTO_INCREMENT=16
 // ;

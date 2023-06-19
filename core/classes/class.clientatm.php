@@ -33,6 +33,43 @@ class ClientAtm extends Connection
         $row = $result->fetch_assoc();
         return $row;
     }
+
+    public function name($client_id)
+    {
+        $result = $this->select($this->table, $this->name, "client_id = '$client_id'");
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row[$this->name];
+        } else {
+            return "---";
+        }
+    }
+
+
+    public function schema()
+    {
+        if (DEVELOPMENT) {
+            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
+
+
+            // TABLE HEADER
+            $tables[] = array(
+                'name'      => $this->table,
+                'primary'   => $this->pk,
+                'fields' => array(
+                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                    $this->metadata($this->name, 'varchar', 50),
+                    $this->metadata('atm_bank', 'varchar', 50),
+                    $this->metadata('atm_balance', 'varchar', '15,3', 'NOT NULL', 0),
+                    $default['date_added'],
+                    $default['date_last_modified']
+                )
+            );
+
+            return $this->schemaCreator($tables);
+        }
+    }
 }
 
 // CREATE TABLE `tbl_client_atm` (

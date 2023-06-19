@@ -576,4 +576,56 @@ class Clients extends Connection
         $response['unsuccess_import'] = $unsuccess_import;
         return $response;
     }
+
+    public function schema()
+    {
+        if (DEVELOPMENT) {
+            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
+
+
+            // TABLE HEADER
+            $tables[] = array(
+                'name'      => $this->table,
+                'primary'   => $this->pk,
+                'fields' => array(
+                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                    $this->metadata('branch_id', 'int', 11),
+                    $this->metadata('client_type_id', 'int', 11),
+                    $this->metadata('client_fname', 'varchar', 50),
+                    $this->metadata('client_mname', 'varchar', 50),
+                    $this->metadata('client_lname', 'varchar', 50),
+                    $this->metadata('client_name_extension', 'varchar', 5),
+                    $this->metadata('client_dob', 'date'),
+                    $this->metadata('client_contact_no', 'varchar', 30),
+                    $this->metadata('client_civil_status', 'varchar', 10),
+                    $default['date_added'],
+                    $default['date_last_modified']
+                )
+            );
+
+            return $this->schemaCreator($tables);
+        }
+    }
 }
+
+
+// CREATE TABLE `tbl_clients` (
+//     `client_id` INT(11) NOT NULL AUTO_INCREMENT,
+//     `branch_id` INT(11) NOT NULL,
+//     `client_type_id` INT(11) NOT NULL,
+//     `client_fname` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_general_ci',
+//     `client_mname` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_general_ci',
+//     `client_lname` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_general_ci',
+//     `client_name_extension` VARCHAR(5) NOT NULL COLLATE 'utf8mb4_general_ci',
+//     `client_dob` DATE NOT NULL,
+//     `client_contact_no` VARCHAR(30) NOT NULL COLLATE 'utf8mb4_general_ci',
+//     `client_civil_status` VARCHAR(10) NOT NULL COMMENT 'Single, Married, Widowed, Seperated' COLLATE 'utf8mb4_general_ci',
+//     `date_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+//     `date_last_modified` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+//     PRIMARY KEY (`client_id`) USING BTREE
+// )
+// COLLATE='utf8mb4_general_ci'
+// ENGINE=InnoDB
+// AUTO_INCREMENT=22
+// ;
