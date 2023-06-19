@@ -426,6 +426,7 @@ class Collections extends Connection
                     $this->metadata('collection_date', 'date'),
                     $this->metadata('atm_balance', 'decimal', '12,3'),
                     $this->metadata('atm_charge', 'decimal', '12,3'),
+                    $this->metadata('atm_withdrawal', 'decimal', '12,3'),
                     $this->metadata('status', 'varchar', 1),
                     $default['user_id'],
                     $default['date_added'],
