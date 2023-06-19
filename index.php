@@ -329,7 +329,14 @@ $User = new Users;
         // $("#btn_release").hide();
         $("#btn_reloan").hide();
 
+      } else if (route_settings.class_name == "Collections") {
+          $('.input-item').attr('readonly', false);
+          $(".select2").prop("disabled", false);
+          $("#btn_submit").show();
+
       }
+      
+      
 
 
       $("#modalLabel").html("<i class='fa fa-edit'></i> Add Entry");
@@ -413,7 +420,6 @@ $User = new Users;
             }else{
               $("#" + id_name).prop("checked", false);
             }
-            $("#" + id_name).val(json[id_name]).trigger('change');
           });
 
 
@@ -422,7 +428,10 @@ $User = new Users;
             $(".client_span").html(jsonParse.data['client_fullname']);
           } else if (route_settings.class_name == "Collections") {
             // getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + json['client_id'] + "' AND status = 'R'");
-            loan_id();
+            clients();
+            $('.input-item').attr('readonly', true);
+            $(".select2").prop("disabled", true);
+            $("#btn_submit").hide();
           } else if (route_settings.class_name == "Loans") {
             if (jsonParse.data['status'] != "A") {
               $('#loan_container :input').attr('readonly', true);

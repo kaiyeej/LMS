@@ -13,16 +13,16 @@ class LoanReport extends Connection
         
 
         if ($this->inputs['report_type'] == "type") {
-            $query = $this->inputs['loan_type_id'] == -1 ? "" : ' AND loan_type_id= "' . $this->inputs['loan_type_id'] . '"';
+            $query = $this->inputs['loan_type_id'] == -1 ? "loan_id > 0" : 'loan_type_id= "' . $this->inputs['loan_type_id'] . '"';
         } else {
-            $query = $this->inputs['loan_status'] == -1 ? "" : ' AND status= "' . $this->inputs['loan_status'] . '"';
+            $query = $this->inputs['loan_status'] == -1 ? "loan_id > 0" : 'status= "' . $this->inputs['loan_status'] . '"';
         }
 
         $rows = array();
         if($date_range == 1){
             $result = $this->select("tbl_loans", "*", "$query");
         }else{
-            $result = $this->select("tbl_loans", "*", "(loan_date >= '$start_date' AND loan_date <= '$end_date') $query");
+            $result = $this->select("tbl_loans", "*", "(loan_date >= '$start_date' AND loan_date <= '$end_date') AND $query");
 
         }
         

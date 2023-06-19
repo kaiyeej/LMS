@@ -314,6 +314,15 @@ class Collections extends Connection
         }
     }
 
+    
+    public function client_id()
+    {
+        $primary_id = $this->inputs['id'];
+        $result = $this->select($this->table, "client_id,loan_id", "$this->pk = '$primary_id'");
+        $row = $result->fetch_assoc();
+        return [$row['client_id'],$row['loan_id']];
+    }
+
     public function import()
     {
         ini_set('memory_limit', '-1');
@@ -428,6 +437,7 @@ class Collections extends Connection
                     $this->metadata('collection_date', 'date'),
                     $this->metadata('atm_balance', 'decimal', '12,3'),
                     $this->metadata('atm_charge', 'decimal', '12,3'),
+                    $this->metadata('atm_withdrawal', 'decimal', '12,3'),
                     $this->metadata('status', 'varchar', 1),
                     $default['user_id'],
                     $default['date_added'],

@@ -157,10 +157,10 @@
         });
     }
 
-    function loanDetails(){
+    function loanDetails() {
         getPenalty();
         var loan_id = $("#loan_id").val();
-        var param = "loan_id= '"+loan_id+"' ";
+        var param = "loan_id= '" + loan_id + "' ";
         $("#dt_loan_details").DataTable().destroy();
         $("#dt_loan_details").DataTable({
             "processing": true,
@@ -181,8 +181,7 @@
                     }
                 },
             },
-            "columns": [
-                {
+            "columns": [{
                     "data": "date"
                 },
                 {
@@ -204,13 +203,34 @@
         });
     }
 
-    $('#branch_id').change(function() {
-        getSelectOption('Clients', 'client_id', 'client_fullname', "branch_id='" + $(this).val() + "'");
-    })
+    function getLoans() {
+        var client_id = $("#client_id").val();
+        getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + client_id + "' AND status = 'R'");
+    }
 
-    $('#client_id').change(function() {
-        getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + $(this).val() + "' AND status = 'R'");
-    })
+    function getClients() {
+        var branch_id = $("#branch_id").val();
+        getSelectOption('Clients', 'client_id', 'client_fullname', "branch_id='" + branch_id + "'");
+    }
+
+    function clients() {
+        var id = $("#hidden_id").val();
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=client_id",
+            data: {
+                input: {
+                    id: id
+                }
+            },
+            success: function(data) {
+                var jsonParse = JSON.parse(data);
+                const json = jsonParse.data;
+                $("#client_id").val(json[0]).trigger('change');
+                loan_id();
+            }
+        });
+    }
 
     $(document).ready(function() {
         schema();
