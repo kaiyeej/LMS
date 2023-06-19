@@ -19,12 +19,12 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Branch</label>
-                                    <select class="form-control select2 input-item" id="branch_id" name="input[branch_id]" style="width:100%;" required>
+                                    <select onchange="getClients()" class="form-control select2 input-item" id="branch_id" name="input[branch_id]" style="width:100%;" required>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Client</label>
-                                    <select class="form-control select2 input-item" id="client_id" name="input[client_id]" style="width:100%;" required>
+                                    <select onchange="getLoans()" class="form-control select2 input-item" id="client_id" name="input[client_id]" style="width:100%;" required>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-4">

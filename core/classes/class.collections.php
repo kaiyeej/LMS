@@ -314,6 +314,15 @@ class Collections extends Connection
         }
     }
 
+    
+    public function client_id()
+    {
+        $primary_id = $this->inputs['id'];
+        $result = $this->select($this->table, "client_id,loan_id", "$this->pk = '$primary_id'");
+        $row = $result->fetch_assoc();
+        return [$row['client_id'],$row['loan_id']];
+    }
+
     public function import()
     {
         ini_set('memory_limit', '-1');
