@@ -587,7 +587,7 @@ class Loans extends Connection
         $response = [];
         $file = $_FILES['csv_file'];
         $fileType = pathinfo($file['name'], PATHINFO_EXTENSION);
-        if ($fileType != 'csv') {
+        if ($fileType != 'csv' || $fileType != 'xls') {
             $response['status'] = -1;
             $response['text'] = 'Invalid file format. Only CSV files are allowed.';
             return $response;

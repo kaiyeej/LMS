@@ -249,6 +249,7 @@ class Collections extends Connection
         $ChartOfAccounts = new ChartOfAccounts;
         $Branches = new Branches;
         $Employers = new Employers;
+        $ClientAtm = new ClientAtm;
 
         $loan_type_id = $this->inputs['loan_type_id'];
         $collection_date = $this->inputs['collection_date'];
@@ -262,6 +263,7 @@ class Collections extends Connection
         while ($row = $result->fetch_assoc()) {
             $row['client_name'] = $Clients->formal_name($row['client_id']);
             $row['atm_charge'] = $atm_charge;
+            $row['atm_account_no'] = $ClientAtm->name($row['client_id']);
             $rows[] = $row;
         }
         $response['clients'] = $rows;

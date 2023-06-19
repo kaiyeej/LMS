@@ -6,6 +6,8 @@ class ChartClassification extends Connection
     public $pk = 'chart_class_id';
     public $name = 'chart_class_name';
 
+    public $inputs;
+
 
     public function add()
     {
@@ -14,7 +16,7 @@ class ChartClassification extends Connection
             'chart_class_code'  => $this->clean($this->inputs['chart_class_code']),
         );
 
-        return $this->insertIfNotExist($this->table, $form, "$this->name = '".$this->inputs[$this->name]."'");
+        return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
     }
 
     public function edit()
@@ -56,13 +58,12 @@ class ChartClassification extends Connection
     public function name($primary_id)
     {
         $result = $this->select($this->table, $this->name, "$this->pk = '$primary_id'");
-        if($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             return $row[$this->name];
-        }else{
+        } else {
             return "--";
         }
-        
     }
 
     public function chart_class_code($primary_id)
@@ -98,3 +99,17 @@ class ChartClassification extends Connection
         }
     }
 }
+
+// CREATE TABLE `tbl_chart_classification` (
+//     `chart_class_id` INT(11) NOT NULL AUTO_INCREMENT,
+//     `chart_class_name` VARCHAR(50) NOT NULL COLLATE 'latin1_swedish_ci',
+//     `chart_class_code` VARCHAR(10) NOT NULL COLLATE 'latin1_swedish_ci',
+//     `date_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+//     `date_last_modified` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+//     `user_id` INT(11) NOT NULL,
+//     PRIMARY KEY (`chart_class_id`) USING BTREE
+// )
+// COLLATE='latin1_swedish_ci'
+// ENGINE=InnoDB
+// AUTO_INCREMENT=7
+// ;

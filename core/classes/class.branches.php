@@ -14,7 +14,7 @@ class Branches extends Connection
             'remarks'       => $this->clean($this->inputs['remarks']),
         );
 
-        return $this->insertIfNotExist($this->table, $form, "$this->name = '".$this->inputs[$this->name]."'");
+        return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
     }
 
     public function edit()
@@ -22,7 +22,7 @@ class Branches extends Connection
         $primary_id = $this->inputs[$this->pk];
         $form = array(
             $this->name     => $this->clean($this->inputs[$this->name]),
-        'remarks'       => $this->clean($this->inputs['remarks']),
+            'remarks'       => $this->clean($this->inputs['remarks']),
         );
 
         return $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");
@@ -60,7 +60,7 @@ class Branches extends Connection
         return $row['branch_name'];
     }
 
-    
+
     public function penalty_percentage($primary_id)
     {
         $result = $this->select($this->table, 'penalty_percentage', "$this->pk = '$primary_id'");
@@ -68,7 +68,8 @@ class Branches extends Connection
         return $row['penalty_percentage'];
     }
 
-    public function total_per_month($primary_id,$month,$year){
+    public function total_per_month($primary_id, $month, $year)
+    {
 
         $result = $this->select("tbl_loans", "sum(loan_amount) as total", "MONTH(loan_date) = '$month' AND YEAR(loan_date) = '$year' AND (status = 'R' OR status='F') AND $this->pk = '$primary_id'");
         $row = $result->fetch_assoc();
@@ -101,3 +102,17 @@ class Branches extends Connection
         }
     }
 }
+
+// CREATE TABLE `tbl_branches` (
+//     `branch_id` INT(11) NOT NULL AUTO_INCREMENT,
+//     `branch_name` VARCHAR(50) NOT NULL COLLATE 'latin1_swedish_ci',
+//     `remarks` TEXT NOT NULL COLLATE 'latin1_swedish_ci',
+//     `date_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+//     `date_last_modified` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+//     `user_id` INT(11) NOT NULL,
+//     PRIMARY KEY (`branch_id`) USING BTREE
+// )
+// COLLATE='latin1_swedish_ci'
+// ENGINE=InnoDB
+// AUTO_INCREMENT=3
+// ;

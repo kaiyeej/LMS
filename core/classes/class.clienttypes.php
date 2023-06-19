@@ -94,3 +94,17 @@ class ClientTypes extends Connection
         }
     }
 }
+
+// CREATE TABLE `tbl_client_types` (
+//     `client_type_id` INT(11) NOT NULL AUTO_INCREMENT,
+//     `client_type` VARCHAR(50) NOT NULL COLLATE 'latin1_swedish_ci',
+//     `remarks` TEXT NOT NULL COLLATE 'latin1_swedish_ci',
+//     `user_id` INT(11) NOT NULL,
+//     `date_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+//     `date_last_modified` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+//     PRIMARY KEY (`client_type_id`) USING BTREE
+// )
+// COLLATE='latin1_swedish_ci'
+// ENGINE=InnoDB
+// AUTO_INCREMENT=2
+// ;

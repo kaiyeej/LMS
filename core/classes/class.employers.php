@@ -92,4 +92,43 @@ class Employers extends Connection
         $ids = implode(",", $this->inputs['ids']);
         return $this->delete($this->table, "$this->pk IN($ids)");
     }
+
+    public function schema()
+    {
+        if (DEVELOPMENT) {
+            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', '', 'ON UPDATE CURRENT_TIMESTAMP');
+
+
+            // TABLE HEADER
+            $tables[] = array(
+                'name'      => $this->table,
+                'primary'   => $this->pk,
+                'fields' => array(
+                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                    $this->metadata($this->name, 'varchar', 150),
+                    $this->metadata('employer_address', 'varchar', 255),
+                    $this->metadata('employer_contact_no', 'varchar', 50),
+                    $default['date_added'],
+                    $default['date_last_modified']
+                )
+            );
+
+            return $this->schemaCreator($tables);
+        }
+    }
 }
+
+// CREATE TABLE `tbl_employers` (
+//     `employer_id` INT(11) NOT NULL AUTO_INCREMENT,
+//     `employer_name` VARCHAR(150) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+//     `employer_address` VARCHAR(255) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+//     `employer_contact_no` VARCHAR(50) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+//     `date_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+//     `date_last_modified` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+//     PRIMARY KEY (`employer_id`) USING BTREE
+// )
+// COLLATE='latin1_swedish_ci'
+// ENGINE=InnoDB
+// AUTO_INCREMENT=4
+// ;
