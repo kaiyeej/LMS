@@ -8,30 +8,31 @@
                 <div class="modal-body">
                     <input type="hidden" value="1" id="mass_collection_step">
                     <div class="form-row w3-animate-left" id="mass_collection_step_1">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label>Branch</label>
                             <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]" style="width:100%;" required>
                             </select>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label>Loan Type</label>
                             <select class="form-control select2 input-item" id="loan_type_id" name="input[loan_type_id]" style="width:100%;" required>
                             </select>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label>Bank</label>
                             <select class="form-control select2 input-item" id="mass_chart_id" name="input[chart_id]" style="width:100%;" required>
                             </select>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label>Collection Date</label>
                             <input type="date" class="form-control input-item" autocomplete="off" name="input[collection_date]" id="collection_date" required>
                         </div>
-                        <div class="form-group col-md-3">
-                            <label>Company Code</label>
-                            <input type="text" class="form-control input-item" autocomplete="off" name="input[company_code]" id="company_code" required>
+                        <div class="form-group col-md-4">
+                            <label>Employer</label>
+                            <select class="form-control select2 input-item" id="employer_id" name="input[employer_id]" style="width:100%;" required>
+                            </select>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label>ATM Charge</label>
                             <input min="0" type="number" class="form-control input-item" autocomplete="off" name="input[atm_charge]" id="atm_charge">
                         </div>
@@ -67,6 +68,7 @@
 
     function addMassCollection() {
         getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);
+        getSelectOption('Employers', 'employer_id', 'employer_name');
         $("#mass_chart_id").html($("#chart_id").html());
         $("#mass_branch_id").html($("#branch_id").html());
 
@@ -158,7 +160,7 @@
                 <span>LOAN TYPE: <b>${json.headers.loan_name}</b></span><br>
                 <span>BANK: <b>${json.headers.chart_name}</b></span><br>
                 <span>COLLECTION DATE: <b>${json.headers.collection_date_label}</b></span><br>
-                <span>COMPANY CODE: <b>${json.headers.company_code}</b></span><br>
+                <span>EMPLOYER: <b>${json.headers.employer_name}</b></span><br>
             </div>
         </div>`);
         var client_tds = "";

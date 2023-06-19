@@ -46,6 +46,9 @@ class ClientEmployment extends Connection
         $client_id = $this->inputs['client_id'];
         $result = $this->select($this->table, "*", "client_id = '$client_id' AND current_status = 1");
         $row = $result->fetch_assoc();
+
+        $Employers = new Employers;
+        $row['employer'] = $Employers->name($row['employer_id']);
         return $row;
     }
 }

@@ -402,28 +402,19 @@ $User = new Users;
             $("#" + id_name).val(json[id_name]).trigger('change');
           });
 
+          $('.check-item').map(function() {
+            const id_name = this.id;
+            if(json[id_name] == "Yes"){
+              $("#" + id_name).prop("checked", true);
+            }else{
+              $("#" + id_name).prop("checked", false);
+            }
+            $("#" + id_name).val(json[id_name]).trigger('change');
+          });
+
 
           if (route_settings.class_name == "Clients") {
             c_status = "update";
-            if (jsonParse.data['client_paymaster_deduct_salary'] == "Yes") {
-              $("#client_paymaster_deduct_salary").prop("checked", true);
-            } else {
-              $("#client_paymaster_deduct_salary").prop("checked", false);
-            }
-
-            if (jsonParse.data['client_paymaster_client_deduct_salary'] == "Yes") {
-              $("#client_paymaster_client_deduct_salary").prop("checked", true);
-            } else {
-              $("#client_paymaster_client_deduct_salary").prop("checked", false);
-            }
-
-            if (jsonParse.data['client_paymaster_conformity'] == "Yes") {
-              $("#client_paymaster_conformity").prop("checked", true);
-            } else {
-              $("#client_paymaster_conformity").prop("checked", false);
-            }
-
-
             $(".client_span").html(jsonParse.data['client_fullname']);
           } else if (route_settings.class_name == "Collections") {
             // getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + json['client_id'] + "' AND status = 'R'");

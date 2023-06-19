@@ -31,6 +31,25 @@ class ClientReference extends Connection
 
         return 1;
     }
+
+    public function view()
+    {
+        $client_id = $this->inputs['client_id'];
+        $response = [];
+
+        for ($reference_no = 1; $reference_no <= 3; $reference_no++) {
+            $result = $this->select($this->table, "*", "client_id = '$client_id' AND reference_no = '$reference_no'");
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $response['client_credit_ref_name' . $reference_no] = $row['reference_name'];
+                $response['client_credit_ref_address' . $reference_no] = $row['reference_address'];
+            } else {
+                $response['client_credit_ref_name' . $reference_no] = "";
+                $response['client_credit_ref_address' . $reference_no] = "";
+            }
+        }
+        return $response;
+    }
 }
 
 // CREATE TABLE `tbl_client_reference` (

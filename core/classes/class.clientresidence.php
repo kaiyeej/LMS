@@ -38,6 +38,28 @@ class ClientResidence extends Connection
         $row = $result->fetch_assoc();
         return $row;
     }
+
+    public function name($primary_id)
+    {
+        $result = $this->select($this->table, $this->name, "$this->pk = '$primary_id'");
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row[$this->name];
+        } else {
+            return "---";
+        }
+    }
+
+    public function nameByClient($client_id)
+    {
+        $result = $this->select($this->table, $this->name, "client_id = '$client_id'");
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row[$this->name];
+        } else {
+            return "---";
+        }
+    }
 }
 
 // CREATE TABLE `tbl_client_residence` (

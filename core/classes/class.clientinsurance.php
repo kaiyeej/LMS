@@ -55,6 +55,9 @@ class ClientInsurance extends Connection
         $client_id = $this->inputs['client_id'];
         $result = $this->select($this->table, "*", "client_id = '$client_id'");
         $row = $result->fetch_assoc();
+
+        $Insurance = new Insurance;
+        $row['insurance'] = $Insurance->name($row['insurance_id']);
         return $row;
     }
 }

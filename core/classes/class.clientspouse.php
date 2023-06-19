@@ -20,6 +20,7 @@ class ClientSpouse extends Connection
         $spouse_employer = $this->clean($this->inputs['spouse_employer']);
         $spouse_employer_address = $this->clean($this->inputs['spouse_employer_address']);
         $spouse_employer_contact = $this->clean($this->inputs['spouse_employer_contact']);
+        $spouse_employment_position = $this->clean($this->inputs['spouse_employment_position']);
         $spouse_employment_status = $this->clean($this->inputs['spouse_employment_status']);
         $spouse_employment_length = $this->clean($this->inputs['spouse_employment_length']);
         $spouse_employment_income = $this->clean($this->inputs['spouse_employment_income']);
@@ -37,6 +38,7 @@ class ClientSpouse extends Connection
             'spouse_employer'           => $spouse_employer,
             'spouse_employer_address'   => $spouse_employer_address,
             'spouse_employer_contact'   => $spouse_employer_contact,
+            'spouse_employment_position' => $spouse_employment_position,
             'spouse_employment_status'  => $spouse_employment_status,
             'spouse_employment_length'  => $spouse_employment_length,
             'spouse_employment_income'  => $spouse_employment_income,

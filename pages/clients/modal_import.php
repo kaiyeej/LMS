@@ -72,8 +72,8 @@
                                 <td>${client.client_civil_status}</td>
                                 <td>${client.client_dob}</td>
                                 <td>${client.client_contact_no}</td>
-                                <td>${client.client_address}</td>
-                                <td>(${client.client_emp_status}) ${client.client_emp_position} @${client.client_employer}</td>
+                                <td>${client.residence}</td>
+                                <td>(${client.employment_status}) ${client.employment_position} @${client.employer}</td>
                                 <td>${client.locations.length}</td>
                                 <td>${client.childrens.length}</td>
                               </tr>`;

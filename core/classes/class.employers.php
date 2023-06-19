@@ -45,8 +45,6 @@ class Employers extends Connection
         return $this->update($this->table, $form, "$this->pk = '$primary_id'");
     }
 
-
-
     public function show()
     {
         $rows = array();
@@ -67,16 +65,31 @@ class Employers extends Connection
         return $row;
     }
 
+    public function name($primary_id)
+    {
+        $result = $this->select($this->table, $this->name, "$this->pk = '$primary_id'");
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row[$this->name];
+        } else {
+            return "---";
+        }
+    }
+
+    public function idByName($name)
+    {
+        $result = $this->select($this->table, $this->pk, "UCASE(employer_name) = UCASE('$name')");
+
+        if ($result->num_rows < 1)
+            return 0;
+
+        $row = $result->fetch_assoc();
+        return $row[$this->pk];
+    }
+
     public function remove()
     {
         $ids = implode(",", $this->inputs['ids']);
         return $this->delete($this->table, "$this->pk IN($ids)");
-    }
-
-    public function delete_entry()
-    {
-        $id = $this->inputs['id'];
-
-        return $this->delete($this->table, "$this->pk = $id");
     }
 }

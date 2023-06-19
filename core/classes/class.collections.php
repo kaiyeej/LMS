@@ -42,11 +42,11 @@ class Collections extends Connection
 
         $cl_id = $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
 
-        if($Loans->loan_balance($this->inputs['loan_id']) <= 0){
+        if ($Loans->loan_balance($this->inputs['loan_id']) <= 0) {
             $form_finished = array(
                 'status' => 'F'
             );
-            return $this->update("tbl_loans", $form_finished,'loan_id="'.$this->inputs['loan_id'].'"');
+            return $this->update("tbl_loans", $form_finished, 'loan_id="' . $this->inputs['loan_id'] . '"');
         }
 
 
@@ -90,7 +90,7 @@ class Collections extends Connection
         $lr_chart = $ChartOfAccounts->chart_data('Loans Receivable - ' . $loan_type . " - " . $branch_name);
         $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $lr_chart['chart_id'], 'credit' => $lr_total);
         $this->insert('tbl_journal_entry_details', $form_penalty);
-        
+
 
         return $cl_id;
     }
@@ -125,7 +125,7 @@ class Collections extends Connection
         while ($row = $result->fetch_assoc()) {
             $row['client'] = $Clients->name($Loans->loan_client($row['loan_id']));
             $row['loan_ref_id'] = $Loans->name($row['loan_id']);
-            $row['amount'] = number_format($row['amount'],2);
+            $row['amount'] = number_format($row['amount'], 2);
             $rows[] = $row;
         }
         return $rows;
@@ -235,16 +235,17 @@ class Collections extends Connection
         $Clients = new Clients;
         $ChartOfAccounts = new ChartOfAccounts;
         $Branches = new Branches;
+        $Employers = new Employers;
 
         $loan_type_id = $this->inputs['loan_type_id'];
         $collection_date = $this->inputs['collection_date'];
-        $company_code = $this->inputs['company_code'];
+        $employer_id = $this->inputs['employer_id'];
         $chart_id = $this->inputs['chart_id'];
         $branch_id = $this->inputs['branch_id'];
         $atm_charge = (float) $this->inputs['atm_charge'];
 
         $rows = array();
-        $result = $this->select("tbl_loans", '*', "loan_type_id = '$loan_type_id' AND status = 'R'");
+        $result = $this->select("tbl_clients AS c, tbl_client_employment AS e,tbl_loans AS l", 'l.*', "c.client_id = e.client_id AND c.client_id = l.client_id AND c.branch_id = '$branch_id' AND e.employer_id = '$employer_id' AND l.loan_type_id = '$loan_type_id' AND l.status = 'R'");
         while ($row = $result->fetch_assoc()) {
             $row['client_name'] = $Clients->formal_name($row['client_id']);
             $row['atm_charge'] = $atm_charge;
@@ -258,7 +259,8 @@ class Collections extends Connection
             "loan_name" => $LoanTypes->name($loan_type_id),
             "collection_date" => date("Y-m-d", strtotime($collection_date)),
             "collection_date_label" => date("F d, Y", strtotime($collection_date)),
-            "company_code" => $company_code,
+            "employer_id" => $employer_id,
+            "employer_name" => $Employers->name($employer_id),
             "prepared_by" => Users::name($_SESSION['lms_user_id']),
             "chart_id" => $chart_id,
             "chart_name" => $ChartOfAccounts->name($chart_id),
@@ -272,7 +274,7 @@ class Collections extends Connection
     {
         $loan_type_id = $this->inputs['loan_type_id'];
         $collection_date = $this->inputs['collection_date'];
-        $company_code = $this->inputs['company_code'];
+        $employer_id = $this->inputs['employer_id'];
         $chart_id = $this->inputs['chart_id'];
         $branch_id = $this->inputs['branch_id'];
         $details = $this->inputs['details'];
