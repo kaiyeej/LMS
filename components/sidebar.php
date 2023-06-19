@@ -1,9 +1,9 @@
 <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
-        <img style="width: 100px;" src="assets/img/logo2.png">
+        <img style="width: 50%;" src="assets/img/logo2.png">
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
-        <img style="width: 100px;" src="assets/img/logo2.png">
+        <img style="width: 50%;" src="assets/img/logo2.png">
     </div>
     <!-- <ul class="sidebar-menu">
         <li><a class="nav-link" href="homepage"><i class="fas fa-th-large"></i> <span>Dashboard</span></a></li>
