@@ -114,13 +114,13 @@ CREATE TABLE IF NOT EXISTS `tbl_children` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`child_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_children: ~3 rows (approximately)
+-- Dumping data for table lms_db.tbl_children: ~1 rows (approximately)
 INSERT INTO `tbl_children` (`child_id`, `client_id`, `child_name`, `child_sex`, `child_age`, `child_occupation`, `date_added`, `date_last_modified`) VALUES
 	(1, 2184, 'Cairo', 'Male', 5, 'N/A', '2023-06-07 11:11:28', '2023-06-07 11:11:28'),
-	(8, 1, 'Hezekiah Cairo F. Carton', 'Male', 4, 'NA', '2023-06-09 11:53:01', '2023-06-09 11:53:01'),
-	(9, 1, 'Hezekiah Chiara Flores Carton', 'Female', 1, 'NA', '2023-06-09 11:53:01', '2023-06-09 11:53:01');
+	(18, 20, 'Hezekiah Cairo F. Carton', 'Male', 4, 'NA', '2023-06-19 11:29:39', '2023-06-19 11:29:39'),
+	(19, 20, 'Hezekiah Chiara Flores Carton', 'Female', 1, 'NA', '2023-06-19 11:29:39', '2023-06-19 11:29:39');
 
 -- Dumping structure for table lms_db.tbl_clients
 CREATE TABLE IF NOT EXISTS `tbl_clients` (
@@ -137,14 +137,12 @@ CREATE TABLE IF NOT EXISTS `tbl_clients` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`client_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table lms_db.tbl_clients: ~4 rows (approximately)
+-- Dumping data for table lms_db.tbl_clients: ~2 rows (approximately)
 INSERT INTO `tbl_clients` (`client_id`, `branch_id`, `client_type_id`, `client_fname`, `client_mname`, `client_lname`, `client_name_extension`, `client_dob`, `client_contact_no`, `client_civil_status`, `date_added`, `date_last_modified`) VALUES
-	(1, 1, 0, 'Eduard Rino', 'Questo', 'Carton', '', '1997-09-30', '9096836075', 'Married', '2023-06-09 15:33:26', '2023-06-09 15:33:26'),
-	(8, 1, 1, 'Ginery', 'E', 'Songaling', '', '2023-06-16', '0891', 'Married', '2023-06-16 10:04:18', '2023-06-16 10:04:18'),
-	(9, 1, 1, 'Rafael ', 'a', 'Claveria', '', '2023-06-16', 'a', 'Married', '2023-06-16 10:23:47', '2023-06-16 10:23:47'),
-	(10, 1, 1, 'Jerry1', 'A1', 'Saydoquis1', 'Jr1', '2023-06-17', 'a1', 'Married', '2023-06-16 11:10:20', '2023-06-16 11:45:23');
+	(20, 1, 0, 'Eduard Rino', 'Questo', 'Carton', '', '1997-09-30', '9096836075', 'Married', '2023-06-19 11:29:39', '2023-06-19 11:29:39'),
+	(21, 2, 0, 'John Mark', 'G', 'Amar', 'Jr', '1995-06-08', '9999121511', 'Single', '2023-06-19 11:29:39', '2023-06-19 11:29:39');
 
 -- Dumping structure for table lms_db.tbl_client_atm
 CREATE TABLE IF NOT EXISTS `tbl_client_atm` (
@@ -156,12 +154,14 @@ CREATE TABLE IF NOT EXISTS `tbl_client_atm` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`atm_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table lms_db.tbl_client_atm: ~2 rows (approximately)
 INSERT INTO `tbl_client_atm` (`atm_id`, `client_id`, `atm_account_no`, `atm_bank`, `atm_balance`, `date_added`, `date_last_modified`) VALUES
 	(1, 9, '01001101', 'BDO', 0.000, '2023-06-16 10:45:17', '2023-06-16 10:45:17'),
-	(2, 10, '10010121', 'BDO', 0.000, '2023-06-16 11:11:40', '2023-06-16 11:14:38');
+	(2, 10, '10010121', 'BDO1', 0.000, '2023-06-16 11:11:40', '2023-06-19 09:51:02'),
+	(12, 20, '', '', 0.000, '2023-06-19 11:29:39', '2023-06-19 11:29:39'),
+	(13, 21, '', '', 0.000, '2023-06-19 11:29:39', '2023-06-19 11:29:39');
 
 -- Dumping structure for table lms_db.tbl_client_business
 CREATE TABLE IF NOT EXISTS `tbl_client_business` (
@@ -178,12 +178,14 @@ CREATE TABLE IF NOT EXISTS `tbl_client_business` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`business_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_client_business: ~2 rows (approximately)
+-- Dumping data for table lms_db.tbl_client_business: ~3 rows (approximately)
 INSERT INTO `tbl_client_business` (`business_id`, `client_id`, `business_name`, `business_address`, `business_contact`, `business_position`, `business_kind`, `business_length`, `business_capital`, `business_type`, `date_added`, `date_last_modified`) VALUES
 	(1, 9, 'asda', 'sdasdas', 'dasd', 'asdasd', 'adasdasd', '5', 1000.000, 'Owner', '2023-06-16 10:50:04', '2023-06-16 10:50:04'),
-	(2, 10, 'IT Slutiopns', 'Bacolod', '0912', 'Owner', 'IT', '3', 10000.000, 'Owner', '2023-06-16 11:11:40', '2023-06-16 11:14:38');
+	(2, 10, 'IT Slutiopns1', 'Bacolod1', '09121', 'Owner1', 'IT1', '31', 10001.000, 'Owner', '2023-06-16 11:11:40', '2023-06-19 09:50:32'),
+	(12, 20, 'Zech Solutions', 'Bacolod', '123456789', 'Owner', 'IT', '2', 10000.000, 'Owner', '2023-06-19 11:29:39', '2023-06-19 11:29:39'),
+	(13, 21, 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 0.000, 'NA', '2023-06-19 11:29:39', '2023-06-19 11:29:39');
 
 -- Dumping structure for table lms_db.tbl_client_dependents
 CREATE TABLE IF NOT EXISTS `tbl_client_dependents` (
@@ -197,13 +199,15 @@ CREATE TABLE IF NOT EXISTS `tbl_client_dependents` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`dependent_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_client_dependents: ~3 rows (approximately)
+-- Dumping data for table lms_db.tbl_client_dependents: ~4 rows (approximately)
 INSERT INTO `tbl_client_dependents` (`dependent_id`, `client_id`, `no_of_children`, `dep_no_of_child`, `dep_college`, `dep_hs`, `dep_elem`, `date_added`, `date_last_modified`) VALUES
 	(1, 8, 3, 1, 2, 2, 2, '2023-06-16 10:09:21', '2023-06-16 10:09:21'),
 	(2, 9, 5, 5, 1, 5, 6, '2023-06-16 10:24:13', '2023-06-16 10:24:13'),
-	(3, 10, 5, 6, 7, 8, 9, '2023-06-16 11:11:40', '2023-06-16 11:11:40');
+	(3, 10, 51, 51, 71, 81, 91, '2023-06-16 11:11:40', '2023-06-19 09:42:10'),
+	(13, 20, 2, 2, 0, 0, 0, '2023-06-19 11:29:39', '2023-06-19 11:29:39'),
+	(14, 21, 0, 0, 0, 0, 0, '2023-06-19 11:29:39', '2023-06-19 11:29:39');
 
 -- Dumping structure for table lms_db.tbl_client_employment
 CREATE TABLE IF NOT EXISTS `tbl_client_employment` (
@@ -221,14 +225,16 @@ CREATE TABLE IF NOT EXISTS `tbl_client_employment` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`employment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_client_employment: ~4 rows (approximately)
+-- Dumping data for table lms_db.tbl_client_employment: ~5 rows (approximately)
 INSERT INTO `tbl_client_employment` (`employment_id`, `client_id`, `employer_id`, `employer_address`, `employer_contact_no`, `employment_position`, `employment_income`, `employment_status`, `employment_length`, `last_employment`, `current_status`, `date_added`, `date_last_modified`) VALUES
 	(1, 8, 1, 'Alijis', '09096836075', 'a', 30.000, 'a', 'a', 'a', 0, '2023-06-16 10:09:21', '2023-06-16 10:09:21'),
 	(2, 9, 1, 'Alijis', '09096836075', 'as', 500.000, 'a', 'a', 'a', 0, '2023-06-16 10:23:48', '2023-06-16 10:23:48'),
 	(3, 10, 1, 'Bago', '09096836075', 'A', 1000.000, 'Part Time', 'a', 'NA', 1, '2023-06-16 11:10:20', '2023-06-16 11:51:26'),
-	(4, 10, 3, 'a', '0912', 'Office', 1000.000, 'Part Time', '1', 'NA', 0, '2023-06-16 11:45:24', '2023-06-16 11:51:26');
+	(4, 10, 3, 'a', '0912', 'Office', 1000.000, 'Part Time', '1', 'NA', 0, '2023-06-16 11:45:24', '2023-06-16 11:51:26'),
+	(14, 20, 1, 'Bacolod', '123', 'Software Developer', 20000.000, 'Regular', '6', '', 1, '2023-06-19 11:29:39', '2023-06-19 11:29:39'),
+	(15, 21, 0, 'Bacolod', '456', 'Designer', 25000.000, 'Regular', '5', '', 1, '2023-06-19 11:29:39', '2023-06-19 11:29:39');
 
 -- Dumping structure for table lms_db.tbl_client_insurance
 CREATE TABLE IF NOT EXISTS `tbl_client_insurance` (
@@ -251,12 +257,14 @@ CREATE TABLE IF NOT EXISTS `tbl_client_insurance` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`client_insurance_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_client_insurance: ~2 rows (approximately)
+-- Dumping data for table lms_db.tbl_client_insurance: ~3 rows (approximately)
 INSERT INTO `tbl_client_insurance` (`client_insurance_id`, `client_id`, `insurance_id`, `insurance_amount`, `insurance_maturity`, `insurance_bank_transaction`, `insurance_unpaid_obligation`, `insurance_salary_withdrawal`, `paymaster_name`, `paymaster_address`, `paymaster_res_cert_no`, `paymaster_res_cert_issued_at`, `paymaster_res_cert_date`, `paymaster_deduct_salary`, `paymaster_client_deduct_salary`, `paymaster_conformity`, `date_added`, `date_last_modified`) VALUES
 	(1, 9, 5, 10.000, 20, 'sadas', 10.000, 'Semi-monthly', 'dsfsdfsdf', 'sdfsdf', 'ssdfs', 'dfsdf', '2023-06-16', 'Yes', 'No', 'No', '2023-06-16 10:50:04', '2023-06-16 10:51:39'),
-	(2, 10, 5, 1000.000, 230, 'Sds', 100.000, 'Semi-monthly', 'Mery', 'Bacolod', 'A', 'a', '2023-06-16', 'No', 'Yes', 'No', '2023-06-16 11:11:40', '2023-06-16 11:15:09');
+	(2, 10, 1, 1001.000, 231, 'Sds1', 101.000, 'Weekly', 'Mery1', 'Bacolod1', 'A1', 'a1', '2023-06-16', 'No', 'Yes', 'Yes', '2023-06-16 11:11:40', '2023-06-19 10:06:11'),
+	(12, 20, 0, 500.000, 0, '', 0.000, '', '', '', '', '', '0000-00-00', 'No', 'No', 'No', '2023-06-19 11:29:39', '2023-06-19 11:29:39'),
+	(13, 21, 0, 800.000, 0, '', 0.000, '', '', '', '', '', '0000-00-00', 'No', 'No', 'No', '2023-06-19 11:29:39', '2023-06-19 11:29:39');
 
 -- Dumping structure for table lms_db.tbl_client_reference
 CREATE TABLE IF NOT EXISTS `tbl_client_reference` (
@@ -268,16 +276,22 @@ CREATE TABLE IF NOT EXISTS `tbl_client_reference` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`reference_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_client_reference: ~6 rows (approximately)
+-- Dumping data for table lms_db.tbl_client_reference: ~9 rows (approximately)
 INSERT INTO `tbl_client_reference` (`reference_id`, `client_id`, `reference_no`, `reference_name`, `reference_address`, `date_added`, `date_last_modified`) VALUES
 	(1, 9, 1, 'Jude', 'Mansi', '2023-06-16 11:05:15', '2023-06-16 11:05:30'),
 	(2, 9, 2, 'Rafa', 'East Homes', '2023-06-16 11:05:15', '2023-06-16 11:05:30'),
 	(3, 9, 3, 'Mark', 'East', '2023-06-16 11:05:15', '2023-06-16 11:05:30'),
-	(4, 10, 1, 'Ginery', 'Pulupandan', '2023-06-16 11:11:40', '2023-06-16 11:14:38'),
-	(5, 10, 2, 'Mark', 'Bacolod', '2023-06-16 11:11:40', '2023-06-16 11:14:38'),
-	(6, 10, 3, 'Rafa', 'Sagay', '2023-06-16 11:11:40', '2023-06-16 11:14:38');
+	(4, 10, 1, 'Ginery1', 'Pulupandan1', '2023-06-16 11:11:40', '2023-06-19 09:50:32'),
+	(5, 10, 2, 'Mark1', 'Bacolod1', '2023-06-16 11:11:40', '2023-06-19 09:50:32'),
+	(6, 10, 3, 'Rafa1', 'Sagay1', '2023-06-16 11:11:40', '2023-06-19 09:50:32'),
+	(34, 20, 1, 'Judywen Guapin', 'Bacolod', '2023-06-19 11:29:39', '2023-06-19 11:29:39'),
+	(35, 20, 2, 'Ginery Songaling', 'Pulupandan', '2023-06-19 11:29:39', '2023-06-19 11:29:39'),
+	(36, 20, 3, 'Rafa Claveria', 'Sagay', '2023-06-19 11:29:39', '2023-06-19 11:29:39'),
+	(37, 21, 1, 'Judywen Guapin', 'Bacolod', '2023-06-19 11:29:39', '2023-06-19 11:29:39'),
+	(38, 21, 2, 'Ginery Songaling', 'Pulupandan', '2023-06-19 11:29:39', '2023-06-19 11:29:39'),
+	(39, 21, 3, 'Rafa Claveria', 'Sagay', '2023-06-19 11:29:39', '2023-06-19 11:29:39');
 
 -- Dumping structure for table lms_db.tbl_client_residence
 CREATE TABLE IF NOT EXISTS `tbl_client_residence` (
@@ -291,13 +305,15 @@ CREATE TABLE IF NOT EXISTS `tbl_client_residence` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`residence_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table lms_db.tbl_client_residence: ~3 rows (approximately)
 INSERT INTO `tbl_client_residence` (`residence_id`, `client_id`, `residence`, `residence_status`, `residence_certificate_no`, `certificate_issued_at`, `certificate_date`, `date_added`, `date_last_modified`) VALUES
 	(1, 8, 'Asada', 'Owned', '1', 'a', '2023-06-16', '2023-06-16 10:09:21', '2023-06-16 10:09:21'),
 	(2, 9, 'adsads', 'Owned', 'asd', 'asd', '2023-06-16', '2023-06-16 10:23:47', '2023-06-16 10:23:47'),
-	(3, 10, 'Tangub1', 'Owned', 'asd1', 'asd1', '2023-01-01', '2023-06-16 11:10:20', '2023-06-16 11:45:24');
+	(3, 10, 'Tangub1', 'Owned', 'asd1', 'asd1', '2023-01-01', '2023-06-16 11:10:20', '2023-06-16 11:45:24'),
+	(13, 20, 'Sagay City', 'Owned', '1', 'Sagay', '0000-00-00', '2023-06-19 11:29:39', '2023-06-19 11:29:39'),
+	(14, 21, 'Cauayan', 'Rented', '2', 'Bacolod', '0000-00-00', '2023-06-19 11:29:39', '2023-06-19 11:29:39');
 
 -- Dumping structure for table lms_db.tbl_client_soi
 CREATE TABLE IF NOT EXISTS `tbl_client_soi` (
@@ -311,12 +327,14 @@ CREATE TABLE IF NOT EXISTS `tbl_client_soi` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`soi_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_client_soi: ~2 rows (approximately)
+-- Dumping data for table lms_db.tbl_client_soi: ~3 rows (approximately)
 INSERT INTO `tbl_client_soi` (`soi_id`, `client_id`, `soi_name`, `soi_by`, `soi_monthly`, `soi_total`, `soi_obligation`, `date_added`, `date_last_modified`) VALUES
 	(1, 9, 'asdasda', 'sdadasd', 150.000, 100.000, 200.000, '2023-06-16 10:45:17', '2023-06-16 10:45:17'),
-	(2, 10, 'EMployment', 'Jerry Saydoquis', 30000.000, 50000.000, 10000.000, '2023-06-16 11:11:40', '2023-06-16 11:14:38');
+	(2, 10, 'EMployment1', 'Jerry Saydoquis1', 30001.000, 50001.000, 10001.000, '2023-06-16 11:11:40', '2023-06-19 09:50:32'),
+	(12, 20, 'Employment', 'Eduard Rino Carton', 20000.000, 1000.000, 100.000, '2023-06-19 11:29:39', '2023-06-19 11:29:39'),
+	(13, 21, '', '', 0.000, 1001.000, 101.000, '2023-06-19 11:29:39', '2023-06-19 11:29:39');
 
 -- Dumping structure for table lms_db.tbl_client_spouse
 CREATE TABLE IF NOT EXISTS `tbl_client_spouse` (
@@ -338,13 +356,15 @@ CREATE TABLE IF NOT EXISTS `tbl_client_spouse` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`spouse_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_client_spouse: ~3 rows (approximately)
+-- Dumping data for table lms_db.tbl_client_spouse: ~4 rows (approximately)
 INSERT INTO `tbl_client_spouse` (`spouse_id`, `client_id`, `spouse_name`, `spouse_residence`, `spouse_res_cert_no`, `spouse_res_cert_issued_at`, `spouse_res_cert_date`, `spouse_employer`, `spouse_employer_address`, `spouse_employer_contact`, `spouse_employment_status`, `spouse_employment_position`, `spouse_employment_length`, `spouse_employment_income`, `spouse_last_employment`, `date_added`, `date_last_modified`) VALUES
 	(1, 8, 'Roel dfgdf', 'asdasd', 'asdas', 'dasdasd', '2023-06-16', 'asdasd', 'asdasd', 'asdasdasd', 'dasdasd', NULL, 'asdasd', 0.000, 'asdasd', '2023-06-16 10:09:21', '2023-06-16 10:09:44'),
 	(2, 9, 'asdas', 'dasdasd', 'asdasd', 'asdasd', '2023-06-16', 'asdas', 'dasd', 'asdsd', 'asdasd', NULL, 'asdas', 0.000, 'dasd', '2023-06-16 10:24:13', '2023-06-16 10:24:13'),
-	(3, 10, 'Mary Grace1', 'Saydoquis1', '123', 'Bacoldo', '2023-06-16', 'BPFC', 'Bacolod', '123', 'Regular', NULL, '5', 1000.000, 'NA', '2023-06-16 11:11:40', '2023-06-16 12:00:53');
+	(3, 10, 'Mary Grace11', 'Saydoquis11', '1231', 'Bacoldo1', '2023-06-16', 'BPFC11', 'Bacolod1', '1231', 'Regular1', '11', '51', 1000.000, 'NA1', '2023-06-16 11:11:40', '2023-06-19 09:42:10'),
+	(13, 20, 'Meralyn Carton', 'Bago City', '2', 'Bago', '0000-00-00', 'BPFC', 'BC', '123546', 'Regular', 'Office Staff', '4', 10000.000, '', '2023-06-19 11:29:39', '2023-06-19 11:29:39'),
+	(14, 21, '', '', '', '', '0000-00-00', '', '', '', '', '', '', 0.000, '', '2023-06-19 11:29:39', '2023-06-19 11:29:39');
 
 -- Dumping structure for table lms_db.tbl_client_types
 CREATE TABLE IF NOT EXISTS `tbl_client_types` (
@@ -379,11 +399,12 @@ CREATE TABLE IF NOT EXISTS `tbl_collections` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`collection_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table lms_db.tbl_collections: ~0 rows (approximately)
 INSERT INTO `tbl_collections` (`collection_id`, `reference_number`, `branch_id`, `client_id`, `loan_id`, `amount`, `penalty_amount`, `interest`, `remarks`, `collection_date`, `status`, `user_id`, `chart_id`, `date_added`, `date_last_modified`) VALUES
-	(1, 'CL-202306151', 1, 1, 1, 838.000, 0.000, 212.627, '', '2023-06-15', 'F', 1, 5, '2023-06-15 10:06:11', '2023-06-15 10:06:11');
+	(1, 'CL-202306151', 1, 1, 1, 838.000, 0.000, 212.627, '', '2023-06-15', 'F', 1, 5, '2023-06-15 10:06:11', '2023-06-15 10:06:11'),
+	(2, 'CL-202306192', 1, 20, 2, 838.000, 0.000, 212.627, '', '2023-06-19', 'F', 1, 4, '2023-06-19 11:47:17', '2023-06-19 11:47:17');
 
 -- Dumping structure for table lms_db.tbl_comakers
 CREATE TABLE IF NOT EXISTS `tbl_comakers` (
@@ -553,11 +574,12 @@ CREATE TABLE IF NOT EXISTS `tbl_journal_entries` (
   `date_last_modified` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_manual` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`journal_entry_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table lms_db.tbl_journal_entries: ~0 rows (approximately)
 INSERT INTO `tbl_journal_entries` (`journal_entry_id`, `reference_number`, `cross_reference`, `journal_id`, `remarks`, `journal_date`, `user_id`, `status`, `date_added`, `date_last_modified`, `is_manual`) VALUES
-	(1, 'CRJ-20230615040611', 'CL-202306151', 4, '', '2023-06-15', 1, 'F', '2023-06-15 10:06:11', '2023-06-15 10:06:11', 'N');
+	(1, 'CRJ-20230615040611', 'CL-202306151', 4, '', '2023-06-15', 1, 'F', '2023-06-15 10:06:11', '2023-06-15 10:06:11', 'N'),
+	(2, 'CRJ-20230619054717', 'CL-202306192', 4, '', '2023-06-19', 1, 'F', '2023-06-19 11:47:17', '2023-06-19 11:47:17', 'N');
 
 -- Dumping structure for table lms_db.tbl_journal_entry_details
 CREATE TABLE IF NOT EXISTS `tbl_journal_entry_details` (
@@ -568,13 +590,16 @@ CREATE TABLE IF NOT EXISTS `tbl_journal_entry_details` (
   `debit` decimal(12,3) NOT NULL DEFAULT '0.000',
   `credit` decimal(12,3) NOT NULL DEFAULT '0.000',
   PRIMARY KEY (`journal_entry_detail_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table lms_db.tbl_journal_entry_details: ~2 rows (approximately)
 INSERT INTO `tbl_journal_entry_details` (`journal_entry_detail_id`, `journal_entry_id`, `chart_id`, `description`, `debit`, `credit`) VALUES
 	(1, 1, 5, '', 838.000, 0.000),
 	(2, 1, 38, '', 0.000, 212.627),
-	(3, 1, 17, '', 0.000, 625.373);
+	(3, 1, 17, '', 0.000, 625.373),
+	(4, 2, 4, '', 838.000, 0.000),
+	(5, 2, 38, '', 0.000, 212.627),
+	(6, 2, 17, '', 0.000, 625.373);
 
 -- Dumping structure for table lms_db.tbl_loans
 CREATE TABLE IF NOT EXISTS `tbl_loans` (
@@ -595,11 +620,12 @@ CREATE TABLE IF NOT EXISTS `tbl_loans` (
   `monthly_payment` decimal(12,3) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`loan_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table lms_db.tbl_loans: ~0 rows (approximately)
+-- Dumping data for table lms_db.tbl_loans: ~2 rows (approximately)
 INSERT INTO `tbl_loans` (`loan_id`, `reference_number`, `branch_id`, `client_id`, `loan_type_id`, `loan_amount`, `loan_period`, `loan_interest`, `due_date`, `status`, `loan_date`, `date_added`, `date_last_modified`, `service_fee`, `monthly_payment`, `user_id`) VALUES
-	(1, 'LN-20230613102357', 1, 1, 2, 15000.000, 24, 17.000, '0000-00-00', 'R', '2023-06-13', '2023-06-13 16:24:20', '2023-06-14 13:50:09', 10.000, 838.000, 0);
+	(1, 'LN-20230613102357', 1, 1, 2, 15000.000, 24, 17.000, '0000-00-00', 'R', '2023-06-13', '2023-06-13 16:24:20', '2023-06-14 13:50:09', 10.000, 838.000, 0),
+	(2, 'LN-20230619054227', 1, 20, 2, 15000.000, 24, 17.000, '0000-00-00', 'R', '2023-06-19', '2023-06-19 11:42:57', '2023-06-19 11:46:36', 1000.000, 838.000, 0);
 
 -- Dumping structure for table lms_db.tbl_loan_types
 CREATE TABLE IF NOT EXISTS `tbl_loan_types` (
@@ -856,7 +882,15 @@ SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTIT
 DELIMITER //
 CREATE TRIGGER `delete_client` AFTER DELETE ON `tbl_clients` FOR EACH ROW BEGIN
 DELETE FROM tbl_children WHERE client_id = OLD.client_id;
-DELETE FROM tbl_children WHERE client_id = OLD.client_id;
+DELETE FROM tbl_client_atm WHERE client_id = OLD.client_id;
+DELETE FROM tbl_client_business WHERE client_id = OLD.client_id;
+DELETE FROM tbl_client_dependents WHERE client_id = OLD.client_id;
+DELETE FROM tbl_client_employment WHERE client_id = OLD.client_id;
+DELETE FROM tbl_client_insurance WHERE client_id = OLD.client_id;
+DELETE FROM tbl_client_reference WHERE client_id = OLD.client_id;
+DELETE FROM tbl_client_residence WHERE client_id = OLD.client_id;
+DELETE FROM tbl_client_soi WHERE client_id = OLD.client_id;
+DELETE FROM tbl_client_spouse WHERE client_id = OLD.client_id;
 END//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
