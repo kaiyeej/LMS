@@ -354,8 +354,7 @@ class Loans extends Connection
             $monthly_interest = $loan_amount * $monthly_interest_rate;
             $principal_amount = $loan_amount / $loan_period;
             $penalty = $Collection->penalty_per_month($loan_date, $row['loan_id']);
-            $payment = $Collection->collected_per_month($loan_date, $row['loan_id']);
-
+            $payment = $count == 1 ? $Collection->collected_per_month($loan_date,$row['loan_id'])+$Collection->advance_collection($row['loan_id']) : $Collection->collected_per_month($loan_date,$row['loan_id']);
             $balance -= ($payment + $penalty);
 
 
@@ -567,6 +566,8 @@ class Loans extends Connection
                     $this->metadata('loan_interest', 'int', 11),
                     $this->metadata('due_date', 'date'),
                     $this->metadata('loan_date', 'date'),
+                    $this->metadata('main_loan_id',  'int', 11),
+                    $this->metadata('deduct_to_loan',  'int', 1),
                     $this->metadata('status', 'varchar', 1, 'NOT NULL', "'A'", '', "P - Pending; A - Approved; R - Released; D - Denied; F- Fully paid"),
                     $default['user_id'],
                     $default['date_added'],

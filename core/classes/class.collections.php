@@ -38,6 +38,9 @@ class Collections extends Connection
             'penalty_amount'    => $this->clean($this->inputs['penalty_amount']),
             'remarks'           => $this->clean($this->inputs['remarks']),
             'user_id'           => $this->clean($_SESSION['lms_user_id']),
+            'atm_balance'       => $this->clean($this->inputs['atm_balance']),
+            'atm_withdrawal'    => $this->clean($this->inputs['atm_withdrawal']),
+            'atm_charge'        => $this->clean($this->inputs['atm_charge']),
         );
 
         $cl_id = $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
@@ -109,6 +112,9 @@ class Collections extends Connection
                 'collection_date'   => $this->clean($this->inputs['collection_date']),
                 'remarks'           => $this->clean($this->inputs['remarks']),
                 'user_id'           => $this->clean($_SESSION['lms_user_id']),
+                'atm_balance'       => $this->clean($this->inputs['atm_balance']),
+                'atm_withdrawal'    => $this->clean($this->inputs['atm_withdrawal']),
+                'atm_charge'        => $this->clean($this->inputs['atm_charge']),
             );
 
             return $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");
@@ -203,6 +209,13 @@ class Collections extends Connection
     public function collected_per_month($date, $loan_id)
     {
         $result = $this->select("tbl_collections as c, tbl_loans as l", 'sum(c.amount) as total', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND (MONTH(c.collection_date) = MONTH('$date') AND YEAR(c.collection_date)= YEAR('$date'))");
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+
+    public function advance_collection($loan_id)
+    {
+        $result = $this->select("tbl_collections as c, tbl_loans as l", 'sum(c.amount) as total', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND c.collection_date <= l.loan_date");
         $row = $result->fetch_assoc();
         return $row['total'];
     }
@@ -388,5 +401,41 @@ class Collections extends Connection
         $response['success_import'] = $success_import;
         $response['unsuccess_import'] = $unsuccess_import;
         return $response;
+    }
+
+    public function schema()
+    {
+        if (DEVELOPMENT) {
+            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
+            $default['user_id'] = $this->metadata('user_id', 'int', 11);
+
+
+            // TABLE HEADER
+            $tables[] = array(
+                'name'      => $this->table,
+                'primary'   => $this->pk,
+                'fields' => array(
+                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                    $this->metadata($this->name, 'varchar', 75),
+                    $this->metadata('branch_id', 'int', 11),
+                    $this->metadata('client_id', 'int', 11),
+                    $this->metadata('loan_id', 'int', 11),
+                    $this->metadata('amount', 'decimal', '12,3'),
+                    $this->metadata('penalty_amount', 'decimal', '12,3'),
+                    $this->metadata('interest', 'decimal', '12,3'),
+                    $this->metadata('remarks', 'varchar', 250),
+                    $this->metadata('collection_date', 'date'),
+                    $this->metadata('atm_balance', 'decimal', '12,3'),
+                    $this->metadata('atm_charge', 'decimal', '12,3'),
+                    $this->metadata('status', 'varchar', 1),
+                    $default['user_id'],
+                    $default['date_added'],
+                    $default['date_last_modified']
+                )
+            );
+
+            return $this->schemaCreator($tables);
+        }
     }
 }
