@@ -14,9 +14,9 @@
                         <table id="tbl_import_template">
                             <tr>
                                 <th>Chart Code</th>
-                                <th>Type (Main/Sub)</th>
-                                <th>Chart Classification Code (For Main Only)</th>
-                                <th>Main Chart Code (For Sub Only)</th>
+                                <th>Type (M/S)</th>
+                                <th>Chart Classification (For Main Only)</th>
+                                <th>Main Chart (For Sub Only)</th>
                                 <th>Chart of Account</th>
                             </tr>
                             <tr>

@@ -98,6 +98,17 @@ class ChartClassification extends Connection
             return $this->schemaCreator($tables);
         }
     }
+
+    public function idByName($name)
+    {
+        $result = $this->select($this->table, $this->pk, "UCASE($this->name) = UCASE('$name')");
+
+        if ($result->num_rows < 1)
+            return 0;
+
+        $row = $result->fetch_assoc();
+        return $row[$this->pk];
+    }
 }
 
 // CREATE TABLE `tbl_chart_classification` (
