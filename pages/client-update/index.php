@@ -24,7 +24,7 @@
                         <div class="card-header">
                             <div class="col-md-12">
                                 <div class="author-box-name">
-                                    <a href="#">
+                                    <a href="clients">
                                         <span><i class="fa-solid fa-angles-left"></i> Back to Clients</span>
                                     </a>
                                     <a href="#">

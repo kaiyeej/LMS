@@ -77,6 +77,20 @@ class JournalEntry extends Connection
         }
     }
 
+    public function view_details($primary_id = null)
+    {
+        $primary_id = $primary_id == null ? $this->inputs['id'] : $primary_id;
+        $Users = new Users;
+        $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $row['encoded_by'] = $Users->fullname($row['user_id']);
+            return $row;
+        } else {
+            return null;
+        }
+    }
+
     public function remove()
     {
         $ids = implode(",", $this->inputs['ids']);
@@ -110,8 +124,13 @@ class JournalEntry extends Connection
     public function name($primary_id)
     {
         $result = $this->select($this->table, $this->name, "$this->pk = '$primary_id'");
-        $row = $result->fetch_assoc();
-        return $row[$this->name];
+        if($result->num_rows > 0){
+            $row = $result->fetch_assoc();
+            return $row[$this->name];
+        }else{
+            return null;
+        }
+        
     }
 
     public function dataRow($primary_id, $field)

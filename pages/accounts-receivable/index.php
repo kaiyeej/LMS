@@ -38,7 +38,7 @@
                                     </span>
                                     <span class="text"> Generate</span>
                                 </button>
-                                <button type="button" onclick="exportTableToExcel(this,'dt_entries','Loan-Type-Report')" class="btn btn-success btn-icon-split">
+                                <button type="button" onclick="exportTableToExcel(this,'dt_entries','Accounts-Receivables')" class="btn btn-success btn-icon-split">
                                     <span class="icon">
                                         <i class="ti ti-cloud-down"></i>
                                     </span>

@@ -408,13 +408,13 @@
     
 
     function get_property(id) {
-        var params = "client_id = '" + id + "'";
+        var param = "client_id = '" + id + "'";
         $.ajax({
             type: "POST",
             url: "controllers/sql.php?c=" + route_settings.class_name + "&q=get_property",
             data: {
                 input: {
-                    params: params
+                    param: param
                 }
             },
             success: function(data) {
@@ -427,13 +427,13 @@
     }
 
     function get_children(id) {
-        var params = "client_id = '" + id + "'";
+        var param = "client_id = '" + id + "'";
         $.ajax({
             type: "POST",
             url: "controllers/sql.php?c=" + route_settings.class_name + "&q=get_children",
             data: {
                 input: {
-                    params: params
+                    param: param
                 }
             },
             success: function(data) {

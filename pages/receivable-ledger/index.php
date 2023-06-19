@@ -22,13 +22,13 @@
                     <div class="col-lg-3">
                         <label><strong>Start Date</strong></label>
                         <div>
-                            <input type="date" required class="form-control" id="start_date" name="input[start_date]">
+                            <input type="date" class="form-control" id="start_date" name="input[start_date]">
                         </div>
                     </div>
                     <div class="col-lg-3">
                         <label><strong>End Date</strong></label>
                         <div>
-                            <input type="date" required class="form-control" id="end_date" name="input[end_date]">
+                            <input type="date" class="form-control" id="end_date" name="input[end_date]">
                         </div>
                     </div>
                     <div class="col-lg-3">
@@ -110,13 +110,14 @@
     $("#frm_generate").submit(function(e) {
         e.preventDefault();
         getReport();
+        getTotal();
     });
 
 
     function getTotal() {
         var client_id = $("#client_id").val();
-        var start_date = $("#start_date").val();
-        var end_date = $("#end_date").val();
+        var start_date = $("#start_date").val() == "" ? 0 : $("#start_date").val();
+        var end_date = $("#end_date").val() == "" ? 0 : $("#end_date").val();
 
         $.ajax({
             type: "POST",
@@ -142,6 +143,7 @@
                         minimumFractionDigits: 2
                     }));
                 }
+                
             }
         });
     }

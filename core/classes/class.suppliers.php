@@ -62,8 +62,12 @@ class Suppliers extends Connection
     public function name($primary_id)
     {
         $result = $this->select($this->table, 'supplier_name', "$this->pk = '$primary_id'");
-        $row = $result->fetch_assoc();
-        return $row['supplier_name'];
+        if($result->num_rows > 0){
+            $row = $result->fetch_assoc();
+            return $row['supplier_name'];
+        }else{
+            return null;
+        }
     }
 
     public function import()

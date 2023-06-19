@@ -157,6 +157,53 @@
         });
     }
 
+    function loanDetails(){
+        getPenalty();
+        var loan_id = $("#loan_id").val();
+        var param = "loan_id= '"+loan_id+"' ";
+        $("#dt_loan_details").DataTable().destroy();
+        $("#dt_loan_details").DataTable({
+            "processing": true,
+            "searching": false,
+            "paging": false,
+            "ordering": false,
+            "info": false,
+            "order": [
+                [2, 'desc']
+            ],
+            "ajax": {
+                "url": "controllers/sql.php?c=Loans&q=statement_of_accounts",
+                "dataSrc": "data",
+                "method": "POST",
+                "data": {
+                    input: {
+                        param: param
+                    }
+                },
+            },
+            "columns": [
+                {
+                    "data": "date"
+                },
+                {
+                    "data": "payment"
+                },
+                {
+                    "data": "interest"
+                },
+                {
+                    "data": "penalty"
+                },
+                {
+                    "data": "applicable_principal"
+                },
+                {
+                    "data": "balance"
+                }
+            ]
+        });
+    }
+
     $('#branch_id').change(function() {
         getSelectOption('Clients', 'client_id', 'client_fullname', "branch_id='" + $(this).val() + "'");
     })

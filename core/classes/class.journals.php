@@ -44,7 +44,12 @@ class Journals extends Connection
     {
         $primary_id = $this->inputs['id'];
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
-        return $result->fetch_assoc();
+        if ($result->num_rows > 0) {
+            return $result->fetch_assoc();
+        } else {
+            return null;
+        }
+        
     }
 
     public function remove()
@@ -57,21 +62,33 @@ class Journals extends Connection
     public function name($primary_id)
     {
         $result = $this->select($this->table, 'journal_name', "$this->pk = '$primary_id'");
-        $row = $result->fetch_assoc();
-        return $row['journal_name'];
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['journal_name'];
+        } else {
+            return null;
+        }
     }
 
     public function journal_code($primary_id)
     {
         $result = $this->select($this->table, 'journal_code', "$this->pk = '$primary_id'");
-        $row = $result->fetch_assoc();
-        return $row['journal_code'];
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['journal_code'];
+        } else {
+            return null;
+        }
     }
 
     public function jl_data($code)
     {
         $result = $this->select($this->table, '*', "journal_name like '%$code%'");
-        return $result->fetch_assoc();
+        if ($result->num_rows > 0) {
+            return $result->fetch_assoc();
+        } else {
+            return null;
+        }
     }
 
     public function idByName($name)

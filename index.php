@@ -69,6 +69,9 @@ $User = new Users;
         line-height: 42px;
     }
 
+    label{
+      font-weight: bold !important;
+    }
   </style>
 </head>
 
@@ -315,10 +318,12 @@ $User = new Users;
       } else if (route_settings.class_name == "Loans") {
         $('#loan_container .form-control').attr('readonly', false);
         $(".select2").prop("disabled", false);
+        $("#div_sample_calculation").show();
+        $("#div_soa").hide();
         sampleCalculation();
         $("#btn_submit").show();
-        $("#btn_release").hide();
-        // $("#btn_deny").hide();
+        // $("#btn_release").hide();
+        $("#btn_reloan").hide();
 
       }
 
@@ -428,15 +433,23 @@ $User = new Users;
               $('#loan_container :input').attr('readonly', true);
               $(".select2").prop("disabled", true);
               $("#btn_submit").hide();
-              $("#btn_release").hide();
-              // $("#btn_deny").hide();
+              // $("#btn_release").hide();
+              if(jsonParse.data['status'] == "R"){
+                $("#btn_reloan").show();
+              }else{
+                $("#btn_reloan").hide();
+              }
             } else if (jsonParse.data['status'] == "A") {
               $("#btn_submit").show();
-              $("#btn_release").show();
-              // $("#btn_deny").show();
+              // $("#btn_release").show();
+              $("#btn_reloan").hide();
             }
             clients();
-            sampleCalculation();
+            
+            $("#div_sample_calculation").hide();
+            $("#div_soa").show();
+            loanDetails();
+            $("#hidden_id_2").val(id);
           }
 
 

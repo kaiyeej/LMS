@@ -126,7 +126,7 @@ class ChartOfAccounts extends Connection
             }
         }
 
-        $data = '<table class="div1" width="100%" cellspacing="0">
+        $data = '<table id="dt_entries" class="div1" width="100%" cellspacing="0">
                     <thead style="background: #1f384b;">
                         <tr style="text-align:center;">
                             <td style="background: #1f384b;color:#fff;border: 0px;border-right: 1px solid #bbbbbb;">CHART OF ACCOUNTS</td>' . $th_jl . '

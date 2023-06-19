@@ -29,6 +29,121 @@ class Loans extends Connection
         return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
     }
 
+    public function renew()
+    {
+
+        $primary_id = $this->inputs[$this->pk];
+        $row = $this->view($primary_id);
+        $deduct_to_loan = (!isset($this->inputs['deduct_to_loan']) ? 0 : 1);
+        $form = array(
+            $this->name         => $this->clean($this->inputs[$this->name]),
+            'branch_id'         => $row['branch_id'],
+            'client_id'         => $row['client_id'],
+            'loan_type_id'      => $row['loan_type_id'],
+            'loan_date'         => $this->clean($this->inputs['loan_date']),
+            'loan_amount'       => $this->clean($this->inputs['loan_amount']),
+            'loan_period'       => $this->clean($this->inputs['loan_period']),
+            'loan_interest'     => $this->clean($this->inputs['loan_interest']),
+            'service_fee'       => $this->clean($this->inputs['service_fee']),
+            'monthly_payment'   => $this->clean($this->inputs['monthly_payment']),
+            'main_loan_id'      => $this->clean($this->inputs['loan_id']),
+            'deduct_to_loan'    => $deduct_to_loan,
+        );
+
+        if (isset($this->inputs['status']))
+            $form['status'] = $this->inputs['status'];
+
+        $sql =  $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
+
+        if ($deduct_to_loan != 1) {
+            if ($sql) {
+                $Branches = new Branches;
+                $ChartOfAccounts = new ChartOfAccounts;
+                $Journals = new Journals;
+                $LoanTypes = new LoanTypes;
+                $jl = $Journals->jl_data('Collection');
+                $ref_code = $jl['journal_code'] . "-" . date('YmdHis');
+                $branch_name = str_replace(" Branch", "", $Branches->name($this->clean($row['branch_id'])));
+
+                $loan_row = $this->loan_data($this->inputs['loan_id']);
+                $amount = $this->clean($this->inputs['amount']);
+                $monthly_interest_rate = ($loan_row['loan_interest'] / 100) / 12;
+                $total_interest = ($loan_row['loan_amount'] * $monthly_interest_rate) * $loan_row['loan_period'];
+                $interest = ($amount / ($loan_row['loan_amount'] + $total_interest)) * $total_interest;
+
+                $collection_num = 'CL-' . date('YmdHis');
+
+                $form_cl = array(
+                    'reference_number'  => $collection_num,
+                    'loan_id'           => $this->inputs['loan_id'],
+                    'branch_id'         => $row['branch_id'],
+                    'chart_id'          => $this->clean($this->inputs['chart_id']),
+                    'client_id'         => $row['client_id'],
+                    'interest'          => $interest,
+                    'amount'            => $this->clean($this->inputs['amount']),
+                    'collection_date'   => $this->clean($this->inputs['loan_date']),
+                    'penalty_amount'    => $this->clean($this->inputs['penalty_amount']),
+                    'remarks'           => "Renew Loan for " . $row['reference_number'],
+                    'user_id'           => $this->clean($_SESSION['lms_user_id']),
+                );
+
+                $cl_id = $this->insert("tbl_collections", $form_cl, "Y");
+
+                if ($this->loan_balance($this->inputs['loan_id']) <= 0) {
+                    $form_finished = array(
+                        'status' => 'F'
+                    );
+                    $this->update("tbl_loans", $form_finished, 'loan_id="' . $this->inputs['loan_id'] . '"');
+                }
+
+
+                $form_journal = array(
+                    'reference_number'  => $ref_code,
+                    'cross_reference'   => $collection_num,
+                    'journal_id'        => $jl['journal_id'],
+                    'remarks'           => "Renew loan (Loan ID: " . $this->clean($this->inputs[$this->name]),
+                    'journal_date'      => $this->inputs['loan_date'],
+                    'status'            => 'F',
+                    'user_id'           => $_SESSION['lms_user_id'],
+                    'is_manual'         => 'N'
+                );
+
+                $journal_entry_id = $this->insert("tbl_journal_entries", $form_journal, 'Y');
+
+                // FOR CASH IN BANK
+                $cnb_total = $amount + $this->inputs['penalty_amount'];
+                $form_cnb = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $this->clean($this->inputs['chart_id']), 'debit' => $cnb_total);
+                $this->insert('tbl_journal_entry_details', $form_cnb);
+
+
+                // FOR INTEREST
+                $int_chart = $ChartOfAccounts->chart_data('Interest Income - ' . $branch_name);
+                $form_interest = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $int_chart['chart_id'], 'credit' => $interest);
+                $this->insert('tbl_journal_entry_details', $form_interest);
+
+
+                // FOR PENALTY
+                if ($this->inputs['penalty_amount'] > 0) {
+
+                    $penalty_chart = $ChartOfAccounts->chart_data('Penalty Income - ' . $branch_name);
+                    $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $penalty_chart['chart_id'], 'credit' => $this->inputs['penalty_amount']);
+                    $this->insert('tbl_journal_entry_details', $form_penalty);
+                }
+
+
+                // FOR LOANS RECEIVABLE
+                $lr_total = $cnb_total - ($this->inputs['penalty_amount'] + $interest);
+                $loan_type = $LoanTypes->name($row['loan_type_id']);
+                $lr_chart = $ChartOfAccounts->chart_data('Loans Receivable - ' . $loan_type . " - " . $branch_name);
+                $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $lr_chart['chart_id'], 'credit' => $lr_total);
+                $this->insert('tbl_journal_entry_details', $form_penalty);
+
+            }
+        }
+
+        return $sql;
+    }
+
     public function edit()
     {
         $primary_id = $this->inputs[$this->pk];
@@ -71,16 +186,19 @@ class Loans extends Connection
         return $rows;
     }
 
-    public function view()
+    public function view($primary_id = null)
     {
-        $primary_id = $this->inputs['id'];
+        $primary_id = $primary_id == null ? $this->inputs['id'] : $primary_id;
         $LoanTypes = new LoanTypes;
         $Clients = new Clients;
+        $Branches = new Branches;
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
         $row = $result->fetch_assoc();
         $row['loan_type'] = $LoanTypes->name($row['loan_type_id']);
         $row['amount'] = number_format($row['loan_amount'], 2);
         $row['client'] = $Clients->name($row['client_id']);
+        $row['branch_name'] = $Branches->name($row['branch_id']);
+        $row['loan_type'] = $LoanTypes->name($row['branch_id']);
         return $row;
     }
 
@@ -120,15 +238,24 @@ class Loans extends Connection
     public function name($primary_id)
     {
         $result = $this->select($this->table, 'reference_number', "$this->pk = '$primary_id'");
-        $row = $result->fetch_assoc();
-        return $row['reference_number'];
+        if($result->num_rows > 0){
+            $row = $result->fetch_assoc();
+            return $row['reference_number'];
+        }else{
+            return null;
+        }
+        
     }
 
     public function loan_client($primary_id)
     {
         $result = $this->select($this->table, 'client_id', "$this->pk = '$primary_id'");
-        $row = $result->fetch_assoc();
-        return $row['client_id'];
+        if($result->num_rows > 0){
+            $row = $result->fetch_assoc();
+            return $row['client_id'];
+        }else{
+            return null;
+        }
     }
 
     public function generate()
@@ -213,24 +340,31 @@ class Loans extends Connection
 
         $count = 1;
         $rows = array();
+
+        $monthly_interest_rate = ($loan_interest / 100) / 12;
+        $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
+
+        $balance = $total_amount_with_interest;
         $Collection = new Collections;
         while ($count <= $loan_period) {
 
-            $loan_date = date('M d, Y', strtotime('+1 month', strtotime($loan_date)));
+            $loan_date = date('Y-m-d', strtotime('+1 month', strtotime($loan_date)));
 
-            $monthly_interest_rate = ($loan_interest / 100) / 12;
-            $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
-            $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
+            // $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
             $monthly_interest = $loan_amount * $monthly_interest_rate;
             $principal_amount = $loan_amount / $loan_period;
+            $penalty = $Collection->penalty_per_month($loan_date, $row['loan_id']);
+            $payment = $Collection->collected_per_month($loan_date, $row['loan_id']);
+
+            $balance -= ($payment + $penalty);
 
 
-
-            $row['date'] = $loan_date;
-            $row['payment'] = number_format($Collection->collected_per_month($loan_date), 2);
+            $row['date'] = date('F Y', strtotime($loan_date));
+            $row['payment'] = number_format($payment, 2);
             $row['interest'] = number_format($monthly_interest, 2);
-            $row['penalty'] = number_format(0, 2);
+            $row['penalty'] = number_format($penalty, 2);
             $row['applicable_principal'] =  number_format($principal_amount, 2);
+            $row['balance'] =  number_format($balance, 2);
             $rows[] = $row;
 
             $count++;
@@ -297,8 +431,13 @@ class Loans extends Connection
     {
         $year = date('Y');
         $result = $this->select($this->table, "count(loan_id) as total", "YEAR(loan_date) = '$year' AND status = 'A'");
-        $row = $result->fetch_assoc();
-        return $row['total'];
+        if($result->num_rows > 0){
+            $row = $result->fetch_assoc();
+            return $row['total'];
+        }else{
+            return null;
+        }
+        
     }
 
     public function dashboard()
@@ -314,7 +453,7 @@ class Loans extends Connection
 
     public function penalty()
     {
-        $loan_id = $this->inputs['loan_id'];
+        $loan_id = isset($this->inputs['loan_id']) ? $this->inputs['loan_id'] : null;
         $collection_date = $this->inputs['collection_date'];
 
         $result = $this->select($this->table, '*', "loan_id='$loan_id'");
@@ -365,6 +504,32 @@ class Loans extends Connection
 
         // return $suggested_total." ".$payment_total;
     }
+
+    public function total_loan($loan_id)
+    {
+
+        $result = $this->select($this->table, 'loan_amount,loan_interest,loan_period', "loan_id='$loan_id'");
+        $row = $result->fetch_assoc();
+
+        $loan_interest = $row['loan_interest'];
+        $loan_period = $row['loan_period'];
+        $loan_amount = $row['loan_amount'];
+
+        $monthly_interest_rate = ($loan_interest / 100) / 12;
+        $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
+
+        return $total_amount_with_interest;
+    }
+
+    public function loan_balance($primary_id = null)
+    {
+        $primary_id = $primary_id == "" ? $this->inputs[$this->pk] : $primary_id;
+        $Collections = new Collections;
+        $bal = $this->total_loan($primary_id) - $Collections->total_collected($primary_id);
+
+        return $bal;
+    }
+
 
     public function idByName($reference_number)
     {

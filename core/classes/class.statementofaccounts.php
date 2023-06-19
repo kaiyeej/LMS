@@ -36,18 +36,18 @@ class StatementOfAccounts extends Connection
                             </thead>
                         <tbody>';
 
+            $monthly_interest_rate = ($loan_interest / 100) / 12;
+            $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
+            // $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
+            
             $count = 1;
-            $balance = $loan_amount;
+            $balance = $total_amount_with_interest;
             $Collection = new Collections;
             $total_payment = 0;
             $total_interest = 0;
             while ($count <= $loan_period) {
 
                 $loan_date = date('Y-m-d', strtotime('+1 month', strtotime($loan_date)));
-
-                $monthly_interest_rate = ($loan_interest / 100) / 12;
-                $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
-                $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
                 $monthly_interest = $loan_amount * $monthly_interest_rate;
                 $principal_amount = $loan_amount / $loan_period;
                 $penalty = $Collection->penalty_per_month($loan_date,$row['loan_id']);
