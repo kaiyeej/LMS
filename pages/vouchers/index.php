@@ -16,7 +16,7 @@
             </div>
             <div>
                 <div class="dropdown">
-                    <a href="#" data-toggle="dropdown" class="btn btn-info dropdown-toggle"><i class="fas fa-file-excel"></i> Template</a>
+                    <a href="#" data-toggle="dropdown" class="btn btn-info dropdown-toggle" style="display: none;"><i class="fas fa-file-excel"></i> Template</a>
                     <div class="dropdown-menu">
                         <a href="#" class="dropdown-item has-icon" onclick="exportTemplate()"><i class="fas fa-download"></i> Export</a>
                         <a href="#" class="dropdown-item has-icon" onclick="importClient()"><i class="far fa-upload"></i> Import</a>
@@ -259,46 +259,46 @@
         $("#reference_number").val(optionSelected + "-" + newStr[1]);
     }
 
-    function cancelVoucher(){
+    function cancelVoucher() {
         var journal_entry_id = $("#journal_entry_id").val();
         var voucher_id = $("#hidden_id_2").val();
 
         swal({
-            title: 'Are you sure?',
-            text: 'This entries will be cancelled!',
-            icon: 'warning',
-            buttons: true,
-            dangerMode: true,
-          })
-          .then((willDelete) => {
-            if (willDelete) {
-              $.ajax({
-                type: "POST",
-                url: "controllers/sql.php?c=" + route_settings.class_name + "&q=cancel",
-                data: {
-                  input: {
-                    journal_entry_id : journal_entry_id,
-                    voucher_id : voucher_id
-                  }
-                },
-                success: function(data) {
-                  getEntries();
-                  var json = JSON.parse(data);
-                  if (json.data == 1) {
-                    success_cancel();
-                    $("#modalEntry2").modal('hide');
-                  }else {
-                    failed_query(json);
-                  }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                  errorLogger('Error:', textStatus, errorThrown);
+                title: 'Are you sure?',
+                text: 'This entries will be cancelled!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "POST",
+                        url: "controllers/sql.php?c=" + route_settings.class_name + "&q=cancel",
+                        data: {
+                            input: {
+                                journal_entry_id: journal_entry_id,
+                                voucher_id: voucher_id
+                            }
+                        },
+                        success: function(data) {
+                            getEntries();
+                            var json = JSON.parse(data);
+                            if (json.data == 1) {
+                                success_cancel();
+                                $("#modalEntry2").modal('hide');
+                            } else {
+                                failed_query(json);
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            errorLogger('Error:', textStatus, errorThrown);
+                        }
+                    });
+                } else {
+                    swal("Cancelled", "Entries are safe :)", "error");
                 }
-              });
-            } else {
-              swal("Cancelled", "Entries are safe :)", "error");
-            }
-          });
+            });
 
     }
 
