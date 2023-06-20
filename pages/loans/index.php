@@ -249,6 +249,7 @@
         var loan_amount = $("#loan_amount").val();
         var loan_period = $("#loan_period").val();
         var loan_interest = $("#loan_interest").val();
+        var monthly_payment = $("#monthly_payment").val();
 
         $("#dt_calculation").DataTable().destroy();
         $("#dt_calculation").DataTable({
@@ -266,7 +267,8 @@
                         loan_interest: loan_interest,
                         loan_period: loan_period,
                         loan_amount: loan_amount,
-                        loan_date: loan_date
+                        loan_date: loan_date,
+                        monthly_payment:monthly_payment
                     }
                 },
             },
@@ -303,7 +305,7 @@
             "bInfo": false,
             "ordering": false,
             "ajax": {
-                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=sample_calculation",
+                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=statement_of_accounts",
                 "dataSrc": "data",
                 "method": "POST",
                 "data": {

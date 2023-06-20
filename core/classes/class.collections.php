@@ -306,6 +306,9 @@ class Collections extends Connection
                 'amount' => $row['deduction'],
                 'penalty_amount' => 0,
                 'remarks' => "",
+                'atm_balance' => $row['atm_balance'],
+                'atm_withdrawal' => $row['atm_withdrawal'],
+                'atm_charge' => $row['atm_charge']
             ];
 
             $Collections = new Collections;

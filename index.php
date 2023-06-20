@@ -452,7 +452,7 @@ $User = new Users;
             
             $("#div_sample_calculation").hide();
             $("#div_soa").show();
-            loanDetails();
+            loanDetails(2);
             $("#hidden_id_2").val(id);
           }
 

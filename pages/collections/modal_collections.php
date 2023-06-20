@@ -69,7 +69,7 @@
                         </div>
                         <div class="col-lg-5" style="padding: 10px;border: 1px dashed #ff9800;border-radius: 5px;">
                             <div class="table-responsive">
-                                <div class="table-responsive" style="padding-top: 5px;max-height: 350px;">
+                                <div class="table-responsive" style="padding-top: 5px;max-height: 500px;">
                                     <table id="dt_loan_details" class="table table-striped" style="font-size:9px;font-weight:bold;width: 100%!important;">
                                         <thead style="background: #1f384b;">
                                             <tr>
