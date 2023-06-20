@@ -11,6 +11,8 @@ class StatementOfAccounts extends Connection
         $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
         $data = " ";
         $LoanTypes = new LoanTypes;
+        $ClientInsurance = new ClientInsurance;
+        $Insurance = new Insurance;
         $result = $this->select($this->table, '*', "$param");
         while($row = $result->fetch_assoc()) {
 
@@ -18,12 +20,16 @@ class StatementOfAccounts extends Connection
             $loan_period = $row['loan_period'];
             $loan_amount = $row['loan_amount'];
             $loan_date = $row['loan_date'];
-
+            
             $data .= '<div class="col-md-12 table-responsive" style="padding-top: 25px">
                         <h4><center>' . $LoanTypes->name($row['loan_type_id']) . '</center></h4><br>
-                        <strong> Reference #: ' .$row['reference_number'] . '</strong><br>
+
+                        
+                        <strong> Loan Amount : ' . number_format($row['loan_amount'],2) . '</strong><br>
                         <strong> Date #: ' . date('M d, Y', strtotime($row['loan_date'])) . '</strong><br>
-                        <strong> Loan Amount : ' . number_format($row['loan_amount'],2) . '</strong><br><br>
+                        <strong> Term #: ' . $row['loan_period'] . '</strong><br>
+                        <strong> Insurance: ' . $Insurance->name($ClientInsurance->clientInsuranceID($row['client_id'])) . '</strong><br>
+                        <strong> Reference #: ' .$row['reference_number'] . '</strong><br><br><br>
                         <table class="table table-bordered" id="dt_entries" width="100%" cellspacing="0">
                             <thead>
                                 <tr>

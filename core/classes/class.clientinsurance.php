@@ -61,6 +61,13 @@ class ClientInsurance extends Connection
         return $row;
     }
 
+    public function clientInsuranceID($primary_id)
+    {
+        $result = $this->select($this->table, $this->name, "client_id = '$primary_id'");
+        $row = $result->fetch_assoc();
+        return $row[$this->name];
+    }
+
     public function schema()
     {
         if (DEVELOPMENT) {
