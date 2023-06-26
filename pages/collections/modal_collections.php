@@ -80,6 +80,10 @@
                                                 <th style="color:#fff;">Applicable to Principal</th>
                                                 <th style="color:#fff;">Balance</th>
                                             </tr>
+                                            <tr style="background: #fafafa;">
+                                                <th colspan="5" style="text-align: right;">Loan Amount:</th>
+                                                <th style="text-align: right;"><span id="loan_amount_span"></span></th>
+                                            </tr>
                                         </thead>
                                     </table>
                                 </div>

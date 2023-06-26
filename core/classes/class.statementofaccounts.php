@@ -40,7 +40,12 @@ class StatementOfAccounts extends Connection
                                     <th>BALANCE OUTSTANDING</th>
                                 </tr>
                             </thead>
-                        <tbody>';
+                        <tbody>
+                            <tr>
+                                <td colspan="5" style="text-align:right;font-weight:bold;">Loan Amount:</td>
+                                <td style="text-align:right;font-weight:bold;">'.number_format($loan_amount,2).'</td>
+                            </tr>
+                        ';
 
             $monthly_interest_rate = ($loan_interest / 100) / 12;
             $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
@@ -72,13 +77,14 @@ class StatementOfAccounts extends Connection
                 $total_payment += $payment;
                 $total_interest += $monthly_interest;
                 
+                $principal_ = $principal_amount <= 0 ? "0.00" : number_format($principal_amount, 2);
 
                 $data .= "<tr>";
                 $data .= "<td>" . date('F Y', strtotime($loan_date)) . "</td>";
                 $data .= "<td>" . number_format($payment, 2) . "</td>";
                 $data .= "<td style='text-align: right;'>" . number_format($monthly_interest, 2) . "</td>";
                 $data .= "<td style='text-align: right;'>" . number_format($penalty, 2) . "</td>";
-                $data .= "<td style='text-align: right;'>" . number_format($principal_amount, 2) . "</td>";
+                $data .= "<td style='text-align: right;'>" . $principal_ . "</td>";
                 $data .= "<td style='text-align: right;'>" . number_format($balance, 2) . "</td>";
                 $data .= "</tr>";
 

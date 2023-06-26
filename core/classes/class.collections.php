@@ -137,11 +137,15 @@ class Collections extends Connection
         return $rows;
     }
 
-    public function view()
+    public function view($primary_id = null)
     {
-        $primary_id = $this->inputs['id'];
+        $primary_id = $primary_id == null ? $this->inputs['id'] : $primary_id;
+        $Loans = new Loans;
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
-        return $result->fetch_assoc();
+        $row = $result->fetch_assoc();
+        $loan = $Loans->view($row['loan_id']);
+        $row['loan_amount'] = number_format($loan['loan_amount'],2);
+        return $row;
     }
 
     public function remove()

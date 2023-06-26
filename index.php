@@ -428,11 +428,13 @@ $User = new Users;
             $(".client_span").html(jsonParse.data['client_fullname']);
           } else if (route_settings.class_name == "Collections") {
             // getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + json['client_id'] + "' AND status = 'R'");
+            $("#loan_amount_span").html(json['loan_amount']);
             clients();
             $('.input-item').attr('readonly', true);
             $(".select2").prop("disabled", true);
             $("#btn_submit").hide();
           } else if (route_settings.class_name == "Loans") {
+            $("#loan_amount_span").html(json['loan_amount']);
             if (jsonParse.data['status'] != "A") {
               $('#loan_container :input').attr('readonly', true);
               $(".select2").prop("disabled", true);
