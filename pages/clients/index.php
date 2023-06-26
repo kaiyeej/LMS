@@ -233,7 +233,7 @@
 
     $(document).ready(function() {
         getEntries();
-        getSelectOption('Insurance', 'insurance_id', 'insurance_name');
+        getSelectOption('Insurance', 'insurance_id', 'insurance_name', '', [], 0);
         getSelectOption('Branches', 'branch_id', 'branch_name');
         getSelectOption('ClientTypes', 'client_type_id', 'client_type');
         getSelectOption('Employers', 'employer_id', 'employer_name', '', ['employer_address', 'employer_contact_no']);

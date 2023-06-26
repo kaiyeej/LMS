@@ -468,53 +468,52 @@
                                         <div class="row">
                                             <div class="col-lg-6" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Business Name</label>
-                                                <input type="text" class="required form-control input-item"
-                                                    autocomplete="off" placeholder="Business name"
-                                                    name="input[business_name]" id="client_business_name">
+                                                <input type="text" class="form-control input-item" autocomplete="off"
+                                                    placeholder="Business name" name="input[business_name]"
+                                                    id="client_business_name">
                                             </div>
                                             <div class="col-lg-6" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Address</label>
-                                                <input type="text" class="required form-control input-item"
-                                                    autocomplete="off" placeholder="Business address"
-                                                    name="input[business_address]" id="client_business_address">
+                                                <input type="text" class="form-control input-item" autocomplete="off"
+                                                    placeholder="Business address" name="input[business_address]"
+                                                    id="client_business_address">
                                             </div>
 
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Telephone No.</label>
-                                                <input type="text" class="required form-control input-item"
-                                                    autocomplete="off" placeholder="Telephone number"
-                                                    name="input[business_contact]" id="client_business_tel_no">
+                                                <input type="text" class="form-control input-item" autocomplete="off"
+                                                    placeholder="Telephone number" name="input[business_contact]"
+                                                    id="client_business_tel_no">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Position</label>
-                                                <input type="text" class="required form-control input-item"
-                                                    autocomplete="off" placeholder="Business position"
-                                                    name="input[business_position]" id="client_business_position">
+                                                <input type="text" class="form-control input-item" autocomplete="off"
+                                                    placeholder="Business position" name="input[business_position]"
+                                                    id="client_business_position">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Kind</label>
-                                                <input type="text" class="required form-control input-item"
-                                                    autocomplete="off" placeholder="Business kind"
-                                                    name="input[business_kind]" id="client_business_kind">
+                                                <input type="text" class="form-control input-item" autocomplete="off"
+                                                    placeholder="Business kind" name="input[business_kind]"
+                                                    id="client_business_kind">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Length</label>
-                                                <input type="number" class="required form-control input-item"
-                                                    autocomplete="off" placeholder="Business length"
-                                                    name="input[business_length]" id="client_business_length">
+                                                <input type="number" class="form-control input-item" autocomplete="off"
+                                                    placeholder="Business length" name="input[business_length]"
+                                                    id="client_business_length">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Capital Invested</label>
-                                                <input type="number" step="0.01"
-                                                    class="required form-control input-item" autocomplete="off"
-                                                    placeholder="Capital invested" name="input[business_capital]"
+                                                <input type="number" step="0.01" class="form-control input-item"
+                                                    autocomplete="off" placeholder="Capital invested"
+                                                    name="input[business_capital]"
                                                     id="client_business_capital_invested">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Business Type</label>
-                                                <select class="required form-control input-item"
-                                                    id="client_business_type" name="input[business_type]"
-                                                    style="width:100%;">
+                                                <select class="form-control input-item" id="client_business_type"
+                                                    name="input[business_type]" style="width:100%;">
                                                     <option value="">Please Select</option>
                                                     <option value="Sole">Sole</option>
                                                     <option value="Owner">Owner</option>
@@ -529,42 +528,40 @@
                                         <div class="form-group row">
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Insurance</label>
-                                                <select class="required form-control input-item" id="insurance_id"
+                                                <select class="form-control input-item" id="insurance_id"
                                                     name="input[insurance_id]" style="width:100%;">
                                                 </select>
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Amount</label>
-                                                <input type="number" step="0.01"
-                                                    class="required form-control input-item" autocomplete="off"
-                                                    placeholder="Insurance amount" name="input[insurance_amount]"
-                                                    id="client_insurance_amount">
+                                                <input type="number" step="0.01" class="form-control input-item"
+                                                    autocomplete="off" placeholder="Insurance amount"
+                                                    name="input[insurance_amount]" id="client_insurance_amount">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Maturity</label>
-                                                <input type="number" class="required form-control input-item"
-                                                    autocomplete="off" placeholder="Insurance maturity"
-                                                    name="input[insurance_maturity]" id="client_insurance_maturity">
+                                                <input type="number" class="form-control input-item" autocomplete="off"
+                                                    placeholder="Insurance maturity" name="input[insurance_maturity]"
+                                                    id="client_insurance_maturity">
                                             </div>
 
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Bank Transaction</label>
-                                                <input type="text" class="required form-control input-item"
-                                                    autocomplete="off" placeholder="Bank transaction"
+                                                <input type="text" class="form-control input-item" autocomplete="off"
+                                                    placeholder="Bank transaction"
                                                     name="input[insurance_bank_transaction]"
                                                     id="client_bank_transaction">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Unpaid Obligation</label>
-                                                <input type="number" step="0.01"
-                                                    class="required form-control input-item" autocomplete="off"
-                                                    placeholder="" name="input[insurance_unpaid_obligation]"
+                                                <input type="number" step="0.01" class="form-control input-item"
+                                                    autocomplete="off" placeholder=""
+                                                    name="input[insurance_unpaid_obligation]"
                                                     id="client_unpaid_obligation">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Salary Withdrawal</label>
-                                                <select class="required form-control input-item"
-                                                    id="client_salary_withdrawal"
+                                                <select class="form-control input-item" id="client_salary_withdrawal"
                                                     name="input[insurance_salary_withdrawal]" style="width:100%;">
                                                     <option value="">Please Select</option>
                                                     <option value="Weekly">Weekly</option>
@@ -578,33 +575,33 @@
                                         <div class="form-group row">
                                             <div class="col-lg-6" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Paymaster Name</label>
-                                                <input type="text" class="required form-control input-item"
-                                                    autocomplete="off" placeholder="Paymaster fullname"
-                                                    name="input[paymaster_name]" id="client_paymaster_name">
+                                                <input type="text" class="form-control input-item" autocomplete="off"
+                                                    placeholder="Paymaster fullname" name="input[paymaster_name]"
+                                                    id="client_paymaster_name">
                                             </div>
                                             <div class="col-lg-6" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Residence</label>
-                                                <input type="text" class="required form-control input-item"
-                                                    autocomplete="off" placeholder="Paymaster address"
-                                                    name="input[paymaster_address]" id="client_paymaster_residence">
+                                                <input type="text" class="form-control input-item" autocomplete="off"
+                                                    placeholder="Paymaster address" name="input[paymaster_address]"
+                                                    id="client_paymaster_residence">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Resident Certificate #</label>
-                                                <input type="text" class="required form-control input-item"
-                                                    autocomplete="off" placeholder="Paymaster certificate number"
+                                                <input type="text" class="form-control input-item" autocomplete="off"
+                                                    placeholder="Paymaster certificate number"
                                                     name="input[paymaster_res_cert_no]"
                                                     id="client_paymaster_res_cert_no">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Issued At</label>
-                                                <input type="text" class="required form-control input-item"
-                                                    autocomplete="off" placeholder="Paymaster certificate issued at"
+                                                <input type="text" class="form-control input-item" autocomplete="off"
+                                                    placeholder="Paymaster certificate issued at"
                                                     name="input[paymaster_res_cert_issued_at]"
                                                     id="client_paymaster_res_cert_issued_at">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Certificate Date</label>
-                                                <input type="date" class="required input-item form-control input-item"
+                                                <input type="date" class="input-item form-control input-item"
                                                     autocomplete="off" placeholder="Paymaster certificate issued date"
                                                     name="input[paymaster_res_cert_date]"
                                                     id="client_paymaster_res_cert_date">
