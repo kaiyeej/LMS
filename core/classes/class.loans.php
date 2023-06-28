@@ -196,6 +196,7 @@ class Loans extends Connection
         $row = $result->fetch_assoc();
         $row['loan_type'] = $LoanTypes->name($row['loan_type_id']);
         $row['amount'] = number_format($row['loan_amount'], 2);
+        $row['monthly_payment'] = number_format($row['monthly_payment'], 2);
         $row['client'] = $Clients->name($row['client_id']);
         $row['branch_name'] = $Branches->name($row['branch_id']);
         $row['loan_type'] = $LoanTypes->name($row['branch_id']);

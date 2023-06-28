@@ -33,7 +33,8 @@ class Menus extends Connection
                 array('url' => 'statement-of-accounts', 'name' => 'Statement Of Accounts', 'class_name' => 'StatementOfAccounts', 'has_detail' => 0),
             ),
             'accounting' => array(
-
+                
+                array('url' => 'cash-positioning', 'name' => 'Cash Positioning', 'class_name' => 'CashPositioning', 'has_detail' => 0),
                 array('url' => 'chart-of-accounts', 'name' => 'Chart of Accounts', 'class_name' => 'ChartOfAccounts', 'has_detail' => 0),
                 array('url' => 'chart-classification', 'name' => 'Chart Classification', 'class_name' => 'ChartClassification', 'has_detail' => 0),
                 array('url' => 'journals', 'name' => 'Journals', 'class_name' => 'Journals', 'has_detail' => 0),

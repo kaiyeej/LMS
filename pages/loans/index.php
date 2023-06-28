@@ -251,44 +251,49 @@
         var loan_interest = $("#loan_interest").val();
         var monthly_payment = $("#monthly_payment").val();
 
-        $("#dt_calculation").DataTable().destroy();
-        $("#dt_calculation").DataTable({
-            "processing": true,
-            "bPaginate": false,
-            "bFilter": false,
-            "bInfo": false,
-            "ordering": false,
-            "ajax": {
-                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=sample_calculation",
-                "dataSrc": "data",
-                "method": "POST",
-                "data": {
-                    input: {
-                        loan_interest: loan_interest,
-                        loan_period: loan_period,
-                        loan_amount: loan_amount,
-                        loan_date: loan_date,
-                        monthly_payment:monthly_payment
+        if(loan_date == "" || loan_amount == "" || loan_period == "" || loan_interest == "" || monthly_payment == ""){
+            swal("Ops!", "Fill out all required fields.", "warning");
+        }else{
+
+            $("#dt_calculation").DataTable().destroy();
+            $("#dt_calculation").DataTable({
+                "processing": true,
+                "bPaginate": false,
+                "bFilter": false,
+                "bInfo": false,
+                "ordering": false,
+                "ajax": {
+                    "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=sample_calculation",
+                    "dataSrc": "data",
+                    "method": "POST",
+                    "data": {
+                        input: {
+                            loan_interest: loan_interest,
+                            loan_period: loan_period,
+                            loan_amount: loan_amount,
+                            loan_date: loan_date,
+                            monthly_payment:monthly_payment
+                        }
+                    },
+                },
+                "columns": [{
+                        "data": "date"
+                    },
+                    {
+                        "data": "payment",
+                        className: "text-right"
+                    },
+                    {
+                        "data": "interest",
+                        className: "text-right"
+                    },
+                    {
+                        "data": "applicable_principal",
+                        className: "text-right"
                     }
-                },
-            },
-            "columns": [{
-                    "data": "date"
-                },
-                {
-                    "data": "payment",
-                    className: "text-right"
-                },
-                {
-                    "data": "interest",
-                    className: "text-right"
-                },
-                {
-                    "data": "applicable_principal",
-                    className: "text-right"
-                }
-            ]
-        });
+                ]
+            });
+        }
     }
 
     function sampleCalculation2() {

@@ -324,7 +324,7 @@ $User = new Users;
         $(".select2").prop("disabled", false);
         $("#div_sample_calculation").show();
         $("#div_soa").hide();
-        sampleCalculation();
+        // sampleCalculation();
         $("#btn_submit").show();
         // $("#btn_release").hide();
         $("#btn_reloan").hide();
@@ -434,7 +434,8 @@ $User = new Users;
             $(".select2").prop("disabled", true);
             $("#btn_submit").hide();
           } else if (route_settings.class_name == "Loans") {
-            $("#loan_amount_span").html(json['loan_amount']);
+            $("#loan_amount_span").html(json['amount']);
+            $("#monthly_payment_span").html(json['monthly_payment']);
             if (jsonParse.data['status'] != "A") {
               $('#loan_container :input').attr('readonly', true);
               $(".select2").prop("disabled", true);

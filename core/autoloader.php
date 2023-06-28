@@ -40,4 +40,5 @@ $classes = array(
     'ClientBusiness'        => $pre_class . 'clientbusiness.php',
     'ClientInsurance'       => $pre_class . 'clientinsurance.php',
     'ClientReference'       => $pre_class . 'clientreference.php',
+    'CashPositioning'       => $pre_class . 'cashpositioning.php',
 );

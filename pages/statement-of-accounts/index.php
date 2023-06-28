@@ -97,7 +97,7 @@
 
     function getReport() {
         var client_id = $("#client_id").val();
-        var param = "client_id= '" + client_id + "' AND status='R'";
+        var param = "client_id= '" + client_id + "'AND (status!='D' OR status!='P')";
 
         $("#soa_report").html("<center><h3><span class='fa fa-spinner fa-spin'></span> Loading ...</h3></center>");
 

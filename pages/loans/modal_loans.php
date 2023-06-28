@@ -1,4 +1,3 @@
-
 <form method='POST' id='frm_submit'>
     <div class="modal fade" id="modalEntry" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
@@ -48,7 +47,7 @@
 
                                 <div class="form-group col-md-4">
                                     <label><strong style="color:red;">*</strong> Loan Terms</label>
-                                    <input type="number" class="form-control input-item" autocomplete="off"  name="input[loan_period]" id="loan_period" required>
+                                    <input type="number" class="form-control input-item" autocomplete="off" name="input[loan_period]" id="loan_period" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label><strong style="color:red;">*</strong> Service Fee</label>
@@ -56,7 +55,7 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label><strong style="color:red;">*</strong> Monthly Payment</label>
-                                    <input type="number" class="form-control input-item" autocomplete="off"  name="input[monthly_payment]" id="monthly_payment" step="0.01" required>
+                                    <input type="number" class="form-control input-item" autocomplete="off" name="input[monthly_payment]" id="monthly_payment" step="0.01" required>
                                 </div>
                             </div>
                         </div>
@@ -77,24 +76,30 @@
                                 </div>
                             </div>
                             <div class="table-responsive" id="div_soa">
-                                <div class="table-responsive" style="padding-top: 5px;max-height: 350px;">
-                                    <table id="dt_loan_details" class="table table-striped" style="font-size:9px;font-weight:bold;width: 100%!important;">
-                                        <thead style="background: #1f384b;">
-                                            <tr>
-                                                <th style="color:#fff;">Date</th>
-                                                <th style="color:#fff;">Payment</th>
-                                                <th style="color:#fff;">Interest Amount</th>
-                                                <th style="color:#fff;">Penalty</th>
-                                                <th style="color:#fff;">Applicable to Principal</th>
-                                                <th style="color:#fff;">Balance</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
+                                <div class="table-responsive">
+                                    <div class="table-responsive" style="padding-top: 5px;max-height: 500px;">
+                                        <table id="dt_loan_details" class="table table-striped" style="font-size:9px;font-weight:bold;width: 100%!important;">
+                                            <thead style="background: #1f384b;">
+                                                <tr>
+                                                    <th style="color:#fff;">Date</th>
+                                                    <th style="color:#fff;">Payment</th>
+                                                    <th style="color:#fff;">Interest Amount</th>
+                                                    <th style="color:#fff;">Penalty</th>
+                                                    <th style="color:#fff;">Applicable to Principal</th>
+                                                    <th style="color:#fff;">Balance</th>
+                                                </tr>
+                                                <tr style="background: #fafafa;">
+                                                    <th style="text-align: left;">Monthly Installment:</th>
+                                                    <th colspan="3" style="text-align: left;"><span id="monthly_payment_span"></span></th>
+                                                    <th style="text-align: right;">Loan Amount:</th>
+                                                    <th style="text-align: right;"><span id="loan_amount_span"></span></th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                     <div class="form-row">
 

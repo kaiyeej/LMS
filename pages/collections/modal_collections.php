@@ -81,7 +81,9 @@
                                                 <th style="color:#fff;">Balance</th>
                                             </tr>
                                             <tr style="background: #fafafa;">
-                                                <th colspan="5" style="text-align: right;">Loan Amount:</th>
+                                                <th style="text-align: left;">Monthly Installment:</th>
+                                                <th colspan="3" style="text-align: left;"><span id="monthly_payment_span"></span></th>
+                                                <th style="text-align: right;">Loan Amount:</th>
                                                 <th style="text-align: right;"><span id="loan_amount_span"></span></th>
                                             </tr>
                                         </thead>
