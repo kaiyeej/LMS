@@ -302,26 +302,27 @@ class Loans extends Connection
         $loan_period = $this->inputs['loan_period'];
         $loan_amount = $this->inputs['loan_amount'];
         $loan_date = $this->inputs['loan_date'];
-        $monthly_payment = $this->inputs['monthly_payment'];
-
+        $monthlypayment = $this->inputs['monthly_payment'];
         $count = 1;
         $rows = array();
+        $balance = $loan_amount;
         while ($count <= $loan_period) {
 
             $loan_date = date('M d, Y', strtotime('+1 month', strtotime($loan_date)));
 
             $monthly_interest_rate = ($loan_interest / 100) / 12;
-            // $monthly_interest = $balance * $monthly_interest_rate;
-            // $principal_amount = $payment - $monthly_interest;
-            $total_amount_with_interest = $loan_amount;//($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
+            $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
             $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
-            $monthly_interest = $loan_amount * $monthly_interest_rate;
+            $monthly_payment = $monthlypayment > 0 ? $monthlypayment : number_format($suggested_payment, 2);
+            $monthly_interest = $balance * $monthly_interest_rate;
             $principal_amount = $suggested_payment - $monthly_interest;
+            $balance -= $principal_amount;
 
             $row['date'] = $loan_date;
             $row['payment'] = $monthly_payment; //number_format($suggested_payment, 2);
             $row['interest'] = number_format($monthly_interest, 2);
             $row['applicable_principal'] =  number_format($principal_amount, 2);
+            $row['balance'] = number_format($balance, 2);//$balance > 0 ? number_format($balance, 2) : "0.00";
             $rows[] = $row;
 
             $count++;

@@ -19,15 +19,24 @@
                 <div class="alert-title">Loans</div>
                 Manage loans here.
             </div>
-            <div>
+            <div class="row">
                 <div class="dropdown">
                     <a href="#" data-toggle="dropdown" class="btn btn-info dropdown-toggle"><i class="fas fa-file-excel"></i> Template</a>
                     <div class="dropdown-menu">
                         <a href="#" class="dropdown-item has-icon" onclick="exportTemplate()"><i class="fas fa-download"></i> Export</a>
                         <a href="#" class="dropdown-item has-icon" onclick="importTemplate()"><i class="far fa-upload"></i> Import</a>
                     </div>
+                </div>
+                <div class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><i class="fas fa-plus"></i> Add</a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item has-icon" onclick="addModal()"><i class="fas fa-add"></i> Add New Loan</a>
+                        <a href="#" class="dropdown-item has-icon" onclick="loanRenewal()"><i class="far fa-upload"></i> Loan Renewal</a>
+                        <a href="#" class="dropdown-item has-icon" onclick="importTemplate()"><i class="far fa-upload"></i> Additional Loan</a>
+                    </div>
+                </div>
+                <div class="dropdown">
                     <div class="btn-group btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</button>
                         <button type="button" class="btn btn-danger" onclick="deleteEntry()"><i class="fas fa-trash"></i> Delete</button>
                     </div>
                 </div>
@@ -68,6 +77,7 @@
 </section>
 <?php include "modal_loans.php"; ?>
 <?php include "modal_renew.php"; ?>
+<?php include "modal_renewal.php"; ?>
 <?php include "modal_export.php"; ?>
 <?php include "modal_import.php"; ?>
 <script type="text/javascript">
@@ -249,11 +259,11 @@
         var loan_amount = $("#loan_amount").val();
         var loan_period = $("#loan_period").val();
         var loan_interest = $("#loan_interest").val();
-        var monthly_payment = $("#monthly_payment").val();
+        var monthly_payment = $("#monthly_payment").val() * 1;
 
-        if(loan_date == "" || loan_amount == "" || loan_period == "" || loan_interest == "" || monthly_payment == ""){
+        if (loan_amount == "" || loan_period == "" || loan_interest == "") {
             swal("Ops!", "Fill out all required fields.", "warning");
-        }else{
+        } else {
 
             $("#dt_calculation").DataTable().destroy();
             $("#dt_calculation").DataTable({
@@ -272,7 +282,7 @@
                             loan_period: loan_period,
                             loan_amount: loan_amount,
                             loan_date: loan_date,
-                            monthly_payment:monthly_payment
+                            monthly_payment: monthly_payment
                         }
                     },
                 },
@@ -289,6 +299,10 @@
                     },
                     {
                         "data": "applicable_principal",
+                        className: "text-right"
+                    },
+                    {
+                        "data": "balance",
                         className: "text-right"
                     }
                 ]
@@ -341,9 +355,9 @@
         });
     }
 
-    function loanDetails(){
+    function loanDetails() {
         var loan_id = $("#hidden_id").val();
-        var param = "loan_id= '"+loan_id+"' ";
+        var param = "loan_id= '" + loan_id + "' ";
         $("#dt_loan_details").DataTable().destroy();
         $("#dt_loan_details").DataTable({
             "processing": true,
@@ -364,8 +378,7 @@
                     }
                 },
             },
-            "columns": [
-                {
+            "columns": [{
                     "data": "date"
                 },
                 {
@@ -422,7 +435,7 @@
         });
     }
 
-    function reloan(){
+    function reloan() {
         var loan_id = $("#hidden_id_2").val();
         getSelectOption('ChartOfAccounts', 'chart_id', 'chart_name', "chart_name LIKE '%Bank%'");
         getBalance(loan_id);
@@ -434,15 +447,15 @@
     }
 
     function generateReference2() {
-      $.ajax({
-        type: "POST",
-        url: "controllers/sql.php?c=" + route_settings.class_name + "&q=generate",
-        data: [],
-        success: function(data) {
-          var json = JSON.parse(data);
-          $("#new_reference_number").val(json.data);
-        }
-      });
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=generate",
+            data: [],
+            success: function(data) {
+                var json = JSON.parse(data);
+                $("#new_reference_number").val(json.data);
+            }
+        });
     }
 
 

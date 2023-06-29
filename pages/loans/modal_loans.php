@@ -66,10 +66,11 @@
                                     <table id="dt_calculation" class="table table-striped" style="font-size:10px;width: 100%!important;">
                                         <thead style="background: #1f384b;">
                                             <tr>
-                                                <th style="color:#fff;" scope="col">Date</th>
-                                                <th style="color:#fff;" scope="col">Suggested Payment</th>
-                                                <th style="color:#fff;" scope="col">Interest</th>
-                                                <th style="color:#fff;" scope="col">Applicable to Principal</th>
+                                                <th style="color:#fff;">Date</th>
+                                                <th style="color:#fff;">Suggested Payment</th>
+                                                <th style="color:#fff;">Interest</th>
+                                                <th style="color:#fff;">Applicable to Principal</th>
+                                                <th style="color:#fff;">Balance</th>
                                             </tr>
                                         </thead>
                                     </table>
