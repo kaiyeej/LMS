@@ -1,5 +1,9 @@
 <?php
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
 class Loans extends Connection
 {
     private $table = 'tbl_loans';
@@ -322,7 +326,7 @@ class Loans extends Connection
             $row['payment'] = $monthly_payment; //number_format($suggested_payment, 2);
             $row['interest'] = number_format($monthly_interest, 2);
             $row['applicable_principal'] =  number_format($principal_amount, 2);
-            $row['balance'] = number_format($balance, 2);//$balance > 0 ? number_format($balance, 2) : "0.00";
+            $row['balance'] = number_format($balance, 2); //$balance > 0 ? number_format($balance, 2) : "0.00";
             $rows[] = $row;
 
             $count++;
@@ -335,7 +339,7 @@ class Loans extends Connection
     {
         $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
         $result = $this->select($this->table, '*', "$param");
-        
+
         $rows = array();
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -377,19 +381,18 @@ class Loans extends Connection
 
                 $count++;
             }
-            
+
             return $rows;
         } else {
             return $rows;
         }
-
     }
 
     public function soa_collection()
     {
         $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
         $result = $this->select($this->table, '*', "$param");
-        
+
         $rows = array();
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -413,8 +416,8 @@ class Loans extends Connection
                 $loan_date = date('Y-m-d', strtotime('+1 month', strtotime($loan_date)));
 
                 // $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
-                
-                $payment = $count == 1 ? $Collection->collected_per_month($loan_date,$row['loan_id'])+$Collection->advance_collection($row['loan_id']) : $Collection->collected_per_month($loan_date,$row['loan_id']);
+
+                $payment = $count == 1 ? $Collection->collected_per_month($loan_date, $row['loan_id']) + $Collection->advance_collection($row['loan_id']) : $Collection->collected_per_month($loan_date, $row['loan_id']);
                 $monthly_interest = $balance * $monthly_interest_rate;
                 $principal_amount = $payment - $monthly_interest; //$balance / $loan_period;
                 $penalty = $Collection->penalty_per_month($loan_date, $row['loan_id']);
@@ -431,12 +434,11 @@ class Loans extends Connection
 
                 $count++;
             }
-            
+
             return $rows;
         } else {
             return $rows;
         }
-
     }
 
     public function accounts_receivable()
@@ -744,5 +746,98 @@ class Loans extends Connection
         $response['success_import'] = $success_import;
         $response['unsuccess_import'] = $unsuccess_import;
         return $response;
+    }
+
+    public function upload()
+    {
+
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 0);
+
+        require_once '../vendor/autoload.php';
+
+        $uploadedFile = $_FILES['excel_file']['tmp_name'];
+        $spreadsheet = IOFactory::load($uploadedFile);
+        $sheetNames = $spreadsheet->getSheetNames();
+
+        $Clients = new Clients();
+
+        $data = [];
+
+        foreach ($sheetNames as $sheetName) {
+            $worksheet = $spreadsheet->getSheetByName($sheetName);
+            $client_name = $worksheet->getCell('A6')->getValue();
+            $client_id = $Clients->idByFullname($this->clean($client_name));
+            // if ($client_id > 0) {
+            $data[] = $this->worksheetLoans($worksheet, $client_id, $client_name);
+            // }
+        }
+        $response['sheets'] = $data;
+
+        return $response;
+    }
+
+    public function worksheetLoans($worksheet, $client_id, $client_name)
+    {
+        $rowCount = $worksheet->getHighestRow();
+        $loans = [];
+        for ($row = 9; $row < $rowCount; $row++) {
+            $loan_name = $worksheet->getCell('B' . $row)->getValue();
+            if ($loan_name == 'PREPARED BY:')
+                break;
+
+            if ($loan_name != '')
+                $loans[] = $this->worksheetLoanDetails($worksheet, $client_id, $loan_name, $row, $rowCount);
+        }
+        return [
+            'client_id' => $client_id,
+            'client_name' => $client_name,
+            'loans' => $loans
+        ];
+    }
+
+    public function worksheetLoanDetails($worksheet, $client_id, $loan_name, $loan_row, $rowCount)
+    {
+        $LoanTypes = new LoanTypes();
+        $loan_type_id = $LoanTypes->idByName($loan_name);
+
+        $amount_row = $loan_row + 7;
+        $payment_row = $amount_row + 1;
+        $monthly_row = $amount_row - 1;
+
+        $loan_amount = $worksheet->getCell('I' . $amount_row)->getValue();
+        $monthly_payment = $worksheet->getCell('D' . $monthly_row)->getValue();
+
+        $collections = [];
+        $balance = 0;
+        for ($row = $payment_row; $row < $rowCount; $row++) {
+            $payment_month = $worksheet->getCell('C' . $row)->getValue();
+            if ($payment_month != '') {
+                $payment_amount = $worksheet->getCell('D' . $row)->getCalculatedValue();
+                $balance = $worksheet->getCell('I' . $row)->getCalculatedValue();
+                $collections[] = [
+                    'payment_month' => date("Y-m-t", strtotime($payment_month)),
+                    'payment_amount' => (float) $payment_amount,
+                    'interest' => $worksheet->getCell('E' . $row)->getCalculatedValue(),
+                    'penalty' => $worksheet->getCell('F' . $row)->getCalculatedValue(),
+                    'principal' => $worksheet->getCell('G' . $row)->getCalculatedValue(),
+                    'balance' => $worksheet->getCell('I' . $row)->getCalculatedValue(),
+                ];
+            }
+            if ($payment_month == '')
+                break;
+        }
+
+        $loan_date = count($collections) > 0 ? date("Y-m-d", strtotime($collections[0]['payment_month'] . " -1 month")) : '';
+
+        return [
+            'loan_type_id' => $loan_type_id,
+            'loan_type_name' => $loan_name,
+            'loan_amount' => $loan_amount,
+            'loan_date' => $loan_date,
+            'monthly_payment' => (float) $monthly_payment,
+            'balance' => (float) $balance,
+            'collections' => $collections
+        ];
     }
 }
