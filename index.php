@@ -735,7 +735,7 @@ $User = new Users;
     }
     // END MODULE
 
-    function getSelectOption(class_name, primary_id, label, param = '', attributes = [], pre_value = '', pre_label = 'Please Select', sub_option = '') {
+    function getSelectOption(class_name, primary_id, label, param = '', attributes = [], pre_value = '', pre_label = 'Please Select', sub_option = '', is_class = '') {
       $.ajax({
         type: "POST",
         url: "controllers/sql.php?c=" + class_name + "&q=show",
@@ -747,7 +747,11 @@ $User = new Users;
         success: function(data) {
           var json = JSON.parse(data);
           if (pre_value != "remove") {
-            $("#" + primary_id).html("<option value='" + pre_value + "'> &mdash; " + pre_label + " &mdash; </option>");
+            if(is_class == ''){
+              $("#" + primary_id).html("<option value='" + pre_value + "'> &mdash; " + pre_label + " &mdash; </option>");
+            }else{
+              $("." + primary_id).html("<option value='" + pre_value + "'> &mdash; " + pre_label + " &mdash; </option>");
+            }
           }
 
           for (list_index = 0; list_index < json.data.length; list_index++) {
@@ -762,7 +766,12 @@ $User = new Users;
               const attr = attributes[attr_index];
               data_attributes[attr] = list[attr];
             }
-            $('#' + primary_id).append($("<option></option>").attr(data_attributes).text(list[label]));
+
+            if(is_class == ''){
+              $('#' + primary_id).append($("<option></option>").attr(data_attributes).text(list[label]));
+            }else{
+              $('.' + primary_id).append($("<option></option>").attr(data_attributes).text(list[label]));
+            }
           }
         }
       });
@@ -776,6 +785,7 @@ $User = new Users;
         success: function(data) {
           var json = JSON.parse(data);
           $("#reference_number").val(json.data);
+          $(".reference_number").val(json.data);
         },
         error: function(jqXHR, textStatus, errorThrown) {
           errorLogger('Error:', textStatus, errorThrown);

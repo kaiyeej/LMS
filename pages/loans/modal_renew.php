@@ -79,11 +79,11 @@
                                 </div>
                                 <div class="div_collection form-group col-md-4">
                                     <label>Penalty</label>
-                                    <input type="number" step="0.01" class="form-control input-item" autocomplete="off" name="input[penalty_amount]" id="penalty_amount" required>
+                                    <input type="number" step="0.01" class="form-control penalty_amount input-item" autocomplete="off" name="input[penalty_amount]" id="penalty_amount" required>
                                 </div>
                                 <div class="div_collection form-group col-md-4">
                                     <label>Amount</label>
-                                    <input type="number" step="0.01" class="form-control input-item" placeholder="Collection amount" autocomplete="off" name="input[amount]" id="amount" required>
+                                    <input type="number" step="0.01" class="form-control amount input-item" placeholder="Collection amount" autocomplete="off" name="input[amount]" id="amount" required>
                                 </div>
                             </div>
                         </div>

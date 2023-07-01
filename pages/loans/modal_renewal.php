@@ -9,54 +9,56 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="hidden_id_2" name="input[loan_id]">
                     <div class="form-row">
                         <div class="col-lg-7">
                             <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label style="color: #6777ef;font-weight: bold;">New Loan #: </label>
-                                    <input type="text" autocomplete="off" name="input[reference_number]" id="new_reference_number" style="background: transparent;border: none;outline: none;color: #6777ef;font-size: 18px;font-weight: bold;" readonly required>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label style="color: #607D8B;font-weight: bold;">Old Loan #: </label>
-                                    <input type="text" class="input-item" autocomplete="off" id="reference_number" style="background: transparent;border: none;outline: none;color: #607D8B;font-size: 18px;font-weight: bold;" readonly required>
+                                <div class="form-group col-md-12">
+                                    <label style="color: #6777ef;font-weight: bold;">Ref. #: </label>
+                                    <input type="text" autocomplete="off" name="input[reference_number]" id="reference_number_renewal" class="reference_number" style="background: transparent;border: none;outline: none;color: #6777ef;font-size: 18px;font-weight: bold;" readonly required>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Branch</label>
-                                    <input type="text" class="form-control input-item" autocomplete="off" id="branch_name" readonly>
+                                    <select class="form-control select2 branch_id" id="branch_id_renewal" name="input[branch_id]" style="width:100%;" onchange="getClients2()" required>
+                                    </select>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Client</label>
-                                    <input type="text" class="form-control input-item" autocomplete="off" id="client" readonly>
+                                    <select class="form-control select2 client_id" id="client_id_renewal" name="input[client_id]" onchange="getLoans()" style="width:100%;" required>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label><strong style="color:red;">*</strong> Loan</label>
+                                    <select class="form-control select2 loan_id" onchange="loan_renewal()" id="loan_id_renewal" name="input[loan_id]" style="width:100%;" required>
+                                    </select>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Loan Type</label>
-                                    <input type="text" class="form-control input-item" autocomplete="off" id="loan_type" readonly>
+                                    <input type="text" class="form-control input-renewal" autocomplete="off" id="loan_type_renewal" readonly>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Loan Date</label>
-                                    <input type="date" class="form-control input-item" autocomplete="off" name="input[loan_date]" id="loan_date" required>
+                                    <input type="date" class="form-control input-renewal" autocomplete="off" name="input[loan_date]" id="loan_date_renewal" required>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Loan amount</label>
-                                    <input type="number" step="0.01" class="form-control input-item" onchange="calculateInterest()" autocomplete="off" name="input[loan_amount]" id="loan_amount" required>
+                                    <input type="number" step="0.01" class="form-control input-renewal" onchange="calculateInterest2()" autocomplete="off" name="input[loan_amount]" id="loan_amount_renewal" required>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Interest</label>
-                                    <input type="number" step="0.01" class="form-control input-item" autocomplete="off" name="input[loan_interest]" id="loan_interest" required>
+                                    <input type="number" step="0.01" class="form-control input-renewal" autocomplete="off" name="input[loan_interest]" id="loan_interest_renewal" required>
                                 </div>
 
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Loan Terms</label>
-                                    <input type="number" class="form-control input-item" autocomplete="off" name="input[loan_period]" id="loan_period" required>
+                                    <input type="number" class="form-control input-renewal" autocomplete="off" name="input[loan_period]" id="loan_period_renewal" required>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Service Fee</label>
-                                    <input type="number" step="0.01" class="form-control input-item" autocomplete="off" name="input[service_fee]" id="service_fee" required>
+                                    <input type="number" step="0.01" class="form-control input-renewal" autocomplete="off" name="input[service_fee]" id="service_fee_renewal" required>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Monthly Payment</label>
-                                    <input type="number" class="form-control input-item" autocomplete="off" name="input[monthly_payment]" id="monthly_payment" step="0.01" required>
+                                    <input type="number" class="form-control input-renewal" autocomplete="off" name="input[monthly_payment]" id="monthly_payment_renewal" step="0.01" required>
                                 </div>
                                 <div class="form-group col-md-12">
                                     <hr style="margin-top: 0rem;margin-bottom: 0rem;border-top: 1.5px solid;">
@@ -66,7 +68,7 @@
                                     <div class="form-group">
                                         <label class="custom-switch mt-2">
                                             <span class="custom-switch-description"> No &nbsp;</span>
-                                            <input type="checkbox" onchange="deductToLoan()" value="1" id="deduct_to_loan" name="input[deduct_to_loan]" class="input-item custom-switch-input">
+                                            <input type="checkbox" onchange="deductToLoan()" value="1" id="deduct_to_loan" name="input[deduct_to_loan]" class="input-renewal custom-switch-input">
                                             <span class="custom-switch-indicator"></span>
                                             <span class="custom-switch-description">Yes</span>
                                         </label>
@@ -74,16 +76,16 @@
                                 </div>
                                 <div class="div_collection form-group col-md-4">
                                     <label>Bank</label>
-                                    <select class="form-control select2 input-item" id="chart_id" name="input[chart_id]" style="width:100%;" required>
+                                    <select class="form-control select2 input-renewal chart_id" id="chart_id_renewal" name="input[chart_id]" style="width:100%;" required>
                                     </select>
                                 </div>
                                 <div class="div_collection form-group col-md-4">
                                     <label>Penalty</label>
-                                    <input type="number" step="0.01" class="form-control input-item" autocomplete="off" name="input[penalty_amount]" id="penalty_amount" required>
+                                    <input type="number" step="0.01" class="form-control penalty_amount" autocomplete="off" name="input[penalty_amount]" id="penalty_amount_renewal" required>
                                 </div>
                                 <div class="div_collection form-group col-md-4">
                                     <label>Amount</label>
-                                    <input type="number" step="0.01" class="form-control input-item" placeholder="Collection amount" autocomplete="off" name="input[amount]" id="amount" required>
+                                    <input type="number" step="0.01" class="form-control amount" placeholder="Collection amount" autocomplete="off" name="input[amount]" id="amount_renewal" required>
                                 </div>
                             </div>
                         </div>
@@ -117,7 +119,111 @@
     </div>
 </form>
 <script>
-    function loanRenewal(){
-        $("#modalEntryRenewal").modal('show');
+    function calculateInterest2() {
+        var loan_amount = $("#loan_amount_renewal").val();
+        var loan_period = $("#loan_period_renewal").val();
+        var interest = (loan_type_interest / 100);
+        // $("#loan_interest").val(loan_type_interest);
     }
+
+    function loanRenewal() {
+        
+        document.getElementById("frm_renewal").reset();
+        $("#modalEntryRenewal").modal('show');
+        var element = document.getElementById('reference_number_renewal');
+        if (typeof(element) != 'undefined' && element != null) {
+            generateReference(route_settings.class_name);
+        }
+
+        getSelectOption('ChartOfAccounts', 'chart_id', 'chart_name', "chart_name LIKE '%Bank%'", [], '', 'Please Select', '', 1);
+    }
+
+    function getClients2() {
+        var branch_id = $("#branch_id_renewal").val();
+        getSelectOption('Clients', 'client_id', 'client_fullname', "branch_id='" + branch_id + "'", [], '', 'Please Select', '', 1);
+    }
+
+    function getLoans() {
+        var client_id = $("#client_id_renewal").val();
+        getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + client_id + "' AND status = 'R'", [], '', 'Please Select', '', 1);
+    }
+
+    function loan_renewal() {
+
+        var loan_id = $("#loan_id_renewal").val();
+        getOldLoan(loan_id);
+        getBalance(loan_id);
+        sampleCalculation2();
+        getPenalty(loan_id);
+        $("#chart_id_renewal").prop("disabled", false);
+        
+    }
+
+    function getOldLoan(id) {
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=view",
+            data: {
+                input: {
+                    id: id
+                }
+            },
+            success: function(data) {
+                var jsonParse = JSON.parse(data);
+                const json = jsonParse.data;
+                $('.input-renewal').map(function() {
+                    const id_name = this.id.slice(0, -8);
+                    this.value = json[id_name];
+                    $("#" + id_name).val(json[id_name].slice(0, -8)).trigger('change');
+                });
+            }
+        });
+    }
+
+
+    function deductToLoan() {
+        if ($("#deduct_to_loan").prop("checked")) {
+            $(".div_collection").hide();
+            $('#chart_id_renewal').prop('required', false);
+            $('#penalty_amount_renewal').prop('required', false);
+            $('#amount_renewal').prop('required', false);
+        } else {
+            $(".div_collection").show();
+            $('#chart_id_renewal').prop('required', true);
+            $('#penalty_amount_renewal').prop('required', true);
+            $('#amount_renewal').prop('required', true);
+        }
+    }
+
+    $("#frm_renewal").submit(function(e) {
+        e.preventDefault();
+
+        $("#btn_submit_renew").prop('disabled', true);
+        $("#btn_submit_renew").html("<span class='fa fa-spinner fa-spin'></span> Submitting ...");
+
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=renew",
+            data: $("#frm_renewal").serialize(),
+            success: function(data) {
+                getEntries();
+                var json = JSON.parse(data);
+                if (json.data > 0) {
+                    $("#modalEntryRenew").modal('hide');
+                    $("#modalEntry").modal('hide');
+                    success_add();
+                } else if (json.data == -2) {
+                    entry_already_exists();
+                } else {
+                    failed_query(json);
+                }
+
+                $("#btn_submit_renew").prop('disabled', false);
+                $("#btn_submit_renew").html("Add");
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                errorLogger('Error:', textStatus, errorThrown);
+            }
+        });
+    });
 </script>

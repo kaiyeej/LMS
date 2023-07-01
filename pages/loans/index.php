@@ -31,8 +31,8 @@
                     <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><i class="fas fa-plus"></i> Add</a>
                     <div class="dropdown-menu">
                         <a href="#" class="dropdown-item has-icon" onclick="addModal()"><i class="fas fa-add"></i> Add New Loan</a>
-                        <a href="#" class="dropdown-item has-icon" onclick="loanRenewal()"><i class="far fa-upload"></i> Loan Renewal</a>
-                        <a href="#" class="dropdown-item has-icon" onclick="importTemplate()"><i class="far fa-upload"></i> Additional Loan</a>
+                        <a href="#" class="dropdown-item has-icon" onclick="loanRenewal()"><i class="far fa-repeat"></i> Loan Renewal</a>
+                        <a href="#" class="dropdown-item has-icon" onclick="importTemplate()"><i class="far fa-file-circle-plus"></i> Additional Loan</a>
                     </div>
                 </div>
                 <div class="dropdown">
@@ -76,7 +76,7 @@
     </div>
 </section>
 <?php include "modal_loans.php"; ?>
-<?php include "modal_renew.php"; ?>
+<?php //include "modal_renew.php"; ?>
 <?php include "modal_renewal.php"; ?>
 <?php include "modal_export.php"; ?>
 <?php include "modal_import.php"; ?>
@@ -142,8 +142,6 @@
             success: function(data) {
                 var jsonParse = JSON.parse(data);
                 const json = jsonParse.data;
-                // $('.select2').select2().trigger('change');
-                // $("#client_id").val(json);
                 $("#client_id").val(json).trigger('change');
             }
         });
@@ -194,50 +192,50 @@
             });
     }
 
-    function deniedLoan() {
-        $("#btn_deny").html("<span class='fa fa-spinner fa-spin'></span>");
-        swal({
-                title: 'Are you sure?',
-                text: 'You will not be able to recover these entries!',
-                icon: 'warning',
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) {
-                    var loan_id = $("#hidden_id").val();
+    // function deniedLoan() {
+    //     $("#btn_deny").html("<span class='fa fa-spinner fa-spin'></span>");
+    //     swal({
+    //             title: 'Are you sure?',
+    //             text: 'You will not be able to recover these entries!',
+    //             icon: 'warning',
+    //             buttons: true,
+    //             dangerMode: true,
+    //         })
+    //         .then((willDelete) => {
+    //             if (willDelete) {
+    //                 var loan_id = $("#hidden_id").val();
 
-                    $.ajax({
-                        type: "POST",
-                        url: "controllers/sql.php?c=" + route_settings.class_name + "&q=denied",
-                        data: {
-                            input: {
-                                id: loan_id
-                            }
-                        },
-                        success: function(data) {
-                            getEntries();
-                            var json = JSON.parse(data);
-                            console.log(json);
-                            if (json.data == 1) {
-                                swal("Success!", "Successfully denied loan!", "success");
-                            } else {
-                                failed_query(json);
-                            }
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            errorLogger('Error:', textStatus, errorThrown);
-                        }
-                    });
-                    $("#btn_deny").html('Release');
-                    $("#btn_deny").prop('disabled', true);
+    //                 $.ajax({
+    //                     type: "POST",
+    //                     url: "controllers/sql.php?c=" + route_settings.class_name + "&q=denied",
+    //                     data: {
+    //                         input: {
+    //                             id: loan_id
+    //                         }
+    //                     },
+    //                     success: function(data) {
+    //                         getEntries();
+    //                         var json = JSON.parse(data);
+    //                         console.log(json);
+    //                         if (json.data == 1) {
+    //                             swal("Success!", "Successfully denied loan!", "success");
+    //                         } else {
+    //                             failed_query(json);
+    //                         }
+    //                     },
+    //                     error: function(jqXHR, textStatus, errorThrown) {
+    //                         errorLogger('Error:', textStatus, errorThrown);
+    //                     }
+    //                 });
+    //                 $("#btn_deny").html('Release');
+    //                 $("#btn_deny").prop('disabled', true);
 
-                    $("#modalEntry").modal("hide");
-                } else {
-                    swal("Cancelled", "Entries are safe :)", "error");
-                }
-            });
-    }
+    //                 $("#modalEntry").modal("hide");
+    //             } else {
+    //                 swal("Cancelled", "Entries are safe :)", "error");
+    //             }
+    //         });
+    // }
 
     function changeLoanType() {
         var optionSelected = $("#loan_type_id").find('option:selected').attr('loan_type_interest');
@@ -248,10 +246,8 @@
     function calculateInterest() {
         var loan_amount = $("#loan_amount").val();
         var loan_period = $("#loan_period").val();
-        var interest = (loan_type_interest / 100)
-
+        var interest = (loan_type_interest / 100);
         // $("#loan_interest").val(loan_type_interest);
-
     }
 
     function sampleCalculation() {
@@ -311,10 +307,10 @@
     }
 
     function sampleCalculation2() {
-        var loan_date = $("#loan_date").val();
-        var loan_amount = $("#loan_amount").val();
-        var loan_period = $("#loan_period").val();
-        var loan_interest = $("#loan_interest").val();
+        var loan_date = $("#loan_date_renewal").val();
+        var loan_amount = $("#loan_amount_renewal").val();
+        var loan_period = $("#loan_period_renewal").val();
+        var loan_interest = $("#loan_interest_renewal").val();
 
         $("#dt_calculation2").DataTable().destroy();
         $("#dt_calculation2").DataTable({
@@ -400,8 +396,7 @@
         });
     }
 
-    function getPenalty() {
-        var loan_id = $("#hidden_id_2").val();
+    function getPenalty(loan_id) {
         var collection_date = $("#loan_date").val();
         $.ajax({
             type: "POST",
@@ -414,7 +409,7 @@
             },
             success: function(data) {
                 var json = JSON.parse(data);
-                $("#penalty_amount").val(json.data);
+                $(".penalty_amount").val(json.data);
             }
         });
     }
@@ -430,7 +425,7 @@
             },
             success: function(data) {
                 var json = JSON.parse(data);
-                $("#amount").val(json.data);
+                $(".amount").val(json.data);
             }
         });
     }
@@ -461,14 +456,14 @@
 
     function getClients() {
         var branch_id = $("#branch_id").val();
-        getSelectOption('Clients', 'client_id', 'client_fullname', "branch_id='" + branch_id + "'");
+        getSelectOption('Clients', 'client_id', 'client_fullname', "branch_id='" + branch_id + "'", [], '', 'Please Select', '', 1);
     }
 
     var loan_type_interest = 0;
     $(document).ready(function() {
         schema();
         getEntries();
-        getSelectOption('Branches', 'branch_id', 'branch_name');
+        getSelectOption('Branches', 'branch_id', 'branch_name', '', [], '', 'Please Select', '', 1);
         getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);
     });
 </script>
