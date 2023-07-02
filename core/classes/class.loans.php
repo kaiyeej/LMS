@@ -196,7 +196,7 @@ class Loans extends Connection
         $row = $result->fetch_assoc();
         $row['loan_type'] = $LoanTypes->name($row['loan_type_id']);
         $row['amount'] = number_format($row['loan_amount'], 2);
-        $row['monthly_payment'] = number_format($row['monthly_payment'], 2);
+        $row['monthly_payment'] = $row['monthly_payment'];//number_format($row['monthly_payment'], 2);
         $row['client'] = $Clients->name($row['client_id']);
         $row['branch_name'] = $Branches->name($row['branch_id']);
         $row['loan_type'] = $LoanTypes->name($row['branch_id']);
@@ -313,13 +313,13 @@ class Loans extends Connection
             $monthly_interest_rate = ($loan_interest / 100) / 12;
             $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
             $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
-            $monthly_payment = $monthlypayment > 0 ? $monthlypayment : number_format($suggested_payment, 2);
+            $monthly_payment = $monthlypayment > 0 ? $monthlypayment : $suggested_payment;
             $monthly_interest = $balance * $monthly_interest_rate;
-            $principal_amount = $suggested_payment - $monthly_interest;
+            $principal_amount = $monthly_payment - $monthly_interest;
             $balance -= $principal_amount;
 
             $row['date'] = $loan_date;
-            $row['payment'] = $monthly_payment; //number_format($suggested_payment, 2);
+            $row['payment'] = number_format($monthly_payment,2); //number_format($suggested_payment, 2);
             $row['interest'] = number_format($monthly_interest, 2);
             $row['applicable_principal'] =  number_format($principal_amount, 2);
             $row['balance'] = number_format($balance, 2);//$balance > 0 ? number_format($balance, 2) : "0.00";

@@ -76,7 +76,6 @@
     </div>
 </section>
 <?php include "modal_loans.php"; ?>
-<?php //include "modal_renew.php"; ?>
 <?php include "modal_renewal.php"; ?>
 <?php include "modal_export.php"; ?>
 <?php include "modal_import.php"; ?>
