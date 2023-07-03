@@ -31,8 +31,8 @@
                     <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><i class="fas fa-plus"></i> Add</a>
                     <div class="dropdown-menu">
                         <a href="#" class="dropdown-item has-icon" onclick="addModal()"><i class="fas fa-add"></i> Add New Loan</a>
-                        <a href="#" class="dropdown-item has-icon" onclick="loanRenewal()"><i class="far fa-repeat"></i> Loan Renewal</a>
-                        <a href="#" class="dropdown-item has-icon" onclick="importTemplate()"><i class="far fa-file-circle-plus"></i> Additional Loan</a>
+                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan()"><i class="far fa-repeat"></i> Loan Renewal</a>
+                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan()"><i class="far fa-file-circle-plus"></i> Additional Loan</a>
                     </div>
                 </div>
                 <div class="dropdown">
@@ -76,7 +76,7 @@
     </div>
 </section>
 <?php include "modal_loans.php"; ?>
-<?php include "modal_renewal.php"; ?>
+<?php include "modal_other_loans.php"; ?>
 <?php include "modal_export.php"; ?>
 <?php include "modal_import.php"; ?>
 <script type="text/javascript">
@@ -88,6 +88,9 @@
                 "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=show",
                 "dataSrc": "data"
             },
+            "order": [
+                [2, 'desc']
+            ],
             "columns": [{
 
                     "mRender": function(data, type, row) {

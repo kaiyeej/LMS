@@ -336,8 +336,6 @@ $User = new Users;
 
       }
       
-      
-
 
       $("#modalLabel").html("<i class='fa fa-edit'></i> Add Entry");
       $("#modalEntry").modal('show');
