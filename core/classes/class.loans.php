@@ -21,6 +21,7 @@ class Loans extends Connection
             'loan_interest'     => $this->clean($this->inputs['loan_interest']),
             'service_fee'       => $this->clean($this->inputs['service_fee']),
             'monthly_payment'   => $this->clean($this->inputs['monthly_payment']),
+            'payment_terms'     => $this->clean($this->inputs['payment_terms']),
         );
 
         if (isset($this->inputs['status']))
@@ -47,6 +48,7 @@ class Loans extends Connection
             'service_fee'       => $this->clean($this->inputs['service_fee']),
             'monthly_payment'   => $this->clean($this->inputs['monthly_payment']),
             'main_loan_id'      => $this->clean($this->inputs['loan_id']),
+            'payment_terms'     => $this->clean($this->inputs['payment_terms']),
             'deduct_to_loan'    => $deduct_to_loan,
         );
 
@@ -162,6 +164,7 @@ class Loans extends Connection
                 'loan_interest'     => $this->clean($this->inputs['loan_interest']),
                 'service_fee'       => $this->clean($this->inputs['service_fee']),
                 'monthly_payment'   => $this->clean($this->inputs['monthly_payment']),
+                'payment_terms'     => $this->clean($this->inputs['payment_terms']),
             );
 
             return $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");
@@ -303,17 +306,29 @@ class Loans extends Connection
         $loan_amount = $this->inputs['loan_amount'];
         $loan_date = $this->inputs['loan_date'];
         $monthlypayment = $this->inputs['monthly_payment'];
+        $payment_terms = $this->inputs['payment_terms'];
+
         $count = 1;
         $rows = array();
         $balance = $loan_amount;
+        $payment_count = 1;
         while ($count <= $loan_period) {
 
             $loan_date = date('M d, Y', strtotime('+1 month', strtotime($loan_date)));
+            
 
             $monthly_interest_rate = ($loan_interest / 100) / 12;
             $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
             $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
-            $monthly_payment = $monthlypayment > 0 ? $monthlypayment : $suggested_payment;
+
+            if($payment_count == $payment_terms) { // matches every 3 iterations
+                $payment_count = 1; 
+                $monthly_payment = $monthlypayment > 0 ? $monthlypayment : ($suggested_payment*$payment_terms);
+            }else{
+                $payment_count += 1;
+                $monthly_payment = 0;
+            }
+
             $monthly_interest = $balance * $monthly_interest_rate;
             $principal_amount = $monthly_payment - $monthly_interest;
             $balance -= $principal_amount;
@@ -322,7 +337,7 @@ class Loans extends Connection
             $row['payment'] = number_format($monthly_payment,2); //number_format($suggested_payment, 2);
             $row['interest'] = number_format($monthly_interest, 2);
             $row['applicable_principal'] =  number_format($principal_amount, 2);
-            $row['balance'] = number_format($balance, 2);//$balance > 0 ? number_format($balance, 2) : "0.00";
+            $row['balance'] = number_format($balance, 2); //$balance > 0 ? number_format($balance, 2) : "0.00";
             $rows[] = $row;
 
             $count++;
@@ -344,8 +359,7 @@ class Loans extends Connection
             $loan_period = $row['loan_period'];
             $loan_amount = $row['loan_amount'];
             $loan_date = $row['loan_date'];
-
-
+            $payment_terms = $row['payment_terms'];
 
             $count = 1;
 
@@ -354,12 +368,20 @@ class Loans extends Connection
 
             $balance = $loan_amount;
             $Collection = new Collections;
+            $payment_count = 1;
             while ($count <= $loan_period) {
 
                 $loan_date = date('Y-m-d', strtotime('+1 month', strtotime($loan_date)));
 
+                if($payment_count == $payment_terms) { // matches every 3 iterations
+                    $payment_count = 1; 
+                    $payment = $row['monthly_payment'];
+                }else{
+                    $payment_count += 1;
+                    $payment = 0;
+                }
+
                 // $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
-                $payment = $row['monthly_payment'];
                 $monthly_interest = $balance * $monthly_interest_rate;
                 $principal_amount = $payment - $monthly_interest; //$balance / $loan_period;
                 $penalty = $Collection->penalty_per_month($loan_date, $row['loan_id']);
@@ -518,7 +540,7 @@ class Loans extends Connection
 
     public function penalty()
     {
-        $loan_id = isset($this->inputs['loan_id']) ? $this->inputs['loan_id'] : null;
+        $loan_id = $this->inputs['loan_id'];//isset($this->inputs['loan_id']) ? $this->inputs['loan_id'] : null;
         $collection_date = $this->inputs['collection_date'];
 
         $result = $this->select($this->table, '*', "loan_id='$loan_id'");
@@ -541,9 +563,6 @@ class Loans extends Connection
             // $LoanTypes = new LoanTypes;
             $penalty_per = 0; //$LoanTypes->penalty_percentage($row['loan_type_id']);
         }
-
-
-
 
         $ts1 = strtotime($loan_date);
         $ts2 = strtotime($collection_date);

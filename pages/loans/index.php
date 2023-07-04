@@ -258,8 +258,9 @@
         var loan_period = $("#loan_period").val();
         var loan_interest = $("#loan_interest").val();
         var monthly_payment = $("#monthly_payment").val() * 1;
+        var payment_terms = $("#payment_terms").val() * 1;
 
-        if (loan_amount == "" || loan_period == "" || loan_interest == "") {
+        if (loan_amount == "" || loan_period == "" || loan_interest == "" || payment_terms == "") {
             swal("Ops!", "Fill out all required fields.", "warning");
         } else {
 
@@ -280,7 +281,8 @@
                             loan_period: loan_period,
                             loan_amount: loan_amount,
                             loan_date: loan_date,
-                            monthly_payment: monthly_payment
+                            monthly_payment: monthly_payment,
+                            payment_terms:payment_terms
                         }
                     },
                 },

@@ -67,6 +67,17 @@ class Vouchers extends Connection
         );
         return $this->updateIfNotExist($this->table, $form);
     }
+    
+
+    public function update_approved_by()
+    {
+        
+        $primary_id = $this->inputs['id'];
+        $form = array(
+            'approved_by' => $this->inputs['approved_by'],
+        );
+        return $this->update($this->table, $form, "$this->pk = '$primary_id'");
+    }
 
     public function cancel(){
         $journal_entry_id = $this->inputs['journal_entry_id'];

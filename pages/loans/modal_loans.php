@@ -36,13 +36,17 @@
                                     <label><strong style="color:red;">*</strong> Loan Date</label>
                                     <input type="date" class="form-control input-item" autocomplete="off" name="input[loan_date]" id="loan_date" required>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label><strong style="color:red;">*</strong> Loan amount</label>
                                     <input type="number" step="0.01" class="form-control input-item" onchange="calculateInterest()" autocomplete="off" name="input[loan_amount]" id="loan_amount" required>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label>Interest</label>
+                                <div class="form-group col-md-4">
+                                    <label><strong style="color:red;">*</strong> Interest</label>
                                     <input type="number" step="0.01" class="form-control input-item" autocomplete="off" name="input[loan_interest]" id="loan_interest" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Payment Terms <sub style="color:red;">(months)</sub></label>
+                                    <input type="number" step="0.01" class="form-control input-item" autocomplete="off" name="input[payment_terms]" id="payment_terms" required>
                                 </div>
 
                                 <div class="form-group col-md-4">

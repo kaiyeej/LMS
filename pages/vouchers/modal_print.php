@@ -3,9 +3,15 @@
         font-weight: bold;
         text-transform: uppercase;
     }
+    
 
     @media print {
 
+
+        #approved_by{
+            color:black !important;
+        }
+        
         .col-sm-1,
         .col-sm-2,
         .col-sm-3,
@@ -82,6 +88,7 @@
                         <div><img src="./assets/img/logo2.png" alt="logo" width="150"></div>
                         <div style="padding-top: 27px;font-size: 16px;font-weight: bold;">FEATHERLEAF LENDING CORPORATION</div>
                     </div>
+                    <input type="hidden" id="voucher_print_id">
                     <div class="row" style="padding-top: 20px;">
                         <div class="col-lg-12">
                             <label style="float:right;">No.: <span class="label-print" id="voucher_no_label_print"></span></label><br>
@@ -135,8 +142,10 @@
                         </div>
                         <div class="col-sm-6">
                             <i>Payment Approved:</i><br><br>
-                            <span style="text-decoration: underline;padding-left: 30px;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span><br>
-                            <span style="padding-left: 60px;"><i>PRESIDENT</i></span>
+                            <span style="text-decoration: underline;padding-left: 30px;">
+                                <input type="text" id="approved_by" class="label-print" onchange="approvedBy()" style="margin: 20px;border-left: none;border-right: none;border-top: none;border-bottom:0.5px solid black;text-align: center;color:black">
+                            </span><br>
+                            <span style="padding-left: 85px;"><i>PRESIDENT</i></span>
                         </div>
                         <div class="col-sm-6 table-responsive">
                             <table id="dt_details_print" class="table" width="100%">
@@ -148,7 +157,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                 </tbody>
                             </table>
                         </div>
@@ -160,11 +168,11 @@
                             Received the sum of pesos <span class="label-print" style="text-decoration: underline;" id="amount_word_label_print"></span> in full payment of the above account.
 
                             <div style="text-align: right;padding-top: 100px;">
-                            <span style="text-decoration: overline;padding-left: 30px;">
-                            &emsp;&emsp;&emsp;CREDITOR&emsp;&emsp;&emsp;
+                                <span style="text-decoration: overline;padding-left: 30px;">
+                                    &emsp;&emsp;&emsp;CREDITOR&emsp;&emsp;&emsp;
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -178,6 +186,27 @@
     </div>
 </div>
 <script type="text/javascript">
+    function approvedBy() {
+        var approved_by = $("#approved_by").val();
+        var id = $("#voucher_print_id").val();
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=update_approved_by",
+            data: {
+                input: {
+                    approved_by: approved_by,
+                    id:id
+                }
+            },
+            success: function(data) {
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                errorLogger('Error:', textStatus, errorThrown);
+            }
+        });
+    }
+
     function printRecord(id) {
         $("#modalPrint").modal('show');
 
@@ -198,6 +227,9 @@
                     const new_id = id_name.replace('_label_print', '');
                     this.innerHTML = json[new_id];
                 });
+
+                $("#voucher_print_id").val(json['voucher_id']);
+                $("#approved_by").val(json['approved_by']);
 
                 $("#total_amount").html(json.voucher_amount);
                 printJID(id);
@@ -224,8 +256,7 @@
                     }
                 }
             },
-            "columns": [
-                {
+            "columns": [{
                     "data": "chart"
                 },
                 {
