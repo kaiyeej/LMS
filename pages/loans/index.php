@@ -240,9 +240,10 @@
     // }
 
     function changeLoanType() {
-        var optionSelected = $("#loan_type_id").find('option:selected').attr('loan_type_interest');
-        loan_type_interest = optionSelected;
+        var loan_type_interest = $("#loan_type_id").find('option:selected').attr('loan_type_interest');
+        var penalty_percentage = $("#loan_type_id").find('option:selected').attr('penalty_percentage');
         $("#loan_interest").val(loan_type_interest);
+        $("#penalty_percentage").val(penalty_percentage);
     }
 
     function calculateInterest() {
@@ -468,6 +469,6 @@
         schema();
         getEntries();
         getSelectOption('Branches', 'branch_id', 'branch_name', '', [], '', 'Please Select', '', 1);
-        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);
+        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest','penalty_percentage']);
     });
 </script>

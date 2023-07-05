@@ -27,12 +27,12 @@
                                     <select class="form-control select2 client_id input-item" id="client_id" name="input[client_id]" style="width:100%;" required>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label><strong style="color:red;">*</strong> Loan Type</label>
                                     <select class="form-control select2 input-item" onchange="changeLoanType()" id="loan_type_id" name="input[loan_type_id]" style="width:100%;" required>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label><strong style="color:red;">*</strong> Loan Date</label>
                                     <input type="date" class="form-control input-item" autocomplete="off" name="input[loan_date]" id="loan_date" required>
                                 </div>
@@ -41,11 +41,15 @@
                                     <input type="number" step="0.01" class="form-control input-item" onchange="calculateInterest()" autocomplete="off" name="input[loan_amount]" id="loan_amount" required>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label><strong style="color:red;">*</strong> Interest</label>
+                                    <label><strong style="color:red;">*</strong> Loan Interest</label>
                                     <input type="number" step="0.01" class="form-control input-item" autocomplete="off" name="input[loan_interest]" id="loan_interest" required>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label>Payment Terms <sub style="color:red;">(months)</sub></label>
+                                    <label><strong style="color:red;">*</strong>Penalty %</label>
+                                    <input type="number" step="0.01" class="form-control input-item" autocomplete="off" name="input[penalty_percentage]" id="penalty_percentage" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label><strong style="color:red;">*</strong> Payment Terms <sub style="color:red;">(months)</sub></label>
                                     <input type="number" step="0.01" class="form-control input-item" autocomplete="off" name="input[payment_terms]" id="payment_terms" required>
                                 </div>
 

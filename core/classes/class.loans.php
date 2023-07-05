@@ -11,17 +11,18 @@ class Loans extends Connection
     public function add()
     {
         $form = array(
-            $this->name         => $this->clean($this->inputs[$this->name]),
-            'branch_id'         => $this->clean($this->inputs['branch_id']),
-            'client_id'         => $this->clean($this->inputs['client_id']),
-            'loan_type_id'      => $this->clean($this->inputs['loan_type_id']),
-            'loan_date'         => $this->clean($this->inputs['loan_date']),
-            'loan_amount'       => $this->clean($this->inputs['loan_amount']),
-            'loan_period'       => $this->clean($this->inputs['loan_period']),
-            'loan_interest'     => $this->clean($this->inputs['loan_interest']),
-            'service_fee'       => $this->clean($this->inputs['service_fee']),
-            'monthly_payment'   => $this->clean($this->inputs['monthly_payment']),
-            'payment_terms'     => $this->clean($this->inputs['payment_terms']),
+            $this->name             => $this->clean($this->inputs[$this->name]),
+            'branch_id'             => $this->clean($this->inputs['branch_id']),
+            'client_id'             => $this->clean($this->inputs['client_id']),
+            'loan_type_id'          => $this->clean($this->inputs['loan_type_id']),
+            'loan_date'             => $this->clean($this->inputs['loan_date']),
+            'loan_amount'           => $this->clean($this->inputs['loan_amount']),
+            'loan_period'           => $this->clean($this->inputs['loan_period']),
+            'loan_interest'         => $this->clean($this->inputs['loan_interest']),
+            'penalty_percentage'    => $this->clean($this->inputs['penalty_percentage']),
+            'service_fee'           => $this->clean($this->inputs['service_fee']),
+            'monthly_payment'       => $this->clean($this->inputs['monthly_payment']),
+            'payment_terms'         => $this->clean($this->inputs['payment_terms']),
         );
 
         if (isset($this->inputs['status']))
@@ -37,19 +38,20 @@ class Loans extends Connection
         $row = $this->view($primary_id);
         $deduct_to_loan = (!isset($this->inputs['deduct_to_loan']) ? 0 : 1);
         $form = array(
-            $this->name         => $this->clean($this->inputs[$this->name]),
-            'branch_id'         => $row['branch_id'],
-            'client_id'         => $row['client_id'],
-            'loan_type_id'      => $row['loan_type_id'],
-            'loan_date'         => $this->clean($this->inputs['loan_date']),
-            'loan_amount'       => $this->clean($this->inputs['loan_amount']),
-            'loan_period'       => $this->clean($this->inputs['loan_period']),
-            'loan_interest'     => $this->clean($this->inputs['loan_interest']),
-            'service_fee'       => $this->clean($this->inputs['service_fee']),
-            'monthly_payment'   => $this->clean($this->inputs['monthly_payment']),
-            'main_loan_id'      => $this->clean($this->inputs['loan_id']),
-            'payment_terms'     => $this->clean($this->inputs['payment_terms']),
-            'deduct_to_loan'    => $deduct_to_loan,
+            $this->name             => $this->clean($this->inputs[$this->name]),
+            'branch_id'             => $row['branch_id'],
+            'client_id'             => $row['client_id'],
+            'loan_type_id'          => $row['loan_type_id'],
+            'loan_date'             => $this->clean($this->inputs['loan_date']),
+            'loan_amount'           => $this->clean($this->inputs['loan_amount']),
+            'loan_period'           => $this->clean($this->inputs['loan_period']),
+            'loan_interest'         => $this->clean($this->inputs['loan_interest']),
+            'penalty_percentage'    => $this->clean($this->inputs['penalty_percentage']),
+            'service_fee'           => $this->clean($this->inputs['service_fee']),
+            'monthly_payment'       => $this->clean($this->inputs['monthly_payment']),
+            'main_loan_id'          => $this->clean($this->inputs['loan_id']),
+            'payment_terms'         => $this->clean($this->inputs['payment_terms']),
+            'deduct_to_loan'        => $deduct_to_loan,
         );
 
         if (isset($this->inputs['status']))
@@ -154,17 +156,18 @@ class Loans extends Connection
             return 2;
         } else {
             $form = array(
-                $this->name         => $this->clean($this->inputs[$this->name]),
-                'branch_id'         => $this->clean($this->inputs['branch_id']),
-                'client_id'         => $this->clean($this->inputs['client_id']),
-                'loan_type_id'      => $this->clean($this->inputs['loan_type_id']),
-                'loan_date'         => $this->clean($this->inputs['loan_date']),
-                'loan_amount'       => $this->clean($this->inputs['loan_amount']),
-                'loan_period'       => $this->clean($this->inputs['loan_period']),
-                'loan_interest'     => $this->clean($this->inputs['loan_interest']),
-                'service_fee'       => $this->clean($this->inputs['service_fee']),
-                'monthly_payment'   => $this->clean($this->inputs['monthly_payment']),
-                'payment_terms'     => $this->clean($this->inputs['payment_terms']),
+                $this->name             => $this->clean($this->inputs[$this->name]),
+                'branch_id'             => $this->clean($this->inputs['branch_id']),
+                'client_id'             => $this->clean($this->inputs['client_id']),
+                'loan_type_id'          => $this->clean($this->inputs['loan_type_id']),
+                'loan_date'             => $this->clean($this->inputs['loan_date']),
+                'loan_amount'           => $this->clean($this->inputs['loan_amount']),
+                'loan_period'           => $this->clean($this->inputs['loan_period']),
+                'loan_interest'         => $this->clean($this->inputs['loan_interest']),
+                'penalty_percentage'    => $this->clean($this->inputs['penalty_percentage']),
+                'service_fee'           => $this->clean($this->inputs['service_fee']),
+                'monthly_payment'       => $this->clean($this->inputs['monthly_payment']),
+                'payment_terms'         => $this->clean($this->inputs['payment_terms']),
             );
 
             return $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");
@@ -421,8 +424,6 @@ class Loans extends Connection
             $loan_amount = $row['loan_amount'];
             $loan_date = $row['loan_date'];
 
-
-
             $count = 1;
 
             $monthly_interest_rate = ($loan_interest / 100) / 12;
@@ -440,7 +441,7 @@ class Loans extends Connection
                 $monthly_interest = $balance * $monthly_interest_rate;
                 $principal_amount = $payment - $monthly_interest; //$balance / $loan_period;
                 $penalty = $Collection->penalty_per_month($loan_date, $row['loan_id']);
-                $balance -= $principal_amount; //($payment + $penalty);
+                $balance -= ($principal_amount+$penalty); //($payment + $penalty);
 
 
                 $row['date'] = date('F Y', strtotime($loan_date));
@@ -550,18 +551,15 @@ class Loans extends Connection
             $loan_interest = $row['loan_interest'];
             $loan_period = $row['loan_period'];
             $loan_amount = $row['loan_amount'];
+            $monthly_payment = $row['monthly_payment'];
             $loan_date = $row['loan_date'];
-
-            $LoanTypes = new LoanTypes;
-            $penalty_per = $LoanTypes->penalty_percentage($row['loan_type_id']);
+            $penalty_per = $row['penalty_percentage'];
         } else {
-            $loan_interest = ""; //$row['loan_interest'];
-            $loan_period = ""; //$row['loan_period'];
-            $loan_amount = ""; //$row['loan_amount'];
-            $loan_date = ""; //$row['loan_date'];
-
-            // $LoanTypes = new LoanTypes;
-            $penalty_per = 0; //$LoanTypes->penalty_percentage($row['loan_type_id']);
+            $loan_interest = "";
+            $loan_period = "";
+            $loan_amount = "";
+            $loan_date = "";
+            $penalty_per = 0; 
         }
 
         $ts1 = strtotime($loan_date);
@@ -585,10 +583,10 @@ class Loans extends Connection
 
             $monthly_interest_rate = ($loan_interest / 100) / 12;
             $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
-            $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
+            // $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
             $payment = $Collection->collected_per_month($loan_date, $loan_id);
 
-            $suggested_total += $suggested_payment;
+            $suggested_total += $monthly_payment;
             $payment_total += $payment;
 
             $count++;
