@@ -31,8 +31,8 @@
                     <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><i class="fas fa-plus"></i> Add</a>
                     <div class="dropdown-menu">
                         <a href="#" class="dropdown-item has-icon" onclick="addModal()"><i class="fas fa-add"></i> Add New Loan</a>
-                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan()"><i class="far fa-repeat"></i> Loan Renewal</a>
-                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan()"><i class="far fa-file-circle-plus"></i> Additional Loan</a>
+                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan('N')"><i class="far fa-repeat"></i> Loan Renewal</a>
+                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan('Y')"><i class="far fa-file-circle-plus"></i> Additional Loan</a>
                     </div>
                 </div>
                 <div class="dropdown">
@@ -283,7 +283,7 @@
                             loan_amount: loan_amount,
                             loan_date: loan_date,
                             monthly_payment: monthly_payment,
-                            payment_terms:payment_terms
+                            payment_terms: payment_terms
                         }
                     },
                 },
@@ -316,6 +316,8 @@
         var loan_amount = $("#loan_amount_renewal").val();
         var loan_period = $("#loan_period_renewal").val();
         var loan_interest = $("#loan_interest_renewal").val();
+        var monthly_payment = $("#monthly_payment_renewal").val();
+        var payment_terms = $("#payment_terms_renewal").val();
 
         $("#dt_calculation2").DataTable().destroy();
         $("#dt_calculation2").DataTable({
@@ -325,7 +327,7 @@
             "bInfo": false,
             "ordering": false,
             "ajax": {
-                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=statement_of_accounts",
+                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=sample_calculation",
                 "dataSrc": "data",
                 "method": "POST",
                 "data": {
@@ -333,7 +335,9 @@
                         loan_interest: loan_interest,
                         loan_period: loan_period,
                         loan_amount: loan_amount,
-                        loan_date: loan_date
+                        loan_date: loan_date,
+                        monthly_payment: monthly_payment,
+                        payment_terms: payment_terms
                     }
                 },
             },
@@ -350,6 +354,10 @@
                 },
                 {
                     "data": "applicable_principal",
+                    className: "text-right"
+                },
+                {
+                    "data": "balance",
                     className: "text-right"
                 }
             ]
@@ -435,17 +443,6 @@
         });
     }
 
-    function reloan() {
-        var loan_id = $("#hidden_id_2").val();
-        getSelectOption('ChartOfAccounts', 'chart_id', 'chart_name', "chart_name LIKE '%Bank%'");
-        getBalance(loan_id);
-        generateReference2();
-        sampleCalculation2();
-        getPenalty(loan_id);
-        $("#chart_id").prop("disabled", false);
-        $("#modalEntryRenew").modal("show");
-    }
-
     function generateReference2() {
         $.ajax({
             type: "POST",
@@ -469,6 +466,6 @@
         schema();
         getEntries();
         getSelectOption('Branches', 'branch_id', 'branch_name', '', [], '', 'Please Select', '', 1);
-        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest','penalty_percentage']);
+        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest', 'penalty_percentage']);
     });
 </script>

@@ -15,7 +15,7 @@ class StatementOfAccounts extends Connection
         $Insurance = new Insurance;
         $result = $this->select($this->table, '*', "$param");
         while ($row = $result->fetch_assoc()) {
-            $fetchMain = $this->select($this->table, '*', "main_loan_id = '".$row['loan_id']."'");
+            $fetchMain = $this->select($this->table, '*', "main_loan_id = '".$row['loan_id']."' AND status != 'F'");
             if($fetchMain->num_rows == 0){
 
                 $loan_interest = $row['loan_interest'];
