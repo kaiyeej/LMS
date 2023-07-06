@@ -790,7 +790,7 @@ class Loans extends Connection
                 $loans[] = $this->worksheetLoanDetails($worksheet, $client_id, $loan_name, $row, $rowCount);
         }
         return [
-            'client_id' => $client_id,
+            'client_id' => (int) $client_id,
             'client_name' => $client_name,
             'loans' => $loans
         ];
@@ -834,6 +834,8 @@ class Loans extends Connection
             'loan_type_id' => $loan_type_id,
             'loan_type_name' => $loan_name,
             'loan_amount' => $loan_amount,
+            'loan_interest' => 0,
+            'loan_terms' => 0,
             'loan_date' => $loan_date,
             'monthly_payment' => (float) $monthly_payment,
             'balance' => (float) $balance,
