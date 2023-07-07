@@ -37,6 +37,7 @@ class Loans extends Connection
         $primary_id = $this->inputs[$this->pk];
         $row = $this->view($primary_id);
         $deduct_to_loan = (!isset($this->inputs['deduct_to_loan']) ? 0 : 1);
+        $monthly_payment = $this->inputs['monthly_payment']-$row['monthly_payment'];
         $form = array(
             $this->name             => $this->clean($this->inputs[$this->name]),
             'branch_id'             => $row['branch_id'],
@@ -48,7 +49,7 @@ class Loans extends Connection
             'loan_interest'         => $this->clean($this->inputs['loan_interest']),
             'penalty_percentage'    => $this->clean($this->inputs['penalty_percentage']),
             'service_fee'           => $this->clean($this->inputs['service_fee']),
-            'monthly_payment'       => $this->clean($this->inputs['monthly_payment']),
+            'monthly_payment'       => $monthly_payment,
             'main_loan_id'          => $this->clean($this->inputs['loan_id']),
             'payment_terms'         => $this->clean($this->inputs['payment_terms']),
             'renewal_status'        => $this->clean($this->inputs['renewal_status']),
@@ -60,7 +61,7 @@ class Loans extends Connection
 
         $sql =  $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
 
-        if($this->inputs['renewal_status'] != "Y"){
+        if($this->inputs['renewal_status'] == "Y"){
             if ($deduct_to_loan != 1) {
                 if ($sql) {
                     $Branches = new Branches;
@@ -86,21 +87,14 @@ class Loans extends Connection
                         'chart_id'          => $this->clean($this->inputs['chart_id']),
                         'client_id'         => $row['client_id'],
                         'interest'          => $interest,
-                        'amount'            => $this->clean($this->inputs['amount']),
+                        'amount'            => $amount,
                         'collection_date'   => $this->clean($this->inputs['loan_date']),
                         'penalty_amount'    => $this->clean($this->inputs['penalty_amount']),
                         'remarks'           => "Renew Loan for " . $row['reference_number'],
                         'user_id'           => $this->clean($_SESSION['lms_user_id']),
                     );
 
-                    $cl_id = $this->insert("tbl_collections", $form_cl, "Y");
-
-                    if ($this->loan_balance($this->inputs['loan_id']) <= 0) {
-                        $form_finished = array(
-                            'status' => 'F'
-                        );
-                        $this->update("tbl_loans", $form_finished, 'loan_id="' . $this->inputs['loan_id'] . '"');
-                    }
+                    $this->insert("tbl_collections", $form_cl, "Y");
 
 
                     $form_journal = array(
@@ -143,6 +137,13 @@ class Loans extends Connection
                     $lr_chart = $ChartOfAccounts->chart_data('Loans Receivable - ' . $loan_type . " - " . $branch_name);
                     $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $lr_chart['chart_id'], 'credit' => $lr_total);
                     $this->insert('tbl_journal_entry_details', $form_penalty);
+
+                    if ($this->loan_balance($this->inputs['loan_id']) <= 0) {
+                        $form_finished = array(
+                            'status' => 'F'
+                        );
+                        $this->update("tbl_loans", $form_finished, 'loan_id="' . $this->inputs['loan_id'] . '"');
+                    }
                 }
             }
         }
@@ -614,6 +615,14 @@ class Loans extends Connection
         $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
 
         return $total_amount_with_interest;
+    }
+
+    
+    public function additional_loan($month, $year, $loan_id)
+    {
+        $result = $this->select($this->table, 'sum(loan_amount) as total', "(MONTH(loan_date) = '$month' AND YEAR(loan_date)= '$year') AND main_loan_id='$loan_id' AND renewal_status='N'");
+        $row = $result->fetch_assoc();
+        return $row['total'];
     }
 
     public function loan_balance($primary_id = null)

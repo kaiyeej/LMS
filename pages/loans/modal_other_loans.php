@@ -47,20 +47,20 @@
 
                                 <div class="form-group col-md-4">
                                     <label><strong style="color:red;">*</strong> Loan Interest</label>
-                                    <input type="number" step="0.01" class="form-control input-renewal" autocomplete="off" name="input[loan_interest]" id="loan_interest_renewal" required>
+                                    <input type="number" step="0.01" class="form-control input-al input-renewal" autocomplete="off" name="input[loan_interest]" id="loan_interest_renewal" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label><strong style="color:red;">*</strong>Penalty %</label>
-                                    <input type="number" step="0.01" class="form-control input-renewal" autocomplete="off" name="input[penalty_percentage]" id="penalty_percentage_renewal" required>
+                                    <input type="number" step="0.01" class="form-control input-al input-renewal" autocomplete="off" name="input[penalty_percentage]" id="penalty_percentage_renewal" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label><strong style="color:red;">*</strong> Payment Terms <sub style="color:red;">(months)</sub></label>
-                                    <input type="number" step="0.01" class="form-control input-renewal" autocomplete="off" name="input[payment_terms]" id="payment_terms_renewal" required>
+                                    <input type="number" step="0.01" class="form-control input-al input-renewal" autocomplete="off" name="input[payment_terms]" id="payment_terms_renewal" required>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label><strong style="color:red;">*</strong> Loan Terms</label>
-                                    <input type="number" class="form-control input-renewal" autocomplete="off" name="input[loan_period]" id="loan_period_renewal" required>
+                                    <input type="number" class="form-control input-al input-renewal" autocomplete="off" name="input[loan_period]" id="loan_period_renewal" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label><strong style="color:red;">*</strong> Service Fee</label>
@@ -150,20 +150,23 @@
         $(".select2").prop("disabled", false);
         $("#btn_submit_renew").show();
         $("#renewal_status_renewal").val(renewal_status);
+        $("#loan_type_renewal").prop("readonly",true);
 
-        if(renewal_status != "Y"){
+        if(renewal_status == "Y"){
             $(".div_renewal").show();
             $(".div_collection").show();
             getSelectOption('ChartOfAccounts', 'chart_id', 'chart_name', "chart_name LIKE '%Bank%'", [], '', 'Please Select', '', 1);
             $("#chart_id_renewal").prop('required',true);
             $("#penalty_amount_renewal").prop('required',true);
             $("#amount_renewal").prop('required',true);
+            $(".input-al").prop("readonly",false);
         }else{
             $(".div_renewal").hide();
             $(".div_collection").hide();
             $("#chart_id_renewal").prop('required',false);
             $("#penalty_amount_renewal").prop('required',false);
             $("#amount_renewal").prop('required',false);
+            $(".input-al").prop("readonly",true);
         }
     }
 

@@ -31,8 +31,8 @@
                     <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><i class="fas fa-plus"></i> Add</a>
                     <div class="dropdown-menu">
                         <a href="#" class="dropdown-item has-icon" onclick="addModal()"><i class="fas fa-add"></i> Add New Loan</a>
-                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan('N')"><i class="far fa-repeat"></i> Loan Renewal</a>
-                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan('Y')"><i class="far fa-file-circle-plus"></i> Additional Loan</a>
+                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan('Y')"><i class="far fa-repeat"></i> Loan Renewal</a>
+                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan('N')"><i class="far fa-file-circle-plus"></i> Additional Loan</a>
                     </div>
                 </div>
                 <div class="dropdown">
