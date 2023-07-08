@@ -1,6 +1,7 @@
 <form id='frm_upload' method="POST" enctype="multipart/form-data">
     <div class="modal fade" id="modalUpload" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" id="import_dialog" style="width: 100%;max-width: 2000px;margin: 0.5rem;">
+        <div class="modal-dialog" role="document" id="import_dialog"
+            style="width: 100%;max-width: 2000px;margin: 0.5rem;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><span class='ion-compose'></span> Import Loans</h5>
@@ -23,6 +24,8 @@
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn_back" onclick="backToLoan()"><span
+                            class="fa fa-arrow-left"></span> Back</button>
                     <button type="submit" id="btn_upload" class="btn btn-primary">
                         Save
                     </button>
@@ -45,10 +48,19 @@
         }
     });
 
+    function backToLoan() {
+        $("#loan_client").show();
+        $("#loan_collections").hide();
+
+        $("#btn_back").hide();
+        $("#btn_upload").show();
+    }
+
     function uploadFile() {
         $('#upload_result_content').html("");
         $("#upload_file").show();
         $("#btn_upload").show();
+        $("#btn_back").hide();
         $("#modalUpload").modal('show');
     }
     $('#frm_upload').submit(function(e) {
@@ -127,18 +139,78 @@
     }
 
     function show_loan_collections(client_index, loan_index) {
+
+        $("#btn_back").show();
+        $("#btn_upload").hide();
+
+        var loan_data = loan_from_excels[client_index].loans[loan_index];
+        var collections = loan_data.collections;
+        var skin_collections = "", total_payments = 0, total_interest = 0;
+        for (var collectionIndex = 0; collectionIndex < collections.length; collectionIndex++) {
+            const collection = collections[collectionIndex];
+            total_payments += collection.payment_amount;
+            total_interest += collection.interest;
+            skin_collections += `<tr>
+                <td class='w-2'></td>
+                <td class='w-10'>${collection.payment_month}</td>
+                <td class='w-10 right' contenteditable="true">${numberFormat(collection.payment_amount)}</td>
+                <td class='w-10 right' contenteditable="true">${numberFormat(collection.interest)}</td>
+                <td class='w-10 right' contenteditable="true">${numberFormat(collection.penalty)}</td>
+                <td class='w-10 right' contenteditable="true">${numberFormat(collection.principal)}</td>
+                <td class='w-5'></td>
+                <td class='w-10 right' contenteditable="true">${numberFormat(collection.balance)}</td>
+                <td class='w-10'></td>
+                <td class='w-2'></td>
+            </tr>`;
+        }
+
         $("#loan_client").hide();
         $("#loan_collections").show();
         $('#loan_collections').html(`
+            <center>
+                <h2>${loan_from_excels[client_index].client_name}</h2>
+            </center>
             <table class="tbl_loans">
               <tr>
-                <th>#</th>
-                <th>PAYMENT DATE</th>
+                <th colspan="10">${loan_data.loan_type_name}</th>
+              </tr>
+              <tr>
+                <th class='w-2'></th>
+                <th class='w-10'>PAYMENT DATE</th>
                 <th class='w-10'>PAYMENTS</th>
                 <th class='w-10'>INTEREST AMOUNT</th>
                 <th class='w-10'>PENALTY</th>
                 <th class='w-10'>APPLICABLE TO PRINCIPAL</th>
-                <th class='w-10'>BALANCE OUTSTANDING</th>
+                <th class='w-5'></th>
+                <th colspan="2">BALANCE OUTSTANDING</th>
+                <th class='w-2'></th>
+              </tr>
+              <tr>
+                <td></td>
+                <td class="bold italic">LOAN INTEREST</td>
+                <td class="right" contenteditable="true">${numberFormat(loan_data.loan_interest)}</td>
+                <td colspan="7"></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td class="bold italic">MONTHLY PAYMENT</td>
+                <td class="right">${numberFormat(loan_data.monthly_payment)}</td>
+                <td colspan="7"></td>
+              </tr>
+              <tr>
+                <td colspan="7"></td>
+                <td class="right">${numberFormat(loan_data.loan_amount)}</td>
+                <td></td>
+              </tr>
+              ${skin_collections}
+              <tr>
+                <td colspan="10">&nbsp;</td>
+              </tr>
+              <tr>
+                <td colspan="2"></td>
+                <td class="right">${numberFormat(total_payments)}</td>
+                <td class="right">${numberFormat(total_interest)}</td>
+                <td colspan="7"></td>
               </tr>
         </table>`);
     }
@@ -186,12 +258,28 @@
         width: 10% !important;
     }
 
+    .w-5 {
+        width: 5% !important;
+    }
+
+    .w-2 {
+        width: 2% !important;
+    }
+
     .right {
         text-align: right !important;
     }
 
     .center {
         text-align: center !important;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    .italic {
+        font-style: italic;
     }
 
     .negative {

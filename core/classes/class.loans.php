@@ -804,8 +804,10 @@ class Loans extends Connection
         $amount_row = $loan_row + 7;
         $payment_row = $amount_row + 1;
         $monthly_row = $amount_row - 1;
+        $interest_row = $amount_row - 2;
 
         $loan_amount = $worksheet->getCell('I' . $amount_row)->getValue();
+        $loan_interest = $worksheet->getCell('D' . $interest_row)->getValue();
         $monthly_payment = $worksheet->getCell('D' . $monthly_row)->getValue();
 
         $collections = [];
@@ -814,12 +816,13 @@ class Loans extends Connection
             $payment_month = $worksheet->getCell('C' . $row)->getValue();
             if ($payment_month != '') {
                 $payment_amount = $worksheet->getCell('D' . $row)->getCalculatedValue();
+                $penalty = $worksheet->getCell('F' . $row)->getCalculatedValue();
                 $balance = $worksheet->getCell('I' . $row)->getCalculatedValue();
                 $collections[] = [
                     'payment_month' => date("Y-m-t", strtotime($payment_month)),
                     'payment_amount' => (float) $payment_amount,
                     'interest' => $worksheet->getCell('E' . $row)->getCalculatedValue(),
-                    'penalty' => $worksheet->getCell('F' . $row)->getCalculatedValue(),
+                    'penalty' => (float) $penalty,
                     'principal' => $worksheet->getCell('G' . $row)->getCalculatedValue(),
                     'balance' => $worksheet->getCell('I' . $row)->getCalculatedValue(),
                 ];
@@ -833,8 +836,8 @@ class Loans extends Connection
         return [
             'loan_type_id' => $loan_type_id,
             'loan_type_name' => $loan_name,
-            'loan_amount' => $loan_amount,
-            'loan_interest' => 0,
+            'loan_amount' => (float) $loan_amount,
+            'loan_interest' => (float) $loan_interest,
             'loan_terms' => 0,
             'loan_date' => $loan_date,
             'monthly_payment' => (float) $monthly_payment,
