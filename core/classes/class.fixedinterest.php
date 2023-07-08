@@ -1,25 +1,12 @@
 <?php
 
-class LoanTypes extends Connection
+class FixedInterest extends Connection
 {
-    private $table = 'tbl_loan_types';
-    public $pk = 'loan_type_id';
-    public $name = 'loan_type';
+    private $table = 'tbl_fixed_loan_interest';
+    public $pk = 'tbl_fixed_loan_interest';
+    public $name = 'loan_amount';
 
     public $inputs;
-
-    public function add()
-    {
-        $form = array(
-            $this->name             => $this->clean($this->inputs[$this->name]),
-            'loan_type_interest'    => $this->clean($this->inputs['loan_type_interest']),
-            'penalty_percentage'    => $this->clean($this->inputs['penalty_percentage']),
-            'remarks'               => $this->clean($this->inputs['remarks']),
-            'fixed_interest'        => $this->clean($this->inputs['fixed_interest']),
-        );
-
-        return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
-    }
 
     public function add_fixed()
     {

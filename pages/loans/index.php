@@ -242,8 +242,16 @@
     function changeLoanType() {
         var loan_type_interest = $("#loan_type_id").find('option:selected').attr('loan_type_interest');
         var penalty_percentage = $("#loan_type_id").find('option:selected').attr('penalty_percentage');
+        var loan_interest_id = $("#loan_type_id").find('option:selected').attr('loan_interest_id');
         $("#loan_interest").val(loan_type_interest);
         $("#penalty_percentage").val(penalty_percentage);
+
+        if(loan_interest_id == 1){
+            $("#div_amount").html('<label><strong style="color:red;">*</strong> Loan amount</label><input type="number" step="0.01" class="form-control input-item" onchange="calculateInterest()" autocomplete="off" name="input[loan_amount]" id="loan_amount" required>');
+        }else{
+            $("#div_amount").html('<label><strong style="color:red;">*</strong> Loan amount</label><select class="form-control select2 input-item" onchange="changeLoanType()" id="loan_amount" name="input[loan_amount]" style="width:100%;" required></select>');
+            getSelectOption('LoanTypes', 'loan_amount', 'loan_type', "", ['loan_type_interest', 'penalty_percentage','loan_interest_id']);
+        }
     }
 
     function calculateInterest() {
@@ -466,6 +474,6 @@
         schema();
         getEntries();
         getSelectOption('Branches', 'branch_id', 'branch_name', '', [], '', 'Please Select', '', 1);
-        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest', 'penalty_percentage']);
+        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest', 'penalty_percentage','loan_interest_id']);
     });
 </script>

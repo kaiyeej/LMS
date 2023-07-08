@@ -280,7 +280,7 @@ CREATE TABLE IF NOT EXISTS `tbl_client_insurance` (
 INSERT INTO `tbl_client_insurance` (`client_insurance_id`, `client_id`, `insurance_id`, `insurance_amount`, `insurance_maturity`, `insurance_bank_transaction`, `insurance_unpaid_obligation`, `insurance_salary_withdrawal`, `paymaster_name`, `paymaster_address`, `paymaster_res_cert_no`, `paymaster_res_cert_issued_at`, `paymaster_res_cert_date`, `paymaster_deduct_salary`, `paymaster_client_deduct_salary`, `paymaster_conformity`, `date_added`, `date_last_modified`) VALUES
 	(1, 9, 5, 10.000, 20, 'sadas', 10.000, 'Semi-monthly', 'dsfsdfsdf', 'sdfsdf', 'ssdfs', 'dfsdf', '2023-06-16', 'Yes', 'No', 'No', '2023-06-16 10:50:04', '2023-06-16 10:51:39'),
 	(2, 10, 1, 1001.000, 231, 'Sds1', 101.000, 'Weekly', 'Mery1', 'Bacolod1', 'A1', 'a1', '2023-06-16', 'No', 'Yes', 'Yes', '2023-06-16 11:11:40', '2023-06-19 10:06:11'),
-	(12, 20, 0, 500.000, 0, '', 0.000, '', '', '', '', '', '0000-00-00', 'No', 'No', 'No', '2023-06-19 11:29:39', '2023-06-19 11:29:39'),
+	(12, 20, 1, 500.000, 0, '344', 0.000, 'Weekly', '4234', '24', '234', '42', '2023-06-20', 'No', 'No', 'No', '2023-06-19 11:29:39', '2023-06-20 15:30:01'),
 	(13, 21, 0, 800.000, 0, '', 0.000, '', '', '', '', '', '0000-00-00', 'No', 'No', 'No', '2023-06-19 11:29:39', '2023-06-19 11:29:39'),
 	(14, 22, 0, 0.000, 0, '', 0.000, '', '', '', '', '', '0000-00-00', 'No', 'No', 'No', '2023-06-19 13:37:33', '2023-06-19 13:37:33');
 /*!40000 ALTER TABLE `tbl_client_insurance` ENABLE KEYS */;
@@ -437,13 +437,17 @@ CREATE TABLE IF NOT EXISTS `tbl_collections` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`collection_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table lms_db.tbl_collections: ~2 rows (approximately)
+-- Dumping data for table lms_db.tbl_collections: ~6 rows (approximately)
 /*!40000 ALTER TABLE `tbl_collections` DISABLE KEYS */;
 INSERT INTO `tbl_collections` (`collection_id`, `reference_number`, `branch_id`, `client_id`, `loan_id`, `amount`, `penalty_amount`, `interest`, `remarks`, `collection_date`, `atm_balance`, `atm_withdrawal`, `atm_charge`, `status`, `user_id`, `chart_id`, `date_added`, `date_last_modified`) VALUES
-	(4, 'CL-20230619084413', 1, 20, 2, 243.000, 0.000, 61.657, '', '2023-06-19', 324.000, 234.000, 234.000, 'F', 1, 4, '2023-06-19 14:44:32', '2023-06-19 14:44:32'),
-	(5, 'CL-20230619091326', 1, 20, 2, 242.000, 0.000, 61.403, '24', '2023-06-19', 234.000, 234.000, 234.000, 'F', 1, 4, '2023-06-19 15:13:40', '2023-06-19 15:13:40');
+	(1, 'CL-20230707020306', 1, 20, 19, 1150.000, 0.000, 150.000, '', '2023-06-02', 23.000, 234.000, 234.000, 'F', 1, 4, '2023-07-07 08:05:08', '2023-07-07 08:05:08'),
+	(2, 'CL-20230707020510', 1, 20, 19, 2500.000, 0.000, 326.087, '', '2023-07-01', 324.000, 324.000, 324.000, 'F', 1, 4, '2023-07-07 08:05:39', '2023-07-07 08:05:39'),
+	(5, 'CL-20230707031515', 1, 20, 19, 7850.000, 0.000, 1023.913, 'Renew Loan for LN-20230706092636', '2023-07-01', 0.000, 0.000, 0.000, 'F', 1, 5, '2023-07-07 09:15:15', '2023-07-07 09:15:15'),
+	(6, 'CL-20230707034520', 1, 20, 21, 2500.000, 0.000, 326.087, '', '2023-08-07', 123.000, 1231.000, 31323.000, 'F', 1, 4, '2023-07-07 09:45:42', '2023-07-07 09:45:42'),
+	(7, 'CL-20230707053521', 1, 22, 22, 1800.000, 0.000, 1800.000, 'Renew Loan for LN-20230707052928', '2023-06-07', 0.000, 0.000, 0.000, 'F', 1, 0, '2023-07-07 11:35:21', '2023-07-07 15:36:48'),
+	(8, 'CL-20230707091452', 1, 20, 21, 9000.000, 0.000, 1173.913, 'Renew Loan for LN-20230707031434', '2023-07-01', 0.000, 0.000, 0.000, 'F', 1, 0, '2023-07-07 15:14:52', '2023-07-07 15:14:52');
 /*!40000 ALTER TABLE `tbl_collections` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_comakers
@@ -548,6 +552,27 @@ INSERT INTO `tbl_expense_details` (`expense_detail_id`, `expense_id`, `chart_id`
 	(7, 1, 12, 0, 1975.750, 'Test Description');
 /*!40000 ALTER TABLE `tbl_expense_details` ENABLE KEYS */;
 
+-- Dumping structure for table lms_db.tbl_fixed_loan_interest
+CREATE TABLE IF NOT EXISTS `tbl_fixed_loan_interest` (
+  `loan_interest_id` int(11) NOT NULL AUTO_INCREMENT,
+  `loan_type_id` int(11) NOT NULL,
+  `loan_amount` decimal(12,2) NOT NULL,
+  `interest_amount` decimal(12,2) NOT NULL,
+  `interest_terms` int(4) NOT NULL,
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`loan_interest_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table lms_db.tbl_fixed_loan_interest: ~4 rows (approximately)
+/*!40000 ALTER TABLE `tbl_fixed_loan_interest` DISABLE KEYS */;
+INSERT INTO `tbl_fixed_loan_interest` (`loan_interest_id`, `loan_type_id`, `loan_amount`, `interest_amount`, `interest_terms`, `date_added`, `date_last_modified`) VALUES
+	(1, 0, 75000.00, 10.00, 12, '2023-07-08 14:50:34', '2023-07-08 14:50:34'),
+	(2, 0, 23.00, 23.00, 32, '2023-07-08 14:54:05', '2023-07-08 14:54:05'),
+	(3, 0, 2.00, 2.00, 2, '2023-07-08 14:56:06', '2023-07-08 14:56:06'),
+	(6, 9, 15000.00, 15.00, 12, '2023-07-08 15:06:54', '2023-07-08 15:06:54');
+/*!40000 ALTER TABLE `tbl_fixed_loan_interest` ENABLE KEYS */;
+
 -- Dumping structure for table lms_db.tbl_insurance
 CREATE TABLE IF NOT EXISTS `tbl_insurance` (
   `insurance_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -628,9 +653,9 @@ CREATE TABLE IF NOT EXISTS `tbl_journal_entries` (
   `date_last_modified` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_manual` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`journal_entry_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_journal_entries: ~7 rows (approximately)
+-- Dumping data for table lms_db.tbl_journal_entries: ~36 rows (approximately)
 /*!40000 ALTER TABLE `tbl_journal_entries` DISABLE KEYS */;
 INSERT INTO `tbl_journal_entries` (`journal_entry_id`, `reference_number`, `cross_reference`, `journal_id`, `remarks`, `journal_date`, `user_id`, `status`, `date_added`, `date_last_modified`, `is_manual`) VALUES
 	(1, 'CRJ-20230615040611', 'CL-202306151', 4, '', '2023-06-15', 1, 'F', '2023-06-15 10:06:11', '2023-06-15 10:06:11', 'N'),
@@ -638,8 +663,37 @@ INSERT INTO `tbl_journal_entries` (`journal_entry_id`, `reference_number`, `cros
 	(3, 'CRJ-20230619080642', 'CL-20230619080629', 4, '', '2023-06-19', 1, 'F', '2023-06-19 14:06:42', '2023-06-19 14:06:42', 'N'),
 	(4, 'CRJ-20230619084432', 'CL-20230619084413', 4, '', '2023-06-19', 1, 'F', '2023-06-19 14:44:32', '2023-06-19 14:44:32', 'N'),
 	(5, 'CRJ-20230619091340', 'CL-20230619091326', 4, '24', '2023-06-19', 1, 'F', '2023-06-19 15:13:40', '2023-06-19 15:13:40', 'N'),
-	(6, 'CDJ-20230619093015', 'CV-20230619093003', 7, '234', '2023-06-19', 1, 'F', '2023-06-19 15:30:15', '2023-06-19 15:30:44', 'N'),
-	(7, 'CDJ-20230619093058', 'CCV-20230619093003', 7, 'Reverse Entry for Cancelled Voucher (CV-20230619093003).', '2023-06-19', 1, 'F', '2023-06-19 15:30:58', '2023-06-19 15:30:58', 'N');
+	(7, 'CDJ-20230619093058', 'CCV-20230619093003', 7, 'Reverse Entry for Cancelled Voucher (CV-20230619093003).', '2023-06-19', 1, 'F', '2023-06-19 15:30:58', '2023-06-19 15:30:58', 'N'),
+	(8, 'DJ-20230626101500', '123', 6, '', '2023-06-26', 1, 'S', '2023-06-26 16:15:08', '2023-06-26 16:15:08', 'Y'),
+	(9, 'CRJ-20230628083105', 'CL-20230628083043', 4, '', '2023-06-28', 1, 'F', '2023-06-28 14:31:05', '2023-06-28 14:31:05', 'N'),
+	(10, 'CRJ-20230628092443', 'CL-20230628092443', 4, 'Renew loan (Loan ID: LN-20230628092436', '2023-06-19', 1, 'F', '2023-06-28 15:24:43', '2023-06-28 15:24:43', 'N'),
+	(12, 'CRJ-20230701091511', 'CL-20230701091511', 4, 'Renew loan (Loan ID: LN-20230701091459', '2023-06-19', 1, 'F', '2023-07-01 15:15:11', '2023-07-01 15:15:11', 'N'),
+	(14, 'CRJ-20230701095407', 'CL-20230701095407', 4, 'Renew loan (Loan ID: LN-20230701095255', '2023-06-29', 1, 'F', '2023-07-01 15:54:07', '2023-07-01 15:54:07', 'N'),
+	(15, 'CRJ-20230701095409', 'CL-20230701095409', 4, 'Renew loan (Loan ID: LN-20230701095255', '2023-06-29', 1, 'F', '2023-07-01 15:54:09', '2023-07-01 15:54:09', 'N'),
+	(17, 'CRJ-20230703055528', 'CL-20230703055528', 4, 'Renew loan (Loan ID: LN-20230703055506', '2023-07-03', 1, 'F', '2023-07-03 11:55:28', '2023-07-03 11:55:28', 'N'),
+	(19, 'CRJ-20230703080243', 'CL-20230703080243', 4, 'Renew loan (Loan ID: LN-20230703080205', '2023-07-03', 1, 'F', '2023-07-03 14:02:43', '2023-07-03 14:02:43', 'N'),
+	(22, 'CRJ-20230704103334', 'CL-20230704103256', 4, '', '2023-03-01', 1, 'F', '2023-07-04 16:33:34', '2023-07-04 16:33:34', 'N'),
+	(23, 'CRJ-20230704103440', 'CL-20230704103409', 4, '', '2023-04-01', 1, 'F', '2023-07-04 16:34:40', '2023-07-04 16:34:40', 'N'),
+	(24, 'CRJ-20230705085144', 'CL-20230705084408', 4, '', '2023-05-04', 1, 'F', '2023-07-05 14:51:44', '2023-07-05 14:51:44', 'N'),
+	(25, 'CRJ-20230705085220', 'CL-20230705085156', 4, '', '2023-06-01', 1, 'F', '2023-07-05 14:52:20', '2023-07-05 14:52:20', 'N'),
+	(26, 'CRJ-20230705085255', 'CL-20230705085223', 4, '', '2023-07-05', 1, 'F', '2023-07-05 14:52:55', '2023-07-05 14:52:55', 'N'),
+	(27, 'CRJ-20230705085330', 'CL-20230705085257', 4, '', '2023-08-05', 1, 'F', '2023-07-05 14:53:30', '2023-07-05 14:53:30', 'N'),
+	(28, 'CRJ-20230705085711', 'CL-20230705085332', 4, '234', '2023-09-07', 1, 'F', '2023-07-05 14:57:11', '2023-07-05 14:57:11', 'N'),
+	(29, 'CRJ-20230706080556', 'CL-20230706080556', 4, 'Renew loan (Loan ID: LN-20230706080443', '2023-02-01', 1, 'F', '2023-07-06 14:05:56', '2023-07-06 14:05:56', 'N'),
+	(30, 'CRJ-20230706080608', 'CL-20230706080608', 4, 'Renew loan (Loan ID: LN-20230706080443', '2023-02-01', 1, 'F', '2023-07-06 14:06:08', '2023-07-06 14:06:08', 'N'),
+	(32, 'CRJ-20230706081912', 'CL-20230706081912', 4, 'Renew loan (Loan ID: LN-20230706081840', '2023-07-13', 1, 'F', '2023-07-06 14:19:12', '2023-07-06 14:19:12', 'N'),
+	(33, 'CRJ-20230706081932', 'CL-20230706081932', 4, 'Renew loan (Loan ID: LN-20230706081921', '2023-07-13', 1, 'F', '2023-07-06 14:19:33', '2023-07-06 14:19:33', 'N'),
+	(34, 'CDJ-20230706092837', 'CV-20230706092822', 7, 's', '2023-05-11', 1, 'F', '2023-07-06 15:28:37', '2023-07-06 15:28:52', 'N'),
+	(35, 'CRJ-20230707020508', 'CL-20230707020306', 4, '', '2023-06-02', 1, 'F', '2023-07-07 08:05:08', '2023-07-07 08:05:08', 'N'),
+	(36, 'CRJ-20230707020539', 'CL-20230707020510', 4, '', '2023-07-01', 1, 'F', '2023-07-07 08:05:39', '2023-07-07 08:05:39', 'N'),
+	(37, 'CRJ-20230707020728', 'CL-20230707020728', 4, 'Renew loan (Loan ID: LN-20230707020717', '2023-05-01', 1, 'F', '2023-07-07 08:07:28', '2023-07-07 08:07:28', 'N'),
+	(38, 'CRJ-20230707020824', 'CL-20230707020824', 4, 'Renew loan (Loan ID: LN-20230707020717', '2023-05-01', 1, 'F', '2023-07-07 08:08:24', '2023-07-07 08:08:24', 'N'),
+	(39, 'CRJ-20230707031515', 'CL-20230707031515', 4, 'Renew loan (Loan ID: LN-20230707031434', '2023-07-01', 1, 'F', '2023-07-07 09:15:15', '2023-07-07 09:15:15', 'N'),
+	(40, 'CDJ-20230707033843', 'CV-20230707033826', 7, '32', '2023-07-07', 1, 'F', '2023-07-07 09:38:43', '2023-07-07 09:38:59', 'N'),
+	(41, 'CRJ-20230707034542', 'CL-20230707034520', 4, '', '2023-08-07', 1, 'F', '2023-07-07 09:45:42', '2023-07-07 09:45:42', 'N'),
+	(42, 'CDJ-20230707053126', 'CV-20230707053059', 7, '2', '2023-07-07', 1, 'F', '2023-07-07 11:31:26', '2023-07-07 11:31:41', 'N'),
+	(43, 'CRJ-20230707053521', 'CL-20230707053521', 4, 'Renew loan (Loan ID: LN-20230707053435', '2023-06-07', 1, 'F', '2023-07-07 11:35:21', '2023-07-07 11:35:21', 'N'),
+	(44, 'CRJ-20230707091452', 'CL-20230707091452', 4, 'Renew loan (Loan ID: LN-20230707091440', '2023-07-01', 1, 'F', '2023-07-07 15:14:52', '2023-07-07 15:14:52', 'N');
 /*!40000 ALTER TABLE `tbl_journal_entries` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_journal_entry_details
@@ -651,9 +705,9 @@ CREATE TABLE IF NOT EXISTS `tbl_journal_entry_details` (
   `debit` decimal(12,3) NOT NULL DEFAULT '0.000',
   `credit` decimal(12,3) NOT NULL DEFAULT '0.000',
   PRIMARY KEY (`journal_entry_detail_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_journal_entry_details: ~19 rows (approximately)
+-- Dumping data for table lms_db.tbl_journal_entry_details: ~119 rows (approximately)
 /*!40000 ALTER TABLE `tbl_journal_entry_details` DISABLE KEYS */;
 INSERT INTO `tbl_journal_entry_details` (`journal_entry_detail_id`, `journal_entry_id`, `chart_id`, `description`, `debit`, `credit`) VALUES
 	(1, 1, 5, '', 838.000, 0.000),
@@ -674,7 +728,107 @@ INSERT INTO `tbl_journal_entry_details` (`journal_entry_detail_id`, `journal_ent
 	(17, 6, 1, '', 234.000, 0.000),
 	(18, 6, 5, '', 0.000, 234.000),
 	(19, 7, 1, ' (Reverse Entry)', 0.000, 234.000),
-	(20, 7, 5, ' (Reverse Entry)', 234.000, 0.000);
+	(20, 7, 5, ' (Reverse Entry)', 234.000, 0.000),
+	(21, 8, 7, '', 1000.000, 0.000),
+	(22, 9, 5, '', 485.000, 0.000),
+	(23, 9, 38, '', 0.000, 123.060),
+	(24, 9, 17, '', 0.000, 361.940),
+	(25, 10, 5, '', 19130.000, 0.000),
+	(26, 10, 38, '', 0.000, 4853.881),
+	(27, 10, 17, '', 0.000, 14276.119),
+	(28, 11, 1, '', 234.000, 0.000),
+	(29, 11, 5, '', 0.000, 234.000),
+	(30, 12, 4, '', 20100.000, 0.000),
+	(31, 12, 38, '', 0.000, 5100.000),
+	(32, 12, 17, '', 0.000, 15000.000),
+	(33, 13, 1, '', 324.000, 0.000),
+	(34, 13, 5, '', 0.000, 324.000),
+	(35, 14, 5, '', 115.000, 0.000),
+	(36, 14, 38, '', 0.000, 15.000),
+	(37, 14, 14, '', 0.000, 100.000),
+	(38, 15, 5, '', 115.000, 0.000),
+	(39, 15, 38, '', 0.000, 15.000),
+	(40, 15, 14, '', 0.000, 100.000),
+	(41, 16, 1, '', 23000.000, 0.000),
+	(42, 16, 6, '', 0.000, 23000.000),
+	(43, 17, 4, '', 28320.000, 0.000),
+	(44, 17, 38, '', 0.000, 4320.000),
+	(45, 17, 14, '', 0.000, 24000.000),
+	(46, 18, 1, '', 2500.000, 0.000),
+	(47, 18, 5, '', 0.000, 2500.000),
+	(48, 19, 5, '', 0.000, 0.000),
+	(49, 19, 38, '', 0.000, 0.000),
+	(50, 19, 14, '', 0.000, 0.000),
+	(52, 20, 5, '', 0.000, 213.000),
+	(53, 20, 1, '', 213.000, 0.000),
+	(54, 21, 1, '', 205000.000, 0.000),
+	(55, 21, 5, '', 0.000, 205000.000),
+	(56, 22, 4, '', 5000.000, 0.000),
+	(57, 22, 38, '', 0.000, 1460.177),
+	(58, 22, 17, '', 0.000, 3539.823),
+	(59, 23, 4, '', 5000.000, 0.000),
+	(60, 23, 38, '', 0.000, 1460.177),
+	(61, 23, 17, '', 0.000, 3539.823),
+	(62, 24, 5, '', 5000.000, 0.000),
+	(63, 24, 38, '', 0.000, 1460.177),
+	(64, 24, 17, '', 0.000, 3539.823),
+	(65, 25, 5, '', 5000.000, 0.000),
+	(66, 25, 38, '', 0.000, 1460.177),
+	(67, 25, 17, '', 0.000, 3539.823),
+	(68, 26, 5, '', 5000.000, 0.000),
+	(69, 26, 38, '', 0.000, 1460.177),
+	(70, 26, 17, '', 0.000, 3539.823),
+	(71, 27, 4, '', 4400.000, 0.000),
+	(72, 27, 38, '', 0.000, 1284.956),
+	(73, 27, 17, '', 0.000, 3115.044),
+	(74, 28, 5, '', 4918.000, 0.000),
+	(75, 28, 38, '', 0.000, 1430.973),
+	(76, 28, 40, '', 0.000, 18.000),
+	(77, 28, 17, '', 0.000, 3469.027),
+	(78, 29, 5, '', 255262.500, 0.000),
+	(79, 29, 38, '', 0.000, 74545.686),
+	(80, 29, 17, '', 0.000, 180716.814),
+	(81, 30, 5, '', 255262.500, 0.000),
+	(82, 30, 38, '', 0.000, 74545.686),
+	(83, 30, 17, '', 0.000, 180716.814),
+	(84, 31, 1, '', 1.000, 0.000),
+	(85, 31, 5, '', 0.000, 1.000),
+	(86, 32, 0, '', 59000.000, 0.000),
+	(87, 32, 38, '', 0.000, 9000.000),
+	(88, 32, 14, '', 0.000, 50000.000),
+	(89, 33, 0, '', 59000.000, 0.000),
+	(90, 33, 38, '', 0.000, 9000.000),
+	(91, 33, 14, '', 0.000, 50000.000),
+	(92, 34, 1, '', 10000.000, 0.000),
+	(93, 34, 5, '', 0.000, 10000.000),
+	(94, 35, 4, '', 1150.000, 0.000),
+	(95, 35, 38, '', 0.000, 150.000),
+	(96, 35, 14, '', 0.000, 1000.000),
+	(97, 36, 4, '', 2500.000, 0.000),
+	(98, 36, 38, '', 0.000, 326.087),
+	(99, 36, 14, '', 0.000, 2173.913),
+	(100, 37, 0, '', 7850.000, 0.000),
+	(101, 37, 38, '', 0.000, 1023.913),
+	(102, 37, 14, '', 0.000, 6826.087),
+	(103, 38, 0, '', 7850.000, 0.000),
+	(104, 38, 38, '', 0.000, 1023.913),
+	(105, 38, 14, '', 0.000, 6826.087),
+	(106, 39, 5, '', 7850.000, 0.000),
+	(107, 39, 38, '', 0.000, 1023.913),
+	(108, 39, 14, '', 0.000, 6826.087),
+	(109, 40, 1, '', 1500.000, 0.000),
+	(110, 40, 5, '', 0.000, 1500.000),
+	(111, 41, 4, '', 2500.000, 0.000),
+	(112, 41, 38, '', 0.000, 326.087),
+	(113, 41, 14, '', 0.000, 2173.913),
+	(114, 42, 1, '', 1000.000, 0.000),
+	(115, 42, 5, '', 0.000, 1000.000),
+	(116, 43, 0, '', 11800.000, 0.000),
+	(117, 43, 38, '', 0.000, 1800.000),
+	(118, 43, 14, '', 0.000, 10000.000),
+	(119, 44, 0, '', 9000.000, 0.000),
+	(120, 44, 38, '', 0.000, 1173.913),
+	(121, 44, 14, '', 0.000, 7826.087);
 /*!40000 ALTER TABLE `tbl_journal_entry_details` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_loans
@@ -687,8 +841,11 @@ CREATE TABLE IF NOT EXISTS `tbl_loans` (
   `loan_amount` decimal(12,3) NOT NULL DEFAULT '0.000',
   `loan_period` int(6) NOT NULL DEFAULT '0',
   `loan_interest` decimal(12,3) NOT NULL DEFAULT '0.000',
+  `penalty_percentage` decimal(4,2) NOT NULL,
+  `payment_terms` decimal(4,2) NOT NULL,
   `due_date` date NOT NULL,
   `status` varchar(1) NOT NULL DEFAULT 'A' COMMENT 'P - Pending; A - Approved; R - Released; D - Denied; F- Fully paid',
+  `renewal_status` varchar(1) NOT NULL DEFAULT 'N' COMMENT 'Y - Yes ; N - No',
   `loan_date` date NOT NULL,
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -698,38 +855,47 @@ CREATE TABLE IF NOT EXISTS `tbl_loans` (
   `main_loan_id` int(11) NOT NULL,
   `deduct_to_loan` int(1) NOT NULL,
   PRIMARY KEY (`loan_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table lms_db.tbl_loans: ~2 rows (approximately)
+-- Dumping data for table lms_db.tbl_loans: ~8 rows (approximately)
 /*!40000 ALTER TABLE `tbl_loans` DISABLE KEYS */;
-INSERT INTO `tbl_loans` (`loan_id`, `reference_number`, `branch_id`, `client_id`, `loan_type_id`, `loan_amount`, `loan_period`, `loan_interest`, `due_date`, `status`, `loan_date`, `date_added`, `date_last_modified`, `service_fee`, `monthly_payment`, `user_id`, `main_loan_id`, `deduct_to_loan`) VALUES
-	(1, 'LN-20230613102357', 1, 1, 2, 15000.000, 24, 17.000, '0000-00-00', 'R', '2023-06-13', '2023-06-13 16:24:20', '2023-06-14 13:50:09', 10.000, 838.000, 0, 0, 0),
-	(2, 'LN-20230619054227', 1, 20, 2, 15000.000, 24, 17.000, '0000-00-00', 'R', '2023-06-19', '2023-06-19 11:42:57', '2023-06-19 11:46:36', 1000.000, 838.000, 0, 0, 0);
+INSERT INTO `tbl_loans` (`loan_id`, `reference_number`, `branch_id`, `client_id`, `loan_type_id`, `loan_amount`, `loan_period`, `loan_interest`, `penalty_percentage`, `payment_terms`, `due_date`, `status`, `renewal_status`, `loan_date`, `date_added`, `date_last_modified`, `service_fee`, `monthly_payment`, `user_id`, `main_loan_id`, `deduct_to_loan`) VALUES
+	(19, 'LN-20230706092636', 1, 20, 1, 10000.000, 10, 18.000, 3.00, 1.00, '0000-00-00', 'F', 'N', '2023-05-01', '2023-07-06 15:27:24', '2023-07-07 09:15:15', 2000.000, 1150.000, 0, 0, 0),
+	(21, 'LN-20230707031434', 1, 20, 1, 10000.000, 10, 18.000, 3.00, 1.00, '0000-00-00', 'F', 'Y', '2023-07-01', '2023-07-07 09:15:15', '2023-07-07 15:14:52', 2000.000, 1150.000, 0, 19, 0),
+	(22, 'LN-20230707052928', 1, 22, 1, 10000.000, 12, 18.000, 3.00, 2.00, '0000-00-00', 'R', 'N', '2023-03-07', '2023-07-07 11:30:47', '2023-07-07 14:25:48', 122.000, 1847.500, 0, 0, 0),
+	(23, 'LN-20230707053156', 1, 20, 1, 1000.000, 10, 18.000, 3.00, 1.00, '0000-00-00', 'A', 'Y', '2023-07-07', '2023-07-07 11:34:03', '2023-07-07 11:34:03', 2000.000, 109.050, 0, 21, 0),
+	(25, 'LN-20230707082643', 1, 22, 1, 5000.000, 12, 18.000, 3.00, 2.00, '0000-00-00', 'A', 'N', '2023-07-01', '2023-07-07 14:28:51', '2023-07-07 15:49:20', 122.000, 1847.500, 0, 22, 0),
+	(26, 'LN-20230707091440', 1, 20, 1, 10000.000, 10, 18.000, 3.00, 1.00, '0000-00-00', 'A', 'Y', '2023-07-01', '2023-07-07 15:14:52', '2023-07-07 15:14:52', 2000.000, 1150.000, 0, 21, 0),
+	(27, 'LN-20230707091822', 2, 21, 1, 10000.000, 12, 18.000, 3.00, 1.00, '0000-00-00', 'R', 'N', '2023-07-07', '2023-07-07 15:19:46', '2023-07-07 15:20:08', 1000.000, 916.800, 0, 0, 0),
+	(30, 'LN-20230707092435', 2, 21, 1, 5000.000, 12, 18.000, 3.00, 1.00, '0000-00-00', 'A', 'N', '2023-07-07', '2023-07-07 15:25:19', '2023-07-07 15:25:19', 1000.000, 483.200, 0, 27, 0);
 /*!40000 ALTER TABLE `tbl_loans` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_loan_types
 CREATE TABLE IF NOT EXISTS `tbl_loan_types` (
   `loan_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `loan_type` varchar(50) DEFAULT NULL,
+  `fixed_interest` int(1) NOT NULL,
   `loan_type_interest` decimal(5,2) NOT NULL,
   `penalty_percentage` decimal(5,2) NOT NULL,
   `remarks` varchar(250) DEFAULT NULL,
   `date_added` datetime DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`loan_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table lms_db.tbl_loan_types: ~8 rows (approximately)
+-- Dumping data for table lms_db.tbl_loan_types: ~10 rows (approximately)
 /*!40000 ALTER TABLE `tbl_loan_types` DISABLE KEYS */;
-INSERT INTO `tbl_loan_types` (`loan_type_id`, `loan_type`, `loan_type_interest`, `penalty_percentage`, `remarks`, `date_added`, `date_last_modified`) VALUES
-	(1, 'PENSION LOAN', 18.00, 0.00, 'Diminishing', '2023-04-09 22:12:49', '2023-05-07 18:14:05'),
-	(2, 'SALARY LOAN', 17.00, 0.00, 'Diminishing', '2023-05-03 15:48:54', '2023-05-07 18:13:54'),
-	(3, 'SALARY-PRIVATE LOAN', 18.00, 0.00, 'Diminishing', '2023-05-07 18:14:27', '2023-05-07 18:30:25'),
-	(4, 'BONUS LOAN', 17.00, 0.00, 'Diminishing', '2023-05-07 18:30:50', '2023-05-07 18:30:50'),
-	(5, 'REAL ESTATE MORTGAGE LOAN', 17.00, 0.00, 'Diminishing', '2023-05-07 18:33:35', '2023-05-07 18:35:01'),
-	(6, 'CHATTEL MORTGAGE LOAN', 18.00, 0.00, 'Diminishing', '2023-05-07 18:33:49', '2023-05-07 18:35:06'),
-	(7, 'BUSINESS LOAN', 18.00, 0.00, 'Diminishing', '2023-05-07 18:34:08', '2023-05-07 18:35:13'),
-	(8, 'EMERGENCY LOAN', 18.00, 0.00, 'Advanced', '2023-05-07 18:34:20', '2023-05-07 18:34:34');
+INSERT INTO `tbl_loan_types` (`loan_type_id`, `loan_type`, `fixed_interest`, `loan_type_interest`, `penalty_percentage`, `remarks`, `date_added`, `date_last_modified`) VALUES
+	(1, 'PENSION LOAN', 0, 18.00, 3.00, 'Diminishing', '2023-04-09 22:12:49', '2023-07-04 16:43:03'),
+	(2, 'SALARY LOAN', 0, 17.00, 3.00, 'Diminishing', '2023-05-03 15:48:54', '2023-07-04 16:43:04'),
+	(3, 'SALARY-PRIVATE LOAN', 0, 18.00, 3.00, 'Diminishing', '2023-05-07 18:14:27', '2023-07-04 16:43:05'),
+	(4, 'BONUS LOAN', 0, 17.00, 3.00, 'Diminishing', '2023-05-07 18:30:50', '2023-07-04 16:43:06'),
+	(5, 'REAL ESTATE MORTGAGE LOAN', 0, 17.00, 3.00, 'Diminishing', '2023-05-07 18:33:35', '2023-07-04 16:43:06'),
+	(6, 'CHATTEL MORTGAGE LOAN', 0, 18.00, 3.00, 'Diminishing', '2023-05-07 18:33:49', '2023-07-04 16:43:07'),
+	(7, 'BUSINESS LOAN', 0, 18.00, 3.00, 'Diminishing', '2023-05-07 18:34:08', '2023-07-04 16:43:08'),
+	(8, 'EMERGENCY LOAN', 0, 18.00, 3.00, 'Advanced', '2023-05-07 18:34:20', '2023-07-04 16:43:09'),
+	(9, 'Bonus Loan 2', 1, 0.00, 0.00, '', '2023-07-08 10:53:43', '2023-07-08 16:35:06'),
+	(10, 'w', 1, 0.00, 0.00, 'a', '2023-07-08 16:34:52', '2023-07-08 16:34:52');
 /*!40000 ALTER TABLE `tbl_loan_types` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_property_owned
@@ -902,14 +1068,15 @@ CREATE TABLE IF NOT EXISTS `tbl_user_categories` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_user_categories: ~3 rows (approximately)
+-- Dumping data for table lms_db.tbl_user_categories: ~4 rows (approximately)
 /*!40000 ALTER TABLE `tbl_user_categories` DISABLE KEYS */;
 INSERT INTO `tbl_user_categories` (`user_category_id`, `user_category_name`, `remarks`, `is_preset`, `date_added`, `date_last_modified`) VALUES
 	(1, 'Admin', '', 'Y', '2023-05-15 22:08:46', '2023-05-15 22:15:00'),
 	(2, 'Accounting Staff', '', '', '2023-05-15 22:01:23', '2023-05-15 22:01:23'),
-	(3, 'Encoder', '', '', '2023-05-16 08:50:52', '2023-05-16 08:50:52');
+	(3, 'Encoder', '', '', '2023-05-16 08:50:52', '2023-05-16 08:50:52'),
+	(4, '4 3434', '', '', '2023-06-20 10:22:00', '2023-06-20 10:22:13');
 /*!40000 ALTER TABLE `tbl_user_categories` ENABLE KEYS */;
 
 -- Dumping structure for table lms_db.tbl_user_privileges
@@ -964,13 +1131,16 @@ CREATE TABLE IF NOT EXISTS `tbl_vouchers` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `loan_id` int(11) NOT NULL,
+  `approved_by` varchar(60) NOT NULL,
   PRIMARY KEY (`voucher_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
--- Dumping data for table lms_db.tbl_vouchers: ~1 rows (approximately)
+-- Dumping data for table lms_db.tbl_vouchers: ~3 rows (approximately)
 /*!40000 ALTER TABLE `tbl_vouchers` DISABLE KEYS */;
-INSERT INTO `tbl_vouchers` (`voucher_id`, `reference_number`, `account_type`, `account_id`, `voucher_no`, `description`, `check_number`, `ac_no`, `amount`, `voucher_date`, `status`, `user_id`, `journal_id`, `date_added`, `date_last_modified`, `loan_id`) VALUES
-	(1, 'CV-20230619093003', 'S', 1, '34234', '234', '342', '24', 234.000, '2023-06-19', 'C', 1, 7, '2023-06-19 15:30:15', '2023-06-19 15:30:58', 0);
+INSERT INTO `tbl_vouchers` (`voucher_id`, `reference_number`, `account_type`, `account_id`, `voucher_no`, `description`, `check_number`, `ac_no`, `amount`, `voucher_date`, `status`, `user_id`, `journal_id`, `date_added`, `date_last_modified`, `loan_id`, `approved_by`) VALUES
+	(9, 'CV-20230706092822', 'C', 20, '1', 's', '1', '2', 10000.000, '2023-05-11', 'F', 1, 7, '2023-07-06 15:28:37', '2023-07-06 15:28:52', 19, ''),
+	(10, 'CV-20230707033826', 'C', 20, '001', '32', '4234', '234', 1500.000, '2023-07-07', 'F', 1, 7, '2023-07-07 09:38:43', '2023-07-07 09:38:59', 21, ''),
+	(11, 'CV-20230707053059', 'C', 22, '23', '2', '324324', '234', 1000.000, '2023-07-07', 'F', 1, 7, '2023-07-07 11:31:26', '2023-07-07 11:31:41', 22, '');
 /*!40000 ALTER TABLE `tbl_vouchers` ENABLE KEYS */;
 
 -- Dumping structure for trigger lms_db.delete_client

@@ -52,6 +52,7 @@
     </div>
 </section>
 <?php include "modal_types.php"; ?>
+<?php include "modal_fixed_interest.php"; ?>
 <script type="text/javascript">
     function getEntries() {
         $("#dt_entries").DataTable().destroy();
@@ -68,7 +69,8 @@
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.loan_type_id + ")'><span class='fa fa-edit'></span></button></center>";
+                        var fixed_stat = row.fixed_interest != 0 ? "" : "style='display:none;'";
+                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.loan_type_id + ")'><span class='fa fa-edit'></span></button><button class='btn btn-sm btn-success' " + fixed_stat + " onclick='getFixedDetails(" + row.loan_type_id + ")'><span class='fa fa-edit'></span></button></center>";
                     }
                 },
                 {
@@ -91,6 +93,138 @@
                 }
             ]
         });
+    }
+
+    function fixedInterest() {
+        if ($("#fixed_interest").prop("checked")) {
+            $(".con_normal").hide();
+            $('#loan_type_interest').prop('required', false);
+            $('#penalty_percentage').prop('required', false);
+
+            $('#loan_type_interest').val('');
+            $('#penalty_percentage').val('');
+        } else {
+            $(".con_normal").show();
+            $('#loan_type_interest').prop('required', true);
+            $('#penalty_percentage').prop('required', true);
+        }
+    }
+
+    function getFixedDetails(id) {
+        $("#modalFixedEntry").modal("show");
+        $("#hidden_id2").val(id);
+        getfixedEntry();
+    }
+
+    $("#frm_fixed").submit(function(e) {
+        e.preventDefault();
+
+        $("#btn_submit2").prop('disabled', true);
+        $("#btn_submit2").html("<span class='fa fa-spinner fa-spin'></span> Submitting ...");
+
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=add_fixed",
+            data: $("#frm_fixed").serialize(),
+            success: function(data) {
+                getEntries();
+                var json = JSON.parse(data);
+                if (json.data == 1) {
+                    success_add();
+                    getfixedEntry();
+                } else if (json.data == 2) {
+                    entry_already_exists();
+                } else {
+                    failed_query(json);
+                }
+
+                $("#btn_submit2").prop('disabled', false);
+                $("#btn_submit2").html("Add");
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                errorLogger('Error:', textStatus, errorThrown);
+            }
+        });
+    });
+
+    function getfixedEntry() {
+
+        var param = "loan_type_id = '" + $("#hidden_id2").val() + "'";
+
+        $("#dt_fixed_interest").DataTable().destroy();
+        $("#dt_fixed_interest").DataTable({
+            "processing": true,
+            "bPaginate": false,
+            "bFilter": false,
+            "bInfo": false,
+            "ajax": {
+                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=show_fixed",
+                "dataSrc": "data",
+                "method": "POST",
+                "data": {
+                    input: {
+                        param: param
+                    }
+                },
+            },
+            "columns": [{
+                    "mRender": function(data, type, row) {
+                        return "<center><button type='button' class='btn btn-sm btn-danger' id='btn_delete_" + row.loan_interest_id + "' onclick='deleteFixedInterest(" + row.loan_interest_id + ")'><span class='fa fa-trash'></span></button></center>";
+                    }
+                },
+                {
+                    "data": "loan_amount"
+                },
+                {
+                    "data": "interest_amount"
+                },
+                {
+                    "data": "interest_terms"
+                }
+            ]
+        });
+    }
+
+
+    function deleteFixedInterest(id) {
+
+        $("#btn_delete_" + id).html("<span class='fa fa-spinner fa-spin'></span>");
+        swal({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover these entries!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "controllers/sql.php?c=" + route_settings.class_name + "&q=delete_fixed",
+                        data: {
+                            input: {
+                                id: id
+                            }
+                        },
+                        success: function(data) {
+                            getfixedEntry();
+                            var json = JSON.parse(data);
+                            console.log(json);
+                            if (json.data == 1) {
+                                success_delete();
+                            } else {
+                                failed_query(json);
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            errorLogger('Error:', textStatus, errorThrown);
+                        }
+                    });
+                } else {
+                    swal("Cancelled", "Entries are safe :)", "error");
+                }
+            });
     }
 
     $(document).ready(function() {

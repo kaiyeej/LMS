@@ -455,6 +455,13 @@ $User = new Users;
             $("#div_soa").show();
             loanDetails(2);
             $("#hidden_id_2").val(id);
+          }else if(route_settings.class_name == "LoanTypes"){
+            if(json['loan_type_interest'] > 0){
+              $("#fixed_interest").prop("checked",false);
+            }else{
+              $("#fixed_interest").prop("checked",true);
+            }
+            
           }
 
 
