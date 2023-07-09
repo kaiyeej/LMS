@@ -10,50 +10,34 @@ class LoanTypes extends Connection
 
     public function add()
     {
+        $fixed_interest = (!isset($this->inputs['fixed_interest']) ? "" : "Y");
         $form = array(
             $this->name             => $this->clean($this->inputs[$this->name]),
             'loan_type_interest'    => $this->clean($this->inputs['loan_type_interest']),
             'penalty_percentage'    => $this->clean($this->inputs['penalty_percentage']),
             'remarks'               => $this->clean($this->inputs['remarks']),
-            'fixed_interest'        => $this->clean($this->inputs['fixed_interest']),
+            'fixed_interest'        => $this->clean($fixed_interest),
         );
 
         return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
     }
 
-    public function add_fixed()
-    {
-       
-        $loan_amount = $this->clean($this->inputs['loan_amount']);
-        $loan_type_id = $this->clean($this->inputs['loan_type_id']);
-        $is_exist = $this->select("tbl_fixed_loan_interest", 'loan_interest_id', "loan_amount = '$loan_amount' AND loan_type_id='$loan_type_id'");
-        if ($is_exist->num_rows > 0) {
-            return 2;
-        } else {
-            $form = array(
-                'loan_type_id'      => $this->clean($this->inputs['loan_type_id']),
-                'loan_amount'       => $this->clean($this->inputs['loan_amount']),
-                'interest_amount'   => $this->clean($this->inputs['interest_amount']),
-                'interest_terms'    => $this->clean($this->inputs['interest_terms']),
-            );
-
-            return $this->insert("tbl_fixed_loan_interest", $form);
-        }
-    }
-
+    
     public function edit()
     {
         $primary_id = $this->inputs[$this->pk];
         $name = $this->clean($this->inputs['loan_type']);
+        $fixed_interest = (!isset($this->inputs['fixed_interest']) ? "" : "Y");
         $is_exist = $this->select($this->table, $this->pk, "$this->name = '" . $this->inputs[$this->name] . "' AND $this->pk != '$primary_id'");
         if ($is_exist->num_rows > 0) {
             return 2;
         } else {
             $form = array(
-                $this->name     => $this->clean($this->inputs[$this->name]),
-                'loan_type_interest' => $this->clean($this->inputs['loan_type_interest']),
-                'penalty_percentage' => $this->clean($this->inputs['penalty_percentage']),
-                'remarks'       => $this->clean($this->inputs['remarks']),
+                $this->name             => $this->clean($this->inputs[$this->name]),
+                'loan_type_interest'    => $this->clean($this->inputs['loan_type_interest']),
+                'penalty_percentage'    => $this->clean($this->inputs['penalty_percentage']),
+                'remarks'               => $this->clean($this->inputs['remarks']),
+                'fixed_interest'        => $this->clean($fixed_interest),
             );
 
             return $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");
@@ -82,9 +66,9 @@ class LoanTypes extends Connection
         return $rows;
     }
 
-    public function view()
+    public function view($primary_id = null)
     {
-        $primary_id = $this->inputs['id'];
+        $primary_id = $primary_id == null ? $this->inputs['id'] : $primary_id;
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
         return $result->fetch_assoc();
     }

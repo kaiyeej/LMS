@@ -20,6 +20,8 @@ class StatementOfAccounts extends Connection
             $loan_period = $row['loan_period'];
             $loan_amount = $row['loan_amount'];
             $loan_date = $row['loan_date'];
+            $loan_type_id = $row['loan_type_id'];
+            $lt_row = $LoanTypes->view($loan_type_id);
 
             if ($row['main_loan_id'] != 0 and $row['renewal_status'] == "Y") {
                 $renewal_loan = "<strong>Main Loan ID: " . $row['reference_number'] . " <span class='badge badge-primary' style='font-size:10px;'>Renewal Loan</span></strong><br>";
@@ -70,11 +72,11 @@ class StatementOfAccounts extends Connection
             $monthly_interest_rate = ($loan_interest / 100) / 12;
             $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
 
-            if ($row['main_loan_id'] != 0) {
-                $fetchMain = $this->select($this->table, '*', "main_loan_id = '" . $row['loan_id'] . "'");
-                $main_row = $fetchMain->fetch_assoc();
-                $loan_period = $loan_period + $main_row['loan_period'];
-            }
+            // if ($row['main_loan_id'] != 0) {
+            //     $fetchMain = $this->select($this->table, '*', "main_loan_id = '" . $row['loan_id'] . "'");
+            //     $main_row = $fetchMain->fetch_assoc();
+            //     $loan_period = $loan_period + $main_row['loan_period'];
+            // }
 
             $count = 1;
             $balance = $loan_amount;
@@ -94,7 +96,13 @@ class StatementOfAccounts extends Connection
                     $month = date('m', $my_date);
 
                     $payment = $count == 1 ? $Collection->collected_per_month($loan_date, $row['loan_id']) + $Collection->advance_collection($row['loan_id']) : $Collection->collected_per_month($loan_date, $row['loan_id']);
-                    $monthly_interest = $balance * $monthly_interest_rate;
+                    if($lt_row['fixed_interest'] == "Y"){
+                        $monthly_interest = $loan_interest;
+                    }else{
+                        $monthly_interest_rate = ($loan_interest / 100) / 12;
+                        $monthly_interest = $balance * $monthly_interest_rate;   
+                    }
+                    
                     $principal_amount = $payment - $monthly_interest;
                     $penalty = $Collection->penalty_per_month($loan_date, $row['loan_id']);
                     $total_payment += $payment;

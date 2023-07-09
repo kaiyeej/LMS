@@ -130,9 +130,7 @@
     }
 
     function clients() {
-
         var id = $("#hidden_id").val();
-
         $.ajax({
             type: "POST",
             url: "controllers/sql.php?c=" + route_settings.class_name + "&q=client_id",
@@ -240,18 +238,31 @@
     // }
 
     function changeLoanType() {
+        var loan_type_id = $("#loan_type_id").val();
         var loan_type_interest = $("#loan_type_id").find('option:selected').attr('loan_type_interest');
         var penalty_percentage = $("#loan_type_id").find('option:selected').attr('penalty_percentage');
-        var loan_interest_id = $("#loan_type_id").find('option:selected').attr('loan_interest_id');
+        var fixed_interest = $("#loan_type_id").find('option:selected').attr('fixed_interest');
         $("#loan_interest").val(loan_type_interest);
         $("#penalty_percentage").val(penalty_percentage);
 
-        if(loan_interest_id == 1){
+        if(fixed_interest != "Y"){
             $("#div_amount").html('<label><strong style="color:red;">*</strong> Loan amount</label><input type="number" step="0.01" class="form-control input-item" onchange="calculateInterest()" autocomplete="off" name="input[loan_amount]" id="loan_amount" required>');
+            loan_fixed_interest = 0;
         }else{
-            $("#div_amount").html('<label><strong style="color:red;">*</strong> Loan amount</label><select class="form-control select2 input-item" onchange="changeLoanType()" id="loan_amount" name="input[loan_amount]" style="width:100%;" required></select>');
-            getSelectOption('LoanTypes', 'loan_amount', 'loan_type', "", ['loan_type_interest', 'penalty_percentage','loan_interest_id']);
+            $("#div_amount").html('<label><strong style="color:red;">*</strong> Loan amount</label><select class="form-control select2 input-item" id="loan_amount" name="input[loan_amount]" onchange="getFixedInterest()" style="width:100%;" required></select>');
+            getSelectOption('FixedInterest', 'loan_amount', 'loan_amount', "loan_type_id='"+loan_type_id+"'",['interest_amount','interest_terms','penalty_percentage']);
+            loan_fixed_interest = 1;
         }
+    }
+
+    function getFixedInterest(){
+        var loan_interest = $("#loan_amount").find('option:selected').attr('interest_amount');
+        var penalty_percentage = $("#loan_amount").find('option:selected').attr('penalty_percentage');
+        var loan_period = $("#loan_amount").find('option:selected').attr('interest_terms');
+        $("#loan_interest").val(loan_interest);
+        $("#penalty_percentage").val(penalty_percentage);
+        $("#loan_period").val(loan_period);
+
     }
 
     function calculateInterest() {
@@ -291,7 +302,8 @@
                             loan_amount: loan_amount,
                             loan_date: loan_date,
                             monthly_payment: monthly_payment,
-                            payment_terms: payment_terms
+                            payment_terms: payment_terms,
+                            loan_fixed_interest: loan_fixed_interest
                         }
                     },
                 },
@@ -470,10 +482,11 @@
     }
 
     var loan_type_interest = 0;
+    var loan_fixed_interest = 0;
     $(document).ready(function() {
         schema();
         getEntries();
         getSelectOption('Branches', 'branch_id', 'branch_name', '', [], '', 'Please Select', '', 1);
-        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest', 'penalty_percentage','loan_interest_id']);
+        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest', 'penalty_percentage','fixed_interest']);
     });
 </script>

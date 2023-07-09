@@ -313,7 +313,8 @@ class Loans extends Connection
         $loan_date = isset($this->inputs['loan_date']) ? $this->inputs['loan_date'] : null;
         $monthlypayment = isset($this->inputs['monthly_payment']) ? $this->inputs['monthly_payment'] : null;
         $payment_terms = isset($this->inputs['payment_terms']) ? $this->inputs['payment_terms'] : null;
-
+        $loan_fixed_interest = isset($this->inputs['loan_fixed_interest']) ? $this->inputs['loan_fixed_interest'] : null;
+        
         $count = 1;
         $rows = array();
         $balance = $loan_amount;
@@ -322,8 +323,15 @@ class Loans extends Connection
 
             $loan_date = date('M d, Y', strtotime('+1 month', strtotime($loan_date)));
             
-            $monthly_interest_rate = ($loan_interest / 100) / 12;
-            $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
+            if($loan_fixed_interest == 1){
+                $total_amount_with_interest = ($loan_interest * $loan_period) + $loan_amount;
+                $monthly_interest = $loan_interest;
+            }else{
+                $monthly_interest_rate = ($loan_interest / 100) / 12;
+                $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount; 
+                $monthly_interest = $balance * $monthly_interest_rate;   
+            }
+            
             $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
 
             if($payment_count == $payment_terms) { // matches every 3 iterations
@@ -334,7 +342,6 @@ class Loans extends Connection
                 $monthly_payment = 0;
             }
 
-            $monthly_interest = $balance * $monthly_interest_rate;
             $principal_amount = $monthly_payment - $monthly_interest;
             $balance -= $principal_amount;
 
@@ -365,6 +372,10 @@ class Loans extends Connection
             $loan_amount = $row['loan_amount'];
             $loan_date = $row['loan_date'];
             $payment_terms = $row['payment_terms'];
+            $loan_type_id = $row['loan_type_id'];
+            $LoanTypes = new LoanTypes;
+            $lt_row = $LoanTypes->view($loan_type_id);
+
 
             $count = 1;
 
@@ -387,8 +398,15 @@ class Loans extends Connection
                 }
 
                 // $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
-                $monthly_interest = $balance * $monthly_interest_rate;
+                
+                if($lt_row['fixed_interest'] == "Y"){
+                    $monthly_interest = $loan_interest;
+                }else{
+                    $monthly_interest_rate = ($loan_interest / 100) / 12;
+                    $monthly_interest = $balance * $monthly_interest_rate;   
+                }
                 $principal_amount = $payment - $monthly_interest; //$balance / $loan_period;
+
                 $penalty = $Collection->penalty_per_month($loan_date, $row['loan_id']);
                 // $payment = $count == 1 ? $Collection->collected_per_month($loan_date,$row['loan_id'])+$Collection->advance_collection($row['loan_id']) : $Collection->collected_per_month($loan_date,$row['loan_id']);
                 $balance -= $principal_amount; //($payment + $penalty);

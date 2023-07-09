@@ -69,7 +69,7 @@
                 },
                 {
                     "mRender": function(data, type, row) {
-                        var fixed_stat = row.fixed_interest != 0 ? "" : "style='display:none;'";
+                        var fixed_stat = row.fixed_interest == "Y" ? "" : "style='display:none;'";
                         return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.loan_type_id + ")'><span class='fa fa-edit'></span></button><button class='btn btn-sm btn-success' " + fixed_stat + " onclick='getFixedDetails(" + row.loan_type_id + ")'><span class='fa fa-edit'></span></button></center>";
                     }
                 },
@@ -77,7 +77,10 @@
                     "data": "loan_type"
                 },
                 {
-                    "data": "loan_type_interest"
+                    "mRender": function(data, type, row) {
+                       return row.fixed_interest == "Y" ? "<span class='badge badge-light' style='font-size: 10px;'><i>Fixed Interest</i></span>" : row.loan_type_interest;
+                       //"<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.loan_type_id + ")'><span class='fa fa-edit'></span></button><button class='btn btn-sm btn-success' " + fixed_stat + " onclick='getFixedDetails(" + row.loan_type_id + ")'><span class='fa fa-edit'></span></button></center>";
+                    }
                 },
                 {
                     "data": "penalty_percentage"
@@ -124,7 +127,7 @@
 
         $.ajax({
             type: "POST",
-            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=add_fixed",
+            url: "controllers/sql.php?c=FixedInterest&q=add",
             data: $("#frm_fixed").serialize(),
             success: function(data) {
                 getEntries();
@@ -158,7 +161,7 @@
             "bFilter": false,
             "bInfo": false,
             "ajax": {
-                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=show_fixed",
+                "url": "controllers/sql.php?c=FixedInterest&q=show",
                 "dataSrc": "data",
                 "method": "POST",
                 "data": {
@@ -177,6 +180,9 @@
                 },
                 {
                     "data": "interest_amount"
+                },
+                {
+                    "data": "penalty_percentage"
                 },
                 {
                     "data": "interest_terms"
@@ -198,10 +204,9 @@
             })
             .then((willDelete) => {
                 if (willDelete) {
-
                     $.ajax({
                         type: "POST",
-                        url: "controllers/sql.php?c=" + route_settings.class_name + "&q=delete_fixed",
+                        url: "controllers/sql.php?c=FixedInterest&q=delete_entry",
                         data: {
                             input: {
                                 id: id

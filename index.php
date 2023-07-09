@@ -64,16 +64,17 @@ $User = new Users;
         max-width: 1200px;
       }
     }
+
     .select2-container--default .select2-selection--single .select2-selection__rendered {
-        color: #444;
-        line-height: 42px;
+      color: #444;
+      line-height: 42px;
     }
 
-    label{
+    label {
       font-weight: bold !important;
     }
-    
-    .form-control{
+
+    .form-control {
       border-color: #BDBDBD;
     }
   </style>
@@ -330,12 +331,12 @@ $User = new Users;
         $("#btn_reloan").hide();
 
       } else if (route_settings.class_name == "Collections") {
-          $('.input-item').attr('readonly', false);
-          $(".select2").prop("disabled", false);
-          $("#btn_submit").show();
+        $('.input-item').attr('readonly', false);
+        $(".select2").prop("disabled", false);
+        $("#btn_submit").show();
 
       }
-      
+
 
       $("#modalLabel").html("<i class='fa fa-edit'></i> Add Entry");
       $("#modalEntry").modal('show');
@@ -402,8 +403,7 @@ $User = new Users;
           const json = jsonParse.data;
 
           $("#hidden_id").val(id);
-
-
+          
           $('.select2').select2().trigger('change');
           $('.input-item').map(function() {
             const id_name = this.id;
@@ -413,9 +413,9 @@ $User = new Users;
 
           $('.check-item').map(function() {
             const id_name = this.id;
-            if(json[id_name] == "Yes"){
+            if (json[id_name] == "Yes") {
               $("#" + id_name).prop("checked", true);
-            }else{
+            } else {
               $("#" + id_name).prop("checked", false);
             }
           });
@@ -433,15 +433,16 @@ $User = new Users;
             $("#btn_submit").hide();
           } else if (route_settings.class_name == "Loans") {
             $("#loan_amount_span").html(json['amount']);
+            $("#loan_amount").val(json['amount']);
             $("#monthly_payment_span").html(json['monthly_payment']);
             if (jsonParse.data['status'] != "A") {
               $('#loan_container :input').attr('readonly', true);
               $(".select2").prop("disabled", true);
               $("#btn_submit").hide();
               // $("#btn_release").hide();
-              if(jsonParse.data['status'] == "R"){
+              if (jsonParse.data['status'] == "R") {
                 $("#btn_reloan").show();
-              }else{
+              } else {
                 $("#btn_reloan").hide();
               }
             } else if (jsonParse.data['status'] == "A") {
@@ -450,18 +451,23 @@ $User = new Users;
               $("#btn_reloan").hide();
             }
             clients();
-            
+
             $("#div_sample_calculation").hide();
             $("#div_soa").show();
             loanDetails(2);
+            changeLoanType();
             $("#hidden_id_2").val(id);
-          }else if(route_settings.class_name == "LoanTypes"){
-            if(json['loan_type_interest'] > 0){
-              $("#fixed_interest").prop("checked",false);
-            }else{
-              $("#fixed_interest").prop("checked",true);
-            }
             
+            $("#loan_amount").val(json['loan_amount']);
+            $("#loan_amount").val(json['loan_amount']).trigger('change');
+          } else if (route_settings.class_name == "LoanTypes") {
+            if (json['fixed_interest'] != "Y") {
+              $("#fixed_interest").prop("checked", false);
+            } else {
+              $("#fixed_interest").prop("checked", true);
+            }
+            fixedInterest();
+
           }
 
 
@@ -752,9 +758,9 @@ $User = new Users;
         success: function(data) {
           var json = JSON.parse(data);
           if (pre_value != "remove") {
-            if(is_class == ''){
+            if (is_class == '') {
               $("#" + primary_id).html("<option value='" + pre_value + "'> &mdash; " + pre_label + " &mdash; </option>");
-            }else{
+            } else {
               $("." + primary_id).html("<option value='" + pre_value + "'> &mdash; " + pre_label + " &mdash; </option>");
             }
           }
@@ -772,9 +778,9 @@ $User = new Users;
               data_attributes[attr] = list[attr];
             }
 
-            if(is_class == ''){
+            if (is_class == '') {
               $('#' + primary_id).append($("<option></option>").attr(data_attributes).text(list[label]));
-            }else{
+            } else {
               $('.' + primary_id).append($("<option></option>").attr(data_attributes).text(list[label]));
             }
           }

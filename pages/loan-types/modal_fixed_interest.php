@@ -13,22 +13,28 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Amount</label>
-                                        <input type="number" step="0.02" class="form-control input-item" autocomplete="off" placeholder="Loan amount" name="input[loan_amount]" id="loan_amount" required>
+                                        <label><strong style="color:red;">*</strong>Amount</label>
+                                        <input type="number" step="0.02" class="form-control input-item" autocomplete="off" placeholder="Loan amount" name="input[loan_amount]" id="loan_amount2" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Loan Interest</label>
-                                        <input type="number" step="0.1" max="100" min="0" class="form-control input-item" autocomplete="off" placeholder="Loan interest" name="input[interest_amount]" id="interest_amount" required>
+                                        <label><strong style="color:red;">*</strong>Loan Interest</label>
+                                        <input type="number" step="0.01" min="0" class="form-control input-item" autocomplete="off" placeholder="Loan interest" name="input[interest_amount]" id="interest_amount2" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Terms</label>
-                                        <input type="number" step="0.1" max="100" min="0" class="form-control input-item" autocomplete="off" placeholder="Interest terms" name="input[interest_terms]" id="interest_terms" required>
+                                        <label><strong style="color:red;">*</strong>Penalty %</label>
+                                        <input type="number" step="0.1" max="100" min="0" class="form-control input-item" autocomplete="off" placeholder="Loan interest" name="input[penalty_percentage]" id="penalty_percentage2" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label><strong style="color:red;">*</strong>Terms <sup style="color:red;">(months)</sup></label>
+                                        <input type="number" min="0" class="form-control input-item" autocomplete="off" placeholder="Terms" name="input[interest_terms]" id="interest_terms2" required>
                                     </div>
                                 </div>
                             </div>
@@ -36,12 +42,13 @@
                         <div class="col-md-6">
                             <div class="table-responsive">
                                 <div class="table-responsive">
-                                    <table id="dt_fixed_interest" class="table table-striped" style="width: 100%!important;">
+                                    <table id="dt_fixed_interest" class="table table-striped" style="width: 100%!important;font-size: 10px;">
                                         <thead>
                                             <tr>
                                                 <th scope="col"></th>
                                                 <th scope="col">Amount</th>
                                                 <th scope="col">Interest</th>
+                                                <th scope="col">Penalty %</th>
                                                 <th scope="col">Terms</th>
                                             </tr>
                                         </thead>
