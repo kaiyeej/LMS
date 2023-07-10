@@ -134,6 +134,7 @@
                 var json = JSON.parse(data);
                 if (json.data == 1) {
                     success_add();
+                    $(".input-item").val("");
                     getfixedEntry();
                 } else if (json.data == 2) {
                     entry_already_exists();

@@ -237,8 +237,8 @@
     //         });
     // }
 
-    function changeLoanType() {
-        var loan_type_id = $("#loan_type_id").val();
+    function changeLoanType(loan_type_id = null) {
+        var loan_type_id = loan_type_id == null ? $("#loan_type_id").val() : loan_type_id;
         var loan_type_interest = $("#loan_type_id").find('option:selected').attr('loan_type_interest');
         var penalty_percentage = $("#loan_type_id").find('option:selected').attr('penalty_percentage');
         var fixed_interest = $("#loan_type_id").find('option:selected').attr('fixed_interest');

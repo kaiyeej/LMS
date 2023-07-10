@@ -433,7 +433,9 @@ $User = new Users;
             $("#btn_submit").hide();
           } else if (route_settings.class_name == "Loans") {
             $("#loan_amount_span").html(json['amount']);
-            $("#loan_amount").val(json['amount']);
+            
+            $("#div_amount").html('<label><strong style="color:red;">*</strong> Loan amount</label><input type="number" step="0.01" class="form-control input-item" onchange="calculateInterest()" autocomplete="off" name="input[loan_amount]" id="loan_amount" required>');
+
             $("#monthly_payment_span").html(json['monthly_payment']);
             if (jsonParse.data['status'] != "A") {
               $('#loan_container :input').attr('readonly', true);
@@ -455,7 +457,6 @@ $User = new Users;
             $("#div_sample_calculation").hide();
             $("#div_soa").show();
             loanDetails(2);
-            changeLoanType();
             $("#hidden_id_2").val(id);
             
             $("#loan_amount").val(json['loan_amount']);

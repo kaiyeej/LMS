@@ -112,11 +112,11 @@ class StatementOfAccounts extends Connection
                     if ($addCounter->num_rows > 0) {
                         $additional_amount = $Loans->additional_loan($month, $year, $row['loan_id']);
                         $td_add = "<td style='text-align: right;'>".$additional_amount."</td>";
-                        $balance += ($additional_amount-$principal_amount);
+                        $balance += (($additional_amount-$principal_amount)-$penalty);
                     } else {
                         $td_add = "";
                         $additional_amount = 0;
-                        $balance -= $principal_amount;
+                        $balance -= ($principal_amount-$penalty);
                     }
 
 

@@ -325,7 +325,7 @@ class Vouchers extends Connection
                     $this->metadata('description', 'text'),
                     $this->metadata('check_number', 'varchar', 30),
                     $this->metadata('ac_no', 'varchar', 30),
-                    $this->metadata('amount', 'decimal', '12,3'),
+                    $this->metadata('amount', 'decimal', '12,4'),
                     $this->metadata('voucher_date', 'date'),
                     $this->metadata('journal_id', 'int', 11),
                     $this->metadata('status', 'varchar', 1, 'NOT NULL', "'S'", '', "S - Pendng; F - Posted"),

@@ -50,8 +50,8 @@
                             <input type="text" class="form-control input-item" autocomplete="off" name="input[check_number]" id="check_number" required>
                         </div>
                         <div class="form-group col-md-4">
-                            <label><strong style="color:red;">*</strong>A/C #</label>
-                            <input type="text" class="form-control input-item" autocomplete="off" name="input[ac_no]" id="ac_no" required>
+                            <label>A/C #</label>
+                            <input type="text" class="form-control input-item" autocomplete="off" name="input[ac_no]" id="ac_no">
                         </div>
                         <div class="form-group col-md-4">
                             <label><strong style="color:red;">*</strong>Date</label>

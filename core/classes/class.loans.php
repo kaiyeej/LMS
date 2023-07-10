@@ -37,7 +37,7 @@ class Loans extends Connection
         $primary_id = $this->inputs[$this->pk];
         $row = $this->view($primary_id);
         $deduct_to_loan = (!isset($this->inputs['deduct_to_loan']) ? 0 : 1);
-        $monthly_payment = $this->inputs['monthly_payment']-$row['monthly_payment'];
+        $monthly_payment = $this->inputs['monthly_payment'] - $row['monthly_payment'];
         $form = array(
             $this->name             => $this->clean($this->inputs[$this->name]),
             'branch_id'             => $row['branch_id'],
@@ -61,7 +61,7 @@ class Loans extends Connection
 
         $sql =  $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
 
-        if($this->inputs['renewal_status'] == "Y"){
+        if ($this->inputs['renewal_status'] == "Y") {
             if ($deduct_to_loan != 1) {
                 if ($sql) {
                     $Branches = new Branches;
@@ -205,7 +205,7 @@ class Loans extends Connection
         $row = $result->fetch_assoc();
         $row['loan_type'] = $LoanTypes->name($row['loan_type_id']);
         $row['amount'] = number_format($row['loan_amount'], 2);
-        $row['monthly_payment'] = $row['monthly_payment'];//number_format($row['monthly_payment'], 2);
+        $row['monthly_payment'] = $row['monthly_payment']; //number_format($row['monthly_payment'], 2);
         $row['client'] = $Clients->name($row['client_id']);
         $row['branch_name'] = $Branches->name($row['branch_id']);
         $row['loan_type'] = $LoanTypes->name($row['branch_id']);
@@ -314,7 +314,7 @@ class Loans extends Connection
         $monthlypayment = isset($this->inputs['monthly_payment']) ? $this->inputs['monthly_payment'] : null;
         $payment_terms = isset($this->inputs['payment_terms']) ? $this->inputs['payment_terms'] : null;
         $loan_fixed_interest = isset($this->inputs['loan_fixed_interest']) ? $this->inputs['loan_fixed_interest'] : null;
-        
+
         $count = 1;
         $rows = array();
         $balance = $loan_amount;
@@ -322,22 +322,22 @@ class Loans extends Connection
         while ($count <= $loan_period) {
 
             $loan_date = date('M d, Y', strtotime('+1 month', strtotime($loan_date)));
-            
-            if($loan_fixed_interest == 1){
+
+            if ($loan_fixed_interest == 1) {
                 $total_amount_with_interest = ($loan_interest * $loan_period) + $loan_amount;
                 $monthly_interest = $loan_interest;
-            }else{
+            } else {
                 $monthly_interest_rate = ($loan_interest / 100) / 12;
-                $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount; 
-                $monthly_interest = $balance * $monthly_interest_rate;   
+                $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
+                $monthly_interest = $balance * $monthly_interest_rate;
             }
-            
+
             $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
 
-            if($payment_count == $payment_terms) { // matches every 3 iterations
-                $payment_count = 1; 
-                $monthly_payment = $monthlypayment > 0 ? $monthlypayment : ($suggested_payment*$payment_terms);
-            }else{
+            if ($payment_count == $payment_terms) { // matches every 3 iterations
+                $payment_count = 1;
+                $monthly_payment = $monthlypayment > 0 ? $monthlypayment : ($suggested_payment * $payment_terms);
+            } else {
                 $payment_count += 1;
                 $monthly_payment = 0;
             }
@@ -346,7 +346,7 @@ class Loans extends Connection
             $balance -= $principal_amount;
 
             $row['date'] = $loan_date;
-            $row['payment'] = number_format($monthly_payment,2); //number_format($suggested_payment, 2);
+            $row['payment'] = number_format($monthly_payment, 2); //number_format($suggested_payment, 2);
             $row['interest'] = number_format($monthly_interest, 2);
             $row['applicable_principal'] =  number_format($principal_amount, 2);
             $row['balance'] = number_format($balance, 2); //$balance > 0 ? number_format($balance, 2) : "0.00";
@@ -362,7 +362,7 @@ class Loans extends Connection
     {
         $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
         $result = $this->select($this->table, '*', "$param");
-        
+
         $rows = array();
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -389,21 +389,21 @@ class Loans extends Connection
 
                 $loan_date = date('Y-m-d', strtotime('+1 month', strtotime($loan_date)));
 
-                if($payment_count == $payment_terms) { // matches every 3 iterations
-                    $payment_count = 1; 
+                if ($payment_count == $payment_terms) { // matches every 3 iterations
+                    $payment_count = 1;
                     $payment = $row['monthly_payment'];
-                }else{
+                } else {
                     $payment_count += 1;
                     $payment = 0;
                 }
 
                 // $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
-                
-                if($lt_row['fixed_interest'] == "Y"){
+
+                if ($lt_row['fixed_interest'] == "Y") {
                     $monthly_interest = $loan_interest;
-                }else{
+                } else {
                     $monthly_interest_rate = ($loan_interest / 100) / 12;
-                    $monthly_interest = $balance * $monthly_interest_rate;   
+                    $monthly_interest = $balance * $monthly_interest_rate;
                 }
                 $principal_amount = $payment - $monthly_interest; //$balance / $loan_period;
 
@@ -422,19 +422,18 @@ class Loans extends Connection
 
                 $count++;
             }
-            
+
             return $rows;
         } else {
             return $rows;
         }
-
     }
 
     public function soa_collection()
     {
         $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
         $result = $this->select($this->table, '*', "$param");
-        
+
         $rows = array();
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -443,25 +442,40 @@ class Loans extends Connection
             $loan_period = $row['loan_period'];
             $loan_amount = $row['loan_amount'];
             $loan_date = $row['loan_date'];
+            $payment_terms = $row['payment_terms'];
+            $LoanTypes = new LoanTypes;
+            $lt_row = $LoanTypes->view($row['loan_type_id']);
 
             $count = 1;
 
-            $monthly_interest_rate = ($loan_interest / 100) / 12;
-            $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
-
             $balance = $loan_amount;
             $Collection = new Collections;
+            $payment_count = 1;
             while ($count <= $loan_period) {
 
                 $loan_date = date('Y-m-d', strtotime('+1 month', strtotime($loan_date)));
 
+                if ($payment_count == $payment_terms) { // matches every 3 iterations
+                    $payment_count = 1;
+                    $payment = $count == 1 ? $Collection->collected_per_month($loan_date, $row['loan_id']) + $Collection->advance_collection($row['loan_id']) : $Collection->collected_per_month($loan_date, $row['loan_id']);
+                } else {
+                    $payment_count += 1;
+                    $payment = 0;
+                }
+
                 // $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
-                
-                $payment = $count == 1 ? $Collection->collected_per_month($loan_date,$row['loan_id'])+$Collection->advance_collection($row['loan_id']) : $Collection->collected_per_month($loan_date,$row['loan_id']);
-                $monthly_interest = $balance * $monthly_interest_rate;
-                $principal_amount = $payment - $monthly_interest; //$balance / $loan_period;
+
+                if ($lt_row['fixed_interest'] == "Y") {
+                    $monthly_interest = $loan_interest;
+                } else {
+                    $monthly_interest_rate = ($loan_interest / 100) / 12;
+                    $monthly_interest = $balance * $monthly_interest_rate;
+                }
+
+                // $monthly_interest = $balance * $monthly_interest_rate;
+                $principal_amount = $payment - $monthly_interest;
                 $penalty = $Collection->penalty_per_month($loan_date, $row['loan_id']);
-                $balance -= ($principal_amount+$penalty); //($payment + $penalty);
+                $balance -= ($principal_amount + $penalty);
 
 
                 $row['date'] = date('F Y', strtotime($loan_date));
@@ -474,12 +488,11 @@ class Loans extends Connection
 
                 $count++;
             }
-            
+
             return $rows;
         } else {
             return $rows;
         }
-
     }
 
     public function accounts_receivable()
@@ -561,7 +574,7 @@ class Loans extends Connection
 
     public function penalty()
     {
-        $loan_id = $this->inputs['loan_id'];//isset($this->inputs['loan_id']) ? $this->inputs['loan_id'] : null;
+        $loan_id = $this->inputs['loan_id']; //isset($this->inputs['loan_id']) ? $this->inputs['loan_id'] : null;
         $collection_date = $this->inputs['collection_date'];
 
         $result = $this->select($this->table, '*', "loan_id='$loan_id'");
@@ -574,12 +587,14 @@ class Loans extends Connection
             $monthly_payment = $row['monthly_payment'];
             $loan_date = $row['loan_date'];
             $penalty_per = $row['penalty_percentage'];
+            $payment_terms = $row['payment_terms'];
         } else {
             $loan_interest = "";
             $loan_period = "";
             $loan_amount = "";
             $loan_date = "";
-            $penalty_per = 0; 
+            $penalty_per = 0;
+            $payment_terms = "";
         }
 
         $ts1 = strtotime($loan_date);
@@ -596,19 +611,35 @@ class Loans extends Connection
         $suggested_total = 0;
         $payment_total = 0;
         $count = 2;
+        $payment_count = 1;
         $Collection = new Collections;
         while ($count <= $diff) {
-
             $loan_date = date('Y-m-d', strtotime('+1 month', strtotime($loan_date)));
-
-            $monthly_interest_rate = ($loan_interest / 100) / 12;
-            $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
-            // $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
-            $payment = $Collection->collected_per_month($loan_date, $loan_id);
-
-            $suggested_total += $monthly_payment;
-            $payment_total += $payment;
-
+            $counter_date = date('Y-m-d', strtotime('-'.$payment_count.' month', strtotime($loan_date)));
+            
+            if ($payment_terms > 1) {
+                if ($payment_count == $payment_terms) { // matches every terms iterations
+                    $payment_count = 1;
+                    $payment = $Collection->collected_per_month($loan_date, $loan_id);
+                    $suggested_total += $monthly_payment;
+                    $payment_total += $payment;
+                }else if($Collection->penalty_checker($counter_date, $loan_id) <= 0){
+                    $payment_count = 2;
+                    $payment = $Collection->collected_per_month($loan_date, $loan_id);
+                    $suggested_total += $monthly_payment;
+                    $payment_total += $payment;
+                } else {
+                    $payment_count += 1;
+                    $payment = 0;
+                    $suggested_total = 0;
+                    $payment_total = 0;
+                }
+            } else {
+                $payment_count = 1;
+                $payment = $Collection->collected_per_month($loan_date, $loan_id);
+                $suggested_total += $monthly_payment;
+                $payment_total += $payment;
+            }
             $count++;
         }
 
@@ -635,7 +666,7 @@ class Loans extends Connection
         return $total_amount_with_interest;
     }
 
-    
+
     public function additional_loan($month, $year, $loan_id)
     {
         $result = $this->select($this->table, 'sum(loan_amount) as total', "(MONTH(loan_date) = '$month' AND YEAR(loan_date)= '$year') AND main_loan_id='$loan_id' AND renewal_status='N'");
@@ -668,7 +699,7 @@ class Loans extends Connection
     {
         if (DEVELOPMENT) {
             $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
-            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', '', 'ON UPDATE CURRENT_TIMESTAMP');
+            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
             $default['user_id'] = $this->metadata('user_id', 'int', 11);
 
 
@@ -682,11 +713,9 @@ class Loans extends Connection
                     $this->metadata('branch_id', 'int', 11),
                     $this->metadata('client_id', 'int', 11),
                     $this->metadata('loan_type_id', 'int', 11),
-                    $this->metadata('loan_amount', 'decimal', '12,3'),
-                    $this->metadata('service_fee', 'decimal', '12,3'),
-                    $this->metadata('monthly_payment', 'decimal', '12,3'),
-                    $this->metadata('loan_period', 'int', 11),
-                    $this->metadata('loan_interest', 'int', 11),
+                    $this->metadata('loan_amount', 'decimal', '12,4'),
+                    $this->metadata('loan_period', 'int', 4),
+                    $this->metadata('penalty_percentage','decimal', '12,4'),
                     $this->metadata('due_date', 'date'),
                     $this->metadata('loan_date', 'date'),
                     $this->metadata('main_loan_id',  'int', 11),

@@ -202,6 +202,7 @@
     }
 
     $(document).ready(function() {
+        schema();
         getEntries();
         getSelectOption('Journals', 'journal_id', 'journal_name', '', ['journal_code']);
         getSelectOption('ChartOfAccounts', 'chart_id', 'chart_name');

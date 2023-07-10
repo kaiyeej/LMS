@@ -252,4 +252,49 @@ class JournalEntry extends Connection
 
         return $rows;
     }
+
+    public function schema()
+    {
+        if (DEVELOPMENT) {
+            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
+            $default['user_id'] = $this->metadata('user_id', 'int', 11);
+
+
+            // TABLE HEADER
+            $tables[] = array(
+                'name'      => $this->table,
+                'primary'   => $this->pk,
+                'fields' => array(
+                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                    $this->metadata($this->name, 'varchar', 50),
+                    $this->metadata('cross_reference', 'varchar', 50),
+                    $this->metadata('journal_id', 'int', 11),
+                    $this->metadata('remarks', 'varchar', 250),
+                    $this->metadata('journal_date', 'date'),
+                    $this->metadata('status', 'varchar', 1, 'NOT NULL', '', '', "'S = Saved; F = Posted'"),
+                    $this->metadata('is_manual', 'varchar', 1, '', '', '', "'N = No ; Y = Yes'"),
+                    $default['user_id'],
+                    $default['date_added'],
+                    $default['date_last_modified']
+                )
+            );
+
+            // TABLE DETAILS
+            $tables[] = array(
+                'name'      => $this->table_detail,
+                'primary'   => $this->pk2,
+                'fields' => array(
+                    $this->metadata($this->pk2, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                    $this->metadata($this->pk, 'int', 11),
+                    $this->metadata($this->fk_det, 'int', 11),
+                    $this->metadata('description', 'varchar', 250),
+                    $this->metadata('debit', 'decimal', '12,4'),
+                    $this->metadata('credit', 'decimal', '12,4')
+                )
+            );
+
+            return $this->schemaCreator($tables);
+        }
+    }
 }

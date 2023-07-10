@@ -217,6 +217,18 @@ class Collections extends Connection
         return $row['total'];
     }
 
+    
+    public function penalty_checker($date, $loan_id)
+    {
+        $result = $this->select("tbl_collections as c, tbl_loans as l", '*', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND (MONTH(c.collection_date) = MONTH('$date') AND YEAR(c.collection_date)= YEAR('$date'))");
+       
+        if($result->num_rows > 0){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
     public function advance_collection($loan_id)
     {
         $result = $this->select("tbl_collections as c, tbl_loans as l", 'sum(c.amount) as total', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND c.collection_date <= l.loan_date");
@@ -437,15 +449,16 @@ class Collections extends Connection
                     $this->metadata('branch_id', 'int', 11),
                     $this->metadata('client_id', 'int', 11),
                     $this->metadata('loan_id', 'int', 11),
-                    $this->metadata('amount', 'decimal', '12,3'),
-                    $this->metadata('penalty_amount', 'decimal', '12,3'),
-                    $this->metadata('interest', 'decimal', '12,3'),
+                    $this->metadata('amount', 'decimal', '12,4'),
+                    $this->metadata('penalty_amount', 'decimal', '12,4'),
+                    $this->metadata('interest', 'decimal', '12,4'),
                     $this->metadata('remarks', 'varchar', 250),
                     $this->metadata('collection_date', 'date'),
-                    $this->metadata('atm_balance', 'decimal', '12,3'),
-                    $this->metadata('atm_charge', 'decimal', '12,3'),
-                    $this->metadata('atm_withdrawal', 'decimal', '12,3'),
+                    $this->metadata('atm_balance', 'decimal', '12,4'),
+                    $this->metadata('atm_charge', 'decimal', '12,4'),
+                    $this->metadata('atm_withdrawal', 'decimal', '12,4'),
                     $this->metadata('status', 'varchar', 1),
+                    $this->metadata('chart_id', 'int', 11),
                     $default['user_id'],
                     $default['date_added'],
                     $default['date_last_modified']

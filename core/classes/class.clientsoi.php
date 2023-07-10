@@ -57,9 +57,9 @@ class ClientSoi extends Connection
                     $this->metadata('client_id', 'int', 11),
                     $this->metadata('soi_name', 'varchar', 50),
                     $this->metadata('soi_by', 'varchar', 50),
-                    $this->metadata('soi_monthly', 'decimal', '12,3'),
-                    $this->metadata('soi_total', 'decimal', '12,3'),
-                    $this->metadata('soi_obligation', 'decimal', '12,3'),
+                    $this->metadata('soi_monthly', 'decimal', '12,4'),
+                    $this->metadata('soi_total', 'decimal', '12,4'),
+                    $this->metadata('soi_obligation', 'decimal', '12,4'),
                     $default['date_added'],
                     $default['date_last_modified']
                 )
