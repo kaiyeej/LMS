@@ -10,6 +10,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <input type="hidden" value="1" id="upload_step">
                     <div class="col-md-12" id="upload_file">
                         <div class="form-group">
                             <div class="col-lg-12" style="padding: 10px;">
@@ -57,6 +58,7 @@
     }
 
     function uploadFile() {
+        $("#upload_step").val(1);
         $('#upload_result_content').html("");
         $("#upload_file").show();
         $("#btn_upload").show();
@@ -66,26 +68,46 @@
     $('#frm_upload').submit(function(e) {
         e.preventDefault(); // Prevent form submission
 
-        loan_from_excels = [];
-        var formData = new FormData(this);
-        $('#upload_result_content').html(`<center><img src="assets/icons/loader.gif"></center>`);
-        $.ajax({
-            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=upload",
-            type: 'POST',
-            data: formData,
-            dataType: 'html',
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function(response) {
-                var json = JSON.parse(response);
-                get_loan_collections(json);
-                $("#upload_file").hide();
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-                alert('An error occurred while processing the request.');
-            }
-        });
+        if($("#upload_step").val() == 1){
+            loan_from_excels = [];
+            var formData = new FormData(this);
+            $('#upload_result_content').html(`<center><img src="assets/icons/loader.gif"></center>`);
+            $.ajax({
+                url: "controllers/sql.php?c=" + route_settings.class_name + "&q=upload",
+                type: 'POST',
+                data: formData,
+                dataType: 'html',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    var json = JSON.parse(response);
+                    get_loan_collections(json);
+                    $("#upload_file").hide();
+                    $("#upload_step").val(2);
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    alert('An error occurred while processing the request.');
+                }
+            });
+        }else{
+            $('#upload_result_content').html(`<center><img src="assets/icons/loader.gif"></center>`);
+            var data = {loan_data:loan_from_excels};
+            $.ajax({
+                type: 'POST',
+                url: "controllers/sql.php?c=" + route_settings.class_name + "&q=save_upload",
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                success: function(response) {
+                  console.log(response); // Process the response data here
+                $("#modalUpload").modal('hide');
+                },
+                error: function(xhr, status, error) {
+                  console.error(xhr.responseText); // Handle any errors here
+                }
+            });
+
+        }
     });
 
     function get_loan_collections(json) {
@@ -95,25 +117,25 @@
         for (var clientIndex = 0; clientIndex < clients.length; clientIndex++) {
             const client = clients[clientIndex];
             var client_not_exists = client.client_id > 0 ? "" : "negative";
-            client_tds += `<tr class="${client_not_exists}">
+            client_tds += `<tr class="${client_not_exists}" data-client-index="${clientIndex}" >
                 <td>${clientIndex + 1}</td>
-                <td contenteditable="true">${client.client_name}</td>
+                <td contenteditable="true" onblur="editClientCell(this,false)" data-client-column="client_name">${client.client_name}</td>
                 <td colspan="7"></td>
               </tr>`;
 
             for (var loanIndex = 0; loanIndex < client.loans.length; loanIndex++) {
                 const loan = client.loans[loanIndex];
 
-                client_tds += `<tr>
+                client_tds += `<tr data-client-index="${clientIndex}" data-loan-index="${loanIndex}">
                 <td colspan="2"></td>
                 <td>${loan.loan_type_name}
                     <button type="button" onclick="show_loan_collections(${clientIndex},${loanIndex})" class="btn btn-sm btn-primary" style="float:right"><span class="fa fa-list"></span></button>
                 </td>
-                <td onblur="editLoanCell(this,${clientIndex},${loanIndex})" contenteditable="true">${loan.loan_date}</td>
-                <td onblur="editLoanNumberCell(this,${clientIndex},${loanIndex})" contenteditable="true" class='right'>${numberFormat(loan.loan_amount)}</td>
-                <td onblur="editLoanNumberCell(this,${clientIndex},${loanIndex})" contenteditable="true" class='right'></td>
-                <td onblur="editLoanNumberCell(this,${clientIndex},${loanIndex})" contenteditable="true" class='right'></td>
-                <td onblur="editLoanNumberCell(this,${clientIndex},${loanIndex})" contenteditable="true" class='right'>${numberFormat(loan.monthly_payment)}</td>
+                <td onblur="editLoanCell(this,false)" data-loan-column="loan_date" contenteditable="true">${loan.loan_date}</td>
+                <td onblur="editLoanCell(this)" data-loan-column="loan_amount" contenteditable="true" class='right'>${numberFormat(loan.loan_amount)}</td>
+                <td onblur="editLoanCell(this)" data-loan-column="loan_interest" contenteditable="true" class='right'>${numberFormat(loan.loan_interest)}</td>
+                <td onblur="editLoanCell(this)" data-loan-column="loan_terms" contenteditable="true" class='right'>${numberFormat(loan.loan_terms)}</td>
+                <td onblur="editLoanCell(this)" data-loan-column="monthly_payment" contenteditable="true" class='right'>${numberFormat(loan.monthly_payment)}</td>
                 <td class='right'>${numberFormat(loan.balance)}</td>
               </tr>`;
             }
@@ -150,13 +172,13 @@
             const collection = collections[collectionIndex];
             total_payments += collection.payment_amount;
             total_interest += collection.interest;
-            skin_collections += `<tr>
+            skin_collections += `<tr data-client-index="${client_index}" data-loan-index="${loan_index}" data-collection-index="${collectionIndex}">
                 <td class='w-2'></td>
-                <td class='w-10'>${collection.payment_month}</td>
-                <td class='w-10 right' contenteditable="true">${numberFormat(collection.payment_amount)}</td>
-                <td class='w-10 right' contenteditable="true">${numberFormat(collection.interest)}</td>
-                <td class='w-10 right' contenteditable="true">${numberFormat(collection.penalty)}</td>
-                <td class='w-10 right' contenteditable="true">${numberFormat(collection.principal)}</td>
+                <td class='w-10' contenteditable="true" data-collection-column="payment_month" onblur="editCollectionCell(this,false)">${collection.payment_month}</td>
+                <td class='w-10 right' contenteditable="true" data-collection-column="payment_amount" onblur="editCollectionCell(this)">${numberFormat(collection.payment_amount)}</td>
+                <td class='w-10 right' contenteditable="true" data-collection-column="interest" onblur="editCollectionCell(this)">${numberFormat(collection.interest)}</td>
+                <td class='w-10 right' contenteditable="true" data-collection-column="penalty" onblur="editCollectionCell(this)">${numberFormat(collection.penalty)}</td>
+                <td class='w-10 right' contenteditable="true" data-collection-column="principal" onblur="editCollectionCell(this)">${numberFormat(collection.principal)}</td>
                 <td class='w-5'></td>
                 <td class='w-10 right' contenteditable="true">${numberFormat(collection.balance)}</td>
                 <td class='w-10'></td>
@@ -221,11 +243,58 @@
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    function editLoanNumberCell(el, client_index, loan_index) {
+    function editClientCell(el,is_number = true) {
         var str = el.innerHTML;
-        var replace_number = parseFloat(str.replaceAll(",", ""));
-        var actual_number = replace_number ? replace_number : 0;
-        el.innerHTML = numberFormat(actual_number);
+        if(is_number){
+            var replace_number = parseFloat(str.replaceAll(",", ""));
+            var actual_data = replace_number ? replace_number : 0;
+            el.innerHTML = numberFormat(actual_data);
+        }else{
+            el.innerHTML = str;
+            var actual_data = str;
+        }
+
+        var client_column = el.getAttribute("data-client-column");
+        var client_index = el.parentNode.getAttribute("data-client-index");
+
+        loan_from_excels[client_index][client_column] = actual_data;
+    }
+
+    function editLoanCell(el,is_number = true) {
+        var str = el.innerHTML;
+        if(is_number){
+            var replace_number = parseFloat(str.replaceAll(",", ""));
+            var actual_data = replace_number ? replace_number : 0;
+            el.innerHTML = numberFormat(actual_data);
+        }else{
+            el.innerHTML = str;
+            var actual_data = str;
+        }
+
+        var loan_column = el.getAttribute("data-loan-column");
+        var client_index = el.parentNode.getAttribute("data-client-index");
+        var loan_index = el.parentNode.getAttribute("data-loan-index");
+
+        loan_from_excels[client_index].loans[loan_index][loan_column] = actual_data;
+    }
+
+    function editCollectionCell(el,is_number = true) {
+        var str = el.innerHTML;
+        if(is_number){
+            var replace_number = parseFloat(str.replaceAll(",", ""));
+            var actual_data = replace_number ? replace_number : 0;
+            el.innerHTML = numberFormat(actual_data);
+        }else{
+            el.innerHTML = str;
+            var actual_data = str;
+        }
+
+        var collection_column = el.getAttribute("data-collection-column");
+        var client_index = el.parentNode.getAttribute("data-client-index");
+        var loan_index = el.parentNode.getAttribute("data-loan-index");
+        var collection_index = el.parentNode.getAttribute("data-collection-index");
+
+        loan_from_excels[client_index].loans[loan_index].collections[collection_index][collection_column] = actual_data;
     }
 </script>
 <style>

@@ -16,8 +16,16 @@ if (isset($_POST['input'])) {
 $query = $_GET['q'];
 $class = $_GET['c'];
 
+if($query == 'save_upload' && $class == 'Loans'){
+
+    header("Content-Type: application/json; charset=UTF-8");
+    header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+    $inputs =  json_decode(file_get_contents('php://input'), TRUE);
+}
+
 $ClassName = new $class;
 $ClassName->inputs = $inputs;
+
 
 $response['data'] = $ClassName->$query();
 

@@ -195,336 +195,301 @@
             });
     }
 
-    <<
-    << << < HEAD
+    // function deniedLoan() {
+    //     $("#btn_deny").html("<span class='fa fa-spinner fa-spin'></span>");
+    //     swal({
+    //             title: 'Are you sure?',
+    //             text: 'You will not be able to recover these entries!',
+    //             icon: 'warning',
+    //             buttons: true,
+    //             dangerMode: true,
+    //         })
+    //         .then((willDelete) => {
+    //             if (willDelete) {
+    //                 var loan_id = $("#hidden_id").val();
 
-    function deniedLoan() {
-        $("#btn_deny").html("<span class='fa fa-spinner fa-spin'></span>");
-        swal({
-                title: 'Are you sure?',
-                text: 'You will not be able to recover these entries!',
-                icon: 'warning',
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                    if (willDelete) {
-                        var loan_id = $("#hidden_id").val(); ===
-                        === =
-                        // function deniedLoan() {
-                        //     $("#btn_deny").html("<span class='fa fa-spinner fa-spin'></span>");
-                        //     swal({
-                        //             title: 'Are you sure?',
-                        //             text: 'You will not be able to recover these entries!',
-                        //             icon: 'warning',
-                        //             buttons: true,
-                        //             dangerMode: true,
-                        //         })
-                        //         .then((willDelete) => {
-                        //             if (willDelete) {
-                        //                 var loan_id = $("#hidden_id").val();
-                        >>>
-                        >>> > master
+    //                 $.ajax({
+    //                     type: "POST",
+    //                     url: "controllers/sql.php?c=" + route_settings.class_name + "&q=denied",
+    //                     data: {
+    //                         input: {
+    //                             id: loan_id
+    //                         }
+    //                     },
+    //                     success: function(data) {
+    //                         getEntries();
+    //                         var json = JSON.parse(data);
+    //                         console.log(json);
+    //                         if (json.data == 1) {
+    //                             swal("Success!", "Successfully denied loan!", "success");
+    //                         } else {
+    //                             failed_query(json);
+    //                         }
+    //                     },
+    //                     error: function(jqXHR, textStatus, errorThrown) {
+    //                         errorLogger('Error:', textStatus, errorThrown);
+    //                     }
+    //                 });
+    //                 $("#btn_deny").html('Release');
+    //                 $("#btn_deny").prop('disabled', true);
 
-                        //                 $.ajax({
-                        //                     type: "POST",
-                        //                     url: "controllers/sql.php?c=" + route_settings.class_name + "&q=denied",
-                        //                     data: {
-                        //                         input: {
-                        //                             id: loan_id
-                        //                         }
-                        //                     },
-                        //                     success: function(data) {
-                        //                         getEntries();
-                        //                         var json = JSON.parse(data);
-                        //                         console.log(json);
-                        //                         if (json.data == 1) {
-                        //                             swal("Success!", "Successfully denied loan!", "success");
-                        //                         } else {
-                        //                             failed_query(json);
-                        //                         }
-                        //                     },
-                        //                     error: function(jqXHR, textStatus, errorThrown) {
-                        //                         errorLogger('Error:', textStatus, errorThrown);
-                        //                     }
-                        //                 });
-                        //                 $("#btn_deny").html('Release');
-                        //                 $("#btn_deny").prop('disabled', true);
+    //                 $("#modalEntry").modal("hide");
+    //             } else {
+    //                 swal("Cancelled", "Entries are safe :)", "error");
+    //             }
+    //         });
+    // }
 
-                        //                 $("#modalEntry").modal("hide");
-                        //             } else {
-                        //                 swal("Cancelled", "Entries are safe :)", "error");
-                        //             }
-                        //         });
-                        // }
+    function changeLoanType() {
+        var loan_type_id = $("#loan_type_id").val();
+        var loan_type_interest = $("#loan_type_id").find('option:selected').attr('loan_type_interest');
+        var penalty_percentage = $("#loan_type_id").find('option:selected').attr('penalty_percentage');
+        var fixed_interest = $("#loan_type_id").find('option:selected').attr('fixed_interest');
+        $("#loan_interest").val(loan_type_interest);
+        $("#penalty_percentage").val(penalty_percentage);
 
-                        function changeLoanType() {
-                            var loan_type_id = $("#loan_type_id").val();
-                            var loan_type_interest = $("#loan_type_id").find('option:selected').attr('loan_type_interest');
-                            var penalty_percentage = $("#loan_type_id").find('option:selected').attr('penalty_percentage');
-                            var fixed_interest = $("#loan_type_id").find('option:selected').attr('fixed_interest');
-                            $("#loan_interest").val(loan_type_interest);
-                            $("#penalty_percentage").val(penalty_percentage);
+        if(fixed_interest != "Y"){
+            $("#div_amount").html('<label><strong style="color:red;">*</strong> Loan amount</label><input type="number" step="0.01" class="form-control input-item" onchange="calculateInterest()" autocomplete="off" name="input[loan_amount]" id="loan_amount" required>');
+            loan_fixed_interest = 0;
+        }else{
+            $("#div_amount").html('<label><strong style="color:red;">*</strong> Loan amount</label><select class="form-control select2 input-item" id="loan_amount" name="input[loan_amount]" onchange="getFixedInterest()" style="width:100%;" required></select>');
+            getSelectOption('FixedInterest', 'loan_amount', 'loan_amount', "loan_type_id='"+loan_type_id+"'",['interest_amount','interest_terms','penalty_percentage']);
+            loan_fixed_interest = 1;
+        }
+    }
 
-                            if (fixed_interest != "Y") {
-                                $("#div_amount").html('<label><strong style="color:red;">*</strong> Loan amount</label><input type="number" step="0.01" class="form-control input-item" onchange="calculateInterest()" autocomplete="off" name="input[loan_amount]" id="loan_amount" required>');
-                                loan_fixed_interest = 0;
-                            } else {
-                                $("#div_amount").html('<label><strong style="color:red;">*</strong> Loan amount</label><select class="form-control select2 input-item" id="loan_amount" name="input[loan_amount]" onchange="getFixedInterest()" style="width:100%;" required></select>');
-                                getSelectOption('FixedInterest', 'loan_amount', 'loan_amount', "loan_type_id='" + loan_type_id + "'", ['interest_amount', 'interest_terms', 'penalty_percentage']);
-                                loan_fixed_interest = 1;
-                            }
+    function getFixedInterest(){
+        var loan_interest = $("#loan_amount").find('option:selected').attr('interest_amount');
+        var penalty_percentage = $("#loan_amount").find('option:selected').attr('penalty_percentage');
+        var loan_period = $("#loan_amount").find('option:selected').attr('interest_terms');
+        $("#loan_interest").val(loan_interest);
+        $("#penalty_percentage").val(penalty_percentage);
+        $("#loan_period").val(loan_period);
+
+    }
+
+    function calculateInterest() {
+        var loan_amount = $("#loan_amount").val();
+        var loan_period = $("#loan_period").val();
+        var interest = (loan_type_interest / 100);
+        // $("#loan_interest").val(loan_type_interest);
+    }
+
+    function sampleCalculation() {
+        var loan_date = $("#loan_date").val();
+        var loan_amount = $("#loan_amount").val();
+        var loan_period = $("#loan_period").val();
+        var loan_interest = $("#loan_interest").val();
+        var monthly_payment = $("#monthly_payment").val() * 1;
+        var payment_terms = $("#payment_terms").val() * 1;
+
+        if (loan_amount == "" || loan_period == "" || loan_interest == "" || payment_terms == "") {
+            swal("Ops!", "Fill out all required fields.", "warning");
+        } else {
+
+            $("#dt_calculation").DataTable().destroy();
+            $("#dt_calculation").DataTable({
+                "processing": true,
+                "bPaginate": false,
+                "bFilter": false,
+                "bInfo": false,
+                "ordering": false,
+                "ajax": {
+                    "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=sample_calculation",
+                    "dataSrc": "data",
+                    "method": "POST",
+                    "data": {
+                        input: {
+                            loan_interest: loan_interest,
+                            loan_period: loan_period,
+                            loan_amount: loan_amount,
+                            loan_date: loan_date,
+                            monthly_payment: monthly_payment,
+                            payment_terms: payment_terms,
+                            loan_fixed_interest: loan_fixed_interest
                         }
-
-                        function getFixedInterest() {
-                            var loan_interest = $("#loan_amount").find('option:selected').attr('interest_amount');
-                            var penalty_percentage = $("#loan_amount").find('option:selected').attr('penalty_percentage');
-                            var loan_period = $("#loan_amount").find('option:selected').attr('interest_terms');
-                            $("#loan_interest").val(loan_interest);
-                            $("#penalty_percentage").val(penalty_percentage);
-                            $("#loan_period").val(loan_period);
-
-                        }
-
-                        function calculateInterest() {
-                            var loan_amount = $("#loan_amount").val();
-                            var loan_period = $("#loan_period").val();
-                            var interest = (loan_type_interest / 100);
-                            // $("#loan_interest").val(loan_type_interest);
-                        }
-
-                        function sampleCalculation() {
-                            var loan_date = $("#loan_date").val();
-                            var loan_amount = $("#loan_amount").val();
-                            var loan_period = $("#loan_period").val();
-                            var loan_interest = $("#loan_interest").val();
-                            var monthly_payment = $("#monthly_payment").val() * 1;
-                            var payment_terms = $("#payment_terms").val() * 1;
-
-                            if (loan_amount == "" || loan_period == "" || loan_interest == "" || payment_terms == "") {
-                                swal("Ops!", "Fill out all required fields.", "warning");
-                            } else {
-
-                                $("#dt_calculation").DataTable().destroy();
-                                $("#dt_calculation").DataTable({
-                                    "processing": true,
-                                    "bPaginate": false,
-                                    "bFilter": false,
-                                    "bInfo": false,
-                                    "ordering": false,
-                                    "ajax": {
-                                        "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=sample_calculation",
-                                        "dataSrc": "data",
-                                        "method": "POST",
-                                        "data": {
-                                            input: {
-                                                loan_interest: loan_interest,
-                                                loan_period: loan_period,
-                                                loan_amount: loan_amount,
-                                                loan_date: loan_date,
-                                                monthly_payment: monthly_payment,
-                                                payment_terms: payment_terms,
-                                                loan_fixed_interest: loan_fixed_interest
-                                            }
-                                        },
-                                    },
-                                    "columns": [{
-                                            "data": "date"
-                                        },
-                                        {
-                                            "data": "payment",
-                                            className: "text-right"
-                                        },
-                                        {
-                                            "data": "interest",
-                                            className: "text-right"
-                                        },
-                                        {
-                                            "data": "applicable_principal",
-                                            className: "text-right"
-                                        },
-                                        {
-                                            "data": "balance",
-                                            className: "text-right"
-                                        }
-                                    ]
-                                });
-                            }
-                        }
-
-                        function sampleCalculation2() {
-                            var loan_date = $("#loan_date_renewal").val();
-                            var loan_amount = $("#loan_amount_renewal").val();
-                            var loan_period = $("#loan_period_renewal").val();
-                            var loan_interest = $("#loan_interest_renewal").val();
-                            var monthly_payment = $("#monthly_payment_renewal").val();
-                            var payment_terms = $("#payment_terms_renewal").val();
-
-                            $("#dt_calculation2").DataTable().destroy();
-                            $("#dt_calculation2").DataTable({
-                                    "processing": true,
-                                    "bPaginate": false,
-                                    "bFilter": false,
-                                    "bInfo": false,
-                                    "ordering": false,
-                                    "ajax": {
-                                        "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=sample_calculation",
-                                        "dataSrc": "data",
-                                        "method": "POST",
-                                        "data": {
-                                            input: {
-                                                loan_interest: loan_interest,
-                                                loan_period: loan_period,
-                                                loan_amount: loan_amount,
-                                                loan_date: loan_date,
-                                                monthly_payment: monthly_payment,
-                                                payment_terms: payment_terms
-                                            }
-                                        },
-                                    },
-                                    "columns": [{
-                                            <<
-                                            << << < HEAD "data": "date"
-                                        },
-                                        {
-                                            "data": "payment",
-                                            className: "text-right"
-                                        },
-                                        {
-                                            "data": "interest",
-                                            className: "text-right"
-                                        },
-                                        {
-                                            "data": "applicable_principal",
-                                            className: "text-right"
-                                        } ===
-                                        === =
-                                        "data": "date"
-                                    },
-                                    {
-                                        "data": "payment",
-                                        className: "text-right"
-                                    },
-                                    {
-                                        "data": "interest",
-                                        className: "text-right"
-                                    },
-                                    {
-                                        "data": "applicable_principal",
-                                        className: "text-right"
-                                    },
-                                    {
-                                        "data": "balance",
-                                        className: "text-right"
-                                    } >>>
-                                    >>> > master
-                                ]
-                            });
+                    },
+                },
+                "columns": [{
+                        "data": "date"
+                    },
+                    {
+                        "data": "payment",
+                        className: "text-right"
+                    },
+                    {
+                        "data": "interest",
+                        className: "text-right"
+                    },
+                    {
+                        "data": "applicable_principal",
+                        className: "text-right"
+                    },
+                    {
+                        "data": "balance",
+                        className: "text-right"
                     }
+                ]
+            });
+        }
+    }
 
-                    function loanDetails() {
-                        var loan_id = $("#hidden_id").val();
-                        var param = "loan_id= '" + loan_id + "' ";
-                        $("#dt_loan_details").DataTable().destroy();
-                        $("#dt_loan_details").DataTable({
-                            "processing": true,
-                            "searching": false,
-                            "paging": false,
-                            "ordering": false,
-                            "info": false,
-                            "order": [
-                                [2, 'desc']
-                            ],
-                            "ajax": {
-                                "url": "controllers/sql.php?c=Loans&q=statement_of_accounts",
-                                "dataSrc": "data",
-                                "method": "POST",
-                                "data": {
-                                    input: {
-                                        param: param
-                                    }
-                                },
-                            },
-                            "columns": [{
-                                    "data": "date"
-                                },
-                                {
-                                    "data": "payment"
-                                },
-                                {
-                                    "data": "interest"
-                                },
-                                {
-                                    "data": "penalty"
-                                },
-                                {
-                                    "data": "applicable_principal"
-                                },
-                                {
-                                    "data": "balance"
-                                }
-                            ]
-                        });
+    function sampleCalculation2() {
+        var loan_date = $("#loan_date_renewal").val();
+        var loan_amount = $("#loan_amount_renewal").val();
+        var loan_period = $("#loan_period_renewal").val();
+        var loan_interest = $("#loan_interest_renewal").val();
+        var monthly_payment = $("#monthly_payment_renewal").val();
+        var payment_terms = $("#payment_terms_renewal").val();
+
+        $("#dt_calculation2").DataTable().destroy();
+        $("#dt_calculation2").DataTable({
+            "processing": true,
+            "bPaginate": false,
+            "bFilter": false,
+            "bInfo": false,
+            "ordering": false,
+            "ajax": {
+                "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=sample_calculation",
+                "dataSrc": "data",
+                "method": "POST",
+                "data": {
+                    input: {
+                        loan_interest: loan_interest,
+                        loan_period: loan_period,
+                        loan_amount: loan_amount,
+                        loan_date: loan_date,
+                        monthly_payment: monthly_payment,
+                        payment_terms: payment_terms
                     }
+                },
+            },
+            "columns": [{
+                    "data": "date"
+                },
+                {
+                    "data": "payment",
+                    className: "text-right"
+                },
+                {
+                    "data": "interest",
+                    className: "text-right"
+                },
+                {
+                    "data": "applicable_principal",
+                    className: "text-right"
+                },
+                {
+                    "data": "balance",
+                    className: "text-right"
+                }
+            ]
+        });
+    }
 
-                    function getPenalty(loan_id) {
-                        var collection_date = $("#loan_date").val();
-                        $.ajax({
-                            type: "POST",
-                            url: "controllers/sql.php?c=Loans&q=penalty",
-                            data: {
-                                input: {
-                                    loan_id: loan_id,
-                                    collection_date: collection_date
-                                }
-                            },
-                            success: function(data) {
-                                var json = JSON.parse(data);
-                                $(".penalty_amount").val(json.data);
-                            }
-                        });
+    function loanDetails() {
+        var loan_id = $("#hidden_id").val();
+        var param = "loan_id= '" + loan_id + "' ";
+        $("#dt_loan_details").DataTable().destroy();
+        $("#dt_loan_details").DataTable({
+            "processing": true,
+            "searching": false,
+            "paging": false,
+            "ordering": false,
+            "info": false,
+            "order": [
+                [2, 'desc']
+            ],
+            "ajax": {
+                "url": "controllers/sql.php?c=Loans&q=statement_of_accounts",
+                "dataSrc": "data",
+                "method": "POST",
+                "data": {
+                    input: {
+                        param: param
                     }
+                },
+            },
+            "columns": [{
+                    "data": "date"
+                },
+                {
+                    "data": "payment"
+                },
+                {
+                    "data": "interest"
+                },
+                {
+                    "data": "penalty"
+                },
+                {
+                    "data": "applicable_principal"
+                },
+                {
+                    "data": "balance"
+                }
+            ]
+        });
+    }
 
-                    function getBalance(loan_id) {
-                        $.ajax({
-                            type: "POST",
-                            url: "controllers/sql.php?c=Loans&q=loan_balance",
-                            data: {
-                                input: {
-                                    loan_id: loan_id
-                                }
-                            },
-                            success: function(data) {
-                                var json = JSON.parse(data);
-                                $(".amount").val(json.data);
-                            }
-                        });
-                    }
+    function getPenalty(loan_id) {
+        var collection_date = $("#loan_date").val();
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=Loans&q=penalty",
+            data: {
+                input: {
+                    loan_id: loan_id,
+                    collection_date: collection_date
+                }
+            },
+            success: function(data) {
+                var json = JSON.parse(data);
+                $(".penalty_amount").val(json.data);
+            }
+        });
+    }
 
-                    function generateReference2() {
-                        $.ajax({
-                            type: "POST",
-                            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=generate",
-                            data: [],
-                            success: function(data) {
-                                var json = JSON.parse(data);
-                                $("#new_reference_number").val(json.data);
-                            }
-                        });
-                    }
+    function getBalance(loan_id) {
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=Loans&q=loan_balance",
+            data: {
+                input: {
+                    loan_id: loan_id
+                }
+            },
+            success: function(data) {
+                var json = JSON.parse(data);
+                $(".amount").val(json.data);
+            }
+        });
+    }
+
+    function generateReference2() {
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=generate",
+            data: [],
+            success: function(data) {
+                var json = JSON.parse(data);
+                $("#new_reference_number").val(json.data);
+            }
+        });
+    }
 
 
-                    function getClients() {
-                        var branch_id = $("#branch_id").val();
-                        getSelectOption('Clients', 'client_id', 'client_fullname', "branch_id='" + branch_id + "'", [], '', 'Please Select', '', 1);
-                    }
+    function getClients() {
+        var branch_id = $("#branch_id").val();
+        getSelectOption('Clients', 'client_id', 'client_fullname', "branch_id='" + branch_id + "'", [], '', 'Please Select', '', 1);
+    }
 
-                    var loan_type_interest = 0;
-                    var loan_fixed_interest = 0;
-                    $(document).ready(function() {
-                        schema();
-                        getEntries();
-                        getSelectOption('Branches', 'branch_id', 'branch_name', '', [], '', 'Please Select', '', 1);
-                        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest', 'penalty_percentage', 'fixed_interest']);
-                    });
+    var loan_type_interest = 0;
+    var loan_fixed_interest = 0;
+    $(document).ready(function() {
+        schema();
+        getEntries();
+        getSelectOption('Branches', 'branch_id', 'branch_name', '', [], '', 'Please Select', '', 1);
+        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest', 'penalty_percentage','fixed_interest']);
+    });
 </script>
