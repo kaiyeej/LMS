@@ -19,30 +19,38 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Branch</label>
-                                    <select class="form-control select2 input-item" id="branch_id" name="input[branch_id]" style="width:100%;" onchange="getClients()" required>
+                                    <select class="form-control select2 branch_id input-item" id="branch_id" name="input[branch_id]" style="width:100%;" onchange="getClients()" required>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Client</label>
-                                    <select class="form-control select2 input-item" id="client_id" name="input[client_id]" style="width:100%;" required>
+                                    <select class="form-control select2 client_id input-item" id="client_id" name="input[client_id]" style="width:100%;" required>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label><strong style="color:red;">*</strong> Loan Type</label>
                                     <select class="form-control select2 input-item" onchange="changeLoanType()" id="loan_type_id" name="input[loan_type_id]" style="width:100%;" required>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label><strong style="color:red;">*</strong> Loan Date</label>
                                     <input type="date" class="form-control input-item" autocomplete="off" name="input[loan_date]" id="loan_date" required>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4" id="div_amount">
                                     <label><strong style="color:red;">*</strong> Loan amount</label>
                                     <input type="number" step="0.01" class="form-control input-item" onchange="calculateInterest()" autocomplete="off" name="input[loan_amount]" id="loan_amount" required>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label>Interest</label>
+                                <div class="form-group col-md-4">
+                                    <label><strong style="color:red;">*</strong> Loan Interest</label>
                                     <input type="number" step="0.01" class="form-control input-item" autocomplete="off" name="input[loan_interest]" id="loan_interest" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label><strong style="color:red;">*</strong>Penalty %</label>
+                                    <input type="number" step="0.01" class="form-control input-item" autocomplete="off" name="input[penalty_percentage]" id="penalty_percentage" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label><strong style="color:red;">*</strong> Payment Terms <sub style="color:red;">(months)</sub></label>
+                                    <input type="number" step="0.01" class="form-control input-item" autocomplete="off" name="input[payment_terms]" id="payment_terms" required>
                                 </div>
 
                                 <div class="form-group col-md-4">

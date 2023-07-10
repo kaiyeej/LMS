@@ -41,6 +41,5 @@ $classes = array(
     'ClientInsurance'       => $pre_class . 'clientinsurance.php',
     'ClientReference'       => $pre_class . 'clientreference.php',
     'CashPositioning'       => $pre_class . 'cashpositioning.php',
-    // 'Spreadsheet' => '../assets/PhpSpreadsheets/src/PhpSpreadsheet/Spreadsheet.php',
-    // 'IOFactory' =>  '../assets/PhpSpreadsheets/src/PhpSpreadsheet/IOFactory.php',
+    'FixedInterest'         => $pre_class . 'fixedinterest.php',
 );
