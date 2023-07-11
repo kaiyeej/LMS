@@ -25,6 +25,8 @@
                     <div class="dropdown-menu">
                         <a href="#" class="dropdown-item has-icon" onclick="exportTemplate()"><i class="fas fa-download"></i> Export</a>
                         <a href="#" class="dropdown-item has-icon" onclick="importTemplate()"><i class="far fa-upload"></i> Import</a>
+                        <a href="#" class="dropdown-item has-icon" onclick="uploadFile()"><i class="far fa-upload"></i>
+                            Upload File</a>
                     </div>
                 </div>
                 <div class="dropdown">
@@ -79,6 +81,7 @@
 <?php include "modal_other_loans.php"; ?>
 <?php include "modal_export.php"; ?>
 <?php include "modal_import.php"; ?>
+<?php include "modal_upload.php"; ?>
 <script type="text/javascript">
     function getEntries() {
         $("#dt_entries").DataTable().destroy();

@@ -1,5 +1,9 @@
 <?php
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
 class Loans extends Connection
 {
     private $table = 'tbl_loans';
@@ -28,7 +32,11 @@ class Loans extends Connection
         if (isset($this->inputs['status']))
             $form['status'] = $this->inputs['status'];
 
-        return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
+        $last_id = "N";
+        if (isset($this->inputs['last_id']))
+            $last_id = $this->inputs['last_id'];
+
+        return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'",$last_id);
     }
 
     public function renew()
@@ -818,5 +826,176 @@ class Loans extends Connection
         $response['success_import'] = $success_import;
         $response['unsuccess_import'] = $unsuccess_import;
         return $response;
+    }
+
+    public function upload()
+    {
+
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 0);
+
+        require_once '../vendor/autoload.php';
+
+        $uploadedFile = $_FILES['excel_file']['tmp_name'];
+        $spreadsheet = IOFactory::load($uploadedFile);
+        $sheetNames = $spreadsheet->getSheetNames();
+
+        $Clients = new Clients();
+
+        $data = [];
+
+        foreach ($sheetNames as $sheetName) {
+            $worksheet = $spreadsheet->getSheetByName($sheetName);
+            $client_name = $worksheet->getCell('A6')->getValue();
+            $client_id = $Clients->idByFullname($this->clean($client_name));
+            // if ($client_id > 0) {
+            $data[] = $this->worksheetLoans($worksheet, $client_id, $client_name);
+            // }
+        }
+        $response['sheets'] = $data;
+
+        return $response;
+    }
+
+    public function worksheetLoans($worksheet, $client_id, $client_name)
+    {
+        $rowCount = $worksheet->getHighestRow();
+        $loans = [];
+        for ($row = 9; $row < $rowCount; $row++) {
+            $loan_name = $worksheet->getCell('B' . $row)->getValue();
+            if ($loan_name == 'PREPARED BY:')
+                break;
+
+            if ($loan_name != '')
+                $loans[] = $this->worksheetLoanDetails($worksheet, $client_id, $loan_name, $row, $rowCount);
+        }
+        return [
+            'client_id' => (int) $client_id,
+            'client_name' => $client_name,
+            'loans' => $loans
+        ];
+    }
+
+    public function worksheetLoanDetails($worksheet, $client_id, $loan_name, $loan_row, $rowCount)
+    {
+        $LoanTypes = new LoanTypes();
+        $loan_type_id = $LoanTypes->idByName($loan_name);
+
+        $amount_row = $loan_row + 7;
+        $payment_row = $amount_row + 1;
+        $monthly_row = $amount_row - 1;
+        $interest_row = $amount_row - 2;
+
+        $loan_amount = $worksheet->getCell('I' . $amount_row)->getValue();
+        $loan_interest = $worksheet->getCell('D' . $interest_row)->getValue();
+        $monthly_payment = $worksheet->getCell('D' . $monthly_row)->getValue();
+
+        $collections = [];
+        $balance = 0;
+        for ($row = $payment_row; $row < $rowCount; $row++) {
+            $payment_month = $worksheet->getCell('C' . $row)->getValue();
+            if ($payment_month != '') {
+                $payment_amount = $worksheet->getCell('D' . $row)->getCalculatedValue();
+                $penalty = $worksheet->getCell('F' . $row)->getCalculatedValue();
+                $balance = $worksheet->getCell('I' . $row)->getCalculatedValue();
+                $collections[] = [
+                    'payment_month' => date("Y-m-t", strtotime($payment_month)),
+                    'payment_amount' => (float) $payment_amount,
+                    'interest' => $worksheet->getCell('E' . $row)->getCalculatedValue(),
+                    'penalty' => (float) $penalty,
+                    'principal' => $worksheet->getCell('G' . $row)->getCalculatedValue(),
+                    'balance' => $worksheet->getCell('I' . $row)->getCalculatedValue(),
+                ];
+            }
+            if ($payment_month == '')
+                break;
+        }
+
+        $loan_date = count($collections) > 0 ? date("Y-m-d", strtotime($collections[0]['payment_month'] . " -1 month")) : '';
+
+        return [
+            'loan_type_id' => $loan_type_id,
+            'loan_type_name' => $loan_name,
+            'loan_amount' => (float) $loan_amount,
+            'loan_interest' => (float) $loan_interest,
+            'loan_terms' => 0,
+            'loan_period' => 0,
+            'penalty_percentage' => 0,
+            'service_fee' => 0,
+            'payment_terms' => 0,
+            'loan_date' => $loan_date,
+            'monthly_payment' => (float) $monthly_payment,
+            'balance' => (float) $balance,
+            'collections' => $collections
+        ];
+    }
+
+    public function save_upload()
+    {
+        $Clients = new Clients;
+        $loan_data = $this->inputs['loan_data'];
+        foreach($loan_data as $clients){
+            $client_id = $clients['client_id'] > 0 ? $clients['client_id'] : $Clients->idByFullname($this->clean($clients['client_name']));
+            if($client_id > 0){
+                $this->save_client_loans($client_id,$clients);
+            }
+        }
+    }
+
+    public function save_client_loans($client_id,$client_data)
+    {
+        $response = [];
+        $count = 1;
+        foreach($client_data['loans'] as $loan_data){
+            $reference_number = "LN-$client_id-".$count++.date("Ymdhis");
+            $form = array(
+                'reference_number'      => $reference_number,
+                'branch_id'             => 1,
+                'client_id'             => $client_id,
+                'loan_type_id'          => $loan_data['loan_type_id'],
+                'loan_date'             => $loan_data['loan_date'],
+                'loan_amount'           => $loan_data['loan_amount'],
+                'loan_period'           => $loan_data['loan_period'],
+                'loan_interest'         => $loan_data['loan_interest'],
+                'penalty_percentage'    => $loan_data['penalty_percentage'],
+                'service_fee'           => $loan_data['service_fee'],
+                'monthly_payment'       => $loan_data['monthly_payment'],
+                'payment_terms'         => $loan_data['payment_terms'],
+                'status'                => "R",
+            );
+            $loan_id = $this->insert($this->table,$form,"Y");
+            if($loan_id > 0){
+                $this->save_loan_collections($client_id,$loan_id,$loan_data['collections']);
+                $response[] = $loan_id;
+            }
+        }
+        return $response;
+    }
+
+    public function save_loan_collections($client_id,$loan_id,$collections)
+    {
+        $count = 1;
+        foreach ($collections as $collection_data) {
+            if($collection_data['payment_amount'] > 0){
+                $reference_number = "CL-$client_id-".$count++.date("Ymdhis");
+                $form = array(
+                    'reference_number'  => $reference_number,
+                    'loan_id'           => $loan_id,
+                    'branch_id'         => 1,
+                    'chart_id'          => 0,
+                    'client_id'         => $client_id,
+                    'interest'          => $collection_data['interest'],
+                    'amount'            => $collection_data['payment_amount'],
+                    'collection_date'   => $collection_data['payment_month'],
+                    'penalty_amount'    => $collection_data['penalty'],
+                    'remarks'           => "",
+                    'user_id'           => 0,
+                    'atm_balance'       => 0,
+                    'atm_withdrawal'    => 0,
+                    'atm_charge'        => 0,
+                );
+                $this->insert("tbl_collections",$form,"Y");
+            }
+        }
     }
 }
