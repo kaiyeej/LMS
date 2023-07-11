@@ -104,7 +104,7 @@ class UserPrivileges extends Connection
                 'primary'   => $this->pk,
                 'fields' => array(
                     $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
-                    $this->metadata('user_id', 'int'),
+                    $this->metadata('user_category_id', 'int', 11),
                     $this->metadata('url', 'varchar', 50),
                     $this->metadata('status', 'int', 1),
                     $default['date_added'],

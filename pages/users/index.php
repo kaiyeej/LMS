@@ -191,6 +191,7 @@
     }
 
     $(document).ready(function() {
+        schema();
         getEntries();
         getSelectOption('UserCategories', 'user_category_id', 'user_category_name');
     });

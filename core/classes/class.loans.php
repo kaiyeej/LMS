@@ -710,7 +710,6 @@ class Loans extends Connection
             $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
             $default['user_id'] = $this->metadata('user_id', 'int', 11);
 
-
             // TABLE HEADER
             $tables[] = array(
                 'name'      => $this->table,
@@ -722,13 +721,17 @@ class Loans extends Connection
                     $this->metadata('client_id', 'int', 11),
                     $this->metadata('loan_type_id', 'int', 11),
                     $this->metadata('loan_amount', 'decimal', '12,4'),
+                    $this->metadata('loan_interest', 'decimal', '12,4'),
                     $this->metadata('loan_period', 'int', 4),
                     $this->metadata('penalty_percentage','decimal', '12,4'),
+                    $this->metadata('payment_terms','decimal', '4,2'),
                     $this->metadata('due_date', 'date'),
-                    $this->metadata('loan_date', 'date'),
-                    $this->metadata('main_loan_id',  'int', 11),
-                    $this->metadata('deduct_to_loan',  'int', 1),
                     $this->metadata('status', 'varchar', 1, 'NOT NULL', "'A'", '', "P - Pending; A - Approved; R - Released; D - Denied; F- Fully paid"),
+                    $this->metadata('renewal_status', 'varchar', 1),
+                    $this->metadata('loan_date', 'date'),
+                    $this->metadata('service_fee','decimal', '12,3'),
+                    $this->metadata('monthly_payment','decimal', '12,4'),
+                    $this->metadata('deduct_to_loan','int', '1'),
                     $default['user_id'],
                     $default['date_added'],
                     $default['date_last_modified']

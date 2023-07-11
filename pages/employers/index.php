@@ -136,6 +136,7 @@
         });
     }
     $(document).ready(function() {
+        schema();
         getEntries();
     });
 </script>

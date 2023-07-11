@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel"><span class='ion-compose'></span> Renewal</h5>
+                    <h5 class="modal-title" id="modalLabel"> <span id="modal_span_label"></span></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -160,6 +160,7 @@
             $("#penalty_amount_renewal").prop('required',true);
             $("#amount_renewal").prop('required',true);
             $(".input-al").prop("readonly",false);
+            $("#modal_span_label").html("Renew Loan");
         }else{
             $(".div_renewal").hide();
             $(".div_collection").hide();
@@ -167,6 +168,7 @@
             $("#penalty_amount_renewal").prop('required',false);
             $("#amount_renewal").prop('required',false);
             $(".input-al").prop("readonly",true);
+            $("#modal_span_label").html("Additional Loan");
         }
     }
 
