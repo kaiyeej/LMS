@@ -328,7 +328,7 @@ $User = new Users;
         // sampleCalculation();
         $("#btn_submit").show();
         // $("#btn_release").hide();
-        $("#btn_reloan").hide();
+        // $("#btn_reloan").hide();
 
       } else if (route_settings.class_name == "Collections") {
         $('.input-item').attr('readonly', false);
@@ -442,15 +442,15 @@ $User = new Users;
               $(".select2").prop("disabled", true);
               $("#btn_submit").hide();
               // $("#btn_release").hide();
-              if (jsonParse.data['status'] == "R") {
-                $("#btn_reloan").show();
-              } else {
-                $("#btn_reloan").hide();
-              }
+              // if (jsonParse.data['status'] == "R") {
+              //   $("#btn_reloan").show();
+              // } else {
+              //   $("#btn_reloan").hide();
+              // }
             } else if (jsonParse.data['status'] == "A") {
               $("#btn_submit").show();
               // $("#btn_release").show();
-              $("#btn_reloan").hide();
+              // $("#btn_reloan").hide();
             }
             clients();
 

@@ -3,7 +3,7 @@
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
             <div class="breadcrumb-item"><a href="#">Reports</a></div>
-            <div class="breadcrumb-item">Accounts Ledger</div>
+            <div class="breadcrumb-item">Receivable Ledger</div>
         </div>
     </div>
 
@@ -22,13 +22,13 @@
                     <div class="col-lg-3">
                         <label><strong>Start Date</strong></label>
                         <div>
-                            <input type="date" class="form-control" id="start_date" name="input[start_date]">
+                            <input type="date" class="form-control" id="start_date" name="input[start_date]" required>
                         </div>
                     </div>
                     <div class="col-lg-3">
                         <label><strong>End Date</strong></label>
                         <div>
-                            <input type="date" class="form-control" id="end_date" name="input[end_date]">
+                            <input type="date" class="form-control" id="end_date" name="input[end_date]" required>
                         </div>
                     </div>
                     <div class="col-lg-3">
@@ -159,10 +159,13 @@
         var end_date = $("#end_date").val();
         $("#dt_entries").DataTable().destroy();
         $("#dt_entries").DataTable({
-            "processing": true,
-            "searching": false,
+            "searching": true,
             "paging": false,
             "ordering": false,
+            "order": [
+                [0, 'asc']
+            ],
+            "orderCellsTop": true,
             "info": false,
             "ajax": {
                 "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=view",

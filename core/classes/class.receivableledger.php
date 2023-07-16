@@ -19,7 +19,7 @@ class ReceivableLedger extends Connection
         }
         
         $rows = array();
-        $result = $this->select("tbl_loans","reference_number","client_id='$client_id' $query_loan AND (status!='D' OR status!='P') UNION ALL SELECT reference_number FROM tbl_collections WHERE client_id='$client_id' AND status='F' $query_collection");
+        $result = $this->select("tbl_loans","reference_number, date_added","client_id='$client_id' $query_loan AND (status!='D' OR status!='P') UNION ALL SELECT reference_number, date_added FROM tbl_collections WHERE client_id='$client_id' AND status='F' $query_collection ORDER BY date_added ASC");
         
         $Loans = new Loans;
         $Collections = new Collections;
@@ -63,7 +63,7 @@ class ReceivableLedger extends Connection
         $client_id = $this->inputs['client_id'];
         $start_date = $this->inputs['start_date'];
 
-        $get_loans = $this->select("tbl_loans","sum(loan_amount)","client_id='$client_id' AND loan_date < '$start_date' AND status='R'");
+        $get_loans = $this->select("tbl_loans","sum(loan_amount)","client_id='$client_id' AND loan_date < '$start_date' AND (status!='D' OR status!='P')");
         $total_loan = $get_loans->fetch_array();
 
         $get_collections = $this->select("tbl_collections","sum(amount)","client_id='$client_id' AND collection_date < '$start_date' AND status='F'");

@@ -458,8 +458,28 @@ class Loans extends Connection
 
             $balance = $loan_amount;
             $Collection = new Collections;
+
+            $loandate = date('Y-m-d', strtotime('+'.$loan_period.' month', strtotime($loan_date)));
+            $col_checker_date = $Collection->late_collection_checker($row['loan_id'],$loandate);
+            
+            if($col_checker_date != 0){
+                $ts1 = strtotime($loandate);
+                $ts2 = strtotime($col_checker_date);
+
+                $year1 = date('Y', $ts1);
+                $year2 = date('Y', $ts2);
+
+                $month1 = date('m', $ts1);
+                $month2 = date('m', $ts2);
+
+                $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
+                $late_col = $diff;
+            }else{
+                $late_col = 0;
+            }
+
             $payment_count = 1;
-            while ($count <= $loan_period) {
+            while ($count <= ($loan_period+$late_col)) {
 
                 $loan_date = date('Y-m-d', strtotime('+1 month', strtotime($loan_date)));
 
@@ -511,9 +531,10 @@ class Loans extends Connection
         $Collections = new Collections;
         $result = $this->select($this->table, '*', "YEAR(loan_date) = '$report_year' AND status != 'D'");
         while ($row = $result->fetch_assoc()) {
-            $payment = $Collections->total_collected($row['loan_id']);
+            $colRow = $Collections->total_collected_by_loan($row['loan_id']);
+            $payment = $colRow[0];
             $amount_receivable = $row['loan_amount'] - $payment;
-            $penalty = 0;
+            $penalty = $colRow[1];
             $subtotal = $amount_receivable + $penalty;
             $row['client'] = $Clients->name($row['client_id']);
             $row['amount'] = number_format($row['loan_amount'], 2);
@@ -652,8 +673,9 @@ class Loans extends Connection
         }
 
         $pending = $suggested_total - $payment_total;
+        $total_penalty = $pending * ($penalty_per / 100);
 
-        return $pending * ($penalty_per / 100);
+        return $total_penalty < 0 ? 0 : $total_penalty;
 
         // return $suggested_total." ".$payment_total;
     }

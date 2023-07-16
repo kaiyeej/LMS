@@ -71,6 +71,7 @@ class StatementOfAccounts extends Connection
 
             $monthly_interest_rate = ($loan_interest / 100) / 12;
             $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
+            
 
             // if ($row['main_loan_id'] != 0) {
             //     $fetchMain = $this->select($this->table, '*', "main_loan_id = '" . $row['loan_id'] . "'");
@@ -85,9 +86,28 @@ class StatementOfAccounts extends Connection
             $total_payment = 0;
             $total_interest = 0;
             $total_penalty = 0;
+            $loandate = date('Y-m-d', strtotime('+'.$loan_period.' month', strtotime($loan_date)));
+            $col_checker_date = $Collection->late_collection_checker($row['loan_id'],$loandate);
+            
+            if($col_checker_date != 0){
+                $ts1 = strtotime($loandate);
+                $ts2 = strtotime($col_checker_date);
+
+                $year1 = date('Y', $ts1);
+                $year2 = date('Y', $ts2);
+
+                $month1 = date('m', $ts1);
+                $month2 = date('m', $ts2);
+
+                $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
+                $late_col = $diff;
+            }else{
+                $late_col = 0;
+            }
+
             if ($balance > 0) {
 
-                while ($count <= $loan_period) {
+                while ($count <= ($loan_period+$late_col)) {
 
                     $loan_date = date('Y-m-d', strtotime('+1 month', strtotime($loan_date)));
 
@@ -95,7 +115,14 @@ class StatementOfAccounts extends Connection
                     $year = date('Y', $my_date);
                     $month = date('m', $my_date);
 
-                    $payment = $count == 1 ? $Collection->collected_per_month($loan_date, $row['loan_id']) + $Collection->advance_collection($row['loan_id']) : $Collection->collected_per_month($loan_date, $row['loan_id']);
+                    // $payment = $count == 1 ? $Collection->collected_per_month($loan_date, $row['loan_id']) + $Collection->advance_collection($row['loan_id']) : $Collection->collected_per_month($loan_date, $row['loan_id']);
+
+                    if($count == 1){
+                        $payment = $Collection->collected_per_month($loan_date, $row['loan_id']) + $Collection->advance_collection($row['loan_id']);
+                    }else{
+                        $payment = $Collection->collected_per_month($loan_date, $row['loan_id']);
+                    }
+
                     if($lt_row['fixed_interest'] == "Y"){
                         $monthly_interest = $loan_interest;
                     }else{
@@ -123,7 +150,7 @@ class StatementOfAccounts extends Connection
                     $principal_ = $principal_amount <= 0 ? "0.00" : number_format($principal_amount, 2);
 
                     $data .= "<tr>";
-                    $data .= "<td>" . date('F Y', strtotime($loan_date)) . "</td>";
+                    $data .= "<td>" . date('F Y', strtotime($loan_date)). "</td>";
                     $data .= "<td style='text-align: right;'>" . number_format($payment, 2) . "</td>";
                     $data .= "<td style='text-align: right;'>" . number_format($monthly_interest, 2) . "</td>";
                     $data .= "<td style='text-align: right;'>" . number_format($penalty, 2) . "</td>";

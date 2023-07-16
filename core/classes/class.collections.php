@@ -235,6 +235,25 @@ class Collections extends Connection
         $row = $result->fetch_assoc();
         return $row['total'];
     }
+    
+    public function late_collection($loan_id,$date)
+    {
+        $result = $this->select("tbl_collections as c, tbl_loans as l", 'sum(c.amount) as total', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND c.collection_date > '$date'");
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+
+    public function late_collection_checker($loan_id,$date)
+    {
+        $result = $this->select("tbl_collections as c, tbl_loans as l", 'collection_date', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND c.collection_date > '$date'");
+        if($result->num_rows > 0){
+            $row = $result->fetch_assoc();
+            return $row['collection_date']; 
+        }else{
+            return 0;
+        }
+        
+    }
 
 
     public function penalty_per_month($date, $loan_id)
@@ -249,6 +268,14 @@ class Collections extends Connection
         $result = $this->select($this->table, 'sum(amount) as total', "loan_id='$loan_id' AND status='F'");
         $row = $result->fetch_assoc();
         return $row['total'];
+    }
+    
+    
+    public function total_collected_by_loan($loan_id)
+    {
+        $result = $this->select($this->table, 'sum(amount) as total, sum(penalty_amount) as penalty', "loan_id='$loan_id' AND status='F'");
+        $row = $result->fetch_assoc();
+        return [$row['total'],$row['penalty']];
     }
 
     public function monthly_collection($month, $year, $branch_id = null)

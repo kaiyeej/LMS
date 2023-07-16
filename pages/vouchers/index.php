@@ -108,7 +108,7 @@
                 },
                 {
                     "mRender": function(data, type, row) {
-                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails2(" + row.voucher_id + ")'><span class='fa fa-edit'></span></button><button onclick='printRecord(" + row.voucher_id + ")' class='btn btn-secondary btn-sm'><span class='fa fa-print'></span></button></center>";
+                        return '<div class="dropdown d-inline"><button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button><div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;"><a class="dropdown-item has-icon" href="#" onclick="getEntryDetails2(' + row.voucher_id + ')"><i class="far fa-edit"></i> Update</a><a class="dropdown-item has-icon" href="#" onclick="printRecord(' + row.voucher_id + ')"><i class="far fa-print"></i> Print</a>';
                     }
                 },
                 {

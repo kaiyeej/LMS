@@ -106,16 +106,24 @@ class Users extends Connection
     {
         $self = new self;
         $result = $self->select($self->table, 'user_contact_num', "$self->pk  = '$primary_id'");
-        $row = $result->fetch_array();
-        return $row[0];
+        if($result->num_rows > 0){
+            $row = $result->fetch_array();
+            return $row[0];
+        }else{
+            return null;
+        }
     }
 
     public static function dataRow($primary_id, $field = "*")
     {
         $self = new self;
         $result = $self->select($self->table, $field, "$self->pk  = '$primary_id'");
-        $row = $result->fetch_array();
-        return $row[$field];
+        if($result->num_rows > 0){
+            $row = $result->fetch_array();
+            return $row[$field];
+        }else{
+            return null;
+        }
     }
 
     public function login()

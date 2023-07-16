@@ -122,9 +122,9 @@
                     <!-- <button type="button" onclick="deniedLoan()" id="btn_deny" class="btn btn-danger">
                         Deny
                     </button> -->
-                    <button type="button" onclick="reloan()" id="btn_reloan" class="btn btn-info">
+                    <!-- <button type="button" onclick="reloan()" id="btn_reloan" class="btn btn-info">
                         Renew
-                    </button>
+                    </button> -->
                     <!-- <button type="button" onclick="releasedLoan()" id="btn_release" class="btn btn-info">
                         Release
                     </button> -->
