@@ -63,6 +63,13 @@ $User = new Users;
         width: 90%;
         max-width: 1200px;
       }
+
+    }
+
+    @media print {
+      input[type="text"] {
+        color: black !important;
+      }
     }
 
     .select2-container--default .select2-selection--single .select2-selection__rendered {
@@ -217,6 +224,7 @@ $User = new Users;
     });
 
     function print_report(container) {
+
       var printContents = document.getElementById(container).innerHTML;
       var originalContents = document.body.innerHTML;
       document.body.innerHTML = printContents;
@@ -403,7 +411,7 @@ $User = new Users;
           const json = jsonParse.data;
 
           $("#hidden_id").val(id);
-          
+
           $('.select2').select2().trigger('change');
           $('.input-item').map(function() {
             const id_name = this.id;
@@ -433,7 +441,7 @@ $User = new Users;
             $("#btn_submit").hide();
           } else if (route_settings.class_name == "Loans") {
             $("#loan_amount_span").html(json['amount']);
-            
+
             $("#div_amount").html('<label><strong style="color:red;">*</strong> Loan amount</label><input type="number" step="0.01" class="form-control input-item" onchange="calculateInterest()" autocomplete="off" name="input[loan_amount]" id="loan_amount" required>');
 
             $("#monthly_payment_span").html(json['monthly_payment']);
@@ -458,7 +466,7 @@ $User = new Users;
             $("#div_soa").show();
             loanDetails(2);
             $("#hidden_id_2").val(id);
-            
+
             $("#loan_amount").val(json['loan_amount']);
             $("#loan_amount").val(json['loan_amount']).trigger('change');
           } else if (route_settings.class_name == "LoanTypes") {

@@ -1,5 +1,18 @@
+<style>
+    .label-print {
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+
+    
+</style>
 <section class="section">
     <div class="section-header">
+        <div class="alert-body">
+            <div class="alert-title">Vouchers</div>
+            Manage vouchers here.
+        </div>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
             <div class="breadcrumb-item"><a href="#">Transactions</a></div>
@@ -9,12 +22,8 @@
 
     <div class="section-body shadow">
         <div class="alert alert-light alert-has-icon" style="border: 1px dashed #3C84AB;">
-            <div class="alert-icon"><i class="far fa-lightbulb"></i></div>
-            <div class="alert-body">
-                <div class="alert-title">Vouchers</div>
-                Manage vouchers here.
-            </div>
-            <div>
+            
+            <!-- <div>
                 <div class="dropdown">
                     <a href="#" data-toggle="dropdown" class="btn btn-info dropdown-toggle" style="display: none;"><i class="fas fa-file-excel"></i> Template</a>
                     <div class="dropdown-menu">
@@ -24,6 +33,39 @@
                     <div class="btn-group btn-group" role="group" aria-label="Basic example">
                         <button type="button" class="btn btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</button>
                         <button type="button" class="btn btn-danger" onclick="deleteEntry()"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
+                </div>
+            </div> -->
+            <div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <label><strong>Start Date</strong></label>
+                        <div>
+                            <input type="date" required class="form-control" id="start_date" value="<?php echo date('Y-m-01', strtotime(date("Y-m-d"))); ?>" name="input[start_date]">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label><strong>End Date</strong></label>
+                        <div>
+                            <input type="date" required class="form-control" id="end_date" value="<?php echo date('Y-m-t', strtotime(date("Y-m-d"))) ?>" name="input[end_date]">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label>&nbsp;</label>
+                        <div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-warning" onclick="getEntries()"><i class="fas fa-refresh"></i> Generate</button>
+
+                                <div class="dropdown">
+                                <button type="button" class="btn btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</button>
+                                </div>
+                                <div class="dropdown">
+                                    <div class="btn-group btn-group" role="group" aria-label="Basic example">
+                                        <button type="button" class="btn btn-danger" onclick="deleteEntry()"><i class="fas fa-trash"></i> Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -91,6 +133,10 @@
     }
 
     function getEntries() {
+        var start_date = $("#start_date").val();
+        var end_date = $("#end_date").val();
+        var param = "(voucher_date >= '" + start_date + "' AND voucher_date <= '" + end_date + "')";
+ 
         $("#dt_entries").DataTable().destroy();
         $("#dt_entries").DataTable({
             "processing": true,
@@ -99,7 +145,13 @@
             ],
             "ajax": {
                 "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=show",
-                "dataSrc": "data"
+                "dataSrc": "data",
+                "type": "POST",
+                "data": {
+                    input: {
+                        param: param
+                    }
+                }
             },
             "columns": [{
                     "mRender": function(data, type, row) {

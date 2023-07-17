@@ -3,15 +3,15 @@
         font-weight: bold;
         text-transform: uppercase;
     }
-    
+
 
     @media print {
 
-
-        #approved_by{
-            color:black !important;
+        #approved_by {
+            color: black;
         }
-        
+
+
         .col-sm-1,
         .col-sm-2,
         .col-sm-3,
@@ -142,8 +142,8 @@
                         </div>
                         <div class="col-sm-6">
                             <i>Payment Approved:</i><br><br>
-                            <span style="text-decoration: underline;padding-left: 30px;">
-                                <input type="text" id="approved_by" class="label-print" onchange="approvedBy()" style="margin: 20px;border-left: none;border-right: none;border-top: none;border-bottom:0.5px solid black;text-align: center;color:black">
+                            <span class="span_approved" style="text-decoration: underline;padding-left: 30px;">
+                                <input type="text" id="approved_by" class="label-print" onchange="approvedBy()" style="margin: 20px;border-left: none;border-right: none;border-top: none;border-bottom:0.5px solid black;text-align: center;color:black" autocomplete="off"/>
                             </span><br>
                             <span style="padding-left: 85px;"><i>PRESIDENT</i></span>
                         </div>
@@ -189,17 +189,18 @@
     function approvedBy() {
         var approved_by = $("#approved_by").val();
         var id = $("#voucher_print_id").val();
+        document.getElementById("approved_by").setAttribute("value", approved_by);
         $.ajax({
             type: "POST",
             url: "controllers/sql.php?c=" + route_settings.class_name + "&q=update_approved_by",
             data: {
                 input: {
                     approved_by: approved_by,
-                    id:id
+                    id: id
                 }
             },
             success: function(data) {
-
+                
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 errorLogger('Error:', textStatus, errorThrown);
@@ -230,6 +231,7 @@
 
                 $("#voucher_print_id").val(json['voucher_id']);
                 $("#approved_by").val(json['approved_by']);
+                document.getElementById("approved_by").setAttribute("value", json['approved_by']);
 
                 $("#total_amount").html(json.voucher_amount);
                 printJID(id);

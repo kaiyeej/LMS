@@ -5,41 +5,63 @@
 </style>
 <section class="section">
     <div class="section-header">
+        <div class="alert-body">
+            <div class="alert-title">Loans</div>
+            Manage loans here.
+        </div>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
             <div class="breadcrumb-item"><a href="#">Transactions</a></div>
-            <div class="breadcrumb-item">Loan Status</div>
+            <div class="breadcrumb-item">Loans</div>
         </div>
     </div>
 
     <div class="section-body shadow">
         <div class="alert alert-light alert-has-icon" style="border: 1px dashed #3C84AB;">
-            <div class="alert-icon"><i class="far fa-lightbulb"></i></div>
-            <div class="alert-body">
-                <div class="alert-title">Loans</div>
-                Manage loans here.
-            </div>
-            <div class="row">
-                <div class="dropdown">
-                    <a href="#" data-toggle="dropdown" class="btn btn-info dropdown-toggle"><i class="fas fa-file-excel"></i> Template</a>
-                    <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item has-icon" onclick="exportTemplate()"><i class="fas fa-download"></i> Export</a>
-                        <a href="#" class="dropdown-item has-icon" onclick="importTemplate()"><i class="far fa-upload"></i> Import</a>
-                        <a href="#" class="dropdown-item has-icon" onclick="uploadFile()"><i class="far fa-upload"></i>
-                            Upload File</a>
+            <div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <label><strong>Start Date</strong></label>
+                        <div>
+                            <input type="date" required class="form-control" id="start_date" value="<?php echo date('Y-m-01', strtotime(date("Y-m-d"))); ?>" name="input[start_date]">
+                        </div>
                     </div>
-                </div>
-                <div class="dropdown">
-                    <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><i class="fas fa-plus"></i> Add</a>
-                    <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item has-icon" onclick="addModal()"><i class="fas fa-add"></i> Add New Loan</a>
-                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan('Y')"><i class="far fa-repeat"></i> Loan Renewal</a>
-                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan('N')"><i class="far fa-file-circle-plus"></i> Additional Loan</a>
+                    <div class="col-md-3">
+                        <label><strong>End Date</strong></label>
+                        <div>
+                            <input type="date" required class="form-control" id="end_date" value="<?php echo date('Y-m-t', strtotime(date("Y-m-d"))) ?>" name="input[end_date]">
+                        </div>
                     </div>
-                </div>
-                <div class="dropdown">
-                    <div class="btn-group btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-danger" onclick="deleteEntry()"><i class="fas fa-trash"></i> Delete</button>
+                    <div class="col-md-6">
+                        <label>&nbsp;</label>
+                        <div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-warning" onclick="getEntries()"><i class="fas fa-refresh"></i> Generate</button>
+
+                                <div class="dropdown">
+                                    <a href="#" data-toggle="dropdown" class="btn btn-info dropdown-toggle"><i class="fas fa-file-excel"></i> Template</a>
+                                    <div class="dropdown-menu">
+                                        <a href="#" class="dropdown-item has-icon" onclick="exportTemplate()"><i class="fas fa-download"></i> Export</a>
+                                        <a href="#" class="dropdown-item has-icon" onclick="importTemplate()"><i class="far fa-upload"></i> Import</a>
+                                        <a href="#" class="dropdown-item has-icon" onclick="uploadFile()"><i class="far fa-upload"></i>
+                                            Upload File</a>
+                                    </div>
+                                </div>
+                                <div class="dropdown">
+                                    <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><i class="fas fa-plus"></i> Add</a>
+                                    <div class="dropdown-menu">
+                                        <a href="#" class="dropdown-item has-icon" onclick="addModal()"><i class="fas fa-add"></i> Add New Loan</a>
+                                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan('Y')"><i class="far fa-repeat"></i> Loan Renewal</a>
+                                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan('N')"><i class="far fa-file-circle-plus"></i> Additional Loan</a>
+                                    </div>
+                                </div>
+                                <div class="dropdown">
+                                    <div class="btn-group btn-group" role="group" aria-label="Basic example">
+                                        <button type="button" class="btn btn-danger" onclick="deleteEntry()"><i class="fas fa-trash"></i> Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -84,12 +106,22 @@
 <?php include "modal_upload.php"; ?>
 <script type="text/javascript">
     function getEntries() {
+        var start_date = $("#start_date").val();
+        var end_date = $("#end_date").val();
+        var param = "(loan_date >= '" + start_date + "' AND loan_date <= '" + end_date + "')";
+ 
         $("#dt_entries").DataTable().destroy();
         $("#dt_entries").DataTable({
             "processing": true,
             "ajax": {
                 "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=show",
-                "dataSrc": "data"
+                "dataSrc": "data",
+                "type": "POST",
+                "data": {
+                    input: {
+                        param: param
+                    }
+                }
             },
             "order": [
                 [2, 'desc']
@@ -248,17 +280,17 @@
         $("#loan_interest").val(loan_type_interest);
         $("#penalty_percentage").val(penalty_percentage);
 
-        if(fixed_interest != "Y"){
+        if (fixed_interest != "Y") {
             $("#div_amount").html('<label><strong style="color:red;">*</strong> Loan amount</label><input type="number" step="0.01" class="form-control input-item" onchange="calculateInterest()" autocomplete="off" name="input[loan_amount]" id="loan_amount" required>');
             loan_fixed_interest = 0;
-        }else{
+        } else {
             $("#div_amount").html('<label><strong style="color:red;">*</strong> Loan amount</label><select class="form-control select2 input-item" id="loan_amount" name="input[loan_amount]" onchange="getFixedInterest()" style="width:100%;" required></select>');
-            getSelectOption('FixedInterest', 'loan_amount', 'loan_amount', "loan_type_id='"+loan_type_id+"'",['interest_amount','interest_terms','penalty_percentage']);
+            getSelectOption('FixedInterest', 'loan_amount', 'loan_amount', "loan_type_id='" + loan_type_id + "'", ['interest_amount', 'interest_terms', 'penalty_percentage']);
             loan_fixed_interest = 1;
         }
     }
 
-    function getFixedInterest(){
+    function getFixedInterest() {
         var loan_interest = $("#loan_amount").find('option:selected').attr('interest_amount');
         var penalty_percentage = $("#loan_amount").find('option:selected').attr('penalty_percentage');
         var loan_period = $("#loan_amount").find('option:selected').attr('interest_terms');
@@ -490,6 +522,6 @@
         schema();
         getEntries();
         getSelectOption('Branches', 'branch_id', 'branch_name', '', [], '', 'Please Select', '', 1);
-        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest', 'penalty_percentage','fixed_interest']);
+        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest', 'penalty_percentage', 'fixed_interest']);
     });
 </script>
