@@ -26,6 +26,7 @@ class IncomeStatement extends Connection
         $row['expenses_list'] = $expenses[0];
         $row['expenses_total'] = number_format($expenses[1],2);
         $row['income_total'] = $gross_income-$expenses[1];
+        $row['net_date'] = strtoupper(date('F', mktime(0, 0, 0, $month, 10)));
         $rows = $row;
         return $rows;
     }
@@ -73,6 +74,11 @@ class IncomeStatement extends Connection
         $total = 0;
         while($row = $result->fetch_array()){
             $fetch_sum = $this->select("tbl_journal_entry_details as d, tbl_journal_entries as h", "sum(d.debit) as total_debit, sum(d.credit) as total_credit", "h.journal_entry_id=d.journal_entry_id AND MONTH(h.journal_date) = '$month' AND YEAR(h.journal_date) = '$year' AND h.status='F' AND d.chart_id='$row[chart_id]' AND h.branch_id = '$branch_id'");
+            // if($fetch_sum->num_rows > 0){
+                
+            // }else{
+            //     $sub_total = 0;
+            // }
             $sum = $fetch_sum->fetch_array();
             $sub_total = $sum['total_debit'];
             // if($sub_total > 0){

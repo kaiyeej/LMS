@@ -107,6 +107,7 @@ class Loans extends Connection
 
                     $form_journal = array(
                         'reference_number'  => $ref_code,
+                        'branch_id'         => $row['branch_id'],
                         'cross_reference'   => $collection_num,
                         'journal_id'        => $jl['journal_id'],
                         'remarks'           => "Renew loan (Loan ID: " . $this->clean($this->inputs[$this->name]),
@@ -472,7 +473,7 @@ class Loans extends Connection
                 $month1 = date('m', $ts1);
                 $month2 = date('m', $ts2);
 
-                $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
+                $diff = (($year2 - $year1) * 12) + ($month2 - $month1)-1;
                 $late_col = $diff;
             }else{
                 $late_col = 0;
@@ -490,6 +491,7 @@ class Loans extends Connection
                     $payment_count += 1;
                     $payment = 0;
                 }
+                
 
                 // $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
 

@@ -56,6 +56,7 @@ class Collections extends Connection
         $form_journal = array(
             'reference_number'  => $ref_code,
             'cross_reference'   => $this->clean($this->inputs[$this->name]),
+            'branch_id'         => $this->clean($this->inputs['branch_id']),
             'journal_id'        => $jl['journal_id'],
             'remarks'           => $this->inputs['remarks'],
             'journal_date'      => $this->inputs['collection_date'],
@@ -245,7 +246,8 @@ class Collections extends Connection
 
     public function late_collection_checker($loan_id,$date)
     {
-        $result = $this->select("tbl_collections as c, tbl_loans as l", 'collection_date', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND c.collection_date > '$date'");
+        $result = $this->select("tbl_collections as c, tbl_loans as l", 'collection_date', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND c.collection_date > '$date' order by collection_date desc
+        limit 1;");
         if($result->num_rows > 0){
             $row = $result->fetch_assoc();
             return $row['collection_date']; 

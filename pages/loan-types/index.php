@@ -62,6 +62,9 @@
                 "url": "controllers/sql.php?c=" + route_settings.class_name + "&q=show",
                 "dataSrc": "data"
             },
+            "order": [
+                [6, 'desc']
+            ],
             "columns": [{
                     "mRender": function(data, type, row) {
                         return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.loan_type_id + '" value=' + row.loan_type_id + '><label for="checkbox-b' + row.loan_type_id + '" class="custom-control-label">&nbsp;</label></div>';

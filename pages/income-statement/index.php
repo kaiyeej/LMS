@@ -138,7 +138,7 @@
                                     </tr>
 
                                     <tr style="font-weight:bold;">
-                                        <td style="text-align:right;font-style: italic;font-size:15px;">NET INCOME, <span id="net_date_label"></span></td>
+                                        <td style="text-align:right;font-style: italic;font-size:15px;">NET INCOME, <span id="net_date_label" class="label-item"></span></td>
                                         <td style="text-align:right;font-size:15px;"><span id="income_total_label" class="label-item"></span></td>
                                     </tr>
 

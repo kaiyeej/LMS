@@ -15,6 +15,7 @@ class JournalEntry extends Connection
         $form = array(
             $this->name         => $this->clean($this->inputs[$this->name]),
             'cross_reference'   => $this->inputs['cross_reference'],
+            'branch_id'         => $this->inputs['branch_id'],
             'journal_id'        => $this->inputs['journal_id'],
             'remarks'           => $this->inputs['remarks'],
             'journal_date'      => $this->inputs['journal_date'],
@@ -29,6 +30,7 @@ class JournalEntry extends Connection
         $form = array(
             'cross_reference'   => $this->inputs['cross_reference'],
             'journal_id'        => $this->inputs['journal_id'],
+            'branch_id'         => $this->inputs['branch_id'],
             'remarks'           => $this->inputs['remarks'],
             'journal_date'      => $this->inputs['journal_date'],
             'user_id'           => $_SESSION['lms_user_id']
@@ -40,6 +42,7 @@ class JournalEntry extends Connection
     {
         $Users = new Users;
         $Journals = new Journals;
+        $Branches = new Branches;
         $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
         $rows = array();
         $result = $this->select($this->table, '*', $param);
@@ -47,6 +50,7 @@ class JournalEntry extends Connection
             $details = $this->total_details($row['journal_entry_id']);
             $row['encoded_by'] = $Users->fullname($row['user_id']);
             $row['journal'] = $Journals->name($row['journal_id']);
+            $row['branch'] = $Branches->name($row['branch_id']);
             $row['amount'] = $details[2] == 0 ? number_format($details[0],2) : "<strong style='color:#F44336;'>".number_format($details[0],2)."</strong>";
 
             $rows[] = $row;
@@ -67,10 +71,12 @@ class JournalEntry extends Connection
     {
         $primary_id = $this->inputs['id'];
         $Users = new Users;
+        $Branches = new Branches;
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $row['encoded_by'] = $Users->fullname($row['user_id']);
+            $row['branch'] = $Branches->name($row['branch_id']);
             return $row;
         } else {
             return null;
@@ -217,6 +223,17 @@ class JournalEntry extends Connection
         return $row['total'];
     }
 
+    public function total_year($year){
+        $result = $this->select("tbl_journal_entries as h, tbl_journal_entry_details as d", 'sum(d.debit-d.credit) as total', "YEAR(journal_date)='$year' AND h.journal_entry_id=d.journal_entry_id AND h.status='F'");
+        if($result->num_rows > 0){
+            $row = $result->fetch_assoc();
+            return $row['total'];
+        }else{
+            return 0;
+        }
+
+    }
+
     public function journal_book()
     {
         $journal_id = $this->inputs['journal_id'];
@@ -268,6 +285,7 @@ class JournalEntry extends Connection
                 'fields' => array(
                     $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
                     $this->metadata($this->name, 'varchar', 50),
+                    $this->metadata('branch_id', 'int', 11),
                     $this->metadata('cross_reference', 'varchar', 50),
                     $this->metadata('journal_id', 'int', 11),
                     $this->metadata('remarks', 'varchar', 250),

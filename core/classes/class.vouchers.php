@@ -20,6 +20,7 @@ class Vouchers extends Connection
         
         $form = array(
             $this->name         => $this->clean($this->inputs[$this->name]),
+            'branch_id'         => $this->inputs['branch_id'],
             'account_type'      => $this->inputs['account_type'],
             'account_id'        => $this->inputs['account_id'],
             'loan_id'           => $loan_id,
@@ -37,6 +38,7 @@ class Vouchers extends Connection
         $form_journal = array(
             'reference_number'  => $ref_code,
             'cross_reference'   => $this->clean($this->inputs[$this->name]),
+            'branch_id'         => $this->inputs['branch_id'],
             'journal_id'        => $this->inputs['journal_id'],
             'remarks'           => $this->inputs['description'],
             'journal_date'      => $this->inputs['voucher_date'],
@@ -52,11 +54,15 @@ class Vouchers extends Connection
 
     public function edit()
     {
+        
+        $loan_id = (!isset($this->inputs['loan_id']) ? "" : $this->inputs['loan_id']);
+
         $form = array(
             $this->name         => $this->clean($this->inputs[$this->name]),
+            'branch_id'         => $this->inputs['branch_id'],
             'account_type'      => $this->inputs['account_type'],
             'account_id'        => $this->inputs['account_id'],
-            'loan_id'           => $this->inputs['loan_id'],
+            'loan_id'           => $loan_id,
             'voucher_no'        => $this->inputs['voucher_no'],
             'description'       => $this->inputs['description'],
             'check_number'      => $this->inputs['check_number'],
@@ -89,6 +95,7 @@ class Vouchers extends Connection
         $form_journal = array(
             'reference_number'  => $ref_code,
             'cross_reference'   => "C".$row['reference_number'],
+            'branch_id'         => $row['branch_id'],
             'journal_id'        => $row['journal_id'],
             'remarks'           => "Reverse Entry for Cancelled Voucher (".$row['reference_number'].").",
             'journal_date'      => $row['voucher_date'],
@@ -318,6 +325,7 @@ class Vouchers extends Connection
                 'fields' => array(
                     $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
                     $this->metadata($this->name, 'varchar', 75),
+                    $this->metadata('branch_id', 'int', 11),
                     $this->metadata('account_type', 'int', 11),
                     $this->metadata('account_id', 'int', 11),
                     $this->metadata('voucher_no', 'varchar', 50),

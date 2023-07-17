@@ -45,6 +45,7 @@
                                         </th>
                                         <th></th>
                                         <th>Supplier Name</th>
+                                        <th>Branch</th>
                                         <th>Address</th>
                                         <th>Contact #</th>
                                         <th>Date Added</th>
@@ -85,6 +86,9 @@
                     "data": "supplier_name"
                 },
                 {
+                    "data": "branch"
+                },
+                {
                     "data": "supplier_address"
                 },
                 {
@@ -102,6 +106,7 @@
 
     $(document).ready(function() {
         schema();
+        getSelectOption('Branches', 'branch_id', 'branch_name', '', [], '', 'Please Select', '', 1);
         getEntries();
     });
 </script>

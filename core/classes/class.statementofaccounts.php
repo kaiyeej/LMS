@@ -99,7 +99,7 @@ class StatementOfAccounts extends Connection
                 $month1 = date('m', $ts1);
                 $month2 = date('m', $ts2);
 
-                $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
+                $diff = (($year2 - $year1) * 12) + ($month2 - $month1)-1;
                 $late_col = $diff;
             }else{
                 $late_col = 0;

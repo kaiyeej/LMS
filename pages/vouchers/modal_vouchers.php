@@ -18,11 +18,16 @@
                             </div>
 
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <label><strong style="color:red;">*</strong>Voucher #</label>
                             <input type="text" class="form-control input-item" autocomplete="off" name="input[voucher_no]" id="voucher_no" required>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
+                            <label><strong style="color:red;">*</strong> Branch</label>
+                            <select class="form-control select2 branch_id input-item" id="branch_id" name="input[branch_id]" style="width:100%;" onchange="getAccount()" required>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
                             <label><strong style="color:red;">*</strong>Account Type</label>
                             <select class="form-control select2 input-item" id="account_type" name="input[account_type]" style="width:100%;" onchange="getAccount()" required>
                                 <option value="">&mdash;Please Select&mdash;</option>

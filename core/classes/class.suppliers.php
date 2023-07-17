@@ -36,10 +36,12 @@ class Suppliers extends Connection
     public function show()
     {
         $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
+        $Branches = new Branches;
         $rows = array();
         $result = $this->select($this->table, '*', $param);
         while ($row = $result->fetch_assoc()) {
             $row['account_id'] = $row['supplier_id'];
+            $row['branch'] = $Branches->name($row['branch_id']);
             $rows[] = $row;
         }
         return $rows;
@@ -136,6 +138,7 @@ class Suppliers extends Connection
         $response['unsuccess_import'] = $unsuccess_import;
         return $response;
     }
+    
 
     public function schema()
     {
@@ -151,6 +154,7 @@ class Suppliers extends Connection
                 'fields' => array(
                     $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
                     $this->metadata($this->name, 'varchar', 50),
+                    $this->metadata('branch_id', 'int', 11),
                     $this->metadata('supplier_address', 'varchar', 250),
                     $this->metadata('supplier_contact_no', 'varchar', 15),
                     $this->metadata('remarks', 'varchar', 250),

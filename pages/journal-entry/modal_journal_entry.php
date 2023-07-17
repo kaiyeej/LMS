@@ -20,13 +20,19 @@
                             <label>General Reference</label>
                             <input type="text" class="form-control input-item" autocomplete="off" name="input[reference_number]" id="reference_number" readonly required>
                         </div>
+
                         <div class="form-group col-md-6">
-                            <label>Cross Reference</label>
-                            <input type="text" class="form-control input-item" autocomplete="off" name="input[cross_reference]" id="cross_reference" required>
+                            <label><strong style="color:red;">*</strong> Branch</label>
+                            <select class="form-control select2 branch_id input-item" id="branch_id" name="input[branch_id]" style="width:100%;" required>
+                            </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Date</label>
                             <input type="date" class="form-control input-item" autocomplete="off" name="input[journal_date]" id="journal_date" required>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label>Cross Reference</label>
+                            <input type="text" class="form-control input-item" autocomplete="off" name="input[cross_reference]" id="cross_reference" required>
                         </div>
                         <div class="form-group col-md-12">
                             <label>Remarks</label>
@@ -55,6 +61,7 @@
                         <div class="col-3">
                             <div><b>General Reference:</b> <span id="reference_number_label" class="label-item"></span></div>
                             <div><b>Cross Reference:</b> <span id="cross_reference_label" class="label-item"></span></div>
+                            <div><b>Branch:</b> <span id="branch_label" class="label-item"></span></div>
                             <div><b>Date:</b> <span id="journal_date_label" class="label-item"></span></div>
                         </div>
                         <div class="col-3">
@@ -108,13 +115,13 @@
                                                     <option value="">&mdash;Please Select&mdash;</option>
                                                     <option value="D">Debit</option>
                                                     <option value="C">Credit</option>
-                                            </select>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <label><strong>Amount</strong></label>
                                             <div>
-                                            <input type="number" step="0.01" min="0" class="form-control" class="form-control input-item" name="input[amount]" id="amount">
+                                                <input type="number" step="0.01" min="0" class="form-control" class="form-control input-item" name="input[amount]" id="amount">
                                             </div>
                                         </div>
                                     </div>

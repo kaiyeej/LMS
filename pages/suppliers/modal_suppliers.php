@@ -15,7 +15,12 @@
                             <label>Supplier</label>
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="Supplier name" name="input[supplier_name]" id="supplier_name" required>
                         </div>
-                        <div class="form-group col-md-12">
+                        <div class="form-group col-md-6">
+                            <label><strong style="color:red;">*</strong> Branch</label>
+                            <select class="form-control select2 branch_id input-item" id="branch_id" name="input[branch_id]" style="width:100%;" onchange="getClients()" required>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
                             <label>Contact #</label>
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="Contact number" name="input[supplier_contact_no]" id="supplier_contact_no" required>
                         </div>

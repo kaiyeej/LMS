@@ -110,13 +110,14 @@
 <script type="text/javascript">
     function getAccount() {
         var account_type = $("#account_type").val();
+        var branch_id = $("#branch_id").val();
 
         if (account_type == "C") {
-            getSelectOption('Clients', 'account_id', 'client_fullname');
+            getSelectOption('Clients', 'account_id', 'client_fullname', "branch_id='" + branch_id + "'");
             $("#div_loan").show();
             $("#loan_id").prop('required', true);
         } else {
-            getSelectOption('Suppliers', 'account_id', 'supplier_name');
+            getSelectOption('Suppliers', 'account_id', 'supplier_name', "branch_id='" + branch_id + "'");
             $("#div_loan").hide();
             $("#loan_id").prop('required', false);
             // $("#div_account").removeClass('col-md-12').addClass('col-md-6');
@@ -357,6 +358,7 @@
     $(document).ready(function() {
         schema();
         getEntries();
+        getSelectOption('Branches', 'branch_id', 'branch_name', '', [], '', 'Please Select', '', 1);
         getSelectOption('Journals', 'journal_id', 'journal_name', '', ['journal_code']);
         getSelectOption('ChartOfAccounts', 'chart_id', 'chart_name');
     });

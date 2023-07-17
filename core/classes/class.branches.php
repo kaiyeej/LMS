@@ -56,8 +56,12 @@ class Branches extends Connection
     public function name($primary_id)
     {
         $result = $this->select($this->table, 'branch_name', "$this->pk = '$primary_id'");
-        $row = $result->fetch_assoc();
-        return $row['branch_name'];
+        if($result->num_rows > 0){
+            $row = $result->fetch_assoc();
+            return $row['branch_name'];
+        }else{
+            return null;
+        }
     }
 
 

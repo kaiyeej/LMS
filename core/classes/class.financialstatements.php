@@ -12,13 +12,19 @@ class FinancialStatements extends Connection
         $start_date = $this->inputs['start_date'];
         $end_date = $this->inputs['end_date'];
         $years_ = ($end_date - $start_date) + 1;
+        
+        $JL = new JournalEntry;
 
         $i = 0;
         $th = "";
         $th_year = $start_date;
         $cl_span = 1;
+        $ft_td = "";
         while ($i < $years_) {
+            $y_total = $JL->total_year($th_year);
+            
             $th .= "<th style='color:#fff;text-align:right;'>" . $th_year . "</th>";
+            $ft_td .= "<td style='text-align:right;'>" . number_format($y_total,2) . "</td>";
             $i++;
             $th_year++;
             $cl_span++;
@@ -30,7 +36,6 @@ class FinancialStatements extends Connection
                         </tr>
                     </thead>
                     <tbody>';
-        $JL = new JournalEntry;
         $result = $this->select($this->table);
         $total_td = "";
         $counter = 0;
@@ -39,23 +44,24 @@ class FinancialStatements extends Connection
                         <td colspan="' . $cl_span . '"><strong>' . $row['chart_class_name'] . '</strong></td>
                     </tr>';
             $result_chart = $this->select('tbl_chart_of_accounts', '*', "chart_class_id='$row[chart_class_id]'");
-            $tf_total = 0;
             
+            $tf_total = 0;
             while ($chartRow = $result_chart->fetch_assoc()) {
                 $y = 0;
                 $td = "";
                 $td_year = $start_date;
+                $tfsum = 0;
                 while ($y < $years_) {
                     $y_total = $JL->chart_per_year($td_year,$chartRow['chart_id']);
                     $td .= "<td style='text-align:right;'>" . number_format($y_total,2) . "</td>";
                     $y++;
                     $td_year++;
-                    $tf_total += $y_total;
                 }
                 $data .= '<tr>
                             <td>&emsp;&emsp;&emsp; ' . $chartRow['chart_name'] . '</td>
                             '.$td.'
                         </tr>';
+                $tf_total += $tfsum;
             }
 
             
@@ -68,11 +74,13 @@ class FinancialStatements extends Connection
             
         }
 
+
+
         $data .= "</tbody>
                     <tfoot>
                         <tr style='text-align:right;font-weight: bold;'>
                             <td>Total:</td>
-                            ".$total_td."
+                            ".$ft_td."
                         </tr>
                     </tfoot>
                 </table>";

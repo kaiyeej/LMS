@@ -62,6 +62,7 @@
                                         <th>General Reference</th>
                                         <th>Cross Reference</th>
                                         <th>Journal</th>
+                                        <th>Branch</th>
                                         <th>Amount</th>
                                         <th>Status</th>
                                         <th>Encoded By</th>
@@ -119,6 +120,9 @@
                 },
                 {
                     "data": "journal"
+                },
+                {
+                    "data": "branch"
                 },
                 {
                     "data": "amount",
@@ -240,6 +244,7 @@
         schema();
         getEntries();
         getSelectOption('Journals', 'journal_id', 'journal_name', '', ['journal_code']);
+        getSelectOption('Branches', 'branch_id', 'branch_name', '', [], '', 'Please Select', '', 1);
         getSelectOption('ChartOfAccounts', 'chart_id', 'chart_name');
     });
 </script>
