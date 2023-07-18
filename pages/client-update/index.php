@@ -1483,13 +1483,14 @@
                     });
                 } else {
                     swal("Cancelled", "Entries are safe :)", "error");
+                    $("#btn_delete_c_" + id).html("<span class='fa fa-trash'></span>");
                 }
             });
     }
 
     function deleteProperty(id) {
 
-        $("#btn_delete_c_" + id).html("<span class='fa fa-spinner fa-spin'></span>");
+        $("#btn_delete_" + id).html("<span class='fa fa-spinner fa-spin'></span>");
         swal({
             title: 'Are you sure?',
             text: 'You will not be able to recover these entries!',
