@@ -18,47 +18,47 @@
                                     <input type="text" class="input-item" autocomplete="off" name="input[reference_number]" id="reference_number" style="background: transparent;border: none;outline: none;color: #6777ef;font-size: 18px;font-weight: bold;" readonly required>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>Branch</label>
+                                    <label><strong style="color:red;">*</strong>Branch</label>
                                     <select onchange="getClients()" class="form-control select2 input-item" id="branch_id" name="input[branch_id]" style="width:100%;" required>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>Client</label>
+                                    <label><strong style="color:red;">*</strong>Client</label>
                                     <select onchange="getLoans()" class="form-control select2 input-item" id="client_id" name="input[client_id]" style="width:100%;" required>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label>Loan ID</label>
+                                    <label><strong style="color:red;">*</strong>Loan ID</label>
                                     <select class="form-control select2 input-item" id="loan_id" name="input[loan_id]" onchange="loanDetails()" style="width:100%;" required>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label>Collection Date</label>
+                                    <label><strong style="color:red;">*</strong>Collection Date</label>
                                     <input type="date" class="form-control input-item" autocomplete="off" name="input[collection_date]" id="collection_date" onchange="getPenalty()" required>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label>Bank</label>
+                                    <label><strong style="color:red;">*</strong>Bank</label>
                                     <select class="form-control select2 input-item" id="chart_id" name="input[chart_id]" style="width:100%;" required>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>Penalty</label>
+                                    <label><strong style="color:red;">*</strong>Penalty</label>
                                     <input type="number" step="0.01" class="form-control input-item" autocomplete="off" name="input[penalty_amount]" id="penalty_amount" required>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>Amount</label>
+                                    <label><strong style="color:red;">*</strong>Amount</label>
                                     <input type="number" step="0.01" class="form-control input-item" placeholder="Collection amount" autocomplete="off" name="input[amount]" id="amount" required>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label>ATM Balance</label>
+                                    <label><strong style="color:red;">*</strong>ATM Balance</label>
                                     <input type="number" step="0.01" class="form-control input-item" placeholder="ATM Balance" autocomplete="off" name="input[atm_balance]" id="atm_balance" required>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label>ATM Withdrawal</label>
+                                    <label><strong style="color:red;">*</strong>ATM Withdrawal</label>
                                     <input type="number" step="0.01" class="form-control input-item" placeholder="ATM Balance" autocomplete="off" name="input[atm_withdrawal]" id="atm_withdrawal" required>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label>ATM Charge</label>
+                                    <label><strong style="color:red;">*</strong>ATM Charge</label>
                                     <input type="number" step="0.01" class="form-control input-item" placeholder="ATM Charge" autocomplete="off" name="input[atm_charge]" id="atm_charge" required>
                                 </div>
                                 <div class="form-group col-md-12">

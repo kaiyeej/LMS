@@ -1,3 +1,11 @@
+<style>
+    
+    @media print {
+        thead, th{
+            color: black !important;
+        }
+    }
+</style>
 <section class="section">
     <div class="section-header">
         <div class="section-header-breadcrumb">

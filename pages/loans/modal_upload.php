@@ -10,7 +10,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" value="1" id="upload_step">
+                    <input type="text" value="1" id="upload_step">
                     <div class="col-md-12" id="upload_file">
                         <div class="form-group">
                             <div class="col-lg-12" style="padding: 10px;">

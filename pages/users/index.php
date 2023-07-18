@@ -3,7 +3,7 @@
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
             <div class="breadcrumb-item"><a href="#">Security</a></div>
-            <div class="breadcrumb-item">Users</div>
+            <div class="breadcrumb-item">Users Accounts</div>
         </div>
     </div>
 
@@ -157,7 +157,7 @@
             },
             "columns": [{
                     "mRender": function(data, type, row) {
-                        return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-bs' + row.user_id + '" value=' + row.user_id + '><label for="checkbox-b' + row.user_id + '" class="custom-control-label">&nbsp;</label></div>';
+                        return row.user_category != "A" ? '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.user_id + '" value=' + row.user_id + '><label for="checkbox-b' + row.user_id + '" class="custom-control-label">&nbsp;</label></div>' : "";
                     }
                 },
                 {

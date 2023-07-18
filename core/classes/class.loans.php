@@ -973,11 +973,13 @@ class Loans extends Connection
     {
         $response = [];
         $count = 1;
+        $Clients = new Clients;
+        
         foreach($client_data['loans'] as $loan_data){
             $reference_number = "LN-$client_id-".$count++.date("Ymdhis");
             $form = array(
                 'reference_number'      => $reference_number,
-                'branch_id'             => 1,
+                'branch_id'             => $Clients->getBranch($client_id),
                 'client_id'             => $client_id,
                 'loan_type_id'          => $loan_data['loan_type_id'],
                 'loan_date'             => $loan_data['loan_date'],
@@ -1002,13 +1004,14 @@ class Loans extends Connection
     public function save_loan_collections($client_id,$loan_id,$collections)
     {
         $count = 1;
+        $Clients = new Clients;
         foreach ($collections as $collection_data) {
             if($collection_data['payment_amount'] > 0){
                 $reference_number = "CL-$client_id-".$count++.date("Ymdhis");
                 $form = array(
                     'reference_number'  => $reference_number,
                     'loan_id'           => $loan_id,
-                    'branch_id'         => 1,
+                    'branch_id'         => $Clients->getBranch($client_id),
                     'chart_id'          => 0,
                     'client_id'         => $client_id,
                     'interest'          => $collection_data['interest'],

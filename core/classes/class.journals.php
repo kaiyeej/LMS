@@ -117,6 +117,7 @@ class Journals extends Connection
                     $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
                     $this->metadata($this->name, 'varchar', 50),
                     $this->metadata('journal_code', 'varchar', 10),
+                    $this->metadata('is_preset', 'int', 1),
                     $default['date_added'],
                     $default['date_last_modified']
                 )

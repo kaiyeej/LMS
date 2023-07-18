@@ -12,11 +12,11 @@
                     <input type="hidden" id="hidden_id" name="input[employer_id]">
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label>Employer Name</label>
+                            <label><strong style="color:red;">*</strong>Employer Name</label>
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="Employer Name" name="input[employer_name]" id="employer_name" required>
                         </div>
                         <div class="form-group col-md-12">
-                            <label>Contact #</label>
+                            <label><strong style="color:red;">*</strong>Contact #</label>
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="Contact #" name="input[employer_contact_no]" id="employer_contact_no" required>
                         </div>
                         <div class="form-group col-md-12">

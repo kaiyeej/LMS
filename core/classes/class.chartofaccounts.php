@@ -33,14 +33,31 @@ class ChartOfAccounts extends Connection
     {
         $primary_id = $this->inputs[$this->pk];
         $main_chart_id = (!isset($this->inputs['main_chart_id']) && $this->inputs['chart_type'] == "M" ? "" : $this->clean($this->inputs['main_chart_id']));
+        if ($this->inputs['chart_type'] == "S") {
+            $chart_class_id = $this->main_chart_class($main_chart_id);
+        } else {
+            $chart_class_id = $this->clean($this->inputs['chart_class_id']);
+        }
         $form = array(
-            $this->name     => $this->clean($this->inputs[$this->name]),
+            $this->name         => $this->clean($this->inputs[$this->name]),
             'chart_code'        => $this->clean($this->inputs['chart_code']),
             'chart_type'        => $this->clean($this->inputs['chart_type']),
             'main_chart_id'     => $main_chart_id,
+            'chart_class_id'    => $chart_class_id,
         );
 
-        return $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");
+        $query =  $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");
+        if($query){
+            if ($this->inputs['chart_type'] == "M") {
+                $form_ = array(
+                    'chart_class_id'    => $this->clean($this->inputs['chart_class_id'])
+                );
+        
+                $this->update($this->table, $form_, "main_chart_id = '$primary_id' AND chart_type='S'");
+            }
+        }
+
+        return $query;
     }
 
     public function show()

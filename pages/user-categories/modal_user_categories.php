@@ -12,7 +12,7 @@
                     <input type="hidden" id="hidden_id" name="input[user_category_id]">
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label>User Category</label>
+                            <label><strong style="color:red;">*</strong>User Category</label>
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="User Category name" name="input[user_category_name]" id="user_category_name" required>
                         </div>
                         <div class="form-group col-md-12">

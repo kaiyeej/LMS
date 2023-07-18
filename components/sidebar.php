@@ -84,7 +84,7 @@
 
         //ACCOUNTING
         echo '<li class="menu-header">Accounting</li>';
-        $Menus->sidebar('Cash Positioning', 'cash-positioning', 'fas fa-clipboard-list');
+        // $Menus->sidebar('Cash Positioning', 'cash-positioning', 'fas fa-clipboard-list');
         $Menus->sidebar('Chart of Accounts', 'chart-of-accounts', 'fas fa-clipboard-list');
         $Menus->sidebar('Chart Classification', 'chart-classification', 'fas fa-table');
         $Menus->sidebar('Journals', 'journals', 'fas fa-bookmark');

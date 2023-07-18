@@ -145,7 +145,7 @@
 
                                     <div class="form-group row">
                                         <div class="col">
-                                            <label><strong>Chart</strong></label>
+                                            <label><strong><strong style="color:red;">*</strong>Chart</strong></label>
                                             <div>
                                                 <select class="form-control form-control-sm select2" name="input[chart_id]" id="chart_id" style="width:100%;" required></select>
                                             </div>
@@ -153,7 +153,7 @@
                                     </div>
                                     <div class="form-group row">
                                         <div class="col">
-                                            <label><strong>Type</strong></label>
+                                            <label><strong><strong style="color:red;">*</strong>Type</strong></label>
                                             <div>
                                                 <select class="form-control form-control-sm select2" name="input[type]" style="width:100%;" required>
                                                     <option value="">&mdash;Please Select&mdash;</option>
@@ -163,9 +163,9 @@
                                             </div>
                                         </div>
                                         <div class="col">
-                                            <label><strong>Amount</strong></label>
+                                            <label><strong><strong style="color:red;">*</strong>Amount</strong></label>
                                             <div>
-                                                <input type="number" step="0.01" min="0" class="form-control" class="form-control input-item" name="input[amount]" id="amount">
+                                                <input type="number" step="0.01" min="0" class="form-control" class="form-control input-item" name="input[amount]" id="amount" required>
                                             </div>
                                         </div>
                                     </div>

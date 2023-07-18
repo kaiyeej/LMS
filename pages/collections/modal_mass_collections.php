@@ -8,33 +8,39 @@
                 <div class="modal-body">
                     <input type="hidden" value="1" id="mass_collection_step">
                     <div class="form-row w3-animate-left" id="mass_collection_step_1">
-                        <div class="form-group col-md-4">
-                            <label>Branch</label>
+                        <div class="form-group col-md-2">
+                            <label><strong style="color:red;">*</strong>Branch</label>
                             <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]" style="width:100%;" required>
                             </select>
                         </div>
-                        <div class="form-group col-md-4">
-                            <label>Loan Type</label>
+                        <div class="form-group col-md-2">
+                            <label><strong style="color:red;">*</strong>Loan Type</label>
                             <select class="form-control select2 input-item" id="loan_type_id" name="input[loan_type_id]" style="width:100%;" required>
                             </select>
                         </div>
-                        <div class="form-group col-md-4">
-                            <label>Bank</label>
+                        <div class="form-group col-md-2">
+                            <label><strong style="color:red;">*</strong>Bank</label>
                             <select class="form-control select2 input-item" id="mass_chart_id" name="input[chart_id]" style="width:100%;" required>
                             </select>
                         </div>
-                        <div class="form-group col-md-4">
-                            <label>Collection Date</label>
+                        <div class="form-group col-md-2">
+                            <label><strong style="color:red;">*</strong>Collection Date</label>
                             <input type="date" class="form-control input-item" autocomplete="off" name="input[collection_date]" id="collection_date" required>
                         </div>
-                        <div class="form-group col-md-4">
-                            <label>Employer</label>
+                        <div class="form-group col-md-2">
+                            <label><strong style="color:red;">*</strong>Employer</label>
                             <select class="form-control select2 input-item" id="employer_id" name="input[employer_id]" style="width:100%;" required>
                             </select>
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-1">
                             <label>ATM Charge</label>
                             <input min="0" type="number" class="form-control input-item" autocomplete="off" name="input[atm_charge]" id="atm_charge">
+                        </div>
+                        <div class="form-group col-md-1">
+                            <br />
+                            <button type="button" id="btn_mass_generate" onclick="mass_generate()" style="margin-top:10px;" class="btn btn-primary">
+                                Generate
+                            </button>
                         </div>
                     </div>
                     <div class="row" id="mass_collection_result_content">
@@ -42,7 +48,7 @@
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" id="btn_mass_prev" class="btn btn-warning" onclick="goStep1()"><span class='fa fa-arrow-left'></span> Back</button>
+                    <!-- <button type="button" id="btn_mass_prev" class="btn btn-warning" onclick="goStep1()"><span class='fa fa-arrow-left'></span> Back</button> -->
                     <button type="submit" id="btn_mass_submit" class="btn btn-primary">
                         Save
                     </button>
@@ -79,10 +85,11 @@
         document.getElementById("collection_date").value = "";
         $("#company_code").val('');
         $("#atm_charge").val('');
-        $("#btn_mass_submit").html("<span class='fa fa-arrow-right'></span> Next");
+        // $("#btn_mass_submit").html("<span class='fa fa-arrow-right'></span> Next");
+        $("#btn_mass_submit").hide();
 
         $('#mass_collection_result_content').html("");
-        $("#btn_mass_prev").hide();
+        // $("#btn_mass_prev").hide();
 
         // get_mass_collections();
         // $("#modalMassCollection").modal('show');
@@ -98,8 +105,44 @@
         $("#mass_collection_step").val(1);
         $("#btn_mass_submit").html("<span class='fa fa-arrow-right'></span> Next");
         $('#mass_collection_result_content').html("");
-        $("#btn_mass_prev").hide();
+        // $("#btn_mass_prev").hide();
     }
+
+    function mass_generate() {
+
+        // document.querySelector("#frmMassCollection").submit();
+        var branch_id = $("#mass_branch_id").val();
+        var loan_type_id = $("#loan_type_id").val();
+        var mass_chart_id = $("#mass_chart_id").val();
+        var collection_date = $("#collection_date").val();
+        var employer_id = $("#employer_id").val();
+        $('#frmMassCollection input:required').each(function() {
+            if($(this).val() === ''){
+
+                swal("Ops!", "Fill out all required fields.", "warning");
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "controllers/sql.php?c=" + route_settings.class_name + "&q=init_mass_collection",
+                    data: $('#frmMassCollection').serialize(),
+                    success: function(data) {
+                        var jsonParse = JSON.parse(data);
+                        const json = jsonParse.data;
+                        mc_header_data = json.headers;
+                        get_mass_collections(json);
+                        $("#mass_collection_step").val(2);
+                        // $("#btn_mass_submit").html("<span class='fa fa-check-circle'></span> Save");
+                        $("#btn_mass_submit").show();
+                        // $("#mass_collection_step_1").hide();
+                        // $("#btn_mass_prev").show();
+                    }
+                });
+            }
+        });
+
+
+    }
+
     $('#frmMassCollection').submit(function(e) {
         e.preventDefault(); // Prevent form submission
 
@@ -116,9 +159,10 @@
                     mc_header_data = json.headers;
                     get_mass_collections(json);
                     $("#mass_collection_step").val(2);
-                    $("#btn_mass_submit").html("<span class='fa fa-check-circle'></span> Save");
-                    $("#mass_collection_step_1").hide();
-                    $("#btn_mass_prev").show();
+                    // $("#btn_mass_submit").html("<span class='fa fa-check-circle'></span> Save");
+                    $("#btn_mass_submit").show();
+                    // $("#mass_collection_step_1").hide();
+                    // $("#btn_mass_prev").show();
                 }
             });
         } else {
@@ -150,19 +194,19 @@
     });
 
     function get_mass_collections(json) {
-        $("#mass-modal-header").html(`
-        <div class='col-md-12 row' style="color:#0a0a0a;">
-            <div class='col-md-2'>
-                <img src="./assets/img/logo2.png" alt="logo" width="90%">
-            </div>
-            <div class='col-md-10'>
-                <span>BRANCH: <b>${json.headers.branch_name}</b></span><br>
-                <span>LOAN TYPE: <b>${json.headers.loan_name}</b></span><br>
-                <span>BANK: <b>${json.headers.chart_name}</b></span><br>
-                <span>COLLECTION DATE: <b>${json.headers.collection_date_label}</b></span><br>
-                <span>EMPLOYER: <b>${json.headers.employer_name}</b></span><br>
-            </div>
-        </div>`);
+        // $("#mass-modal-header").html(`
+        // <div class='col-md-12 row' style="color:#0a0a0a;">
+        //     <div class='col-md-2'>
+        //         <img src="./assets/img/logo2.png" alt="logo" width="90%">
+        //     </div>
+        //     <div class='col-md-10'>
+        //         <span>BRANCH: <b>${json.headers.branch_name}</b></span><br>
+        //         <span>LOAN TYPE: <b>${json.headers.loan_name}</b></span><br>
+        //         <span>BANK: <b>${json.headers.chart_name}</b></span><br>
+        //         <span>COLLECTION DATE: <b>${json.headers.collection_date_label}</b></span><br>
+        //         <span>EMPLOYER: <b>${json.headers.employer_name}</b></span><br>
+        //     </div>
+        // </div>`);
         var client_tds = "";
         mc_client_data = [];
         for (var clientIndex = 0; clientIndex < json.clients.length; clientIndex++) {

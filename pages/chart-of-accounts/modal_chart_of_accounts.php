@@ -12,11 +12,11 @@
                     <input type="hidden" id="hidden_id" name="input[chart_id]">
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label>Code</label>
+                            <label><strong style="color:red;">*</strong>Code</label>
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="Chart code" name="input[chart_code]" id="chart_code" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label>Type</label>
+                            <label><strong style="color:red;">*</strong>Type</label>
                             <select class="form-control select2 input-item" id="chart_type" name="input[chart_type]" style="width:100%;" onchange="changeChartType()" required>
                                 <option value="">Please Select</option>
                                 <option value="M">Main</option>
@@ -24,16 +24,16 @@
                             </select>
                         </div>
                         <div class="form-group col-md-12" id="div_main_chart" style="display:none;">
-                            <label>Main Chart</label>
+                            <label><strong style="color:red;">*</strong>Main Chart</label>
                             <select class="form-control select2 input-item" id="main_chart_id" name="input[main_chart_id]" onchange="changeChart()" style="width:100%;">
                             </select>
                         </div>
                         <div class="form-group col-md-12">
-                            <label>Chart</label>
+                            <label><strong style="color:red;">*</strong>Chart</label>
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="Chart of account" name="input[chart_name]" id="chart_name" required>
                         </div>
                         <div class="form-group col-md-12" id="div_sub_class" style="display:none;">
-                            <label>Chart Classification</label>
+                            <label><strong style="color:red;">*</strong>Chart Classification</label>
                             <select class="form-control select2 input-item" id="chart_class_id" name="input[chart_class_id]" style="width:100%;">
                             </select>
                         </div>
