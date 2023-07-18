@@ -97,7 +97,7 @@
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">First name</label>
                                                 <input type="text" class="required form-control input-item"
-                                                    autocomplete="off" placeholder="Client middle name"
+                                                    autocomplete="off" placeholder="Client first name"
                                                     name="input[client_fname]" id="client_fname">
                                             </div>
                                             <div class="col-lg-3" style="padding: 10px;">
@@ -109,7 +109,7 @@
                                             <div class="col-lg-3" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Last name</label>
                                                 <input type="text" class="required form-control input-item"
-                                                    autocomplete="off" placeholder="Client middle name"
+                                                    autocomplete="off" placeholder="Client last name"
                                                     name="input[client_lname]" id="client_lname">
                                             </div>
                                             <div class="col-lg-2" style="padding: 10px;">
@@ -284,51 +284,51 @@
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Spouse Employer</label>
                                                 <input type="text" class="form-control input-item" autocomplete="off"
-                                                    placeholder="Employer name" name="input[spouse_employer]"
+                                                    placeholder="Spouse Employer name" name="input[spouse_employer]"
                                                     id="client_spouse_employer">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Bussiness Address</label>
                                                 <input type="text" class="form-control input-item" autocomplete="off"
-                                                    placeholder="Employer name" name="input[spouse_employer_address]"
+                                                    placeholder="Bussiness Address" name="input[spouse_employer_address]"
                                                     id="client_spouce_employer_address">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Telephone #</label>
                                                 <input type="text" class="form-control input-item" autocomplete="off"
-                                                    placeholder="Employer name" name="input[spouse_employer_contact]"
+                                                    placeholder="Telephone number" name="input[spouse_employer_contact]"
                                                     id="client_spouce_employer_contact_no">
                                             </div>
 
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Position</label>
                                                 <input type="text" class=" form-control input-item" autocomplete="off"
-                                                    placeholder="Employer name" name="input[spouse_employment_position]"
+                                                    placeholder="Position" name="input[spouse_employment_position]"
                                                     id="client_spouse_position">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Income</label>
                                                 <input type="text" class="form-control input-item" autocomplete="off"
-                                                    placeholder="Employer name" name="input[spouse_employment_income]"
+                                                    placeholder="Income" name="input[spouse_employment_income]"
                                                     id="client_spouse_income">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Status of Employment</label>
                                                 <input type="text" class="form-control input-item" autocomplete="off"
-                                                    placeholder="Employer name" name="input[spouse_employment_status]"
+                                                    placeholder="Status of Employment" name="input[spouse_employment_status]"
                                                     id="client_spouse_emp_status">
                                             </div>
 
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Length of Employement</label>
                                                 <input type="text" class=" form-control input-item" autocomplete="off"
-                                                    placeholder="Employer name" name="input[spouse_employment_length]"
+                                                    placeholder="Length of Employement" name="input[spouse_employment_length]"
                                                     id="client_spouse_leng_emp">
                                             </div>
                                             <div class="col-lg-8" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Prev. Employment</label>
                                                 <input type="text" class="form-control input-item" autocomplete="off"
-                                                    placeholder="Employer name" name="input[spouse_last_employment]"
+                                                    placeholder="Previous Employment" name="input[spouse_last_employment]"
                                                     id="client_spouse_prev_employment">
                                             </div>
                                         </div>
@@ -380,14 +380,14 @@
                                             <div class="col-lg-6" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Source of income by whom</label>
                                                 <input type="text" class="required form-control input-item"
-                                                    autocomplete="off" placeholder="" name="input[soi_by]"
+                                                    autocomplete="off" placeholder="Source of income by whom" name="input[soi_by]"
                                                     id="client_soi_by_whom">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Monthly Income</label>
                                                 <input type="number" step="0.01"
                                                     class="required form-control input-item" autocomplete="off"
-                                                    placeholder="" name="input[soi_monthly]"
+                                                    placeholder="Monthly Income" name="input[soi_monthly]"
                                                     id="client_soi_monthly_income">
                                             </div>
                                             <div class="col-lg-3" style="padding: 10px;">
@@ -439,26 +439,26 @@
                                             </div>
                                             <div class="col-lg-6" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Reference name 2</label>
-                                                <input type="text" class="required form-control input-item"
+                                                <input type="text" class="form-control input-item"
                                                     autocomplete="off" placeholder="Credit reference fullname"
                                                     name="input[client_credit_ref_name2]" id="client_credit_ref_name1">
                                             </div>
                                             <div class="col-lg-6" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Reference Address 2</label>
-                                                <input type="text" class="required form-control input-item"
+                                                <input type="text" class="form-control input-item"
                                                     autocomplete="off" placeholder="Credit reference address"
                                                     name="input[client_credit_ref_address2]"
                                                     id="client_credit_ref_address2">
                                             </div>
                                             <div class="col-lg-6" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Reference name 3</label>
-                                                <input type="text" class="required form-control input-item"
+                                                <input type="text" class="form-control input-item"
                                                     autocomplete="off" placeholder="Credit reference fullname"
                                                     name="input[client_credit_ref_name3]" id="client_credit_ref_name3">
                                             </div>
                                             <div class="col-lg-6" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Reference Address 3</label>
-                                                <input type="text" class="required form-control input-item"
+                                                <input type="text" class="form-control input-item"
                                                     autocomplete="off" placeholder="Credit reference address"
                                                     name="input[client_credit_ref_address3]"
                                                     id="client_credit_ref_address3">
@@ -555,7 +555,7 @@
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Unpaid Obligation</label>
                                                 <input type="number" step="0.01" class="form-control input-item"
-                                                    autocomplete="off" placeholder=""
+                                                    autocomplete="off" placeholder="Unpaid Obligation"
                                                     name="input[insurance_unpaid_obligation]"
                                                     id="client_unpaid_obligation">
                                             </div>
@@ -687,7 +687,7 @@
                                                     <div class="col-lg-6" style="padding: 10px;">
                                                         <label class="text-md-right text-left">Improvement, if
                                                             any</label>
-                                                        <input type="text" class="form-control" autocomplete="off"
+                                                        <input type="text" class="form-control" autocomplete="off" placeholder="Improvement"
                                                             name="input[property_improvement]"
                                                             id="property_improvement">
                                                     </div>
@@ -1112,13 +1112,14 @@
                     });
                 } else {
                     swal("Cancelled", "Entries are safe :)", "error");
+                    $("#btn_delete_c_" + id).html("<span class='fa fa-trash'></span>");
                 }
             });
     }
 
     function deleteProperty(id) {
 
-        $("#btn_delete_c_" + id).html("<span class='fa fa-spinner fa-spin'></span>");
+        $("#btn_delete_" + id).html("<span class='fa fa-spinner fa-spin'></span>");
         swal({
             title: 'Are you sure?',
             text: 'You will not be able to recover these entries!',
