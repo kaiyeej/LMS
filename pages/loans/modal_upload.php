@@ -10,7 +10,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" value="1" id="upload_step">
+                    <input type="hidden" value="1" id="upload_step">
                     <div class="col-md-12" id="upload_file">
                         <div class="form-group">
                             <div class="col-lg-12" style="padding: 10px;">
@@ -134,7 +134,9 @@
                 <td onblur="editLoanCell(this,false)" data-loan-column="loan_date" contenteditable="true">${loan.loan_date}</td>
                 <td onblur="editLoanCell(this)" data-loan-column="loan_amount" contenteditable="true" class='right'>${numberFormat(loan.loan_amount)}</td>
                 <td onblur="editLoanCell(this)" data-loan-column="loan_interest" contenteditable="true" class='right'>${numberFormat(loan.loan_interest)}</td>
-                <td onblur="editLoanCell(this)" data-loan-column="loan_terms" contenteditable="true" class='right'>${numberFormat(loan.loan_terms)}</td>
+                <td onblur="editLoanCell(this)" data-loan-column="penalty_percentage" contenteditable="true" class='right'>${numberFormat(loan.penalty_percentage)}</td>
+                <td onblur="editLoanCell(this)" data-loan-column="loan_period" contenteditable="true" class='right'>${numberFormat(loan.loan_period)}</td>
+                <td onblur="editLoanCell(this)" data-loan-column="payment_terms" contenteditable="true" class='right'>${numberFormat(loan.payment_terms)}</td>
                 <td onblur="editLoanCell(this)" data-loan-column="monthly_payment" contenteditable="true" class='right'>${numberFormat(loan.monthly_payment)}</td>
                 <td class='right'>${numberFormat(loan.balance)}</td>
               </tr>`;
@@ -149,7 +151,9 @@
                 <th class='w-10'>LOAN DATE</th>
                 <th class='w-10'>LOAN AMOUNT</th>
                 <th class='w-10'>INTEREST</th>
+                <th class='w-10'>PENALTY INTEREST</th>
                 <th class='w-10'>LOAN TERMS</th>
+                <th class='w-10'>PAYMENT TERMS</th>
                 <th class='w-10'>MONTHLY PAYMENT</th>
                 <th class='w-10'>BALANCE OUTSTANDING</th>
               </tr>
