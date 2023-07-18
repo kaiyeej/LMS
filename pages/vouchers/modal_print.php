@@ -77,10 +77,15 @@
     }
 </style>
 <div class="modal fade" id="modalPrint" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background: #F5F5F5;">
                 <h5 class="modal-title" id="modalLabel"><span class='fa fa-print'></span> Print Record</h5>
+                
+                <button type="button" onclick="print_report('print_canvas')" class="btn btn-primary">
+                    <i class="bx bx-check d-block d-sm-none"></i>
+                    <span><span class='fa fa-print'></span> Print</span>
+                </button>
             </div>
             <div class="modal-body" style="padding: 15px;">
                 <div class="col-12" id="print_canvas">
@@ -142,10 +147,12 @@
                         </div>
                         <div class="col-sm-6">
                             <i>Payment Approved:</i><br><br>
-                            <span class="span_approved" style="text-decoration: underline;padding-left: 30px;">
-                                <input type="text" id="approved_by" class="label-print" onchange="approvedBy()" style="margin: 20px;border-left: none;border-right: none;border-top: none;border-bottom:0.5px solid black;text-align: center;color:black" autocomplete="off"/>
-                            </span><br>
-                            <span style="padding-left: 85px;"><i>PRESIDENT</i></span>
+                                <div style="text-align:center;">
+                                    <span class="span_approved" style="text-decoration: underline;padding-left: 30px;">
+                                        <input type="text" id="approved_by" class="label-print" onchange="approvedBy()" style="margin: 20px;border-left: none;border-right: none;border-top: none;border-bottom:0.5px solid black;text-align: center;color:black;width:70%" autocomplete="off" />
+                                    </span><br>
+                                    <span><i>PRESIDENT</i></span>
+                                </div>
                         </div>
                         <div class="col-sm-6 table-responsive">
                             <table id="dt_details_print" class="table" width="100%">
@@ -177,10 +184,6 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" onclick="print_report('print_canvas')" class="btn btn-primary ml-1 btn-sm">
-                    <i class="bx bx-check d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block"><span class='ti ti-printer'></span> Print</span>
-                </button>
             </div>
         </div>
     </div>
@@ -200,7 +203,7 @@
                 }
             },
             success: function(data) {
-                
+
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 errorLogger('Error:', textStatus, errorThrown);
