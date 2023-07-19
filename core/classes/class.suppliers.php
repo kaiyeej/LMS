@@ -12,6 +12,7 @@ class Suppliers extends Connection
     {
         $form = array(
             $this->name             => $this->clean($this->inputs[$this->name]),
+            'branch_id'             => $this->clean($this->inputs['branch_id']),
             'supplier_address'      => $this->clean($this->inputs['supplier_address']),
             'supplier_contact_no'   => $this->clean($this->inputs['supplier_contact_no']),
             'remarks'               => $this->clean($this->inputs['remarks']),
@@ -25,6 +26,7 @@ class Suppliers extends Connection
         $primary_id = $this->inputs[$this->pk];
         $form = array(
             $this->name             => $this->clean($this->inputs[$this->name]),
+            'branch_id'             => $this->clean($this->inputs['branch_id']),
             'supplier_address'      => $this->clean($this->inputs['supplier_address']),
             'supplier_contact_no'   => $this->clean($this->inputs['supplier_contact_no']),
             'remarks'               => $this->clean($this->inputs['remarks']),
