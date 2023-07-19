@@ -11,7 +11,6 @@ class Menus extends Connection
                 // array('url' => 'expense-category', 'name' => 'Expense Category', 'class_name' => 'ExpenseCategory', 'has_detail' => 0),
                 array('url' => 'clients', 'name' => 'Client', 'class_name' => 'Clients', 'has_detail' => 0),
                 array('url' => 'client-update', 'name' => 'Client Profile', 'class_name' => 'Clients', 'has_detail' => 0),
-                array('url' => 'product-price', 'name' => 'Product Price Notice', 'class_name' => 'ProductPrice', 'has_detail' => 1),
                 array('url' => 'employers', 'name' => 'Employers', 'class_name' => 'Employers', 'has_detail' => 0),
                 array('url' => 'loan-types', 'name' => 'Loan Types', 'class_name' => 'LoanTypes', 'has_detail' => 0),
                 array('url' => 'insurance', 'name' => 'Insurance', 'class_name' => 'Insurance', 'has_detail' => 0),

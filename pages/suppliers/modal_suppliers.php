@@ -17,7 +17,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label><strong style="color:red;">*</strong> Branch</label>
-                            <select class="form-control select2 branch_id input-item" id="branch_id" name="input[branch_id]" style="width:100%;" onchange="getClients()" required>
+                            <select class="form-control select2 branch_id input-item" id="branch_id" name="input[branch_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col-md-6">

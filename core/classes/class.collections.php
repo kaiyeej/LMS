@@ -49,7 +49,7 @@ class Collections extends Connection
             $form_finished = array(
                 'status' => 'F'
             );
-            return $this->update("tbl_loans", $form_finished, 'loan_id="' . $this->inputs['loan_id'] . '"');
+            $this->update("tbl_loans", $form_finished, 'loan_id="' . $this->inputs['loan_id'] . '"');
         }
 
 
