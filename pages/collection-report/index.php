@@ -12,7 +12,7 @@
             <form id='frm_generate'>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label><strong>Account</strong></label>
+                        <label><strong style="color:red;">*</strong> <strong>Account</strong></label>
                         <select style="width:100%;" class="form-control form-control-sm select2" required id="loan_id" name="input[loan_id]">
                         </select>
                     </div>

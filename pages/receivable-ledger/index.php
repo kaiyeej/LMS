@@ -12,7 +12,7 @@
             <form id='frm_generate'>
                 <div class="form-group row">
                     <div class="col-lg-3">
-                        <label><strong>Client</strong></label>
+                        <label><strong style="color:red;">*</strong> <strong>Client</strong></label>
                         <div>
                             <select class="form-control form-control-sm select2" required id="client_id" name="input[client_id]">
                                 <option class="">&mdash; All &mdash; </option>
@@ -22,13 +22,13 @@
                     <div class="col-lg-3">
                         <label><strong>Start Date</strong></label>
                         <div>
-                            <input type="date" class="form-control" id="start_date" name="input[start_date]" required>
+                            <input type="date" class="form-control" id="start_date" name="input[start_date]">
                         </div>
                     </div>
                     <div class="col-lg-3">
                         <label><strong>End Date</strong></label>
                         <div>
-                            <input type="date" class="form-control" id="end_date" name="input[end_date]" required>
+                            <input type="date" class="form-control" id="end_date" name="input[end_date]">
                         </div>
                     </div>
                     <div class="col-lg-3">

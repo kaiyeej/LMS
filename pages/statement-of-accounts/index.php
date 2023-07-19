@@ -12,7 +12,7 @@
             <form id='frm_generate'>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label><strong>Client</strong></label>
+                        <label><strong style="color:red;">*</strong> <strong>Client</strong></label>
                         <select style="width:100%;" class="form-control form-control-sm select2" required id="client_id" name="input[client_id]">
                         </select>
                     </div>

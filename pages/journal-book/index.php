@@ -31,7 +31,7 @@ tr{
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <label><strong>Journal</strong></label>
+                        <label><strong style="color:red;">*</strong> <strong>Journal</strong></label>
                         <select class="form-control select2 input-item" id="journal_id" name="input[journal_id]" style="width:100%;" required>
                         </select>
                     </div>

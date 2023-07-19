@@ -67,8 +67,11 @@ class ChartOfAccounts extends Connection
         $ChartClassification = new ChartClassification;
         $result = $this->select($this->table, '*', $param);
         while ($row = $result->fetch_assoc()) {
-            $row['type'] = $row['chart_type'] == "M" ? "Main" : "Sub";
-            $row['main_chart'] = $this->name($row['main_chart_id']);
+            $main_chart_id  = $row['chart_type'] == "M"?"":$row['main_chart_id'];
+            $chart_type     = $row['chart_type'] == "M" ? "Main" : "Sub";
+            
+            $row['type'] = $chart_type;
+            $row['main_chart'] = $this->name($main_chart_id);
             $row['main_chart_id'] = $row['chart_id'];
             $row['credit_method'] = $row['chart_id'];
             $row['chart_class'] = $ChartClassification->name($row['chart_class_id']);
