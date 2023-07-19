@@ -12,12 +12,12 @@
                     <input type="hidden" id="hidden_id" name="input[journal_entry_id]">
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label><strong style="color:red;">*</strong>Journal</label>
+                            <label><strong style="color:red;">*</strong> Journal</label>
                             <select class="form-control select2 input-item" id="journal_id" name="input[journal_id]" style="width:100%;" onchange="generateRef()" required>
                             </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <label><strong style="color:red;">*</strong>General Reference</label>
+                            <label><strong style="color:red;">*</strong> General Reference</label>
                             <input type="text" class="form-control input-item" autocomplete="off" name="input[reference_number]" id="reference_number" readonly required>
                         </div>
 
@@ -27,11 +27,11 @@
                             </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <label><strong style="color:red;">*</strong>Date</label>
+                            <label><strong style="color:red;">*</strong> Date</label>
                             <input type="date" class="form-control input-item" autocomplete="off" name="input[journal_date]" id="journal_date" required>
                         </div>
                         <div class="form-group col-md-12">
-                            <label><strong style="color:red;">*</strong>Cross Reference</label>
+                            <label><strong style="color:red;">*</strong> Cross Reference</label>
                             <input type="text" class="form-control input-item" autocomplete="off" name="input[cross_reference]" id="cross_reference" required>
                         </div>
                         <div class="form-group col-md-12">
@@ -101,7 +101,7 @@
 
                                     <div class="form-group row">
                                         <div class="col">
-                                            <label><strong><strong style="color:red;">*</strong>Chart</strong></label>
+                                            <label><strong><strong style="color:red;">*</strong> Chart</strong></label>
                                             <div>
                                                 <select class="form-control form-control-sm select2" name="input[chart_id]" id="chart_id" style="width:100%;" required></select>
                                             </div>
@@ -109,7 +109,7 @@
                                     </div>
                                     <div class="form-group row">
                                         <div class="col">
-                                            <label><strong><strong style="color:red;">*</strong>Type</strong></label>
+                                            <label><strong><strong style="color:red;">*</strong> Type</strong></label>
                                             <div>
                                                 <select class="form-control form-control-sm select2" name="input[type]" style="width:100%;" required>
                                                     <option value="">&mdash;Please Select&mdash;</option>
@@ -119,7 +119,7 @@
                                             </div>
                                         </div>
                                         <div class="col">
-                                            <label><strong><strong style="color:red;">*</strong>Amount</strong></label>
+                                            <label><strong><strong style="color:red;">*</strong> Amount</strong></label>
                                             <div>
                                                 <input type="number" step="0.01" min="0" class="form-control" class="form-control input-item" name="input[amount]" id="amount" required>
                                             </div>

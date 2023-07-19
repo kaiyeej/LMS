@@ -12,11 +12,11 @@
                     <input type="hidden" id="hidden_id" name="input[journal_id]">
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label><strong style="color:red;">*</strong>Name</label>
+                            <label><strong style="color:red;">*</strong> Name</label>
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="Journal name" name="input[journal_name]" id="journal_name" required>
                         </div>
                         <div class="form-group col-md-12">
-                            <label><strong style="color:red;">*</strong>Code</label>
+                            <label><strong style="color:red;">*</strong> Code</label>
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="Journal code" name="input[journal_code]" id="journal_code" required>
                         </div>
                     </div>

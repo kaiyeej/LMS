@@ -236,18 +236,24 @@ $User = new Users;
     }
 
     function logout() {
-      var confirm_export = confirm("You are about to logout.");
-      if (confirm_export == true) {
-        var url = "controllers/sql.php?c=Users&q=logout";
-        $.ajax({
-          url: url,
-          success: function(data) {
-
-            location.reload();
-
-          }
-        });
-      }
+      swal({
+        title: 'Are you sure?',
+        text: 'Your session will expire!',
+        icon: 'warning',
+        buttons: ["Cancel", "Logout"],
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          var url = "controllers/sql.php?c=Users&q=logout";
+          $.ajax({
+            url: url,
+            success: function(data) {
+              location.reload();
+            }
+          });
+        }
+      });
     }
 
     function schema() {

@@ -12,7 +12,7 @@
                     <input type="hidden" id="hidden_id" name="input[client_type_id]">
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label><strong style="color:red;">*</strong>Client Type</label>
+                            <label><strong style="color:red;">*</strong> Client Type</label>
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="Client type" name="input[client_type]" id="client_type" required>
                         </div>
                         <div class="form-group col-md-12">

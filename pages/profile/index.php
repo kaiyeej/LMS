@@ -16,7 +16,7 @@
               <form method='POST' id='frm_profile' class="profile">
                 <div class="row">
                   <div class="form-group col-sm-4">
-                    <label for="exampleInputUsername1">First name</label>
+                    <label for="exampleInputUsername1"><strong style="color:red;">*</strong> First name</label>
                     <input type="text" autocomplete="off" class="form-control input-item" id="user_fname" name="input[user_fname]" placeholder="First name" required>
                   </div>
                   <div class="form-group col-sm-4">
@@ -24,11 +24,11 @@
                     <input type="text" autocomplete="off" class="form-control input-item" id="user_mname" name="input[user_mname]" placeholder="Middle name">
                   </div>
                   <div class="form-group col-sm-4">
-                    <label for="exampleInputUsername1">Last name</label>
+                    <label for="exampleInputUsername1"><strong style="color:red;">*</strong> Last name</label>
                     <input type="text" autocomplete="off" class="form-control input-item" id="user_lname" name="input[user_lname]" placeholder="Last name" required>
                   </div>
                   <div class="form-group col-sm-6">
-                    <label for="exampleInputUsername1">Username</label>
+                    <label for="exampleInputUsername1"><strong style="color:red;">*</strong> Username</label>
                     <input type="text" autocomplete="off" class="form-control input-item" id="username" name="input[username]" placeholder="Username">
                   </div>
                   <div class="form-group col-sm-6">
@@ -53,16 +53,16 @@
             </div>
             <form method='POST' id='frm_password' class="password">
               <div class="form-group">
-                <label for="exampleInputUsername1">Old Password</label>
+                <label for="exampleInputUsername1"><strong style="color:red;">*</strong> Old Password</label>
                 <input type="password" autocomplete="off" class="form-control input-pass" required id="old_password" name="input[old_password]" placeholder="Old Password">
               </div>
               <input type="hidden" autocomplete="off" id="hidden_id_2" name="input[user_id]" class="form-control" >
               <div class="form-group">
-                <label for="exampleInputPassword1">New Password</label>
+                <label for="exampleInputPassword1"><strong style="color:red;">*</strong> New Password</label>
                 <input type="password" autocomplete="off" class="form-control input-pass" required name="input[new_password]" id="new_password" placeholder="New Password">
               </div>
               <div class="form-group">
-                <label for="exampleInputConfirmPassword1">Confirm Password</label>
+                <label for="exampleInputConfirmPassword1"><strong style="color:red;">*</strong> Confirm Password</label>
                 <input type="password" autocomplete="off" class="form-control input-pass" required id="confirm_password" name="input[confirm_password]" placeholder="Confirm Password">
               </div>
               <button type="submit" style="float: right;" id="" class="btn btn-warning me-2">Save</button>

@@ -73,7 +73,8 @@
                 {
                     "mRender": function(data, type, row) {
                         var fixed_stat = row.fixed_interest == "Y" ? "" : "style='display:none;'";
-                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.loan_type_id + ")'><span class='fa fa-edit'></span></button><button class='btn btn-sm btn-success' " + fixed_stat + " onclick='getFixedDetails(" + row.loan_type_id + ")'><span class='fa fa-edit'></span></button></center>";
+
+                        return '<div class="dropdown d-inline"><button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button><div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;"><a class="dropdown-item has-icon" href="#" onclick="getEntryDetails(' + row.loan_type_id + ')"><i class="far fa-edit"></i> Update</a><a class="dropdown-item has-icon" href="#" onclick="getFixedDetails(' + row.loan_type_id + ')" ' + fixed_stat + '><i class="far fa-plus"></i> Add Fixed Interest</a>';
                     }
                 },
                 {

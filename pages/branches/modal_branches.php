@@ -12,7 +12,7 @@
                     <input type="hidden" id="hidden_id" name="input[branch_id]">
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label>Name</label>
+                            <label><strong style="color:red;">*</strong> Name</label>
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="Branch Name" name="input[branch_name]" id="branch_name" required>
                         </div>
                         <div class="form-group col-md-12">
