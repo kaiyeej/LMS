@@ -12,11 +12,11 @@
                     <input type="hidden" id="hidden_id" name="input[insurance_id]">
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label><strong style="color:red;">*</strong>Insurance</label>
+                            <label><strong style="color:red;">*</strong> Insurance</label>
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="Insurance name" name="input[insurance_name]" id="insurance_name" required>
                         </div>
                         <div class="form-group col-md-12">
-                            <label><strong style="color:red;">*</strong>Amount</label>
+                            <label><strong style="color:red;">*</strong> Amount</label>
                             <input type="number" step="0.1" class="form-control input-item" autocomplete="off" placeholder="Insurance amount" name="input[insurance_amount]" id="insurance_amount" required>
                         </div>
                         <div class="form-group col-md-12">

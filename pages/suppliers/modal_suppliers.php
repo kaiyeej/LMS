@@ -12,7 +12,7 @@
                     <input type="hidden" id="hidden_id" name="input[supplier_id]">
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label><strong style="color:red;">*</strong>Supplier</label>
+                            <label><strong style="color:red;">*</strong> Supplier</label>
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="Supplier name" name="input[supplier_name]" id="supplier_name" required>
                         </div>
                         <div class="form-group col-md-6">
@@ -21,7 +21,7 @@
                             </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <label><strong style="color:red;">*</strong>Contact #</label>
+                            <label><strong style="color:red;">*</strong> Contact #</label>
                             <input type="text" class="form-control input-item" autocomplete="off" placeholder="Contact number" name="input[supplier_contact_no]" id="supplier_contact_no" required>
                         </div>
                         <div class="form-group col-md-6">

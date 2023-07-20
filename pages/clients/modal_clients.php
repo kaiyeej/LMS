@@ -79,13 +79,13 @@
                                     <div id="page_content_1" class="tab wizard-pane">
                                         <div class="form-group row">
                                             <div class="col-lg-4" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Branch</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Branch</label>
                                                 <select class="required select2 form-control input-item" id="branch_id"
                                                     name="input[branch_id]" style="width:100%;">
                                                 </select>
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Type</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Type</label>
                                                 <select class="required select2 form-control input-item"
                                                     id="client_type_id" multiple="" name="input[client_type_id]"
                                                     style="width:100%;">
@@ -95,7 +95,7 @@
                                         <div class="section-title">Basic Information</div>
                                         <div class="row">
                                             <div class="col-lg-4" style="padding: 10px;">
-                                                <label class="text-md-right text-left">First name</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> First name</label>
                                                 <input type="text" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Client first name"
                                                     name="input[client_fname]" id="client_fname">
@@ -107,7 +107,7 @@
                                                     id="client_mname">
                                             </div>
                                             <div class="col-lg-3" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Last name</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Last name</label>
                                                 <input type="text" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Client last name"
                                                     name="input[client_lname]" id="client_lname">
@@ -119,7 +119,7 @@
                                                     id="client_name_extension">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Civil Status</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Civil Status</label>
                                                 <select class="required form-control input-item"
                                                     id="client_civil_status" name="input[client_civil_status]"
                                                     style="width:100%;">
@@ -131,13 +131,13 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Birthday</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Birthday</label>
                                                 <input type="date" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Client middle name"
                                                     name="input[client_dob]" id="client_dob">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Contact #</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Contact #</label>
                                                 <input type="text" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Client contact number"
                                                     name="input[client_contact_no]" id="client_contact_no">
@@ -146,13 +146,13 @@
                                         <div class="section-title">Residence Information</div>
                                         <div class="row">
                                             <div class="col-lg-8" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Address</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Address</label>
                                                 <input type="text" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Client address"
                                                     name="input[residence]" id="client_address">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Status</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Status</label>
                                                 <select class="required form-control input-item"
                                                     id="client_address_status" name="input[residence_status]"
                                                     style="width:100%;">
@@ -163,19 +163,19 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Resident Certificate #</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Resident Certificate #</label>
                                                 <input type="text" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Certificate number"
                                                     name="input[residence_certificate_no]" id="client_res_cert_no">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Issued At</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Issued At</label>
                                                 <input type="text" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Certificate issued at"
                                                     name="input[certificate_issued_at]" id="client_res_cert_issued_at">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Certificate Date</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Certificate Date</label>
                                                 <input type="date" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Certificate issued date"
                                                     name="input[certificate_date]" id="client_res_cert_date">
@@ -185,7 +185,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-4" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Employer</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Employer</label>
 
                                                 <select class="required select2 form-control input-item"
                                                     id="employer_id" name="input[employer_id]" style="width:100%;"
@@ -193,7 +193,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-3" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Address</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Address</label>
                                                 <input type="text" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Employer address"
                                                     name="input[employer_address]" id="client_employer_address">
@@ -201,19 +201,19 @@
 
 
                                             <div class="col-lg-3" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Contact #</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Contact #</label>
                                                 <input type="text" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Contact number"
                                                     name="input[employer_contact_no]" id="client_employer_contact_no">
                                             </div>
                                             <div class="col-lg-2" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Position</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Position</label>
                                                 <input type="text" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Position"
                                                     name="input[employment_position]" id="client_emp_position">
                                             </div>
                                             <div class="col-lg-3" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Income</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Income</label>
                                                 <input type="number" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Monthly salary"
                                                     name="input[employment_income]" id="client_emp_income">
@@ -221,13 +221,13 @@
 
 
                                             <div class="col-lg-3" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Status</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Status</label>
                                                 <input type="text" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Status of employment"
                                                     name="input[employment_status]" id="client_emp_status">
                                             </div>
                                             <div class="col-lg-3" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Length</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Length</label>
                                                 <input type="text" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Length of employment"
                                                     name="input[employment_length]" id="client_emp_length">
@@ -372,33 +372,33 @@
                                         <div class="section-title">Income Details</div>
                                         <div class="form-group row">
                                             <div class="col-lg-6" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Source Of Income</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Source Of Income</label>
                                                 <input type="text" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Source of income"
                                                     name="input[soi_name]" id="client_soi">
                                             </div>
                                             <div class="col-lg-6" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Source of income by whom</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Source of income by whom</label>
                                                 <input type="text" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Source of income by whom" name="input[soi_by]"
                                                     id="client_soi_by_whom">
                                             </div>
                                             <div class="col-lg-4" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Monthly Income</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Monthly Income</label>
                                                 <input type="number" step="0.01"
                                                     class="required form-control input-item" autocomplete="off"
                                                     placeholder="Monthly Income" name="input[soi_monthly]"
                                                     id="client_soi_monthly_income">
                                             </div>
-                                            <div class="col-lg-3" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Aprox Total Income</label>
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Aprox Total Income</label>
                                                 <input type="number" step="0.01"
                                                     class="required form-control input-item" autocomplete="off"
                                                     placeholder="Approximately total monthly income"
                                                     name="input[soi_total]" id="client_approx_total_monthly_income">
                                             </div>
-                                            <div class="col-lg-3" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Total Oustanding
+                                            <div class="col-lg-4" style="padding: 10px;">
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Total Oustanding
                                                     Obligation</label>
                                                 <input type="number" step="0.01"
                                                     class="required form-control input-item" autocomplete="off"
@@ -410,13 +410,13 @@
                                         <div class="section-title">ATM Details</div>
                                         <div class="row">
                                             <div class="col-lg-6" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Bank</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Bank</label>
                                                 <input type="text" class="required form-control input-item"
                                                     autocomplete="off" placeholder="ATM Bank" name="input[atm_bank]"
                                                     id="atm_bank">
                                             </div>
                                             <div class="col-lg-6" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Account No</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Account No</label>
                                                 <input type="text" class="required form-control input-item"
                                                     autocomplete="off" placeholder="ATM Account Number"
                                                     name="input[atm_account_no]" id="atm_account_no">
@@ -425,13 +425,13 @@
                                         <div class="section-title">References</div>
                                         <div class="row">
                                             <div class="col-lg-6" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Reference name 1</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Reference name 1</label>
                                                 <input type="text" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Credit reference fullname"
                                                     name="input[client_credit_ref_name1]" id="client_credit_ref_name1">
                                             </div>
                                             <div class="col-lg-6" style="padding: 10px;">
-                                                <label class="text-md-right text-left">Reference Address 1</label>
+                                                <label class="text-md-right text-left"><strong style="color:red;">*</strong> Reference Address 1</label>
                                                 <input type="text" class="required form-control input-item"
                                                     autocomplete="off" placeholder="Credit reference address"
                                                     name="input[client_credit_ref_address1]"
@@ -658,26 +658,26 @@
                                             <div class="col-lg-6">
                                                 <div class="row">
                                                     <div class="col-lg-12" style="padding: 10px;">
-                                                        <label class="text-md-right text-left">Location</label>
+                                                        <label class="text-md-right text-left"><strong style="color:red;">*</strong> Location</label>
                                                         <input type="text" class="p_required form-control"
                                                             autocomplete="off" placeholder="Real property location"
                                                             name="input[property_location]" id="property_location">
                                                     </div>
                                                     <div class="col-lg-6" style="padding: 10px;">
-                                                        <label class="text-md-right text-left">Area</label>
+                                                        <label class="text-md-right text-left"><strong style="color:red;">*</strong> Area</label>
                                                         <input type="text" class="p_required form-control"
                                                             autocomplete="off" placeholder="Area"
                                                             name="input[property_area]" id="property_area">
                                                     </div>
                                                     <div class="col-lg-6" style="padding: 10px;">
-                                                        <label class="text-md-right text-left">Cost</label>
+                                                        <label class="text-md-right text-left"><strong style="color:red;">*</strong> Cost</label>
                                                         <input type="number" step="0.01" class="p_required form-control"
                                                             autocomplete="off" placeholder="Acquisition cost"
                                                             name="input[property_acquisition_cost]"
                                                             id="property_acquisition_cost">
                                                     </div>
                                                     <div class="col-lg-6" style="padding: 10px;">
-                                                        <label class="text-md-right text-left">Property Market
+                                                        <label class="text-md-right text-left"><strong style="color:red;">*</strong> Property Market
                                                             Value</label>
                                                         <input type="number" step="0.01" class="p_required form-control"
                                                             autocomplete="off" placeholder="Property Market Value"
@@ -727,19 +727,19 @@
                                             <div class="col-lg-6">
                                                 <div class="row">
                                                     <div class="col-lg-9" style="padding: 10px;">
-                                                        <label class="text-md-right text-left">Child Name</label>
+                                                        <label class="text-md-right text-left"><strong style="color:red;">*</strong> Child Name</label>
                                                         <input type="text" class="c_required form-control"
                                                             autocomplete="off" placeholder="Child Fullname"
                                                             name="input[child_name]" id="child_name">
                                                     </div>
                                                     <div class="col-lg-3" style="padding: 10px;">
-                                                        <label class="text-md-right text-left">Age</label>
+                                                        <label class="text-md-right text-left"><strong style="color:red;">*</strong> Age</label>
                                                         <input type="number" class="c_required form-control"
                                                             autocomplete="off" min="0" placeholder="Age"
                                                             name="input[child_age]" id="child_age">
                                                     </div>
                                                     <div class="col-lg-4" style="padding: 10px;">
-                                                        <label class="text-md-right text-left">Gender</label>
+                                                        <label class="text-md-right text-left"><strong style="color:red;">*</strong> Gender</label>
                                                         <select class="c_required form-control input-item"
                                                             id="child_sex" name="input[child_sex]" style="width:100%;">
                                                             <option value="">Please Select</option>
@@ -748,7 +748,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-lg-8" style="padding: 10px;">
-                                                        <label class="text-md-right text-left">Occupation</label>
+                                                        <label class="text-md-right text-left"><strong style="color:red;">*</strong> Occupation</label>
                                                         <input type="text" class="c_required form-control"
                                                             autocomplete="off" placeholder="Child occupation"
                                                             name="input[child_occupation]" id="child_occupation">

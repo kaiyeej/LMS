@@ -19,7 +19,7 @@
 
                         </div>
                         <div class="form-group col-md-4">
-                            <label><strong style="color:red;">*</strong>Voucher #</label>
+                            <label><strong style="color:red;">*</strong> Voucher #</label>
                             <input type="text" class="form-control input-item" autocomplete="off" name="input[voucher_no]" id="voucher_no" required>
                         </div>
                         <div class="form-group col-md-4">
@@ -28,7 +28,7 @@
                             </select>
                         </div>
                         <div class="form-group col-md-4">
-                            <label><strong style="color:red;">*</strong>Account Type</label>
+                            <label><strong style="color:red;">*</strong> Account Type</label>
                             <select class="form-control select2 input-item" id="account_type" name="input[account_type]" style="width:100%;" onchange="getAccount()" required>
                                 <option value="">&mdash;Please Select&mdash;</option>
                                 <option value="S">Supplier</option>
@@ -36,12 +36,12 @@
                             </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <label><strong style="color:red;">*</strong>Account</label>
+                            <label><strong style="color:red;">*</strong> Account</label>
                             <select class="form-control select2 input-item" id="account_id" onchange="getLoan()" name="input[account_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div id="div_loan" class="form-group col-md-6">
-                            <label><strong style="color:red;">*</strong>Loan</label>
+                            <label><strong style="color:red;">*</strong> Loan</label>
                             <select class="form-control select2 input-item" id="loan_id" name="input[loan_id]" style="width:100%;" required>
                             </select>
                         </div>
@@ -51,7 +51,7 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <label><strong style="color:red;">*</strong>Check #</label>
+                            <label><strong style="color:red;">*</strong> Check #</label>
                             <input type="text" class="form-control input-item" autocomplete="off" name="input[check_number]" id="check_number" required>
                         </div>
                         <div class="form-group col-md-4">
@@ -59,20 +59,20 @@
                             <input type="text" class="form-control input-item" autocomplete="off" name="input[ac_no]" id="ac_no">
                         </div>
                         <div class="form-group col-md-4">
-                            <label><strong style="color:red;">*</strong>Date</label>
+                            <label><strong style="color:red;">*</strong> Date</label>
                             <input type="date" class="form-control input-item" autocomplete="off" name="input[voucher_date]" id="voucher_date" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label><strong style="color:red;">*</strong>Amount</label>
+                            <label><strong style="color:red;">*</strong> Amount</label>
                             <input type="number" step="0.01" min="0" class="form-control input-item" autocomplete="off" name="input[amount]" id="amount" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label><strong style="color:red;">*</strong>Journal</label>
+                            <label><strong style="color:red;">*</strong> Journal</label>
                             <select class="form-control select2 input-item" id="journal_id" name="input[journal_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col-md-12">
-                            <label><strong style="color:red;">*</strong>Description</label>
+                            <label><strong style="color:red;">*</strong> Description</label>
                             <textarea class="form-control input-item" name="input[description]" id="description" required></textarea>
                         </div>
                     </div>
@@ -145,7 +145,7 @@
 
                                     <div class="form-group row">
                                         <div class="col">
-                                            <label><strong><strong style="color:red;">*</strong>Chart</strong></label>
+                                            <label><strong><strong style="color:red;">*</strong> Chart</strong></label>
                                             <div>
                                                 <select class="form-control form-control-sm select2" name="input[chart_id]" id="chart_id" style="width:100%;" required></select>
                                             </div>
@@ -153,7 +153,7 @@
                                     </div>
                                     <div class="form-group row">
                                         <div class="col">
-                                            <label><strong><strong style="color:red;">*</strong>Type</strong></label>
+                                            <label><strong><strong style="color:red;">*</strong> Type</strong></label>
                                             <div>
                                                 <select class="form-control form-control-sm select2" name="input[type]" style="width:100%;" required>
                                                     <option value="">&mdash;Please Select&mdash;</option>
@@ -163,7 +163,7 @@
                                             </div>
                                         </div>
                                         <div class="col">
-                                            <label><strong><strong style="color:red;">*</strong>Amount</strong></label>
+                                            <label><strong><strong style="color:red;">*</strong> Amount</strong></label>
                                             <div>
                                                 <input type="number" step="0.01" min="0" class="form-control" class="form-control input-item" name="input[amount]" id="amount" required>
                                             </div>

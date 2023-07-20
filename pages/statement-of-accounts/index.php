@@ -12,7 +12,7 @@
             <form id='frm_generate'>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label><strong>Client</strong></label>
+                        <label><strong style="color:red;">*</strong> <strong>Client</strong></label>
                         <select style="width:100%;" class="form-control form-control-sm select2" required id="client_id" name="input[client_id]">
                         </select>
                     </div>
@@ -61,12 +61,12 @@
                                 <table class="table table-bordered" id="dt_entries" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>PAYMENT DATE</th>
-                                            <th>PAYMENT</th>
-                                            <th>INTEREST AMOUNT</th>
-                                            <th>PENALTY</th>
-                                            <th>APPLICABLE TO PRINCIPAL</th>
-                                            <th>BALANCE OUTSTANDING</th>
+                                            <th>Payment Date</th>
+                                            <th>Payment</th>
+                                            <th>Interest Amount</th>
+                                            <th>Penalty</th>
+                                            <th>Applicable to Principal</th>
+                                            <th>Balance Outstanding</th>
                                         </tr>
                                     </thead>
                                     <tbody>

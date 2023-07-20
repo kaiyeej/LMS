@@ -69,21 +69,21 @@
                             <table class="table table-bordered" id="dt_entries" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>DATE</th>
-                                        <th>REFERENCE #</th>
-                                        <th>CLIENT NAME</th>
-                                        <th>LOAN AMOUNT</th>
-                                        <th>TOTAL PAYMENT</th>
-                                        <th>AMOUNT RECEIVABLE</th>
-                                        <th>TOTAL PENALTIES</th>
-                                        <th>SUBTOTAL</th>
+                                        <th>Date</th>
+                                        <th>Reference #</th>
+                                        <th>Client Name</th>
+                                        <th>Loan Amount</th>
+                                        <th>Total Payment</th>
+                                        <th>Amount Receivable</th>
+                                        <th>Total Penalties</th>
+                                        <th>Subtotal</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="7" style="text-align:right">TOTAL:</th>
+                                        <th colspan="7" style="text-align:right">Total:</th>
                                         <th><span id="span_total"></span></th>
                                     </tr>
                                 </tfoot>

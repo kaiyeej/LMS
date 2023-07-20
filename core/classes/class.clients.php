@@ -375,7 +375,7 @@ class Clients extends Connection
 
         );
 
-        return $this->insertIfNotExist("tbl_children", $form, "child_name = '" . $child_name . "'");
+        return $this->insertIfNotExist("tbl_children", $form, "child_name = '" . $child_name . "' AND $this->pk='".$this->inputs[$this->pk]."'");
     }
 
     public function idByFullname($fullname)

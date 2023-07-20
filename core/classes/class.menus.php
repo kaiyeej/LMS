@@ -7,14 +7,12 @@ class Menus extends Connection
             'master-data' => array(
                 array('url' => 'branches', 'name' => 'Branches', 'class_name' => 'Branches', 'has_detail' => 0),
                 array('url' => 'client-types', 'name' => 'Client Types', 'class_name' => 'ClientTypes', 'has_detail' => 0),
-                array('url' => 'suppliers', 'name' => 'Suppliers', 'class_name' => 'Suppliers', 'has_detail' => 0),
                 // array('url' => 'expense-category', 'name' => 'Expense Category', 'class_name' => 'ExpenseCategory', 'has_detail' => 0),
                 array('url' => 'clients', 'name' => 'Client', 'class_name' => 'Clients', 'has_detail' => 0),
-                array('url' => 'client-update', 'name' => 'Client Profile', 'class_name' => 'Clients', 'has_detail' => 0),
                 array('url' => 'employers', 'name' => 'Employers', 'class_name' => 'Employers', 'has_detail' => 0),
                 array('url' => 'loan-types', 'name' => 'Loan Types', 'class_name' => 'LoanTypes', 'has_detail' => 0),
-                array('url' => 'insurance', 'name' => 'Insurance', 'class_name' => 'Insurance', 'has_detail' => 0),
-                array('url' => 'user-categories', 'name' => 'User Categories', 'class_name' => 'UserCategories', 'has_detail' => 0),
+                 array('url' => 'insurance', 'name' => 'Insurance', 'class_name' => 'Insurance', 'has_detail' => 0),
+                 array('url' => 'suppliers', 'name' => 'Suppliers', 'class_name' => 'Suppliers', 'has_detail' => 0),
             ),
             'transaction' => array(
                 array('url' => 'loans', 'name' => 'Loans', 'class_name' => 'Loans', 'has_detail' => 0),
@@ -23,16 +21,14 @@ class Menus extends Connection
                 array('url' => 'vouchers', 'name' => 'Vouchers', 'class_name' => 'Vouchers', 'has_detail' => 1),
             ),
             'report' => array(
-
                 array('url' => 'accounts-receivable', 'name' => 'Accounts Receivable', 'class_name' => 'Loans', 'has_detail' => 0),
                 array('url' => 'receivable-ledger', 'name' => 'Receivable Ledger', 'class_name' => 'ReceivableLedger', 'has_detail' => 0),
+                array('url' => 'collection-report', 'name' => 'Collection Report', 'class_name' => 'Collections', 'has_detail' => 0),
                 array('url' => 'loan-status-report', 'name' => 'Loan Status Report', 'class_name' => 'LoanReport', 'has_detail' => 0),
                 array('url' => 'loan-type-report', 'name' => 'Loan Type Report', 'class_name' => 'LoanReport', 'has_detail' => 0),
-                array('url' => 'collection-report', 'name' => 'Collection Report', 'class_name' => 'Collections', 'has_detail' => 0),
                 array('url' => 'statement-of-accounts', 'name' => 'Statement Of Accounts', 'class_name' => 'StatementOfAccounts', 'has_detail' => 0),
             ),
             'accounting' => array(
-                
                 // array('url' => 'cash-positioning', 'name' => 'Cash Positioning', 'class_name' => 'CashPositioning', 'has_detail' => 0),
                 array('url' => 'chart-of-accounts', 'name' => 'Chart of Accounts', 'class_name' => 'ChartOfAccounts', 'has_detail' => 0),
                 array('url' => 'chart-classification', 'name' => 'Chart Classification', 'class_name' => 'ChartClassification', 'has_detail' => 0),
@@ -43,12 +39,16 @@ class Menus extends Connection
                 array('url' => 'income-statement', 'name' => 'Income Statement', 'class_name' => 'IncomeStatement', 'has_detail' => 0),
                 array('url' => 'trial-balance', 'name' => 'Trial Balance', 'class_name' => 'ChartOfAccounts', 'has_detail' => 0),
             ),
-            'admin' => array(
+            'security' => array(
+                array('url' => 'user-categories', 'name' => 'User Categories', 'class_name' => 'UserCategories', 'has_detail' => 0),
                 array('url' => 'users', 'name' => 'User Account', 'class_name' => 'Users', 'has_detail' => 0),
+            ),
+            'admin' => array(
                 array('url' => 'log', 'name' => 'Logs', 'class_name' => 'Logs', 'has_detail' => 0),
             ),
             'user' => array(
                 array('url' => 'profile', 'name' => 'Profile', 'class_name' => 'Profile', 'has_detail' => 0),
+                array('url' => 'client-update', 'name' => 'Client Profile', 'class_name' => 'Clients', 'has_detail' => 0),
             ),
         );
 
@@ -58,7 +58,7 @@ class Menus extends Connection
     public function routes($page, $dir)
     {
         $this->lists();
-        $levels = ['master-data', 'transaction', 'report', 'accounting', 'admin', 'user'];
+        $levels = ['master-data', 'transaction', 'report', 'accounting', 'admin', 'user', 'security'];
 
         if ($page == 'homepage' || $page == 'profile') {
             $this->dir = $dir;

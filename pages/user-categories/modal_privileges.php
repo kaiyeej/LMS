@@ -9,7 +9,7 @@
         <div class="modal-dialog modal-lg" style="margin-top: 10px;" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="modalPrivilegesLabel"><span class='fa fa-pen'></span> User Privileges</h4>
+                    <h4 class="modal-title" id="modalPrivilegesLabel"><span class='fa fa-key'></span> User Privileges</h4>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="input[user_category_id]" id="priv_user_id">
@@ -27,13 +27,14 @@
                                 <span class="menu-title">Transaction</span>
                             </a>
                             <ul class="list-group" id="transaction_column"></ul>
-                        </div>
-                        <div class="col-3">
+
+                            <br><br>
+
                             <a class="nav-link" href="#">
                                 <i class="ti ti-shopping-cart menu-icon"></i>
-                                <span class="menu-title">Accounting</span>
+                                <span class="menu-title">Security</span>
                             </a>
-                            <ul class="list-group" id="accounting_column"></ul>
+                            <ul class="list-group" id="security_column"></ul>
                         </div>
                         <div class="col-3">
                             <a class="nav-link" href="#">
@@ -41,6 +42,13 @@
                                 <span class="menu-title">Reports</span>
                             </a>
                             <ul class="list-group" id="report_column"></ul>
+                        </div>
+                        <div class="col-3">
+                            <a class="nav-link" href="#">
+                                <i class="ti ti-shopping-cart menu-icon"></i>
+                                <span class="menu-title">Accounting</span>
+                            </a>
+                            <ul class="list-group" id="accounting_column"></ul>
                         </div>
                     </div>
                 </div>

@@ -74,7 +74,7 @@
         //REPORTS
         echo '<li class="menu-header">Reports</li>';
         $Menus->sidebar('Accounts Receivables', 'accounts-receivable', 'fas fa-poll-h');
-        $Menus->sidebar('AR Ledger', 'receivable-ledger', 'fas fa-chart-bar');
+        $Menus->sidebar('Receivable Ledger', 'receivable-ledger', 'fas fa-chart-bar');
         $Menus->sidebar('Collection Report', 'collection-report', 'fas fa-file-invoice-dollar');
         $Menus->sidebar_parent('Loan Report', 'fas fa-list-ol', array(
             array('Loan Status', 'loan-status-report'),

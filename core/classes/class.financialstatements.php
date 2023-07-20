@@ -32,7 +32,7 @@ class FinancialStatements extends Connection
         $data = '<table class="table table-bordered" id="dt_entries" width="100%" cellspacing="0">
                     <thead style="background: #1f384b;">
                         <tr>
-                            <th style="color:#fff;">CHART</th>' . $th . '
+                            <th style="color:#fff;">Chart</th>' . $th . '
                         </tr>
                     </thead>
                     <tbody>';

@@ -88,7 +88,7 @@
                                 <table class="table table-bordered table-hover cell-border" id="dt_entries" width="100%" cellspacing="0">
                                     <thead style="background: #90a4ae;">
                                         <tr>
-                                            <th style="color:#fff;">COLLECTION</th>
+                                            <th style="color:#fff;">Collection</th>
                                             <th style="text-align:right;font-weight:bold;color:#fff;"></th>
                                         </tr>
                                     </thead>
@@ -101,7 +101,7 @@
 
                                     <thead style="background: #90a4ae;">
                                         <tr>
-                                            <th style="color:#fff;">LOAN RELEASES</th>
+                                            <th style="color:#fff;">Loan Releases</th>
                                             <th style="text-align:right;font-weight:bold;"></th>
                                         </tr>
                                     </thead>
@@ -111,7 +111,7 @@
 
                                     <thead style="background: #90a4ae;">
                                         <tr>
-                                            <th style="color:#fff;">GROSS INCOME</th>
+                                            <th style="color:#fff;">Gross Income</th>
                                             <th style="text-align:right;font-weight:bold;"></th>
                                         </tr>
                                     </thead>
@@ -125,7 +125,7 @@
 
                                     <thead style="background: #90a4ae;">
                                         <tr>
-                                            <th style="color:#fff;">EXPENSES</th>
+                                            <th style="color:#fff;">Expenses</th>
                                             <th style="text-align:right;font-weight:bold;"></th>
                                         </tr>
                                     </thead>

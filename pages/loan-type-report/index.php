@@ -78,19 +78,19 @@
                             <table class="table table-bordered" id="dt_entries" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>DATE</th>
-                                        <th>CLIENT</th>
-                                        <th>REFERENCE #</th>
-                                        <th>TYPE</th>
-                                        <th>STATUS</th>
-                                        <th style="text-align:right">AMOUNT</th>
+                                        <th>Date</th>
+                                        <th>Client</th>
+                                        <th>Reference #</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th style="text-align:right">Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="5" style="text-align:right">TOTAL:</th>
+                                        <th colspan="5" style="text-align:right">Total:</th>
                                         <th><span id="span_total"></span></th>
                                     </tr>
                                 </tfoot>
