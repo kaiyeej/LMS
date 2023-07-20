@@ -28,11 +28,11 @@
                         <div>
                             <select class="form-control form-control-sm select2" required id="loan_status" name="input[loan_status]">
                                 <option value="-1">&mdash; All &mdash; </option>
-                                <option value="P">PENDING </option>
-                                <option value="A">APPROVED </option>
-                                <option value="R">RELEASED </option>
-                                <option value="D">DENIED </option>
-                                <option value="F">FULLY PAID </option>
+                                <option value="P">Pending </option>
+                                <option value="A">Approved </option>
+                                <option value="R">Released </option>
+                                <option value="D">Denied </option>
+                                <option value="F">Fully Paid </option>
 
                             </select>
                         </div>
@@ -84,19 +84,19 @@
                             <table class="table table-bordered" id="dt_entries" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>DATE</th>
-                                        <th>CLIENT</th>
-                                        <th>REFERENCE #</th>
-                                        <th>TYPE</th>
-                                        <th>STATUS</th>
-                                        <th style="text-align:right">AMOUNT</th>
+                                        <th>Date</th>
+                                        <th>Client</th>
+                                        <th>Reference #</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th style="text-align:right">Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="5" style="text-align:right">TOTAL:</th>
+                                        <th colspan="5" style="text-align:right">Total:</th>
                                         <th><span id="span_total"></span></th>
                                     </tr>
                                 </tfoot>

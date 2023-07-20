@@ -142,14 +142,14 @@ class ChartOfAccounts extends Connection
                 $th_dc_jl .= '<th></th>';
             } else {
                 $th_jl .= "<th colspan='2' style='color:#fff;border: 1px solid;'>" . $jlRow['journal_name'] . "</th>";
-                $th_dc_jl .= '<th style="text-align:right;color:#fff;">DEBIT</th><th style="text-align:right;color:#fff;">CREDIT</th>';
+                $th_dc_jl .= '<th style="text-align:right;color:#fff;">Debit</th><th style="text-align:right;color:#fff;">Credit</th>';
             }
         }
 
         $data = '<table id="dt_entries" class="div1" width="100%" cellspacing="0">
                     <thead style="background: #1f384b;">
                         <tr style="text-align:center;">
-                            <td style="background: #1f384b;color:#fff;border: 0px;border-right: 1px solid #bbbbbb;">CHART OF ACCOUNTS</td>' . $th_jl . '
+                            <td style="background: #1f384b;color:#fff;border: 0px;border-right: 1px solid #bbbbbb;">Chart of Accounts</td>' . $th_jl . '
                             <td colspan="2"></td>
                         </tr>
                         <tr style="background: #607d8b;">

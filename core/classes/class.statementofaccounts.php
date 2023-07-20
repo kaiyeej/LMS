@@ -49,13 +49,13 @@ class StatementOfAccounts extends Connection
                         <table class="table table-bordered" id="dt_entries" width="100%" cellspacing="0">
                             <thead style="background: #1f384b;">
                                 <tr>
-                                    <th style="color:#fff;">PAYMENT DATE</th>
-                                    <th style="color:#fff;">PAYMENT</th>
-                                    <th style="color:#fff;">INTEREST AMOUNT</th>
-                                    <th style="color:#fff;">PENALTY</th>
-                                    <th style="color:#fff;">APPLICABLE TO PRINCIPAL</th>
+                                    <th style="color:#fff;">Payment Date</th>
+                                    <th style="color:#fff;">Payment</th>
+                                    <th style="color:#fff;">Interest Amount</th>
+                                    <th style="color:#fff;">Penalty</th>
+                                    <th style="color:#fff;">Applicable to Principal</th>
                                     ' . $th_add . '
-                                    <th style="color:#fff;">BALANCE OUTSTANDING</th>
+                                    <th style="color:#fff;">Balance Outstanding</th>
                                 </tr>
                             </thead>
                         <tbody>

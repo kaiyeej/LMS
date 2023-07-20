@@ -79,11 +79,11 @@ tr{
                             <table class="table table-bordered" id="dt_entries" width="100%">
                                 <thead style="background: #1f384b;">
                                     <tr>
-                                        <th style="color:#fff;">DATE</th>
-                                        <th style="color:#fff;">GENERAL REFERENCE</th>
-                                        <th style="color:#fff;">ACCOUNT</th>
-                                        <th style="color:#fff;">DEBIT</th>
-                                        <th style="color:#fff;">CREDIT</th>
+                                        <th style="color:#fff;">Date</th>
+                                        <th style="color:#fff;">General Reference</th>
+                                        <th style="color:#fff;">Account</th>
+                                        <th style="color:#fff;">Debit</th>
+                                        <th style="color:#fff;">Credit</th>
                                     </tr>
                                 </thead>
                                 <tbody id="jb_report">

@@ -61,12 +61,12 @@
                                 <table class="table table-bordered" id="dt_entries" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>PAYMENT DATE</th>
-                                            <th>PAYMENT</th>
-                                            <th>INTEREST AMOUNT</th>
-                                            <th>PENALTY</th>
-                                            <th>APPLICABLE TO PRINCIPAL</th>
-                                            <th>BALANCE OUTSTANDING</th>
+                                            <th>Payment Date</th>
+                                            <th>Payment</th>
+                                            <th>Interest Amount</th>
+                                            <th>Penalty</th>
+                                            <th>Applicable to Principal</th>
+                                            <th>Balance Outstanding</th>
                                         </tr>
                                     </thead>
                                     <tbody>

@@ -69,16 +69,16 @@
                                 <table class="table table-bordered" id="dt_entries" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>DATE</th>
-                                            <th>REFERENCE #</th>
-                                            <th style="text-align:right">AMOUNT</th>
+                                            <th>Date</th>
+                                            <th>Reference #</th>
+                                            <th style="text-align:right">Amount</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th colspan="2" style="text-align:right">TOTAL:</th>
+                                            <th colspan="2" style="text-align:right">Total:</th>
                                             <th><span id="span_total"></span></th>
                                         </tr>
                                     </tfoot>

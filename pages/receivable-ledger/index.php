@@ -72,12 +72,12 @@
                             <table class="table table-bordered" id="dt_entries" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>DATE</th>
-                                        <th>TRANSACTION</th>
-                                        <th>REFERENCE #</th>
-                                        <th style="text-align:right">DEBIT</th>
-                                        <th style="text-align:right">CREDIT</th>
-                                        <th style="text-align:right">BALANCE</th>
+                                        <th>Date</th>
+                                        <th>Transaction</th>
+                                        <th>Reference #</th>
+                                        <th style="text-align:right">Debit</th>
+                                        <th style="text-align:right">Credit</th>
+                                        <th style="text-align:right">Balance</th>
                                     </tr>
                                     <tr>
                                         <td style="text-align:right"><strong>Account:</strong></td>
