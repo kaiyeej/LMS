@@ -92,11 +92,9 @@
                                                 <div class="col-lg-6" style="padding: 10px;">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><strong
-                                                                    style="color:red;">*&nbsp;</strong> Type</span>
+                                                            <span class="input-group-text"><strong style="color:red;">*&nbsp;</strong> Type</span>
                                                         </div>
-                                                        <select class="select2 form-control input-item"
-                                                            id="client_type_id" name="input[client_type_id]" required>
+                                                        <select class="select2 form-control input-item" id="client_type_id" multiple="" name="client_type_id[]" required>
                                                         </select>
                                                     </div>
                                                 </div>

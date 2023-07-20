@@ -87,7 +87,7 @@
                                             <div class="col-lg-4" style="padding: 10px;">
                                                 <label class="text-md-right text-left">Type</label>
                                                 <select class="required select2 form-control input-item"
-                                                    id="client_type_id" name="input[client_type_id]"
+                                                    id="client_type_id" multiple="" name="input[client_type_id]"
                                                     style="width:100%;">
                                                 </select>
                                             </div>

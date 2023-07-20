@@ -56,6 +56,8 @@ class Clients extends Connection
         $client_name_extension = $this->clean($this->inputs['client_name_extension']);
         $branch_id = $this->clean($this->inputs['branch_id']);
 
+        $client_types= implode(',',$this->inputs['client_type_id']);
+
         $is_exist = $this->select($this->table, $this->pk, "client_fname = '$client_fname' AND client_mname = '$client_mname' AND client_lname='$client_lname' AND client_name_extension='$client_name_extension' AND $this->pk != '$primary_id'");
         if ($is_exist->num_rows > 0)
             return 2;
@@ -66,7 +68,7 @@ class Clients extends Connection
             'client_mname'          => $client_mname,
             'client_lname'          => $client_lname,
             'client_name_extension' => $client_name_extension,
-            'client_type_id'        => $this->clean($this->inputs['client_type_id']),
+            'client_type_id'        => $client_types,
             'client_dob'            => $this->clean($this->inputs['client_dob']),
             'client_contact_no'     => $this->clean($this->inputs['client_contact_no']),
             'client_civil_status'   => $this->clean($this->inputs['client_civil_status']),
@@ -94,6 +96,7 @@ class Clients extends Connection
         $client_lname = $this->clean($this->inputs['client_lname']);
         $client_name_extension = $this->clean($this->inputs['client_name_extension']);
         $branch_id = $this->clean($this->inputs['branch_id']);
+        $client_types= implode(',', $_POST['client_type_id']);
 
         $is_exist = $this->select($this->table, $this->pk, "client_fname = '$client_fname' AND client_mname = '$client_mname' AND client_lname='$client_lname' AND client_name_extension='$client_name_extension' AND $this->pk != '$primary_id'");
         if ($is_exist->num_rows > 0)
@@ -105,10 +108,11 @@ class Clients extends Connection
             'client_mname'          => $client_mname,
             'client_lname'          => $client_lname,
             'client_name_extension' => $client_name_extension,
-            'client_type_id'        => $this->clean($this->inputs['client_type_id']),
+            'client_type_id'        => $client_types,
             'client_dob'            => $this->clean($this->inputs['client_dob']),
             'client_contact_no'     => $this->clean($this->inputs['client_contact_no']),
             'client_civil_status'   => $this->clean($this->inputs['client_civil_status']),
+            
         );
 
         $is_updated = $this->update($this->table, $form, "$this->pk = '$primary_id'");
