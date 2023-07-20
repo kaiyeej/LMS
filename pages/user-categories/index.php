@@ -110,7 +110,8 @@
                 var json = JSON.parse(data),
                     text_masterdata = '',
                     text_transaction = '',
-                    text_accounting = '';
+                    text_accounting = '',
+                    text_security = '',
                     text_report = '';
 
                 if (json.data.masterdata.length > 0) {
@@ -144,6 +145,14 @@
                     }
                 }
                 $("#report_column").html(text_report);
+
+                if (json.data.security.length > 0) {
+                    for (let mIndex = 0; mIndex < json.data.security.length; mIndex++) {
+                        const rowData = json.data.security[mIndex];
+                        text_security += skin_privilege(rowData.name, rowData.status, rowData.url);
+                    }
+                }
+                $("#security_column").html(text_security);
             }
         });
     }
@@ -171,6 +180,7 @@
                 var json = JSON.parse(data);
                 if (json.data) {
                     success_update();
+                    $("#modalPrivileges").modal('hide');
                 }
                 $("#btn_submit_priv").prop('disabled', false);
                 $("#btn_submit_priv").html("<span class='fa fa-check-circle'></span> Submit");

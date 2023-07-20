@@ -62,11 +62,18 @@ class UserPrivileges extends Connection
             $reports_data[] = ['name' => $row['name'], 'url' => $row['url'], 'status' => $this->check($row['url'], $user_category_id)];
         }
 
+        $security_data = [];
+        $_menus = $Menus->menus['security'];
+        foreach ($_menus as $row) {
+            $security_data[] = ['name' => $row['name'], 'url' => $row['url'], 'status' => $this->check($row['url'], $user_category_id)];
+        }
+
         return [
             'masterdata' => $master_data,
             'transaction' => $transaction_data,
             'accounting' => $accounting_data,
             'report' => $reports_data,
+            'security' => $security_data,
         ];
     }
 
