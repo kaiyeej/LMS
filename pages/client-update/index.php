@@ -81,11 +81,9 @@
                                                 <div class="col-lg-6" style="padding: 10px;">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><strong
-                                                                    style="color:red;">*&nbsp;</strong> Branch</span>
+                                                            <span class="input-group-text"><strong style="color:red;">*&nbsp;</strong> Branch</span>
                                                         </div>
-                                                        <select class="select2 form-control input-item" id="branch_id"
-                                                            name="input[branch_id]" required>
+                                                        <select class="select2 form-control input-item" id="branch_id" name="input[branch_id]" required>
                                                         </select>
                                                     </div>
                                                 </div>

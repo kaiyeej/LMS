@@ -78,17 +78,14 @@
                                 <form class="wizard-content mt-2">
                                     <div id="page_content_1" class="tab wizard-pane">
                                         <div class="form-group row">
-                                            <div class="col-lg-4" style="padding: 10px;">
+                                            <div class="col-lg-6" style="padding: 10px;">
                                                 <label class="text-md-right text-left"><strong style="color:red;">*</strong> Branch</label>
-                                                <select class="required select2 form-control input-item" id="branch_id"
-                                                    name="input[branch_id]" style="width:100%;">
+                                                <select class="required select2 form-control input-item" id="branch_id" name="input[branch_id]" style="width:100%;">
                                                 </select>
                                             </div>
-                                            <div class="col-lg-4" style="padding: 10px;">
+                                            <div class="col-lg-6" style="padding: 10px;">
                                                 <label class="text-md-right text-left"><strong style="color:red;">*</strong> Type</label>
-                                                <select class="required select2 form-control input-item"
-                                                    id="client_type_id" multiple="" name="input[client_type_id]"
-                                                    style="width:100%;">
+                                                <select class="required select2 form-control input-item" id="client_type_id" multiple="" name="input[client_type_id]" style="width:100%;">
                                                 </select>
                                             </div>
                                         </div>
