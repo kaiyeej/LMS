@@ -306,9 +306,19 @@ class Collections extends Connection
         $rows = array();
         $result = $this->select("tbl_clients AS c, tbl_client_employment AS e,tbl_loans AS l", 'l.*', "c.client_id = e.client_id AND c.client_id = l.client_id AND c.branch_id = '$branch_id' AND e.employer_id = '$employer_id' AND l.loan_type_id = '$loan_type_id' AND l.status = 'R'");
         while ($row = $result->fetch_assoc()) {
+
+            //get status
+            $ondate_ref_number = "CL-" . date("Ymd") . $row['loan_id'];
+            $count_collection_on_date = $this->select($this->table, "loan_id", "$this->name = '$ondate_ref_number'");
+            $count_collection = $count_collection_on_date->num_rows;
+            $status_display = $count_collection>0?"Paid by Date":"";
+            $monthly_payment_display = $count_collection>0?"":$row['monthly_payment'];
+
             $row['client_name'] = $Clients->formal_name($row['client_id']);
             $row['atm_charge'] = $atm_charge;
             $row['atm_account_no'] = $ClientAtm->name($row['client_id']);
+            $row['monthly_payment'] = $monthly_payment_display;
+            $row['status_display'] = $status_display;
             $rows[] = $row;
         }
         $response['clients'] = $rows;

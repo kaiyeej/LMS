@@ -9,26 +9,26 @@
                     <input type="hidden" value="1" id="mass_collection_step">
                     <div class="form-row w3-animate-left" id="mass_collection_step_1">
                         <div class="form-group col-md-2">
-                            <label><strong style="color:red;">*</strong>Branch</label>
+                            <label><strong style="color:red;">*</strong> Branch</label>
                             <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col-md-2">
-                            <label><strong style="color:red;">*</strong>Loan Type</label>
+                            <label><strong style="color:red;">*</strong> Loan Type</label>
                             <select class="form-control select2 input-item" id="loan_type_id" name="input[loan_type_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col-md-2">
-                            <label><strong style="color:red;">*</strong>Bank</label>
+                            <label><strong style="color:red;">*</strong> Bank</label>
                             <select class="form-control select2 input-item" id="mass_chart_id" name="input[chart_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col-md-2">
-                            <label><strong style="color:red;">*</strong>Collection Date</label>
+                            <label><strong style="color:red;">*</strong> Collection Date</label>
                             <input type="date" class="form-control input-item" autocomplete="off" name="input[collection_date]" id="collection_date" required>
                         </div>
                         <div class="form-group col-md-2">
-                            <label><strong style="color:red;">*</strong>Employer</label>
+                            <label><strong style="color:red;">*</strong> Employer</label>
                             <select class="form-control select2 input-item" id="employer_id" name="input[employer_id]" style="width:100%;" required>
                             </select>
                         </div>
@@ -181,6 +181,7 @@
                         success: function(data) {
                             var jsonParse = JSON.parse(data);
                             const json = jsonParse.data;
+                            
                             $('#modalMassCollection').modal('hide');
                             getEntries();
                             success_add();
@@ -237,24 +238,26 @@
                 <td onblur="solveCollection(this,${clientIndex},3)" id="mc3_${clientIndex}" contenteditable="true" class='right mc_3'>${numberFormat(client.monthly_payment)}</td>
                 <td onblur="solveCollection(this,${clientIndex},4)" id="mc4_${clientIndex}" contenteditable="true" class='right mc_4'></td>
                 <td onblur="solveCollection(this,${clientIndex},5)" id="mc5_${clientIndex}" contenteditable="true" class='right mc_5'>${numberFormat(client.atm_charge)}</td>
-                <td id="mc6_${clientIndex}" class='right'></td>
+                <td id="mc6_${clientIndex}" class='right mc_6'></td>
                 <td id="mc7_${clientIndex}" class='right mc_7 ${nega_excess}'>${numberFormat(excess)}</td>
                 <td id="mc8_${clientIndex}" class='center'>${client.atm_account_no}</td>
+                <td id="mc9_${clientIndex}" class='center'>${client.status_display}</td>
               </tr>`;
         }
         $('#mass_collection_result_content').html(`<div style='width:100%' class='w3-animate-left'>
             <table id="tbl_mass_collection">
               <tr>
                 <th>#</th>
-                <th>NAME</th>
-                <th class='w-10'>ATM BALANCE BEFORE WITHDRAWAL</th>
-                <th class='w-10'>ATM WITHDRAWAL</th>
-                <th class='w-10'>DEDUCTION</th>
-                <th class='w-10'>EMERGENCY LOAN</th>
-                <th class='w-10'>ATM CHARGE</th>
-                <th class='w-10'>ATM BALANCE</th>
-                <th class='w-10'>EXCESS</th>
-                <th>ACCOUNT NO</th>
+                <th>Name</th>
+                <th class='w-10'>ATM Balance Before Withdrawal</th>
+                <th class='w-10'>ATM Withdrawal</th>
+                <th class='w-10'>Deduction</th>
+                <th class='w-10'>Emergency Loan</th>
+                <th class='w-10'>ATM Charge</th>
+                <th class='w-10'>ATM Balance</th>
+                <th class='w-10'>Excess</th>
+                <th>Account Number</th>
+                <th>Status</th>
               </tr>
               ${client_tds}
               <tr>
@@ -266,6 +269,7 @@
                 <th id="mc_total_5" class="right"></th>
                 <th id="mc_total_6" class="right"></th>
                 <th id="mc_total_7" class="right"></th>
+                <th></th>
                 <th></th>
               </tr>
         </table>
