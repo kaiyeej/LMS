@@ -1567,10 +1567,10 @@
     }
 
     $(document).ready(function() {
+        getSelectOption('ClientTypes', 'client_type_id', 'client_type');
         getSelectOption('Insurance', 'insurance_id', 'insurance_name', '', [], 0);
         getSelectOption('Employers', 'employer_id', 'employer_name');
         getSelectOption('Branches', 'branch_id', 'branch_name');
-        getSelectOption('ClientTypes', 'client_type_id', 'client_type');
         getEntryDetails(client_id);
         $("#hidden_id_1").val(client_id);
         $("#hidden_id_2").val(client_id);
