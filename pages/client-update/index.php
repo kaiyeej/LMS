@@ -81,11 +81,9 @@
                                                 <div class="col-lg-6" style="padding: 10px;">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><strong
-                                                                    style="color:red;">*&nbsp;</strong> Branch</span>
+                                                            <span class="input-group-text"><strong style="color:red;">*&nbsp;</strong> Branch</span>
                                                         </div>
-                                                        <select class="select2 form-control input-item" id="branch_id"
-                                                            name="input[branch_id]" required>
+                                                        <select class="select2 form-control input-item" id="branch_id" name="input[branch_id]" required>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -1569,10 +1567,10 @@
     }
 
     $(document).ready(function() {
+        getSelectOption('ClientTypes', 'client_type_id', 'client_type');
         getSelectOption('Insurance', 'insurance_id', 'insurance_name', '', [], 0);
         getSelectOption('Employers', 'employer_id', 'employer_name');
         getSelectOption('Branches', 'branch_id', 'branch_name');
-        getSelectOption('ClientTypes', 'client_type_id', 'client_type');
         getEntryDetails(client_id);
         $("#hidden_id_1").val(client_id);
         $("#hidden_id_2").val(client_id);

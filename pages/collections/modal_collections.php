@@ -27,16 +27,20 @@
                                     <select onchange="getLoans()" class="form-control select2 input-item" id="client_id" name="input[client_id]" style="width:100%;" required>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Loan ID</label>
                                     <select class="form-control select2 input-item" id="loan_id" name="input[loan_id]" onchange="loanDetails()" style="width:100%;" required>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Collection Date</label>
                                     <input type="date" class="form-control input-item" autocomplete="off" name="input[collection_date]" id="collection_date" onchange="getPenalty()" required>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
+                                    <label><strong style="color:red;">*</strong> Receipt #</label>
+                                    <input type="text" class="form-control input-item" placeholder="OR/AR number" autocomplete="off" name="input[receipt_number]" id="receipt_number" required>
+                                </div>
+                                <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Bank</label>
                                     <select class="form-control select2 input-item" id="chart_id" name="input[chart_id]" style="width:100%;" required>
                                     </select>

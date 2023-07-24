@@ -54,7 +54,7 @@
                                 </div>
 
                                 <div class="form-group col-md-4">
-                                    <label><strong style="color:red;">*</strong> Loan Terms</label>
+                                    <label><strong style="color:red;">*</strong> Loan Terms <sub style="color:red;">(months)</sub></label>
                                     <input type="number" class="form-control input-item" autocomplete="off" name="input[loan_period]" id="loan_period" required>
                                 </div>
                                 <div class="form-group col-md-4">

@@ -437,11 +437,10 @@ $User = new Users;
 
           if (route_settings.class_name == "Clients") {
 
-            getSelectOption('ClientTypes', 'client_type_id', 'client_type');
             c_status = "update";
             $(".client_span").html(jsonParse.data['client_fullname']);
-            var array =  ['2', '1'];
-            $("#client_type_id").val(array).trigger('change');
+            var clienttypes =  jsonParse.data['client_type_id'].split(',').map(Number);
+            $("#client_type_id").val(clienttypes).trigger('change');
             // $("#client_type_id").select2().select2('val', []);
           } else if (route_settings.class_name == "Collections") {
             // getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + json['client_id'] + "' AND status = 'R'");

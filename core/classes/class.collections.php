@@ -41,6 +41,7 @@ class Collections extends Connection
             'atm_balance'       => $this->clean($this->inputs['atm_balance']),
             'atm_withdrawal'    => $this->clean($this->inputs['atm_withdrawal']),
             'atm_charge'        => $this->clean($this->inputs['atm_charge']),
+            'receipt_number'    => $this->clean($this->inputs['receipt_number']),
         );
 
         $cl_id = $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
@@ -116,6 +117,7 @@ class Collections extends Connection
                 'atm_balance'       => $this->clean($this->inputs['atm_balance']),
                 'atm_withdrawal'    => $this->clean($this->inputs['atm_withdrawal']),
                 'atm_charge'        => $this->clean($this->inputs['atm_charge']),
+                'receipt_number'    => $this->clean($this->inputs['receipt_number']),
             );
 
             return $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");
@@ -488,6 +490,7 @@ class Collections extends Connection
                     $this->metadata('branch_id', 'int', 11),
                     $this->metadata('client_id', 'int', 11),
                     $this->metadata('loan_id', 'int', 11),
+                    $this->metadata('receipt_number', 'varchar', 5),
                     $this->metadata('amount', 'decimal', '12,4'),
                     $this->metadata('penalty_amount', 'decimal', '12,4'),
                     $this->metadata('interest', 'decimal', '12,4'),
