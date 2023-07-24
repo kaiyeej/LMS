@@ -227,21 +227,24 @@
                 emergency_loan: 0,
                 atm_charge: atm_charge,
                 atm_balance: 0,
-                excess: excess
+                excess: excess,
+                receipt_number: client.receipt_number
             };
             mc_client_data.push(client_data);
             client_tds += `<tr>
                 <td>${clientIndex+1}</td>
                 <td>${client.client_name}</td>
-                <td onblur="solveCollection(this,${clientIndex},1)" id="mc1_${clientIndex}" contenteditable="true" class='right mc_1'></td>
+                <td onblur="balanceComputer(${clientIndex})" id="mc1_${clientIndex}" contenteditable="true" class='right mc_1'></td>
+
                 <td onblur="solveCollection(this,${clientIndex},2)" id="mc2_${clientIndex}" contenteditable="true" class='right mc_2'></td>
-                <td onblur="solveCollection(this,${clientIndex},3)" id="mc3_${clientIndex}" contenteditable="true" class='right mc_3'>${numberFormat(client.monthly_payment)}</td>
-                <td onblur="solveCollection(this,${clientIndex},4)" id="mc4_${clientIndex}" contenteditable="true" class='right mc_4'></td>
-                <td onblur="solveCollection(this,${clientIndex},5)" id="mc5_${clientIndex}" contenteditable="true" class='right mc_5'>${numberFormat(client.atm_charge)}</td>
-                <td id="mc6_${clientIndex}" class='right mc_6'></td>
-                <td id="mc7_${clientIndex}" class='right mc_7 ${nega_excess}'>${numberFormat(excess)}</td>
-                <td id="mc8_${clientIndex}" class='center'>${client.atm_account_no}</td>
-                <td id="mc9_${clientIndex}" class='center'>${client.status_display}</td>
+                <td onblur="solveCollection(this,${clientIndex},3)" id="mc3_${clientIndex}" contenteditable="true" class='right mc_3'></td>
+                <td onblur="solveCollection(this,${clientIndex},4)" id="mc4_${clientIndex}" contenteditable="true" class='right mc_4'>${numberFormat(client.monthly_payment)}</td>
+                <td onblur="solveCollection(this,${clientIndex},5)" id="mc5_${clientIndex}" contenteditable="true" class='right mc_5'></td>
+                <td onblur="solveCollection(this,${clientIndex},6)" id="mc6_${clientIndex}" contenteditable="true" class='right mc_6'>${numberFormat(client.atm_charge)}</td>
+                <td id="mc7_${clientIndex}" class='right mc_7'></td>
+                <td id="mc8_${clientIndex}" class='right mc_8 ${nega_excess}'>${numberFormat(excess)}</td>
+                <td id="mc9_${clientIndex}" class='center'>${client.atm_account_no}</td>
+                <td id="mc10_${clientIndex}" class='center'>${client.status_display}</td>
               </tr>`;
         }
         $('#mass_collection_result_content').html(`<div style='width:100%' class='w3-animate-left'>
@@ -249,6 +252,7 @@
               <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th class='w-10'>Receipt #</th>
                 <th class='w-10'>ATM Balance Before Withdrawal</th>
                 <th class='w-10'>ATM Withdrawal</th>
                 <th class='w-10'>Deduction</th>
@@ -263,12 +267,13 @@
               <tr>
                 <th colspan="2">TOTAL</th>
                 <th id="mc_total_1" class="right"></th>
+                <th id="mc_total_1" class="right"></th>
                 <th id="mc_total_2" class="right"></th>
                 <th id="mc_total_3" class="right"></th>
                 <th id="mc_total_4" class="right"></th>
                 <th id="mc_total_5" class="right"></th>
                 <th id="mc_total_6" class="right"></th>
-                <th id="mc_total_7" class="right"></th>
+                <th id="mc_total_8" class="right"></th>
                 <th></th>
                 <th></th>
               </tr>
@@ -284,8 +289,8 @@
             </div>
         </div>
         </div>`);
-        totalComputer(6);
         totalComputer(7);
+        totalComputer(8);
     }
 
     function solveCollection(ele, client_id, type) {
@@ -312,42 +317,45 @@
     }
 
     function balanceComputer(client_id) {
-        var atm_balance_before = stringToNum(client_id, 1);
+        var receipt_number = $("#mc1_" + client_id).html();//stringToNum(client_id, 1);
+        mc_client_data[client_id].receipt_number = receipt_number;
+
+        var atm_balance_before = stringToNum(client_id, 2);
         mc_client_data[client_id].atm_balance_before_withdraw = atm_balance_before;
 
-        var atm_withdrawal = stringToNum(client_id, 2);
+        var atm_withdrawal = stringToNum(client_id, 3);
         mc_client_data[client_id].atm_withdrawal = atm_withdrawal;
 
-        var deduction = stringToNum(client_id, 3);
+        var deduction = stringToNum(client_id, 4);
         mc_client_data[client_id].deduction = deduction;
 
-        var emergency_loan = stringToNum(client_id, 4)
+        var emergency_loan = stringToNum(client_id, 5)
         mc_client_data[client_id].emergency_loan = emergency_loan;
 
-        var atm_charge = stringToNum(client_id, 5)
+        var atm_charge = stringToNum(client_id, 6)
         mc_client_data[client_id].atm_charge = atm_charge;
 
         var atm_balance = atm_balance_before - atm_withdrawal;
         mc_client_data[client_id].atm_balance = atm_balance;
         var formated_num = numberFormat(atm_balance);
-        $("#mc6_" + client_id).html(formated_num);
-        if (atm_balance < 0) {
-            $("#mc6_" + client_id).addClass("negative");
-        } else {
-            $("#mc6_" + client_id).removeClass("negative");
-        }
-        totalComputer(6);
-
-        var excess = atm_withdrawal - deduction - emergency_loan - atm_charge;
-        mc_client_data[client_id].excess = excess;
-        var formated_num = numberFormat(excess);
         $("#mc7_" + client_id).html(formated_num);
-        if (excess < 0) {
+        if (atm_balance < 0) {
             $("#mc7_" + client_id).addClass("negative");
         } else {
             $("#mc7_" + client_id).removeClass("negative");
         }
         totalComputer(7);
+
+        var excess = atm_withdrawal - deduction - emergency_loan - atm_charge;
+        mc_client_data[client_id].excess = excess;
+        var formated_num = numberFormat(excess);
+        $("#mc8_" + client_id).html(formated_num);
+        if (excess < 0) {
+            $("#mc8_" + client_id).addClass("negative");
+        } else {
+            $("#mc8_" + client_id).removeClass("negative");
+        }
+        totalComputer(8);
 
     }
 
