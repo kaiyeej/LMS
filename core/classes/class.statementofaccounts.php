@@ -99,7 +99,7 @@ class StatementOfAccounts extends Connection
                 $month1 = date('m', $ts1);
                 $month2 = date('m', $ts2);
 
-                $diff = (($year2 - $year1) * 12) + ($month2 - $month1)-1;
+                $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
                 $late_col = $diff;
             }else{
                 $late_col = 0;
@@ -108,8 +108,7 @@ class StatementOfAccounts extends Connection
             if ($balance > 0) {
 
                 while ($count <= ($loan_period+$late_col)) {
-
-                    $loan_date = date('Y-m-d', strtotime('+1 month', strtotime($loan_date)));
+                    $loan_date = date('Y-m-d', strtotime("first day of next month",strtotime($loan_date)));//date('Y-m-d', strtotime('+1 month', strtotime($loan_date)));
 
                     $my_date = strtotime($loan_date);
                     $year = date('Y', $my_date);

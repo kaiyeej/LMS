@@ -56,7 +56,7 @@
                             <h6><span class="span_details" id="span_client"></span></h6>
                         </center>
 
-                        <div class="row" id="soa_report">
+                        <div class="row table-responsive" id="soa_report">
                             <div class="col-md-12 table-responsive">
                                 <table class="table table-bordered" id="dt_entries" width="100%" cellspacing="0">
                                     <thead>
@@ -99,7 +99,7 @@
         var client_id = $("#client_id").val();
         var param = "client_id= '" + client_id + "'AND status !='F'"; //(status!='D' OR status!='P')
 
-        $("#soa_report").html("<center><h3><span class='fa fa-spinner fa-spin'></span> Loading ...</h3></center>");
+        $("#soa_report").html("<br><center><h3><span class='fa fa-spinner fa-spin'></span> Loading ...</h3></center>");
 
         $.ajax({
             type: "POST",

@@ -194,9 +194,12 @@
                 var jsonParse = JSON.parse(data);
                 const json = jsonParse.data;
                 $("#loan_id").val(json).trigger('change');
+                loanDetails();
+
             }
         });
     }
+
 
     function loanDetails() {
 

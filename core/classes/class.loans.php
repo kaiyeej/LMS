@@ -328,6 +328,7 @@ class Loans extends Connection
         $rows = array();
         $balance = $loan_amount;
         $payment_count = 1;
+        $Collection = new Collections;
         while ($count <= $loan_period) {
 
             $loan_date = date('M d, Y', strtotime('+1 month', strtotime($loan_date)));
@@ -350,7 +351,7 @@ class Loans extends Connection
                 $payment_count += 1;
                 $monthly_payment = 0;
             }
-
+            // $penalty = $Collection->penalty_per_month($loan_date, $row['loan_id']);
             $principal_amount = $monthly_payment - $monthly_interest;
             $balance -= $principal_amount;
 
@@ -383,7 +384,27 @@ class Loans extends Connection
             $payment_terms = $row['payment_terms'];
             $loan_type_id = $row['loan_type_id'];
             $LoanTypes = new LoanTypes;
+            $Collection = new Collections;
             $lt_row = $LoanTypes->view($loan_type_id);
+
+            $loandate = date('Y-m-d', strtotime('+'.$loan_period.' month', strtotime($loan_date)));
+            $col_checker_date = $Collection->late_collection_checker($row['loan_id'],$loandate);
+            
+            if($col_checker_date != 0){
+                $ts1 = strtotime($loandate);
+                $ts2 = strtotime($col_checker_date);
+
+                $year1 = date('Y', $ts1);
+                $year2 = date('Y', $ts2);
+
+                $month1 = date('m', $ts1);
+                $month2 = date('m', $ts2);
+
+                $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
+                $late_col = $diff;
+            }else{
+                $late_col = 0;
+            }
 
 
             $count = 1;
@@ -392,11 +413,10 @@ class Loans extends Connection
             $total_amount_with_interest = ($loan_amount * $monthly_interest_rate * $loan_period) + $loan_amount;
 
             $balance = $loan_amount;
-            $Collection = new Collections;
             $payment_count = 1;
-            while ($count <= $loan_period) {
+            while ($count <= ($loan_period+$late_col)) {
 
-                $loan_date = date('Y-m-d', strtotime('+1 month', strtotime($loan_date)));
+                $loan_date = date('Y-m-d', strtotime("first day of next month",strtotime($loan_date)));
 
                 if ($payment_count == $payment_terms) { // matches every 3 iterations
                     $payment_count = 1;
@@ -418,7 +438,7 @@ class Loans extends Connection
 
                 $penalty = $Collection->penalty_per_month($loan_date, $row['loan_id']);
                 // $payment = $count == 1 ? $Collection->collected_per_month($loan_date,$row['loan_id'])+$Collection->advance_collection($row['loan_id']) : $Collection->collected_per_month($loan_date,$row['loan_id']);
-                $balance -= $principal_amount; //($payment + $penalty);
+                $balance -= ($principal_amount-$penalty); //($payment + $penalty);
 
 
                 $row['date'] = date('F Y', strtotime($loan_date));
@@ -645,7 +665,7 @@ class Loans extends Connection
         $payment_count = 1;
         $Collection = new Collections;
         while ($count <= $diff) {
-            $loan_date = date('Y-m-d', strtotime('+1 month', strtotime($loan_date)));
+            $loan_date = date('Y-m-d', strtotime("first day of next month",strtotime($loan_date)));
             $counter_date = date('Y-m-d', strtotime('-'.$payment_count.' month', strtotime($loan_date)));
             
             if ($payment_terms > 1) {

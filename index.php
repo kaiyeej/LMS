@@ -444,8 +444,8 @@ $User = new Users;
             // $("#client_type_id").select2().select2('val', []);
           } else if (route_settings.class_name == "Collections") {
             // getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + json['client_id'] + "' AND status = 'R'");
-            $("#loan_amount_span").html(json['loan_amount']);
             clients();
+            $("#loan_amount_span").html(json['loan_amount']);
             $('.input-item').attr('readonly', true);
             $(".select2").prop("disabled", true);
             $("#btn_submit").hide();
@@ -766,6 +766,7 @@ $User = new Users;
     // END MODULE
 
     function getSelectOption(class_name, primary_id, label, param = '', attributes = [], pre_value = '', pre_label = 'Please Select', sub_option = '', is_class = '') {
+      $("#" + primary_id).prepend($('<option></option>').html('Loading...'));
       $.ajax({
         type: "POST",
         url: "controllers/sql.php?c=" + class_name + "&q=show",
