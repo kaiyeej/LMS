@@ -1,6 +1,7 @@
 <form id='frmMassCollection' method="POST">
     <div class="modal fade" id="modalMassCollection" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" id="import_dialog" style="width: 100%;max-width: 2000px;margin: 0.5rem;">
+        <div class="modal-dialog" role="document" id="import_dialog"
+            style="width: 100%;max-width: 2000px;margin: 0.5rem;">
             <div class="modal-content">
                 <div class="modal-header" id="mass-modal-header">
                     <h5 class="modal-title"><span class='ion-compose'></span> Add Mass Collection</h5>
@@ -10,35 +11,42 @@
                     <div class="form-row w3-animate-left" id="mass_collection_step_1">
                         <div class="form-group col-md-2">
                             <label><strong style="color:red;">*</strong> Branch</label>
-                            <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]" style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]"
+                                style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col-md-2">
                             <label><strong style="color:red;">*</strong> Loan Type</label>
-                            <select class="form-control select2 input-item" id="loan_type_id" name="input[loan_type_id]" style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="loan_type_id" name="input[loan_type_id]"
+                                style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col-md-2">
                             <label><strong style="color:red;">*</strong> Bank</label>
-                            <select class="form-control select2 input-item" id="mass_chart_id" name="input[chart_id]" style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="mass_chart_id" name="input[chart_id]"
+                                style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col-md-2">
                             <label><strong style="color:red;">*</strong> Collection Date</label>
-                            <input type="date" class="form-control input-item" autocomplete="off" name="input[collection_date]" id="collection_date" required>
+                            <input type="date" class="form-control input-item" autocomplete="off"
+                                name="input[collection_date]" id="collection_date" required>
                         </div>
                         <div class="form-group col-md-2">
                             <label><strong style="color:red;">*</strong> Employer</label>
-                            <select class="form-control select2 input-item" id="employer_id" name="input[employer_id]" style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="employer_id" name="input[employer_id]"
+                                style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col-md-1">
                             <label>ATM Charge</label>
-                            <input min="0" type="number" class="form-control input-item" autocomplete="off" name="input[atm_charge]" id="atm_charge">
+                            <input min="0" type="number" class="form-control input-item" autocomplete="off"
+                                name="input[atm_charge]" id="atm_charge">
                         </div>
                         <div class="form-group col-md-1">
                             <br />
-                            <button type="button" id="btn_mass_generate" onclick="mass_generate()" style="margin-top:10px;" class="btn btn-primary">
+                            <button type="button" id="btn_mass_generate" onclick="mass_generate()"
+                                style="margin-top:10px;" class="btn btn-primary">
                                 Generate
                             </button>
                         </div>
@@ -49,8 +57,11 @@
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <!-- <button type="button" id="btn_mass_prev" class="btn btn-warning" onclick="goStep1()"><span class='fa fa-arrow-left'></span> Back</button> -->
-                    <button type="submit" id="btn_mass_submit" class="btn btn-primary">
+                    <button type="button" id="btn_mass_submit" onclick="saveMassCollection()" class="btn btn-primary">
                         Save
+                    </button>
+                    <button type="submit" id="btn_mass_finish" class="btn btn-success">
+                        Finish
                     </button>
                 </div>
             </div>
@@ -87,6 +98,7 @@
         $("#atm_charge").val('');
         // $("#btn_mass_submit").html("<span class='fa fa-arrow-right'></span> Next");
         $("#btn_mass_submit").hide();
+        $("#btn_mass_finish").hide();
 
         $('#mass_collection_result_content').html("");
         // $("#btn_mass_prev").hide();
@@ -117,13 +129,13 @@
         var collection_date = $("#collection_date").val();
         var employer_id = $("#employer_id").val();
         $('#frmMassCollection input:required').each(function() {
-            if($(this).val() === ''){
+            if ($(this).val() === '') {
 
                 swal("Ops!", "Fill out all required fields.", "warning");
             } else {
                 $.ajax({
                     type: "POST",
-                    url: "controllers/sql.php?c=" + route_settings.class_name + "&q=init_mass_collection",
+                    url: "controllers/sql.php?c=MassCollections&q=initialize",
                     data: $('#frmMassCollection').serialize(),
                     success: function(data) {
                         var jsonParse = JSON.parse(data);
@@ -151,7 +163,7 @@
         if (mass_collection_step == 1) {
             $.ajax({
                 type: "POST",
-                url: "controllers/sql.php?c=" + route_settings.class_name + "&q=init_mass_collection",
+                url: "controllers/sql.php?c=MassCollections&q=initialize",
                 data: formData,
                 success: function(data) {
                     var jsonParse = JSON.parse(data);
@@ -181,7 +193,7 @@
                         success: function(data) {
                             var jsonParse = JSON.parse(data);
                             const json = jsonParse.data;
-                            
+
                             $('#modalMassCollection').modal('hide');
                             getEntries();
                             success_add();
@@ -193,6 +205,34 @@
             }
         }
     });
+
+    function saveMassCollection() {
+        if (mc_client_data.length > 0) {
+            if ($(".negative").length > 0) {
+                swal("Cannot proceed!", "Negative values are found!", "warning");
+            } else {
+                var form_mass_collection = mc_header_data;
+                form_mass_collection.details = mc_client_data;
+                $.ajax({
+                    type: "POST",
+                    url: "controllers/sql.php?c=MassCollections&q=save_collections",
+                    data: {
+                        input: form_mass_collection
+                    },
+                    success: function(data) {
+                        var jsonParse = JSON.parse(data);
+                        const json = jsonParse.data;
+
+                        $('#modalMassCollection').modal('hide');
+                        getEntries();
+                        success_add();
+                    }
+                });
+            }
+        } else {
+            swal("Cannot proceed!", "No Entry found!", "warning");
+        }
+    }
 
     function get_mass_collections(json) {
         // $("#mass-modal-header").html(`
@@ -228,11 +268,12 @@
                 atm_charge: atm_charge,
                 atm_balance: 0,
                 excess: excess,
-                receipt_number: client.receipt_number
+                receipt_number: client.receipt_number,
+                atm_account_no: client.atm_account_no
             };
             mc_client_data.push(client_data);
             client_tds += `<tr>
-                <td>${clientIndex+1}</td>
+                <td>${clientIndex + 1}</td>
                 <td>${client.client_name}</td>
                 <td onblur="balanceComputer(${clientIndex})" id="mc1_${clientIndex}" contenteditable="true" class='right mc_1'></td>
 
@@ -252,27 +293,26 @@
               <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th class='w-10'>Receipt #</th>
-                <th class='w-10'>ATM Balance Before Withdrawal</th>
-                <th class='w-10'>ATM Withdrawal</th>
-                <th class='w-10'>Deduction</th>
-                <th class='w-10'>Emergency Loan</th>
-                <th class='w-10'>ATM Charge</th>
-                <th class='w-10'>ATM Balance</th>
-                <th class='w-10'>Excess</th>
+                <th class='w-8'>Receipt #</th>
+                <th class='w-8'>ATM Balance Before Withdrawal</th>
+                <th class='w-8'>ATM Withdrawal</th>
+                <th class='w-8'>Deduction</th>
+                <th class='w-8'>Emergency Loan</th>
+                <th class='w-8'>ATM Charge</th>
+                <th class='w-8'>ATM Balance</th>
+                <th class='w-8'>Excess</th>
                 <th>Account Number</th>
                 <th>Status</th>
               </tr>
               ${client_tds}
               <tr>
-                <th colspan="2">TOTAL</th>
-                <th id="mc_total_1" class="right"></th>
-                <th id="mc_total_1" class="right"></th>
+                <th colspan="3">TOTAL</th>
                 <th id="mc_total_2" class="right"></th>
                 <th id="mc_total_3" class="right"></th>
                 <th id="mc_total_4" class="right"></th>
                 <th id="mc_total_5" class="right"></th>
                 <th id="mc_total_6" class="right"></th>
+                <th id="mc_total_7" class="right"></th>
                 <th id="mc_total_8" class="right"></th>
                 <th></th>
                 <th></th>
@@ -285,7 +325,7 @@
             </div>
             <div class='col-md-6'>
                 <span>CHECKED BY: </span><br>
-                <span><b>MITOS SHEILA GARFIL</b></span>
+                <span><b>${json.headers.prepared_by}</b></span>
             </div>
         </div>
         </div>`);
@@ -374,6 +414,7 @@
 <style>
     #tbl_mass_collection {
         font-family: arial, sans-serif;
+        font-size: 12px;
         border-collapse: collapse;
         width: 100%;
         overflow-y: scroll;
@@ -392,6 +433,10 @@
         text-align: center;
     }
 
+    #tbl_mass_collection td {
+        font-size: 12pt !important;
+    }
+
     .import_failed {
         background-color: #db5151;
         color: #fff;
@@ -399,6 +444,14 @@
 
     .w-10 {
         width: 10% !important;
+    }
+
+    .w-8 {
+        width: 8% !important;
+    }
+
+    .w-5 {
+        width: 5% !important;
     }
 
     .right {

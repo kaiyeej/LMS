@@ -14,6 +14,15 @@ class Connection
     public function __construct()
     {
         $this->mysqli = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
+        // Check for connection errors
+        if ($this->mysqli->connect_error) {
+            die("Connection failed: " . $this->mysqli->connect_error);
+        }
+
+        // Set the character set
+        if (!$this->mysqli->set_charset("utf8")) {
+            die("Error loading character set utf8: " . $this->mysqli->error);
+        }
     }
 
     public function insert($table, $para = array(), $last_id = 'N')

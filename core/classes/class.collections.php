@@ -147,7 +147,7 @@ class Collections extends Connection
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
         $row = $result->fetch_assoc();
         $loan = $Loans->view($row['loan_id']);
-        $row['loan_amount'] = number_format($loan['loan_amount'],2);
+        $row['loan_amount'] = number_format($loan['loan_amount'], 2);
         return $row;
     }
 
@@ -220,14 +220,14 @@ class Collections extends Connection
         return $row['total'];
     }
 
-    
+
     public function penalty_checker($date, $loan_id)
     {
         $result = $this->select("tbl_collections as c, tbl_loans as l", '*', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND (MONTH(c.collection_date) = MONTH('$date') AND YEAR(c.collection_date)= YEAR('$date'))");
-       
-        if($result->num_rows > 0){
+
+        if ($result->num_rows > 0) {
             return 1;
-        }else{
+        } else {
             return 0;
         }
     }
@@ -238,25 +238,24 @@ class Collections extends Connection
         $row = $result->fetch_assoc();
         return $row['total'];
     }
-    
-    public function late_collection($loan_id,$date)
+
+    public function late_collection($loan_id, $date)
     {
         $result = $this->select("tbl_collections as c, tbl_loans as l", 'sum(c.amount) as total', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND c.collection_date > '$date'");
         $row = $result->fetch_assoc();
         return $row['total'];
     }
 
-    public function late_collection_checker($loan_id,$date)
+    public function late_collection_checker($loan_id, $date)
     {
         $result = $this->select("tbl_collections as c, tbl_loans as l", 'collection_date', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND c.collection_date > '$date' order by collection_date desc
         limit 1;");
-        if($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            return $row['collection_date']; 
-        }else{
+            return $row['collection_date'];
+        } else {
             return 0;
         }
-        
     }
 
 
@@ -273,13 +272,13 @@ class Collections extends Connection
         $row = $result->fetch_assoc();
         return $row['total'];
     }
-    
-    
+
+
     public function total_collected_by_loan($loan_id)
     {
         $result = $this->select($this->table, 'sum(amount) as total, sum(penalty_amount) as penalty', "loan_id='$loan_id' AND status='F'");
         $row = $result->fetch_assoc();
-        return [$row['total'],$row['penalty']];
+        return [$row['total'], $row['penalty']];
     }
 
     public function monthly_collection($month, $year, $branch_id = null)
@@ -288,58 +287,6 @@ class Collections extends Connection
         $result = $this->select("tbl_collections", 'sum(amount) as total', "(MONTH(collection_date) = '$month' AND YEAR(collection_date)= '$year') AND status='F' $query");
         $row = $result->fetch_assoc();
         return $row['total'];
-    }
-
-    public function init_mass_collection()
-    {
-        $Clients = new Clients;
-        $ChartOfAccounts = new ChartOfAccounts;
-        $Branches = new Branches;
-        $Employers = new Employers;
-        $ClientAtm = new ClientAtm;
-
-        $loan_type_id = $this->inputs['loan_type_id'];
-        $collection_date = $this->inputs['collection_date'];
-        $employer_id = $this->inputs['employer_id'];
-        $chart_id = $this->inputs['chart_id'];
-        $branch_id = $this->inputs['branch_id'];
-        $atm_charge = (float) $this->inputs['atm_charge'];
-
-        $rows = array();
-        $result = $this->select("tbl_clients AS c, tbl_client_employment AS e,tbl_loans AS l", 'l.*', "c.client_id = e.client_id AND c.client_id = l.client_id AND c.branch_id = '$branch_id' AND e.employer_id = '$employer_id' AND l.loan_type_id = '$loan_type_id' AND l.status = 'R'");
-        while ($row = $result->fetch_assoc()) {
-
-            //get status
-            $ondate_ref_number = "CL-" . date("Ymd") . $row['loan_id'];
-            $count_collection_on_date = $this->select($this->table, "loan_id", "$this->name = '$ondate_ref_number'");
-            $count_collection = $count_collection_on_date->num_rows;
-            $status_display = $count_collection>0?"Paid by Date":"";
-            $monthly_payment_display = $count_collection>0?"":$row['monthly_payment'];
-
-            $row['client_name'] = $Clients->formal_name($row['client_id']);
-            $row['atm_charge'] = $atm_charge;
-            $row['atm_account_no'] = $ClientAtm->name($row['client_id']);
-            $row['monthly_payment'] = $monthly_payment_display;
-            $row['status_display'] = $status_display;
-            $rows[] = $row;
-        }
-        $response['clients'] = $rows;
-
-        $LoanTypes = new LoanTypes;
-        $response['headers'] = [
-            "loan_type_id" => $loan_type_id,
-            "loan_name" => $LoanTypes->name($loan_type_id),
-            "collection_date" => date("Y-m-d", strtotime($collection_date)),
-            "collection_date_label" => date("F d, Y", strtotime($collection_date)),
-            "employer_id" => $employer_id,
-            "employer_name" => $Employers->name($employer_id),
-            "prepared_by" => Users::name($_SESSION['lms_user_id']),
-            "chart_id" => $chart_id,
-            "chart_name" => $ChartOfAccounts->name($chart_id),
-            "branch_id" => $branch_id,
-            "branch_name" => $Branches->name($branch_id),
-        ];
-        return $response;
     }
 
     public function add_mass_collection()
@@ -375,13 +322,13 @@ class Collections extends Connection
         }
     }
 
-    
+
     public function client_id()
     {
         $primary_id = $this->inputs['id'];
         $result = $this->select($this->table, "client_id,loan_id", "$this->pk = '$primary_id'");
         $row = $result->fetch_assoc();
-        return [$row['client_id'],$row['loan_id']];
+        return [$row['client_id'], $row['loan_id']];
     }
 
     public function import()

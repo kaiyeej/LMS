@@ -17,31 +17,52 @@
                     <div class="col-md-3">
                         <label><strong>Start Date</strong></label>
                         <div>
-                            <input type="date" required class="form-control" id="start_date" value="<?php echo date('Y-m-01', strtotime(date("Y-m-d"))); ?>" name="input[start_date]">
+                            <input type="date" required class="form-control" id="start_date"
+                                value="<?php echo date('Y-m-01', strtotime(date(" Y-m-d"))); ?>"
+                            name="input[start_date]">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <label><strong>End Date</strong></label>
                         <div>
-                            <input type="date" required class="form-control" id="end_date" value="<?php echo date('Y-m-t', strtotime(date("Y-m-d"))) ?>" name="input[end_date]">
+                            <input type="date" required class="form-control" id="end_date"
+                                value="<?php echo date('Y-m-t', strtotime(date(" Y-m-d"))) ?>" name="input[end_date]">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <label>&nbsp;</label>
                         <div>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-warning" onclick="getEntries()"><i class="fas fa-refresh"></i> Generate</button>
+                                <button type="button" class="btn btn-warning" onclick="getEntries()"><i
+                                        class="fas fa-refresh"></i> Generate</button>
 
-                                <a href="#" data-toggle="dropdown" class="btn btn-info dropdown-toggle"><i class="fas fa-file-excel"></i> Template</a>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item has-icon" onclick="exportTemplate()"><i class="fas fa-download"></i> Export</a>
-                                    <a href="#" class="dropdown-item has-icon" onclick="importTemplate()"><i class="far fa-upload"></i> Import</a>
+                                <div class="btn-group btn-group" role="group" aria-label="Basic example">
+                                    <a href="#" data-toggle="dropdown" class="btn btn-info dropdown-toggle"><i
+                                            class="fas fa-file-excel"></i> Template</a>
+                                    <div class="dropdown-menu">
+                                        <a href="#" class="dropdown-item has-icon" onclick="exportTemplate()"><i
+                                                class="fas fa-download"></i> Export</a>
+                                        <a href="#" class="dropdown-item has-icon" onclick="importTemplate()"><i
+                                                class="far fa-upload"></i> Import</a>
+                                    </div>
                                 </div>
                                 <div class="btn-group btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" class="btn btn-success" onclick="addMassCollection()"><i class="fas fa-coins"></i> Mass Collection</button>
-                                    <button type="button" class="btn btn-primary" onclick="addModal()"><i class="fas fa-plus"></i>
+                                    <a href="#" data-toggle="dropdown" class="btn btn-success dropdown-toggle"><i
+                                            class="fas fa-coins"></i> Mass Collection</a>
+                                    <div class="dropdown-menu">
+                                        <a href="#" class="dropdown-item has-icon" onclick="addMassCollection()"><i
+                                                class="fas fa-plus"></i> Add</a>
+                                        <a href="#" class="dropdown-item has-icon"
+                                            onclick="viewSavedMassCollection()"><i class="far fa-list"></i> View
+                                            Saved</a>
+                                    </div>
+                                </div>
+                                <div class="btn-group btn-group" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-primary" onclick="addModal()"><i
+                                            class="fas fa-plus"></i>
                                         Add</button>
-                                    <button type="button" class="btn btn-danger" onclick="deleteEntry()"><i class="fas fa-trash"></i> Delete</button>
+                                    <button type="button" class="btn btn-danger" onclick="deleteEntry()"><i
+                                            class="fas fa-trash"></i> Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -72,7 +93,9 @@
                                     <tr>
                                         <th style="width:10px;">
                                             <div class="custom-checkbox custom-control">
-                                                <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1" onchange="checkAll(this, 'dt_id')">
+                                                <input type="checkbox" data-checkboxes="mygroup"
+                                                    class="custom-control-input" id="checkbox-1"
+                                                    onchange="checkAll(this, 'dt_id')">
                                                 <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
                                             </div>
                                         </th>
@@ -97,6 +120,7 @@
 </section>
 <?php include "modal_collections.php"; ?>
 <?php include "modal_mass_collections.php"; ?>
+<?php include "modal_saved_mass_collections.php"; ?>
 <?php include "modal_export.php"; ?>
 <?php include "modal_import.php"; ?>
 <script type="text/javascript">
@@ -122,41 +146,41 @@
                 }
             },
             "columns": [{
-                    "mRender": function(data, type, row) {
-                        return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.collection_id + '" value=' + row.collection_id + '><label for="checkbox-b' + row.collection_id + '" class="custom-control-label">&nbsp;</label></div>';
-                    }
-                },
-                {
-                    "mRender": function(data, type, row) {
-                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.collection_id + ")'><span class='fa fa-edit'></span></button></center>";
-                    }
-                },
-                {
-                    "data": "reference_number"
-                },
-                {
-                    "data": "loan_ref_id"
-                },
-                {
-                    "data": "client"
-                },
-                {
-                    "data": "amount"
-                },
-                {
-                    "data": "collection_date"
-                },
-                {
-                    "mRender": function(data, type, row) {
-                        return row.status == "P" ? '<a href="#" class="badge badge-light">Pending</a>' : (row.status == 'F' ? '<a href="#" class="badge badge-success">Finished</a>' : '<a href="#" class="badge badge-danger">Canceled</a>');
-                    }
-                },
-                {
-                    "data": "date_added"
-                },
-                {
-                    "data": "date_last_modified"
+                "mRender": function(data, type, row) {
+                    return '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.collection_id + '" value=' + row.collection_id + '><label for="checkbox-b' + row.collection_id + '" class="custom-control-label">&nbsp;</label></div>';
                 }
+            },
+            {
+                "mRender": function(data, type, row) {
+                    return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.collection_id + ")'><span class='fa fa-edit'></span></button></center>";
+                }
+            },
+            {
+                "data": "reference_number"
+            },
+            {
+                "data": "loan_ref_id"
+            },
+            {
+                "data": "client"
+            },
+            {
+                "data": "amount"
+            },
+            {
+                "data": "collection_date"
+            },
+            {
+                "mRender": function(data, type, row) {
+                    return row.status == "P" ? '<a href="#" class="badge badge-light">Pending</a>' : (row.status == 'F' ? '<a href="#" class="badge badge-success">Finished</a>' : '<a href="#" class="badge badge-danger">Canceled</a>');
+                }
+            },
+            {
+                "data": "date_added"
+            },
+            {
+                "data": "date_last_modified"
+            }
             ]
         });
     }
@@ -229,23 +253,23 @@
                 },
             },
             "columns": [{
-                    "data": "date"
-                },
-                {
-                    "data": "payment"
-                },
-                {
-                    "data": "interest"
-                },
-                {
-                    "data": "penalty"
-                },
-                {
-                    "data": "applicable_principal"
-                },
-                {
-                    "data": "balance"
-                }
+                "data": "date"
+            },
+            {
+                "data": "payment"
+            },
+            {
+                "data": "interest"
+            },
+            {
+                "data": "penalty"
+            },
+            {
+                "data": "applicable_principal"
+            },
+            {
+                "data": "balance"
+            }
             ]
         });
         // }

@@ -56,7 +56,7 @@ class Clients extends Connection
         $client_name_extension = $this->clean($this->inputs['client_name_extension']);
         $branch_id = $this->clean($this->inputs['branch_id']);
 
-        $client_types= implode(',',$this->inputs['client_type_id']);
+        $client_types = implode(',', $this->inputs['client_type_id']);
 
         $is_exist = $this->select($this->table, $this->pk, "client_fname = '$client_fname' AND client_mname = '$client_mname' AND client_lname='$client_lname' AND client_name_extension='$client_name_extension' AND $this->pk != '$primary_id'");
         if ($is_exist->num_rows > 0)
@@ -96,7 +96,7 @@ class Clients extends Connection
         $client_lname = $this->clean($this->inputs['client_lname']);
         $client_name_extension = $this->clean($this->inputs['client_name_extension']);
         $branch_id = $this->clean($this->inputs['branch_id']);
-        $client_types= implode(',', $_POST['client_type_id']);
+        $client_types = implode(',', $_POST['client_type_id']);
 
         $is_exist = $this->select($this->table, $this->pk, "client_fname = '$client_fname' AND client_mname = '$client_mname' AND client_lname='$client_lname' AND client_name_extension='$client_name_extension' AND $this->pk != '$primary_id'");
         if ($is_exist->num_rows > 0)
@@ -112,7 +112,7 @@ class Clients extends Connection
             'client_dob'            => $this->clean($this->inputs['client_dob']),
             'client_contact_no'     => $this->clean($this->inputs['client_contact_no']),
             'client_civil_status'   => $this->clean($this->inputs['client_civil_status']),
-            
+
         );
 
         $is_updated = $this->update($this->table, $form, "$this->pk = '$primary_id'");
@@ -267,6 +267,20 @@ class Clients extends Connection
         }
     }
 
+    public function initial_name($primary_id)
+    {
+        $result = $this->select($this->table, 'client_fname,client_mname,client_lname', "$this->pk = '$primary_id'");
+        if ($result->num_rows < 1)
+            return "---";
+        $row = $result->fetch_assoc();
+        $name = $row['client_lname'] . "," . $row['client_fname'];
+
+        if ($row['client_mname'] != '')
+            return $name . " " . $row['client_mname'][0] . ".";
+        return $name;
+    }
+
+
     public function delete_entry()
     {
         $id = $this->inputs['id'];
@@ -302,7 +316,7 @@ class Clients extends Connection
 
         );
 
-        return $this->insertIfNotExist("tbl_property_owned", $form, "property_location = '" . $property_location . "' AND $this->pk='".$this->inputs[$this->pk]."'");
+        return $this->insertIfNotExist("tbl_property_owned", $form, "property_location = '" . $property_location . "' AND $this->pk='" . $this->inputs[$this->pk] . "'");
     }
 
 
@@ -375,7 +389,7 @@ class Clients extends Connection
 
         );
 
-        return $this->insertIfNotExist("tbl_children", $form, "child_name = '" . $child_name . "' AND $this->pk='".$this->inputs[$this->pk]."'");
+        return $this->insertIfNotExist("tbl_children", $form, "child_name = '" . $child_name . "' AND $this->pk='" . $this->inputs[$this->pk] . "'");
     }
 
     public function idByFullname($fullname)
