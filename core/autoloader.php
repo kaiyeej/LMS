@@ -11,6 +11,7 @@ $classes = array(
     'Loans'                 => $pre_class . 'loans.php',
     'Insurance'             => $pre_class . 'insurance.php',
     'Collections'           => $pre_class . 'collections.php',
+    'MassCollections'       => $pre_class . 'masscollections.php',
     'Journals'              => $pre_class . 'journals.php',
     'ChartOfAccounts'       => $pre_class . 'chartofaccounts.php',
     'ReceivableLedger'      => $pre_class . 'receivableledger.php',
