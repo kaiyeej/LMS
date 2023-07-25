@@ -37,7 +37,7 @@
                   </div>
                   <input type="hidden" autocomplete="off" name="input[user_id]" class="form-control" id="hidden_id">
                   <div class="form-group col-sm-12">
-                    <button type="submit" style="float: right;" id="btn_submit" class="btn btn-primary me-2">Save</button>
+                    <button type="submit" style="float: right;" id="btn_submit" class="btn btn-primary me-2">Submit</button>
                   </div>
                 </div>
               </form>
@@ -65,7 +65,7 @@
                 <label for="exampleInputConfirmPassword1"><strong style="color:red;">*</strong> Confirm Password</label>
                 <input type="password" autocomplete="off" class="form-control input-pass" required id="confirm_password" name="input[confirm_password]" placeholder="Confirm Password">
               </div>
-              <button type="submit" style="float: right;" id="" class="btn btn-warning me-2">Save</button>
+              <button type="submit" style="float: right;" id="" class="btn btn-warning me-2">Submit</button>
             </form>
           </div>
         </div>

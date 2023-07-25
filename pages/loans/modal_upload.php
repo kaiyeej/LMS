@@ -28,7 +28,7 @@
                     <button type="button" class="btn btn-primary" id="btn_back" onclick="backToLoan()"><span
                             class="fa fa-arrow-left"></span> Back</button>
                     <button type="submit" id="btn_upload" class="btn btn-primary">
-                        Save
+                        Submit
                     </button>
                 </div>
             </div>

@@ -395,7 +395,7 @@ $User = new Users;
           }
 
           $("#btn_submit").prop('disabled', false);
-          $("#btn_submit").html("Save");
+          $("#btn_submit").html("Submit");
         },
         error: function(jqXHR, textStatus, errorThrown) {
           errorLogger('Error:', textStatus, errorThrown);

@@ -691,8 +691,7 @@
                                                     <div class="col-lg-12">
                                                         <button type="button" style="float: right;"
                                                             class="btn btn-icon icon-right btn-info"
-                                                            onclick="addProperty()">Add
-                                                            Entry</button>
+                                                            onclick="addProperty()">Submit</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -753,8 +752,7 @@
                                                     <div class="col-lg-12">
                                                         <button type="button" style="float: right;"
                                                             class="btn btn-icon icon-right btn-info"
-                                                            onclick="addChildren()">Add
-                                                            Entry</button>
+                                                            onclick="addChildren()">Submit</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -785,12 +783,12 @@
                     <div class="modal-footer bg-whitesmoke br">
                         <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" id="btn_submit" class="btn btn-primary">
-                        Save
+                        Submit
                     </button> -->
                         <button type="button" class="btn btn-icon icon-right btn-secondary" id="prevBtn"
                             onclick="nextPrev(-1)">Previous</button>
                         <button type="button" class="btn btn-icon icon-right btn-primary" id="nextBtn"
-                            onclick="nextPrev(1)">Save and
+                            onclick="nextPrev(1)">Submit and
                             continue </button>
                     </div>
                 </div>
@@ -815,9 +813,11 @@
         }
         if (n == (x.length - 1)) {
             document.getElementById("nextBtn").innerHTML = "Finish";
+            document.getElementById("nextBtn").onclick = function() {$("#modalEntry").modal("hide")};
         } else {
-            document.getElementById("nextBtn").innerHTML = "Save and continue";
+            document.getElementById("nextBtn").innerHTML = "Submit and continue";
         }
+
         fixStepIndicator(n)
     }
 
@@ -1151,6 +1151,7 @@
                     });
                 } else {
                     swal("Cancelled", "Entries are safe :)", "error");
+                     $("#btn_delete_" + id).html("<span class='fa fa-trash'></span>");
                 }
             });
     }

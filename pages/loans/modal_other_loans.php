@@ -122,7 +122,7 @@
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" id="btn_submit_renew" class="btn btn-primary">
-                        Add
+                        Submit
                     </button>
                 </div>
             </div>

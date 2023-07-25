@@ -117,7 +117,7 @@
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" id="btn_submit" class="btn btn-primary">
-                        Save
+                        Submit
                     </button>
                     <!-- <button type="button" onclick="deniedLoan()" id="btn_deny" class="btn btn-danger">
                         Deny

@@ -24,7 +24,7 @@
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" id="btn_import" class="btn btn-primary">
-                        Save
+                        Submit
                     </button>
                 </div>
             </div>

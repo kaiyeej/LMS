@@ -61,7 +61,7 @@
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" id="btn_submit2" class="btn btn-primary">
-                        Add
+                        Submit
                     </button>
                 </div>
 

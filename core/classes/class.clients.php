@@ -302,7 +302,7 @@ class Clients extends Connection
 
         );
 
-        return $this->insertIfNotExist("tbl_property_owned", $form, "property_location = '" . $property_location . "'");
+        return $this->insertIfNotExist("tbl_property_owned", $form, "property_location = '" . $property_location . "' AND $this->pk='".$this->inputs[$this->pk]."'");
     }
 
 

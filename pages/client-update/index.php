@@ -340,7 +340,7 @@
                                                 <div class="form-group col-lg-12">
                                                     <button type="submit" id="btn_submit_1" class="btn btn-primary"
                                                         style="float: right;">
-                                                        <span class="fa fa-check-circle"></span> Update Entry
+                                                        Submit
                                                     </button>
                                                 </div>
                                             </div>
@@ -543,7 +543,7 @@
                                                 <div class="form-group col-lg-12">
                                                     <button type="submit" id="btn_submit_2" class="btn btn-primary"
                                                         style="float: right;">
-                                                        <span class="fa fa-check-circle"></span> Update Entry
+                                                        Submit
                                                     </button>
                                                 </div>
                                             </div>
@@ -674,49 +674,45 @@
                                                 <div class="form-group col-lg-6">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><strong
-                                                                    style="color:red;">*&nbsp;</strong>Reference Name
+                                                            <span class="input-group-text">Reference Name
                                                                 2</span>
                                                         </div>
                                                         <input type="text" class="form-control input-item"
                                                             autocomplete="off" name="input[client_credit_ref_name2]"
-                                                            id="client_credit_ref_name2" required>
+                                                            id="client_credit_ref_name2">
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-lg-6">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><strong
-                                                                    style="color:red;">*&nbsp;</strong>Reference Address
+                                                            <span class="input-group-text">Reference Address
                                                                 2</span>
                                                         </div>
                                                         <input type="text" class="form-control input-item"
                                                             autocomplete="off" name="input[client_credit_ref_address2]"
-                                                            id="client_credit_ref_address2" required>
+                                                            id="client_credit_ref_address2">
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-lg-6">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><strong
-                                                                    style="color:red;">*&nbsp;</strong>Reference Name
+                                                            <span class="input-group-text">Reference Name
                                                                 3</span>
                                                         </div>
                                                         <input type="text" class="form-control input-item"
                                                             autocomplete="off" name="input[client_credit_ref_name3]"
-                                                            id="client_credit_ref_name3" required>
+                                                            id="client_credit_ref_name3">
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-lg-6">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><strong
-                                                                    style="color:red;">*&nbsp;</strong>Reference Address
+                                                            <span class="input-group-text">Reference Address
                                                                 3</span>
                                                         </div>
                                                         <input type="text" class="form-control input-item"
                                                             autocomplete="off" name="input[client_credit_ref_address3]"
-                                                            id="client_credit_ref_address3" required>
+                                                            id="client_credit_ref_address3">
                                                     </div>
                                                 </div>
                                             </div>
@@ -802,7 +798,7 @@
                                                                 Type</span>
                                                         </div>
                                                         <select class="form-control input-item" id="business_type"
-                                                            name="input[business_type]" required>
+                                                            name="input[business_type]">
                                                             <option value="">Please Select</option>
                                                             <option value="Sole">Sole</option>
                                                             <option value="Owner">Owner</option>
@@ -812,8 +808,8 @@
                                                 </div>
                                                 <div class="form-group col-lg-12">
                                                     <button type="submit" id="btn_submit_3" class="btn btn-primary"
-                                                        style="float: right;"><span class="fa fa-check-circle"></span>
-                                                        Update Entry
+                                                        style="float: right;">
+                                                        Submit
                                                     </button>
                                                 </div>
                                             </div>
@@ -1014,8 +1010,8 @@
                                                 </div>
                                                 <div class="form-group col-lg-12">
                                                     <button type="submit" id="btn_submit_4" class="btn btn-primary"
-                                                        style="float: right;"><span class="fa fa-check-circle"></span>
-                                                        Update Entry
+                                                        style="float: right;">
+                                                        Submit
                                                     </button>
                                                 </div>
                                             </div>
@@ -1091,8 +1087,7 @@
                                                         </div>
                                                         <div class="col-lg-12">
                                                             <button type="submit" style="float: right;"
-                                                                class="btn btn-icon icon-right btn-info">Add
-                                                                Entry</button>
+                                                                class="btn btn-icon icon-right btn-info">Submit</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1179,7 +1174,7 @@
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <button type="submit" style="float: right;"
-                                                            class="btn btn-icon icon-right btn-info">Add Entry</button>
+                                                            class="btn btn-icon icon-right btn-info">Submit</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -1262,7 +1257,7 @@
                     failed_query(json);
                 }
                 $("#btn_submit_1").prop('disabled', false);
-                $("#btn_submit_1").html("Update Entry");
+                $("#btn_submit_1").html("Submit");
             }
         });
     });
@@ -1287,7 +1282,7 @@
                     failed_query(json);
                 }
                 $("#btn_submit_2").prop('disabled', false);
-                $("#btn_submit_2").html("Update Entry");
+                $("#btn_submit_2").html("Submit");
             }
         });
     });
@@ -1312,7 +1307,7 @@
                     failed_query(json);
                 }
                 $("#btn_submit_3").prop('disabled', false);
-                $("#btn_submit_3").html("Update Entry");
+                $("#btn_submit_3").html("Submit");
             }
         });
     });
@@ -1337,7 +1332,7 @@
                     failed_query(json);
                 }
                 $("#btn_submit_4").prop('disabled', false);
-                $("#btn_submit_4").html("Update Entry");
+                $("#btn_submit_4").html("Submit");
             }
         });
     });
@@ -1521,6 +1516,7 @@
                     });
                 } else {
                     swal("Cancelled", "Entries are safe :)", "error");
+                    $("#btn_delete_" + id).html("<span class='fa fa-trash'></span>");
                 }
             });
     }
