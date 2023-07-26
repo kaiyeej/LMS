@@ -60,24 +60,28 @@
                     }
                 }
             },
-            "columns": [
-                {
-                    "data": "reference_number"
+            "columns": [{
+                    "mRender": function(data, type, row) {
+                        return "<center><button class='btn btn-sm btn-info' onclick='viewMassCollection(" + row.mass_collection_id + ")'><span class='fa fa-edit'></span></button></center>";
+                    }
                 },
                 {
                     "data": "reference_number"
                 },
                 {
-                    "data": "reference_number"
+                    "data": "branch"
                 },
                 {
-                    "data": "reference_number"
+                    "data": "loan_type"
                 },
                 {
-                    "data": "reference_number"
+                    "data": "bank"
                 },
                 {
-                    "data": "reference_number"
+                    "data": "collection_date"
+                },
+                {
+                    "data": "employer"
                 }
             ]
         });

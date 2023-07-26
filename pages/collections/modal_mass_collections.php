@@ -1,52 +1,43 @@
 <form id='frmMassCollection' method="POST">
     <div class="modal fade" id="modalMassCollection" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" id="import_dialog"
-            style="width: 100%;max-width: 2000px;margin: 0.5rem;">
+        <div class="modal-dialog" role="document" id="import_dialog" style="width: 100%;max-width: 2000px;margin: 0.5rem;">
             <div class="modal-content">
                 <div class="modal-header" id="mass-modal-header">
                     <h5 class="modal-title"><span class='ion-compose'></span> Add Mass Collection</h5>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" value="1" id="mass_collection_step">
-                    <div class="form-row w3-animate-left" id="mass_collection_step_1">
+                    <div class="form-row w3-animate-left">
                         <div class="form-group col-md-2">
                             <label><strong style="color:red;">*</strong> Branch</label>
-                            <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]"
-                                style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col-md-2">
                             <label><strong style="color:red;">*</strong> Loan Type</label>
-                            <select class="form-control select2 input-item" id="loan_type_id" name="input[loan_type_id]"
-                                style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="loan_type_id" name="input[loan_type_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col-md-2">
                             <label><strong style="color:red;">*</strong> Bank</label>
-                            <select class="form-control select2 input-item" id="mass_chart_id" name="input[chart_id]"
-                                style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="mass_chart_id" name="input[chart_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col-md-2">
                             <label><strong style="color:red;">*</strong> Collection Date</label>
-                            <input type="date" class="form-control input-item" autocomplete="off"
-                                name="input[collection_date]" id="collection_date" required>
+                            <input type="date" class="form-control input-item" autocomplete="off" name="input[collection_date]" id="collection_date" required>
                         </div>
                         <div class="form-group col-md-2">
                             <label><strong style="color:red;">*</strong> Employer</label>
-                            <select class="form-control select2 input-item" id="employer_id" name="input[employer_id]"
-                                style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="employer_id" name="input[employer_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col-md-1">
                             <label>ATM Charge</label>
-                            <input min="0" type="number" class="form-control input-item" autocomplete="off"
-                                name="input[atm_charge]" id="atm_charge">
+                            <input min="0" type="number" class="form-control input-item" autocomplete="off" name="input[atm_charge]" id="atm_charge">
                         </div>
                         <div class="form-group col-md-1">
                             <br />
-                            <button type="button" id="btn_mass_generate" onclick="mass_generate()"
-                                style="margin-top:10px;" class="btn btn-primary">
+                            <button type="submit" id="btn_mass_generate" style="margin-top:10px;" class="btn btn-primary">
                                 Generate
                             </button>
                         </div>
@@ -77,134 +68,86 @@
             var nextElement = activeElement.nextElementSibling;
 
             if (nextElement) {
-                nextElement.focus();
+                focusAndSelectText(nextElement);
                 event.preventDefault();
+            }
+
+            var last_row_element = activeElement.getAttribute("data-column");
+            if (last_row_element == 'atm_charge') {
+                var parentRow = activeElement.parentNode;
+                var nextRow = parentRow.nextElementSibling;
+                if (nextRow) {
+                    var next_row_column = nextRow.querySelector("td[data-column='receipt_number']");
+                    if (next_row_column) {
+                        focusAndSelectText(next_row_column);
+                        event.preventDefault();
+                    } else {
+                        focusFirstReceiptNumber();
+                    }
+                }
             }
         }
     });
 
+    function focusAndSelectText(myElement) {
+        // Set the focus on the element
+        myElement.focus();
+
+        // Select the text content of the element
+        if (document.body.createTextRange) { // For Internet Explorer
+            const range = document.body.createTextRange();
+            range.moveToElementText(myElement);
+            range.select();
+        } else if (window.getSelection) { // For modern browsers
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.selectNodeContents(myElement);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+    }
+
+    function focusFirstReceiptNumber() {
+        const data_column = document.querySelectorAll(`[data-column='receipt_number']`);
+        if (data_column.length > 0)
+            focusAndSelectText(data_column[0]);
+    }
+
     function addMassCollection() {
-        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);
-        getSelectOption('Employers', 'employer_id', 'employer_name');
-        $("#mass_chart_id").html($("#chart_id").html());
-        $("#mass_branch_id").html($("#branch_id").html());
+
+        resetMassCollection();
 
         $("#mass-modal-header").html(`<h5 class="modal-title"><span class='ion-compose'></span> Add Mass Collection</h5>`);
-        $("#mass_collection_step_1").show();
-        $("#mass_collection_step").val(1);
-        $("#loan_type_id").val("").select2().trigger('change');
-        document.getElementById("collection_date").value = "";
-        $("#company_code").val('');
-        $("#atm_charge").val('');
-        // $("#btn_mass_submit").html("<span class='fa fa-arrow-right'></span> Next");
-        $("#btn_mass_submit").hide();
-        $("#btn_mass_finish").hide();
 
-        $('#mass_collection_result_content').html("");
-        // $("#btn_mass_prev").hide();
-
-        // get_mass_collections();
-        // $("#modalMassCollection").modal('show');
         $('#modalMassCollection').modal({
             backdrop: 'static',
             keyboard: false
         }, 'show');
     }
 
-    function goStep1() {
-        $("#mass-modal-header").html(`<h5 class="modal-title"><span class='ion-compose'></span> Add Mass Collection</h5>`);
-        $("#mass_collection_step_1").show();
-        $("#mass_collection_step").val(1);
-        $("#btn_mass_submit").html("<span class='fa fa-arrow-right'></span> Next");
-        $('#mass_collection_result_content').html("");
-        // $("#btn_mass_prev").hide();
-    }
-
-    function mass_generate() {
-
-        // document.querySelector("#frmMassCollection").submit();
-        var branch_id = $("#mass_branch_id").val();
-        var loan_type_id = $("#loan_type_id").val();
-        var mass_chart_id = $("#mass_chart_id").val();
-        var collection_date = $("#collection_date").val();
-        var employer_id = $("#employer_id").val();
-        $('#frmMassCollection input:required').each(function() {
-            if ($(this).val() === '') {
-
-                swal("Ops!", "Fill out all required fields.", "warning");
-            } else {
-                $.ajax({
-                    type: "POST",
-                    url: "controllers/sql.php?c=MassCollections&q=initialize",
-                    data: $('#frmMassCollection').serialize(),
-                    success: function(data) {
-                        var jsonParse = JSON.parse(data);
-                        const json = jsonParse.data;
-                        mc_header_data = json.headers;
-                        get_mass_collections(json);
-                        $("#mass_collection_step").val(2);
-                        // $("#btn_mass_submit").html("<span class='fa fa-check-circle'></span> Save");
-                        $("#btn_mass_submit").show();
-                        // $("#mass_collection_step_1").hide();
-                        // $("#btn_mass_prev").show();
-                    }
-                });
-            }
-        });
-
-
-    }
-
     $('#frmMassCollection').submit(function(e) {
         e.preventDefault(); // Prevent form submission
 
         var formData = $(this).serialize();
-        var mass_collection_step = $("#mass_collection_step").val() * 1;
-        if (mass_collection_step == 1) {
-            $.ajax({
-                type: "POST",
-                url: "controllers/sql.php?c=MassCollections&q=initialize",
-                data: formData,
-                success: function(data) {
-                    var jsonParse = JSON.parse(data);
-                    const json = jsonParse.data;
-                    mc_header_data = json.headers;
-                    get_mass_collections(json);
-                    $("#mass_collection_step").val(2);
-                    // $("#btn_mass_submit").html("<span class='fa fa-check-circle'></span> Save");
-                    $("#btn_mass_submit").show();
-                    // $("#mass_collection_step_1").hide();
-                    // $("#btn_mass_prev").show();
-                }
-            });
-        } else {
-            if (mc_client_data.length > 0) {
-                if ($(".negative").length > 0) {
-                    swal("Cannot proceed!", "Negative values are found!", "warning");
-                } else {
-                    var form_mass_collection = mc_header_data;
-                    form_mass_collection.details = mc_client_data;
-                    $.ajax({
-                        type: "POST",
-                        url: "controllers/sql.php?c=" + route_settings.class_name + "&q=add_mass_collection",
-                        data: {
-                            input: form_mass_collection
-                        },
-                        success: function(data) {
-                            var jsonParse = JSON.parse(data);
-                            const json = jsonParse.data;
 
-                            $('#modalMassCollection').modal('hide');
-                            getEntries();
-                            success_add();
-                        }
-                    });
-                }
-            } else {
-                swal("Cannot proceed!", "No Entry found!", "warning");
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=MassCollections&q=initialize",
+            data: formData,
+            success: function(data) {
+                var jsonParse = JSON.parse(data);
+                const json = jsonParse.data;
+                mc_header_data = json.headers;
+                get_mass_collections(json);
+                // $("#mass_collection_step").val(2);
+                // // $("#btn_mass_submit").html("<span class='fa fa-check-circle'></span> Save");
+                // $("#btn_mass_submit").show();
+                // // $("#mass_collection_step_1").hide();
+                // // $("#btn_mass_prev").show();
             }
-        }
+        });
     });
+
 
     function saveMassCollection() {
         if (mc_client_data.length > 0) {
@@ -234,58 +177,104 @@
         }
     }
 
+    function resetMassCollection() {
+        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);
+        getSelectOption('Employers', 'employer_id', 'employer_name');
+        $("#mass_chart_id").html($("#chart_id").html());
+        $("#mass_branch_id").html($("#branch_id").html());
+
+        $('#mass_collection_result_content').html(`<div style='width:100%' class='w3-animate-left'>
+            <table id="tbl_mass_collection">
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th class='w-8'>Receipt #</th>
+                <th class='w-8'>ATM Balance Before Withdrawal</th>
+                <th class='w-8'>ATM Withdrawal</th>
+                <th class='w-8'>Deduction</th>
+                <th class='w-8'>Emergency Loan</th>
+                <th class='w-8'>ATM Charge</th>
+                <th class='w-8'>ATM Balance</th>
+                <th class='w-8'>Excess</th>
+                <th>Account Number</th>
+                <th>Status</th>
+              </tr>
+              <tr>
+                <th colspan="3" class="end">TOTAL:</th>
+                <th id="mc_total_2" class="right"></th>
+                <th id="mc_total_3" class="right"></th>
+                <th id="mc_total_4" class="right"></th>
+                <th id="mc_total_5" class="right"></th>
+                <th id="mc_total_6" class="right"></th>
+                <th id="mc_total_7" class="right"></th>
+                <th id="mc_total_8" class="right"></th>
+                <th></th>
+                <th></th>
+              </tr>
+        </table>`);
+    }
+
     function get_mass_collections(json) {
-        // $("#mass-modal-header").html(`
-        // <div class='col-md-12 row' style="color:#0a0a0a;">
-        //     <div class='col-md-2'>
-        //         <img src="./assets/img/logo2.png" alt="logo" width="90%">
-        //     </div>
-        //     <div class='col-md-10'>
-        //         <span>BRANCH: <b>${json.headers.branch_name}</b></span><br>
-        //         <span>LOAN TYPE: <b>${json.headers.loan_name}</b></span><br>
-        //         <span>BANK: <b>${json.headers.chart_name}</b></span><br>
-        //         <span>COLLECTION DATE: <b>${json.headers.collection_date_label}</b></span><br>
-        //         <span>EMPLOYER: <b>${json.headers.employer_name}</b></span><br>
-        //     </div>
-        // </div>`);
         var client_tds = "";
         mc_client_data = [];
+
+        var total_atm_balance_before_withdraw = 0,
+            total_atm_withdrawal = 0,
+            total_deduction = 0,
+            total_emergency_loan = 0,
+            total_atm_charge = 0,
+            total_atm_balance = 0,
+            total_excess = 0;
         for (var clientIndex = 0; clientIndex < json.clients.length; clientIndex++) {
             const client = json.clients[clientIndex];
 
+            var receipt_number = client.receipt_number;
+            var atm_balance_before_withdraw = 0;
+            var atm_withdrawal = 0;
             var deduction = client.monthly_payment * 1;
+            var emergency_loan = 0;
             var atm_charge = client.atm_charge * 1;
-            var excess = 0 - deduction - 0 - atm_charge;
+            var atm_balance = 0;
+            var excess = atm_withdrawal - deduction - emergency_loan - atm_charge;
+            var atm_account_no = client.atm_account_no;
             var nega_excess = excess < 0 ? "negative" : "";
 
             var client_data = {
                 client_id: client.client_id * 1,
                 loan_id: client.loan_id * 1,
-                atm_balance_before_withdraw: 0,
-                atm_withdrawal: 0,
+                atm_balance_before_withdraw: atm_balance_before_withdraw,
+                atm_withdrawal: atm_withdrawal,
                 deduction: deduction,
-                emergency_loan: 0,
+                emergency_loan: emergency_loan,
                 atm_charge: atm_charge,
                 atm_balance: 0,
                 excess: excess,
-                receipt_number: client.receipt_number,
-                atm_account_no: client.atm_account_no
+                receipt_number: receipt_number,
+                atm_account_no: atm_account_no
             };
+
+            total_atm_balance_before_withdraw += atm_balance_before_withdraw;
+            total_atm_withdrawal += atm_withdrawal;
+            total_deduction += deduction;
+            total_emergency_loan += emergency_loan;
+            total_atm_charge += atm_charge;
+            total_atm_balance += atm_balance;
+            total_excess += excess;
+
             mc_client_data.push(client_data);
-            client_tds += `<tr>
+            client_tds += `<tr data-client-index='${clientIndex}'>
                 <td>${clientIndex + 1}</td>
                 <td>${client.client_name}</td>
-                <td onblur="balanceComputer(${clientIndex})" id="mc1_${clientIndex}" contenteditable="true" class='right mc_1'></td>
-
-                <td onblur="solveCollection(this,${clientIndex},2)" id="mc2_${clientIndex}" contenteditable="true" class='right mc_2'></td>
-                <td onblur="solveCollection(this,${clientIndex},3)" id="mc3_${clientIndex}" contenteditable="true" class='right mc_3'></td>
-                <td onblur="solveCollection(this,${clientIndex},4)" id="mc4_${clientIndex}" contenteditable="true" class='right mc_4'>${numberFormat(client.monthly_payment)}</td>
-                <td onblur="solveCollection(this,${clientIndex},5)" id="mc5_${clientIndex}" contenteditable="true" class='right mc_5'></td>
-                <td onblur="solveCollection(this,${clientIndex},6)" id="mc6_${clientIndex}" contenteditable="true" class='right mc_6'>${numberFormat(client.atm_charge)}</td>
-                <td id="mc7_${clientIndex}" class='right mc_7'></td>
-                <td id="mc8_${clientIndex}" class='right mc_8 ${nega_excess}'>${numberFormat(excess)}</td>
-                <td id="mc9_${clientIndex}" class='center'>${client.atm_account_no}</td>
-                <td id="mc10_${clientIndex}" class='center'>${client.status_display}</td>
+                <td data-column='receipt_number' onblur="editCollectionCell(this,false)" contenteditable="true" class='right'>${receipt_number}</td>
+                <td data-column='atm_balance_before_withdraw' onblur="editCollectionCell(this)" contenteditable="true" class='right'>${numberFormatClearZero(atm_balance_before_withdraw)}</td>
+                <td data-column='atm_withdrawal' onblur="editCollectionCell(this)" contenteditable="true" class='right'>${numberFormatClearZero(atm_withdrawal)}</td>
+                <td data-column='deduction' onblur="editCollectionCell(this)" contenteditable="true" class='right'>${numberFormatClearZero(deduction)}</td>
+                <td data-column='emergency_loan' onblur="editCollectionCell(this)" contenteditable="true" class='right'>${numberFormatClearZero(emergency_loan)}</td>
+                <td data-column='atm_charge' onblur="editCollectionCell(this)" contenteditable="true" class='right'>${numberFormatClearZero(atm_charge)}</td>
+                <td data-column='atm_balance' class='right'>${numberFormatClearZero(atm_balance)}</td>
+                <td data-column='excess' class='right ${nega_excess}'>${numberFormatClearZero(excess)}</td>
+                <td data-column='atm_account_no' class='center'>${atm_account_no}</td>
+                <td data-column='status_display' class='center'>${client.status_display}</td>
               </tr>`;
         }
         $('#mass_collection_result_content').html(`<div style='width:100%' class='w3-animate-left'>
@@ -306,14 +295,14 @@
               </tr>
               ${client_tds}
               <tr>
-                <th colspan="3">TOTAL</th>
-                <th id="mc_total_2" class="right"></th>
-                <th id="mc_total_3" class="right"></th>
-                <th id="mc_total_4" class="right"></th>
-                <th id="mc_total_5" class="right"></th>
-                <th id="mc_total_6" class="right"></th>
-                <th id="mc_total_7" class="right"></th>
-                <th id="mc_total_8" class="right"></th>
+                <th colspan="3" class="end">TOTAL:</th>
+                <th data-column='total_atm_balance_before_withdraw' class="right">${numberFormat(total_atm_balance_before_withdraw)}</th>
+                <th data-column='total_atm_withdrawal' class="right">${numberFormat(total_atm_withdrawal)}</th>
+                <th data-column='total_deduction' class="right">${numberFormat(total_deduction)}</th>
+                <th data-column='total_emergency_loan' class="right">${numberFormat(total_emergency_loan)}</th>
+                <th data-column='total_atm_charge' class="right">${numberFormat(total_atm_charge)}</th>
+                <th data-column='total_atm_balance' class="right">${numberFormat(total_atm_balance)}</th>
+                <th data-column='total_excess' class="right">${numberFormat(total_excess)}</th>
                 <th></th>
                 <th></th>
               </tr>
@@ -329,80 +318,86 @@
             </div>
         </div>
         </div>`);
-        totalComputer(7);
-        totalComputer(8);
+        focusFirstReceiptNumber();
     }
 
-    function solveCollection(ele, client_id, type) {
-        var str = ele.innerHTML;
-        var num = parseFloat(str.replaceAll(",", ""));
-
-        formated_num = numberFormat(num);
-        ele.innerHTML = formated_num == "NaN" ? '' : formated_num;
-        totalComputer(type);
-        balanceComputer(client_id);
-    }
-
-    function totalComputer(type) {
-        var elements = document.getElementsByClassName("mc_" + type);
-        var total_amount = 0;
-        // Loop through the collection of elements
-        for (var i = 0; i < elements.length; i++) {
-            var element = elements[i];
-            var number = parseFloat(element.innerHTML.replaceAll(",", ""));
-            number = number ? number : 0;
-            total_amount += number;
-        }
-        $("#mc_total_" + type).html(numberFormat(total_amount));
-    }
-
-    function balanceComputer(client_id) {
-        var receipt_number = $("#mc1_" + client_id).html();//stringToNum(client_id, 1);
-        mc_client_data[client_id].receipt_number = receipt_number;
-
-        var atm_balance_before = stringToNum(client_id, 2);
-        mc_client_data[client_id].atm_balance_before_withdraw = atm_balance_before;
-
-        var atm_withdrawal = stringToNum(client_id, 3);
-        mc_client_data[client_id].atm_withdrawal = atm_withdrawal;
-
-        var deduction = stringToNum(client_id, 4);
-        mc_client_data[client_id].deduction = deduction;
-
-        var emergency_loan = stringToNum(client_id, 5)
-        mc_client_data[client_id].emergency_loan = emergency_loan;
-
-        var atm_charge = stringToNum(client_id, 6)
-        mc_client_data[client_id].atm_charge = atm_charge;
-
-        var atm_balance = atm_balance_before - atm_withdrawal;
-        mc_client_data[client_id].atm_balance = atm_balance;
-        var formated_num = numberFormat(atm_balance);
-        $("#mc7_" + client_id).html(formated_num);
-        if (atm_balance < 0) {
-            $("#mc7_" + client_id).addClass("negative");
+    function editCollectionCell(el, is_number = true) {
+        var str = el.innerHTML;
+        if (is_number) {
+            var replace_number = parseFloat(str.replaceAll(",", ""));
+            var actual_data = replace_number ? replace_number : 0;
+            el.innerHTML = numberFormatClearZero(actual_data);
         } else {
-            $("#mc7_" + client_id).removeClass("negative");
+            el.innerHTML = str;
+            var actual_data = str;
         }
-        totalComputer(7);
 
+        var column = el.getAttribute("data-column");
+        var client_index = el.parentNode.getAttribute("data-client-index");
+
+        mc_client_data[client_index][column] = actual_data;
+
+        if (is_number) {
+            totalSolvers(column);
+            collectionSolvers(el, client_index);
+        }
+    }
+
+    function totalSolvers(column) {
+        // Get all elements with the attribute data-column='excess'
+        const data_column = document.querySelectorAll(`[data-column='${column}']`);
+
+        // Loop through the NodeList and perform actions on each element
+        var total_value = 0;
+        for (let i = 0; i < data_column.length; i++) {
+            const element = data_column[i];
+
+            var str = element.innerHTML;
+            var replace_number = parseFloat(str.replaceAll(",", ""));
+            var actual_data = replace_number ? replace_number : 0;
+
+            total_value += actual_data;
+        }
+        const total_data_column = document.querySelector(`[data-column='total_${column}']`);
+        total_data_column.innerHTML = numberFormatClearZero(total_value);
+    }
+
+    function collectionSolvers(el, client_index) {
+        var atm_balance_before_withdraw = mc_client_data[client_index].atm_balance_before_withdraw * 1;
+        var atm_withdrawal = mc_client_data[client_index].atm_withdrawal * 1;
+        var deduction = mc_client_data[client_index].deduction * 1;
+        var emergency_loan = mc_client_data[client_index].emergency_loan * 1;
+        var atm_charge = mc_client_data[client_index].atm_charge * 1;
+
+        var atm_balance = atm_balance_before_withdraw - atm_withdrawal;
         var excess = atm_withdrawal - deduction - emergency_loan - atm_charge;
-        mc_client_data[client_id].excess = excess;
-        var formated_num = numberFormat(excess);
-        $("#mc8_" + client_id).html(formated_num);
-        if (excess < 0) {
-            $("#mc8_" + client_id).addClass("negative");
-        } else {
-            $("#mc8_" + client_id).removeClass("negative");
-        }
-        totalComputer(8);
 
+        // Find the sibling td elements with data-column='excess' within the same row
+        const excess_column = el.parentNode.querySelector("td[data-column='excess']");
+        excess_column.innerHTML = numberFormat(excess);
+        negativeIdentifier(excess_column, excess);
+        totalSolvers('excess');
+
+        const atm_balance_column = el.parentNode.querySelector("td[data-column='atm_balance']");
+        atm_balance_column.innerHTML = numberFormat(atm_balance);
+        negativeIdentifier(atm_balance_column, atm_balance);
+        totalSolvers('atm_balance');
     }
 
-    function stringToNum(client_id, num) {
-        var str = $("#mc" + num + "_" + client_id).html();
-        var number = parseFloat(str.replaceAll(",", ""));
-        return number ? number : 0;
+    function negativeIdentifier(el, value) {
+        if (value > 0) {
+            el.classList.remove('negative');
+        } else {
+            el.classList.add('negative');
+        }
+    }
+
+    function numberFormatClearZero(y, n = 2) {
+        y = y * 1;
+        if (y == 0)
+            return '';
+        x = y.toFixed(n);
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
     function numberFormat(y, n = 2) {
@@ -461,6 +456,12 @@
     .center {
         text-align: center !important;
     }
+
+    .end {
+        text-align: end !important;
+    }
+
+
 
     .negative {
         background: red;

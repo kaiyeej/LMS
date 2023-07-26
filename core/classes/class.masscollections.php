@@ -33,10 +33,19 @@ class MassCollections extends Connection
 
     public function show()
     {
+        $Branches = new Branches;
+        $LoanTypes = new LoanTypes;
+        $ChartOfAccounts = new ChartOfAccounts;
+        $Employers = new Employers;
+
         $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
         $rows = array();
         $result = $this->select($this->table, '*', $param);
         while ($row = $result->fetch_assoc()) {
+            $row['branch'] = $Branches->name($row['branch_id']);
+            $row['loan_type'] = $LoanTypes->name($row['loan_type_id']);
+            $row['bank'] = $ChartOfAccounts->name($row['chart_id']);
+            $row['employer'] = $Employers->name($row['employer_id']);
             $rows[] = $row;
         }
         return $rows;
@@ -73,6 +82,7 @@ class MassCollections extends Connection
             $row['atm_account_no'] = $ClientAtm->name($row['client_id']);
             $row['monthly_payment'] = $monthly_payment_display;
             $row['status_display'] = $status_display;
+            $row['receipt_number'] = "";
             $rows[] = $row;
         }
         $response['clients'] = $rows;
