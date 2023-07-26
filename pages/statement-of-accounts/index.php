@@ -147,7 +147,7 @@
     }
 
     $(document).ready(function() {
-        getSelectOption('Clients', 'client_id', 'client_fullname', '', ['client_fullname']);
-
+        // getSelectOption('Clients', 'client_id', 'client_fullname', '', ['client_fullname']);
+        getSelectOption('Clients', 'client_id', 'client_fullname');
     });
 </script>
