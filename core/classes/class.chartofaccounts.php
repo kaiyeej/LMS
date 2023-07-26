@@ -47,12 +47,12 @@ class ChartOfAccounts extends Connection
         );
 
         $query =  $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");
-        if($query){
+        if ($query) {
             if ($this->inputs['chart_type'] == "M") {
                 $form_ = array(
                     'chart_class_id'    => $this->clean($this->inputs['chart_class_id'])
                 );
-        
+
                 $this->update($this->table, $form_, "main_chart_id = '$primary_id' AND chart_type='S'");
             }
         }
@@ -67,9 +67,9 @@ class ChartOfAccounts extends Connection
         $ChartClassification = new ChartClassification;
         $result = $this->select($this->table, '*', $param);
         while ($row = $result->fetch_assoc()) {
-            $main_chart_id  = $row['chart_type'] == "M"?"":$row['main_chart_id'];
+            $main_chart_id  = $row['chart_type'] == "M" ? "" : $row['main_chart_id'];
             $chart_type     = $row['chart_type'] == "M" ? "Main" : "Sub";
-            
+
             $row['type'] = $chart_type;
             $row['main_chart'] = $this->name($main_chart_id);
             $row['main_chart_id'] = $row['chart_id'];
@@ -160,11 +160,10 @@ class ChartOfAccounts extends Connection
                     <tbody>' . $td_jl;
 
         $tfoot = "<td></td>";
-        $result = $this->select($this->table, '*');
+        $result = $this->select($this->table, '*', "chart_type ='M'");
         while ($row = $result->fetch_assoc()) {
 
-            $sub = $row['chart_type'] == "S" ? "&emsp; <i class='fas fa-arrow-right'></i> " : "";
-            $chart_name = $sub . $row['chart_name'];
+            $chart_name = $row['chart_name'];
             $td_ = "<tr><td style=''>" . $chart_name . "</td>";
             $fetchJournals = $this->select('tbl_journals', '*');
             $total_debit = 0;
@@ -187,10 +186,43 @@ class ChartOfAccounts extends Connection
                 $total_debit += $JL['total_debit'];
                 $total_credit += $JL['total_credit'];
             }
+
             $net_movement = $total_debit - $total_credit;
             $unadjusted_movement = $total_bb - $net_movement;
             $td_ .= "<td style='text-align:right;'>" . $net_movement . "</td><td style='text-align:right;'>" . $unadjusted_movement . "</td></tr>";
             $data .= $td_;
+
+            $fetchSub = $this->select($this->table, '*', "chart_type ='S' AND main_chart_id='$row[chart_id]'");
+            while ($subRow = $fetchSub->fetch_assoc()) {
+                $chart_name = "&emsp; <i class='fas fa-arrow-right'></i> " . $subRow['chart_name'];
+                $td_ = "<tr><td style=''>" . $chart_name . "</td>";
+                $fetchJournals = $this->select('tbl_journals', '*');
+                $total_debit = 0;
+                $total_credit = 0;
+                $total_bb = 0;
+                while ($jlRow = $fetchJournals->fetch_assoc()) {
+                    $JL = $JournalEntry->total_per_chart($start_date, $end_date, $subRow['chart_id'], $jlRow['journal_id']);
+                    $debit = $JL['total_debit'] > 0 ? number_format($JL['total_debit'], 2) : "";
+                    $credit = $JL['total_credit'] > 0 ? number_format($JL['total_credit'], 2) : "";
+
+                    if ($jlRow['journal_name'] == "Beginning Balance") {
+                        $bb_total = $JL['total_debit'] - $JL['total_credit'];
+                        $total_bb = $bb_total;
+
+                        $td_ .= "<td style='text-align:right;'>" . number_format($bb_total, 2) . "</td>";
+                    } else {
+                        $td_ .= "<td style='text-align:right;'>" . $debit . "</td><td style='text-align:right;'>" . $credit . "</td>";
+                    }
+
+                    $total_debit += $JL['total_debit'];
+                    $total_credit += $JL['total_credit'];
+                }
+
+                $net_movement = $total_debit - $total_credit;
+                $unadjusted_movement = $total_bb - $net_movement;
+                $td_ .= "<td style='text-align:right;'>" . $net_movement . "</td><td style='text-align:right;'>" . $unadjusted_movement . "</td></tr>";
+                $data .= $td_;
+            }
         }
 
 
