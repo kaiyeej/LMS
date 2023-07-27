@@ -54,8 +54,25 @@ class ClientInsurance extends Connection
     {
         $client_id = $this->inputs['client_id'];
         $result = $this->select($this->table, "*", "client_id = '$client_id'");
-        $row = $result->fetch_assoc();
+        if ($result->num_rows < 1)
+            return array(
+                'insurance_id'                      => '',
+                'insurance_amount'                  => '',
+                'insurance_maturity'                => '',
+                'insurance_bank_transaction'        => '',
+                'insurance_unpaid_obligation'       => '',
+                'insurance_salary_withdrawal'       => '',
+                'paymaster_name'                    => '',
+                'paymaster_address'                 => '',
+                'paymaster_res_cert_no'             => '',
+                'paymaster_res_cert_issued_at'      => '',
+                'paymaster_res_cert_date'           => '',
+                'paymaster_deduct_salary'           => '',
+                'paymaster_client_deduct_salary'    => '',
+                'paymaster_conformity'              => '',
+            );
 
+        $row = $result->fetch_assoc();
         $Insurance = new Insurance;
         $row['insurance'] = $Insurance->name($row['insurance_id']);
         return $row;

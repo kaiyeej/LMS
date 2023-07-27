@@ -30,6 +30,12 @@ class ClientAtm extends Connection
     {
         $client_id = $this->inputs['client_id'];
         $result = $this->select($this->table, "*", "client_id = '$client_id'");
+        if ($result->num_rows < 1)
+            return array(
+                'atm_account_no'    => '',
+                'atm_bank'          => '',
+            );
+
         $row = $result->fetch_assoc();
         return $row;
     }

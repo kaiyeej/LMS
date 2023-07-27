@@ -34,6 +34,15 @@ class ClientDependent extends Connection
     {
         $client_id = $this->inputs['client_id'];
         $result = $this->select($this->table, "*", "client_id = '$client_id'");
+        if ($result->num_rows < 1)
+            return array(
+                'no_of_children'    => 0,
+                'dep_no_of_child'   => 0,
+                'dep_college'       => 0,
+                'dep_hs'            => 0,
+                'dep_elem'          => 0,
+            );
+
         $row = $result->fetch_assoc();
         return $row;
     }

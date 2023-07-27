@@ -35,6 +35,15 @@ class ClientResidence extends Connection
     {
         $client_id = $this->inputs['client_id'];
         $result = $this->select($this->table, "*", "client_id = '$client_id'");
+        if ($result->num_rows < 1)
+            return array(
+                'client_id'                 => $client_id,
+                'residence'                 => '',
+                'residence_status'          => '',
+                'residence_certificate_no'  => '',
+                'certificate_issued_at'     => '',
+                'certificate_date'          => '',
+            );
         $row = $result->fetch_assoc();
         return $row;
     }

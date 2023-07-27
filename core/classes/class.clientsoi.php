@@ -36,6 +36,15 @@ class ClientSoi extends Connection
     {
         $client_id = $this->inputs['client_id'];
         $result = $this->select($this->table, "*", "client_id = '$client_id'");
+        if ($result->num_rows < 1)
+            return array(
+                'soi_name'          => '',
+                'soi_by'            => '',
+                'soi_monthly'       => 0,
+                'soi_total'         => 0,
+                'soi_obligation'    => 0,
+            );
+
         $row = $result->fetch_assoc();
         return $row;
     }

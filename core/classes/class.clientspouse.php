@@ -52,6 +52,24 @@ class ClientSpouse extends Connection
     {
         $client_id = $this->inputs['client_id'];
         $result = $this->select($this->table, "*", "client_id = '$client_id'");
+
+        if ($result->num_rows < 1)
+            return array(
+                'spouse_name'               => '',
+                'spouse_residence'          => '',
+                'spouse_res_cert_no'        => '',
+                'spouse_res_cert_issued_at' => '',
+                'spouse_res_cert_date'      => '',
+                'spouse_employer'           => '',
+                'spouse_employer_address'   => '',
+                'spouse_employer_contact'   => '',
+                'spouse_employment_position' => '',
+                'spouse_employment_status'  => '',
+                'spouse_employment_length'  => '',
+                'spouse_employment_income'  => '',
+                'spouse_last_employment'    => '',
+            );
+
         $row = $result->fetch_assoc();
         return $row;
     }
