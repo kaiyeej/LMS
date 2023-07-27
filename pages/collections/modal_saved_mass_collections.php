@@ -5,28 +5,21 @@
                 <h5 class="modal-title"><span class='ion-compose'></span> View Saved Mass Collection</h5>
             </div>
             <div class="modal-body">
-                <div class="row section">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table id="dt_saved_mass" class="table table-striped">
-                                        <thead class="">
-                                            <tr>
-                                                <th></th>
-                                                <th>Reference #</th>
-                                                <th>Branch</th>
-                                                <th>Loan Type</th>
-                                                <th>Bank</th>
-                                                <th>Collection Date</th>
-                                                <th>Employer</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="row">
+                    <table id="dt_saved_mass" class="table table-striped" style="width: 100%;">
+                        <thead class="">
+                            <tr>
+                                <th></th>
+                                <th>Reference #</th>
+                                <th>Branch</th>
+                                <th>Loan Type</th>
+                                <th>Bank</th>
+                                <th>Collection Date</th>
+                                <th>Employer</th>
+                                <th>Prepared By</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
             <div class="modal-footer bg-whitesmoke br">
@@ -61,28 +54,31 @@
                 }
             },
             "columns": [{
-                    "mRender": function(data, type, row) {
-                        return "<center><button class='btn btn-sm btn-info' onclick='viewMassCollection(" + row.mass_collection_id + ")'><span class='fa fa-edit'></span></button></center>";
-                    }
-                },
-                {
-                    "data": "reference_number"
-                },
-                {
-                    "data": "branch"
-                },
-                {
-                    "data": "loan_type"
-                },
-                {
-                    "data": "bank"
-                },
-                {
-                    "data": "collection_date"
-                },
-                {
-                    "data": "employer"
+                "mRender": function(data, type, row) {
+                    return "<center><button class='btn btn-sm btn-info' onclick='viewMassCollection(" + row.mass_collection_id + ")'><span class='fa fa-edit'></span></button></center>";
                 }
+            },
+            {
+                "data": "reference_number"
+            },
+            {
+                "data": "branch"
+            },
+            {
+                "data": "loan_type"
+            },
+            {
+                "data": "bank"
+            },
+            {
+                "data": "collection_date"
+            },
+            {
+                "data": "employer"
+            },
+            {
+                "data": "prepared"
+            }
             ]
         });
     }

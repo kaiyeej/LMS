@@ -37,6 +37,7 @@ class MassCollections extends Connection
         $LoanTypes = new LoanTypes;
         $ChartOfAccounts = new ChartOfAccounts;
         $Employers = new Employers;
+        $Users = new Users;
 
         $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
         $rows = array();
@@ -46,6 +47,7 @@ class MassCollections extends Connection
             $row['loan_type'] = $LoanTypes->name($row['loan_type_id']);
             $row['bank'] = $ChartOfAccounts->name($row['chart_id']);
             $row['employer'] = $Employers->name($row['employer_id']);
+            $row['prepared'] = $Users->name($row['prepared_by']);
             $rows[] = $row;
         }
         return $rows;
@@ -70,19 +72,18 @@ class MassCollections extends Connection
         $result = $this->select("tbl_clients AS c, tbl_client_employment AS e,tbl_loans AS l", 'l.*', "c.client_id = e.client_id AND c.client_id = l.client_id AND c.branch_id = '$branch_id' AND e.employer_id = '$employer_id' AND l.loan_type_id = '$loan_type_id' AND l.status = 'R'");
         while ($row = $result->fetch_assoc()) {
 
-            //get status
-            $ondate_ref_number = "CL-" . date("Ymd") . $row['loan_id'];
-            $count_collection_on_date = $this->select($this->table_collections, "loan_id", "$this->name = '$ondate_ref_number'");
-            $count_collection = $count_collection_on_date->num_rows;
-            $status_display = $count_collection > 0 ? "Paid by Date" : "";
-            $monthly_payment_display = $count_collection > 0 ? "" : $row['monthly_payment'];
-
             $row['client_name'] = $Clients->initial_name($row['client_id']);
-            $row['atm_charge'] = $atm_charge;
-            $row['atm_account_no'] = $ClientAtm->name($row['client_id']);
-            $row['monthly_payment'] = $monthly_payment_display;
-            $row['status_display'] = $status_display;
             $row['receipt_number'] = "";
+            $row['old_atm_balance'] = 0;
+            $row['atm_withdrawal'] = 0;
+            $row['deduction'] = $row['monthly_payment'];
+            $row['emergency_loan'] = 0;
+            $row['atm_charge'] = $atm_charge;
+            $row['atm_balance'] = 0;
+            $row['excess'] = 0;
+            $row['atm_account_no'] = $ClientAtm->name($row['client_id']);
+            $row['is_included'] = 1;
+
             $rows[] = $row;
         }
         $response['clients'] = $rows;
@@ -108,31 +109,78 @@ class MassCollections extends Connection
 
     public function save_collections()
     {
-        $this->inputs['reference_number'] = $this->generate();
-        $mass_collection_id = $this->add();
+        try {
+            $this->check();
+            $this->begin_transaction();
 
-        $details = $this->inputs['details'];
+            $this->inputs['reference_number'] = $this->generate();
+            $mass_collection_id = $this->add();
 
-        foreach ($details as $row) {
-            $form_detail = [
-                'mass_collection_id'    => $mass_collection_id,
-                'client_id'             => $row['client_id'],
-                'loan_id'               => $row['loan_id'],
-                'receipt_number'        => $row['receipt_number'],
-                'old_atm_balance'       => $row['atm_balance_before_withdraw'],
-                'atm_withdrawal'        => $row['atm_withdrawal'],
-                'deduction'             => $row['deduction'],
-                'emergency_loan'        => $row['emergency_loan'],
-                'atm_charge'            => $row['atm_charge'],
-                'atm_balance'           => $row['atm_balance'],
-                'excess'                => $row['excess'],
-                'atm_account_no'        => $row['atm_account_no']
+            if ($mass_collection_id < 1)
+                throw new Exception($mass_collection_id);
+
+            $details = $this->inputs['details'];
+
+            foreach ($details as $row) {
+                $form_detail = [
+                    'mass_collection_id'    => $mass_collection_id,
+                    'client_id'             => $row['client_id'],
+                    'loan_id'               => $row['loan_id'],
+                    'receipt_number'        => $row['receipt_number'],
+                    'old_atm_balance'       => $row['old_atm_balance'],
+                    'atm_withdrawal'        => $row['atm_withdrawal'],
+                    'deduction'             => $row['deduction'],
+                    'emergency_loan'        => $row['emergency_loan'],
+                    'atm_charge'            => $row['atm_charge'],
+                    'atm_balance'           => $row['atm_balance'],
+                    'excess'                => $row['excess'],
+                    'atm_account_no'        => $row['atm_account_no'],
+                    'is_included'           => $row['is_included']
+                ];
+
+                $is_inserted = $this->insert($this->table_detail, $form_detail);
+                if ($is_inserted != 1)
+                    throw new Exception($is_inserted);
+            }
+            $this->commit();
+            return [
+                'status' => 'success',
+                'data' => $mass_collection_id
             ];
-
-            $this->insert($this->table_detail, $form_detail);
+        } catch (Exception $e) {
+            $this->rollback();
+            Logs::error("MassCollections->save_collections", "Mass Collection", $e->getMessage());
+            return [
+                'status' => 'failed',
+                'error' => $e->getMessage()
+            ];
         }
+    }
 
-        return $mass_collection_id;
+    public function view_saved()
+    {
+        $mass_collection_id = $this->inputs['id'];
+
+        $Clients = new Clients;
+
+        $rows = array();
+        $result = $this->select($this->table_detail, "*", "mass_collection_id = '$mass_collection_id'");
+        while ($row = $result->fetch_assoc()) {
+            $row['client_name'] = $Clients->initial_name($row['client_id']);
+            $row['status_display'] = "";
+            $rows[] = $row;
+        }
+        $response['clients'] = $rows;
+
+        $response['headers'] = $this->view();
+        return $response;
+    }
+
+    public function view()
+    {
+        $primary_id = $this->inputs['id'];
+        $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
+        return $result->fetch_assoc();
     }
 
     public function generate()
@@ -187,6 +235,7 @@ class MassCollections extends Connection
                     $this->metadata('atm_balance', 'decimal', '12,4'),
                     $this->metadata('excess', 'decimal', '12,4'),
                     $this->metadata('atm_account_no', 'varchar', 50),
+                    $this->metadata('is_included', 'int', 1),
                     $default['date_added'],
                     $default['date_last_modified']
                 )

@@ -25,6 +25,28 @@ class Connection
         }
     }
 
+    public function check()
+    {
+        if ($this->mysqli->connect_errno) {
+            throw new Exception('Failed to connect to MySQL: ' . $this->mysqli->connect_error);
+        }
+    }
+
+    public function begin_transaction()
+    {
+        $this->mysqli->begin_transaction();
+    }
+
+    public function commit()
+    {
+        $this->mysqli->commit();
+    }
+
+    public function rollback()
+    {
+        $this->mysqli->rollback();
+    }
+
     public function insert($table, $para = array(), $last_id = 'N')
     {
         $table_columns = implode(',', array_keys($para));
@@ -32,10 +54,9 @@ class Connection
 
         $sql = "INSERT INTO $table($table_columns) VALUES('$table_value')";
 
-        $result = $this->mysqli->query($sql) or die($this->mysqli->error);
-        $lastId = $this->mysqli->insert_id;
-        $ret_ = ($last_id == 'Y') ? $lastId : 1;
-        return $result ? $ret_ : 0;
+        if ($this->mysqli->query($sql) === TRUE)
+            return ($last_id == 'Y') ? $this->mysqli->insert_id : 1;
+        return $this->mysqli->error;
     }
 
     public function insert_logs($remarks)
