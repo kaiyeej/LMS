@@ -195,7 +195,6 @@ class Clients extends Connection
 
     public function view()
     {
-        $Insurance = new Insurance;
         $primary_id = $this->inputs['id'];
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
         $row = $result->fetch_assoc();

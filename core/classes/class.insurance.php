@@ -47,6 +47,32 @@ class Insurance extends Connection
         $primary_id = $this->inputs['id'];
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
         return $result->fetch_assoc();
+
+        if ($result->num_rows < 1)
+        return array(
+            'insurance_id'                      => '',
+            'insurance'                         => '',
+            'insurance_amount'                  => 0,
+            'insurance_bank_transaction'        => '',
+            'insurance_maturity'                => 0,
+            'insurance_salary_withdrawal'       => '',
+            'insurance_unpaid_obligation'       => 0,
+            'paymaster_address'                 => '',
+            'paymaster_client_deduct_salary'    => '',
+            'paymaster_conformity'              => '',
+            'paymaster_deduct_salary'           => '',
+            'paymaster_name'                    => '',
+            'paymaster_res_cert_date'           => '',
+            'paymaster_res_cert_issued_at'      => '',
+            'paymaster_res_cert_no'             => '',
+        );
+
+
+
+
+
+        $row = $result->fetch_assoc();
+        return $row;
     }
 
     public function remove()
