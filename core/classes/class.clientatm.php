@@ -33,7 +33,9 @@ class ClientAtm extends Connection
         if ($result->num_rows < 1)
             return array(
                 'atm_account_no'    => '',
+                'atm_balance'       => '0.000',
                 'atm_bank'          => '',
+                'atm_id'            => '',
             );
 
         $row = $result->fetch_assoc();

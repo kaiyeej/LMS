@@ -36,6 +36,7 @@ class ClientDependent extends Connection
         $result = $this->select($this->table, "*", "client_id = '$client_id'");
         if ($result->num_rows < 1)
             return array(
+                'dependent_id'      => '',
                 'no_of_children'    => 0,
                 'dep_no_of_child'   => 0,
                 'dep_college'       => 0,

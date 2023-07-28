@@ -48,6 +48,7 @@ class ClientEmployment extends Connection
 
         if ($result->num_rows < 1)
             return array(
+                'employment_id'         => '',
                 'employer_id'           => 0,
                 'employer'              => '',
                 'employer_address'      => '',

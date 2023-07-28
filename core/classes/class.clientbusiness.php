@@ -44,6 +44,7 @@ class ClientBusiness extends Connection
         $result = $this->select($this->table, "*", "client_id = '$client_id'");
         if ($result->num_rows < 1)
             return array(
+                'business_id'       => '',
                 'business_name'     => '',
                 'business_address'  => '',
                 'business_contact'  => '',
@@ -53,6 +54,8 @@ class ClientBusiness extends Connection
                 'business_capital'  => 0,
                 'business_type'     => '',
             );
+
+
 
         $row = $result->fetch_assoc();
         return $row;

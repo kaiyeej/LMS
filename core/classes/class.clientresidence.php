@@ -37,6 +37,7 @@ class ClientResidence extends Connection
         $result = $this->select($this->table, "*", "client_id = '$client_id'");
         if ($result->num_rows < 1)
             return array(
+                'residence_id'              => '',
                 'client_id'                 => $client_id,
                 'residence'                 => '',
                 'residence_status'          => '',

@@ -55,6 +55,7 @@ class ClientSpouse extends Connection
 
         if ($result->num_rows < 1)
             return array(
+                'spouse_id'                 => '',
                 'spouse_name'               => '',
                 'spouse_residence'          => '',
                 'spouse_res_cert_no'        => '',

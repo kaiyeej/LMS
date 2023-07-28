@@ -38,6 +38,7 @@ class ClientSoi extends Connection
         $result = $this->select($this->table, "*", "client_id = '$client_id'");
         if ($result->num_rows < 1)
             return array(
+                'soi_id'            => '',
                 'soi_name'          => '',
                 'soi_by'            => '',
                 'soi_monthly'       => 0,
