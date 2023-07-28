@@ -25,7 +25,7 @@ class Connection
         }
     }
 
-    public function check()
+    public function checker()
     {
         if ($this->mysqli->connect_errno) {
             throw new Exception('Failed to connect to MySQL: ' . $this->mysqli->connect_error);

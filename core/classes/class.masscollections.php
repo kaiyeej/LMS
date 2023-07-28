@@ -110,7 +110,7 @@ class MassCollections extends Connection
     public function save_collections()
     {
         try {
-            $this->check();
+            $this->checker();
             $this->begin_transaction();
 
             $this->inputs['reference_number'] = $this->generate();
