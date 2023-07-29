@@ -1,7 +1,6 @@
 <form id='frm_upload' method="POST" enctype="multipart/form-data">
     <div class="modal fade" id="modalUpload" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" id="import_dialog"
-            style="width: 100%;max-width: 2000px;margin: 0.5rem;">
+        <div class="modal-dialog" role="document" id="import_dialog" style="width: 100%;max-width: 2000px;margin: 0.5rem;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><span class='ion-compose'></span> Import Loans</h5>
@@ -25,8 +24,7 @@
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn_back" onclick="backToLoan()"><span
-                            class="fa fa-arrow-left"></span> Back</button>
+                    <button type="button" class="btn btn-primary" id="btn_back" onclick="backToLoan()"><span class="fa fa-arrow-left"></span> Back</button>
                     <button type="submit" id="btn_upload" class="btn btn-primary">
                         Submit
                     </button>
@@ -68,7 +66,7 @@
     $('#frm_upload').submit(function(e) {
         e.preventDefault(); // Prevent form submission
 
-        if($("#upload_step").val() == 1){
+        if ($("#upload_step").val() == 1) {
             loan_from_excels = [];
             var formData = new FormData(this);
             $('#upload_result_content').html(`<center><img src="assets/icons/loader.gif"></center>`);
@@ -90,20 +88,22 @@
                     alert('An error occurred while processing the request.');
                 }
             });
-        }else{
+        } else {
             $('#upload_result_content').html(`<center><img src="assets/icons/loader.gif"></center>`);
-            var data = {loan_data:loan_from_excels};
+            var data = {
+                loan_data: loan_from_excels
+            };
             $.ajax({
                 type: 'POST',
                 url: "controllers/sql.php?c=" + route_settings.class_name + "&q=save_upload",
                 data: JSON.stringify(data),
                 contentType: 'application/json',
                 success: function(response) {
-                  console.log(response); // Process the response data here
-                $("#modalUpload").modal('hide');
+                    console.log(response); // Process the response data here
+                    $("#modalUpload").modal('hide');
                 },
                 error: function(xhr, status, error) {
-                  console.error(xhr.responseText); // Handle any errors here
+                    console.error(xhr.responseText); // Handle any errors here
                 }
             });
 
@@ -171,7 +171,9 @@
 
         var loan_data = loan_from_excels[client_index].loans[loan_index];
         var collections = loan_data.collections;
-        var skin_collections = "", total_payments = 0, total_interest = 0;
+        var skin_collections = "",
+            total_payments = 0,
+            total_interest = 0;
         for (var collectionIndex = 0; collectionIndex < collections.length; collectionIndex++) {
             const collection = collections[collectionIndex];
             total_payments += collection.payment_amount;
@@ -185,7 +187,7 @@
                 <td class='w-10 right' contenteditable="true" data-collection-column="principal" onblur="editCollectionCell(this)">${numberFormat(collection.principal)}</td>
                 <td class='w-5'></td>
                 <td class='w-10 right' contenteditable="true">${numberFormat(collection.balance)}</td>
-                <td class='w-10'></td>
+                <td class='w-10'>${collection.status}</td>
                 <td class='w-2'></td>
             </tr>`;
         }
@@ -213,14 +215,14 @@
               </tr>
               <tr>
                 <td></td>
-                <td class="bold italic">LOAN INTEREST</td>
-                <td class="right" contenteditable="true">${numberFormat(loan_data.loan_interest)}</td>
+                <td class="bold italic">MONTHLY PAYMENT</td>
+                <td class="right">${numberFormat(loan_data.monthly_payment)}</td>
                 <td colspan="7"></td>
               </tr>
               <tr>
                 <td></td>
-                <td class="bold italic">MONTHLY PAYMENT</td>
-                <td class="right">${numberFormat(loan_data.monthly_payment)}</td>
+                <td class="bold italic"></td>
+                <td class="right">&nbsp;</td>
                 <td colspan="7"></td>
               </tr>
               <tr>
@@ -247,13 +249,13 @@
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    function editClientCell(el,is_number = true) {
+    function editClientCell(el, is_number = true) {
         var str = el.innerHTML;
-        if(is_number){
+        if (is_number) {
             var replace_number = parseFloat(str.replaceAll(",", ""));
             var actual_data = replace_number ? replace_number : 0;
             el.innerHTML = numberFormat(actual_data);
-        }else{
+        } else {
             el.innerHTML = str;
             var actual_data = str;
         }
@@ -264,13 +266,13 @@
         loan_from_excels[client_index][client_column] = actual_data;
     }
 
-    function editLoanCell(el,is_number = true) {
+    function editLoanCell(el, is_number = true) {
         var str = el.innerHTML;
-        if(is_number){
+        if (is_number) {
             var replace_number = parseFloat(str.replaceAll(",", ""));
             var actual_data = replace_number ? replace_number : 0;
             el.innerHTML = numberFormat(actual_data);
-        }else{
+        } else {
             el.innerHTML = str;
             var actual_data = str;
         }
@@ -282,13 +284,13 @@
         loan_from_excels[client_index].loans[loan_index][loan_column] = actual_data;
     }
 
-    function editCollectionCell(el,is_number = true) {
+    function editCollectionCell(el, is_number = true) {
         var str = el.innerHTML;
-        if(is_number){
+        if (is_number) {
             var replace_number = parseFloat(str.replaceAll(",", ""));
             var actual_data = replace_number ? replace_number : 0;
             el.innerHTML = numberFormat(actual_data);
-        }else{
+        } else {
             el.innerHTML = str;
             var actual_data = str;
         }
