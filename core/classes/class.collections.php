@@ -24,7 +24,7 @@ class Collections extends Connection
         $amount = $this->clean($this->inputs['amount']);
         $monthly_interest_rate = ($loan_row['loan_interest'] / 100) / 12;
         $total_interest = ($loan_row['loan_amount'] * $monthly_interest_rate) * $loan_row['loan_period'];
-        $interest = ($amount / ($loan_row['loan_amount'] + $total_interest)) * $total_interest;
+        $interest = $loan_row['loan_amount'] + $total_interest > 0 ? ($amount / ($loan_row['loan_amount'] + $total_interest)) * $total_interest : 0;
 
         $form = array(
             $this->name         => $this->clean($this->inputs[$this->name]),
@@ -288,40 +288,6 @@ class Collections extends Connection
         $row = $result->fetch_assoc();
         return $row['total'];
     }
-
-    public function add_mass_collection()
-    {
-        $loan_type_id = $this->inputs['loan_type_id'];
-        $collection_date = $this->inputs['collection_date'];
-        $employer_id = $this->inputs['employer_id'];
-        $chart_id = $this->inputs['chart_id'];
-        $branch_id = $this->inputs['branch_id'];
-        $details = $this->inputs['details'];
-
-        foreach ($details as $row) {
-            $reference_number = "CL-" . date("Ymd") . $row['loan_id'];
-            $form = [
-                'branch_id' => $branch_id,
-                'reference_number' => $reference_number,
-                'chart_id' => $chart_id,
-                'collection_date' => $collection_date,
-                'loan_id' => $row['loan_id'],
-                'client_id' => $row['client_id'],
-                'amount' => $row['deduction'],
-                'penalty_amount' => 0,
-                'remarks' => "",
-                'atm_balance' => $row['atm_balance'],
-                'atm_withdrawal' => $row['atm_withdrawal'],
-                'atm_charge' => $row['atm_charge'],
-                'receipt_number' => $row['receipt_number']
-            ];
-
-            $Collections = new Collections;
-            $Collections->inputs = $form;
-            $Collections->add();
-        }
-    }
-
 
     public function client_id()
     {

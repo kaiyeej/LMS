@@ -1,7 +1,6 @@
 <form id='frmMassCollection' method="POST">
     <div class="modal fade" id="modalMassCollection" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" id="import_dialog"
-            style="width: 100%;max-width: 2000px;margin: 0.5rem;">
+        <div class="modal-dialog" role="document" id="import_dialog" style="width: 100%;max-width: 2000px;margin: 0.5rem;">
             <div class="modal-content">
                 <div class="modal-header" id="mass-modal-header">
                     <h5 class="modal-title"><span class='ion-compose'></span> Add Mass Collection</h5>
@@ -10,42 +9,35 @@
                     <div class="form-row w3-animate-left">
                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Branch</label>
-                            <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]"
-                                style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Loan Type</label>
-                            <select class="form-control select2 input-item" id="loan_type_id" name="input[loan_type_id]"
-                                style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="loan_type_id" name="input[loan_type_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Bank</label>
-                            <select class="form-control select2 input-item" id="mass_chart_id" name="input[chart_id]"
-                                style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="mass_chart_id" name="input[chart_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Collection Date</label>
-                            <input type="date" class="form-control input-item" autocomplete="off"
-                                name="input[collection_date]" id="mass_collection_date" required>
+                            <input type="date" class="form-control input-item" autocomplete="off" name="input[collection_date]" id="mass_collection_date" required>
                         </div>
                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Employer</label>
-                            <select class="form-control select2 input-item" id="employer_id" name="input[employer_id]"
-                                style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="employer_id" name="input[employer_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col hide-for-save">
                             <label>ATM Charge</label>
-                            <input min="0" type="number" class="form-control input-item" autocomplete="off"
-                                name="input[atm_charge]" id="atm_charge">
+                            <input min="0" type="number" class="form-control input-item" autocomplete="off" name="input[atm_charge]" id="atm_charge">
                         </div>
                         <div class="form-group col hide-for-save">
                             <br />
-                            <button type="submit" id="btn_mass_generate" style="margin-top:10px;"
-                                class="btn btn-primary">
+                            <button type="submit" id="btn_mass_generate" style="margin-top:10px;" class="btn btn-primary">
                                 Generate
                             </button>
                         </div>
@@ -59,7 +51,7 @@
                     <button type="button" id="btn_mass_submit" onclick="saveMassCollection()" class="btn btn-primary">
                         Save
                     </button>
-                    <button type="submit" id="btn_mass_finish" class="btn btn-success">
+                    <button type="button" id="btn_mass_finish" onclick="finishCollection()" class="btn btn-success">
                         Finish
                     </button>
                 </div>
@@ -170,15 +162,14 @@
             } else {
                 var form_mass_collection = mc_header_data;
                 form_mass_collection.details = mc_client_data;
+
                 $.ajax({
-                    type: "POST",
+                    type: 'POST',
                     url: "controllers/sql.php?c=MassCollections&q=save_collections",
-                    data: {
-                        input: form_mass_collection
-                    },
-                    success: function(data) {
-                        var jsonParse = JSON.parse(data);
-                        const json = jsonParse.data;
+                    data: JSON.stringify(form_mass_collection),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        const json = response.data;
 
                         $('#modalMassCollection').modal('hide');
                         if (json.status == 'success') {
@@ -187,7 +178,44 @@
                         } else {
                             failed_query("Please contact Juancoder IT Solutions");
                         }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText); // Handle any errors here
+                    }
+                });
+            }
+        } else {
+            swal("Cannot proceed!", "No Entry found!", "warning");
+        }
+    }
 
+
+    function finishCollection() {
+        if (mc_client_data.length > 0) {
+            if ($(".negative").length > 0) {
+                swal("Cannot proceed!", "Negative values are found!", "warning");
+            } else {
+                var form_mass_collection = mc_header_data;
+                form_mass_collection.details = mc_client_data;
+
+                $.ajax({
+                    type: 'POST',
+                    url: "controllers/sql.php?c=MassCollections&q=finish_collections",
+                    data: JSON.stringify(form_mass_collection),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        const json = response.data;
+
+                        $('#modalMassCollection').modal('hide');
+                        if (json.status == 'success') {
+                            getEntries();
+                            success_add();
+                        } else {
+                            failed_query("Please contact Juancoder IT Solutions");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText); // Handle any errors here
                     }
                 });
             }
@@ -270,6 +298,7 @@
             var is_editable = is_included == 0 ? false : true;
 
             var client_data = {
+                mass_collection_detail_id: client.mass_collection_detail_id * 1,
                 client_id: client.client_id * 1,
                 loan_id: client.loan_id * 1,
                 old_atm_balance: old_atm_balance,
@@ -344,11 +373,11 @@
         <div class='col-md-12 row' style="color:#0a0a0a;">
             <div class='col-md-6'>
                 <span>PREPARED BY: </span><br>
-                <span><b>${json.headers.prepared_by}</b></span>
+                <span><b>${json.headers.prepared_by_name}</b></span>
             </div>
             <div class='col-md-6'>
                 <span>CHECKED BY: </span><br>
-                <span><b>${json.headers.prepared_by}</b></span>
+                <span><b>${json.headers.finished_by_name}</b></span>
             </div>
         </div>`);
         focusFirstReceiptNumber();
@@ -501,7 +530,9 @@
         }, 'show');
 
         var form_data = {
-            input: { id: mass_collection_id },
+            input: {
+                id: mass_collection_id
+            },
         }
 
         $.ajax({

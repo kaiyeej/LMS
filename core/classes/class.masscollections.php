@@ -83,6 +83,7 @@ class MassCollections extends Connection
             $row['excess'] = 0;
             $row['atm_account_no'] = $ClientAtm->name($row['client_id']);
             $row['is_included'] = 1;
+            $row['mass_collection_detail_id'] = 0;
 
             $rows[] = $row;
         }
@@ -96,13 +97,15 @@ class MassCollections extends Connection
             "collection_date_label" => date("F d, Y", strtotime($collection_date)),
             "employer_id" => $employer_id,
             "employer_name" => $Employers->name($employer_id),
-            "prepared_by" => Users::fullname($_SESSION['lms_user_id']),
+            "prepared_by_name" => Users::fullname($_SESSION['lms_user_id']),
+            "finished_by_name" => Users::fullname($_SESSION['lms_user_id']),
             "chart_id" => $chart_id,
             "chart_name" => $ChartOfAccounts->name($chart_id),
             "branch_id" => $branch_id,
             "branch_name" => $Branches->name($branch_id),
             "atm_charge" => $atm_charge,
             "status" => "S",
+            "mass_collection_id" => 0,
         ];
         return $response;
     }
@@ -113,11 +116,14 @@ class MassCollections extends Connection
             $this->checker();
             $this->begin_transaction();
 
-            $this->inputs['reference_number'] = $this->generate();
-            $mass_collection_id = $this->add();
-
-            if ($mass_collection_id < 1)
-                throw new Exception($mass_collection_id);
+            if ($this->inputs['mass_collection_id'] > 0) {
+                $mass_collection_id = $this->inputs['mass_collection_id'];
+            } else {
+                $this->inputs['reference_number'] = $this->generate();
+                $mass_collection_id = $this->add();
+                if ($mass_collection_id < 1)
+                    throw new Exception($mass_collection_id);
+            }
 
             $details = $this->inputs['details'];
 
@@ -138,7 +144,7 @@ class MassCollections extends Connection
                     'is_included'           => $row['is_included']
                 ];
 
-                $is_inserted = $this->insert($this->table_detail, $form_detail);
+                $is_inserted = $row['mass_collection_detail_id'] > 0 ? $this->update($this->table_detail, $form_detail, "mass_collection_detail_id = '" . $row['mass_collection_detail_id'] . "'") : $this->insert($this->table_detail, $form_detail);
                 if ($is_inserted != 1)
                     throw new Exception($is_inserted);
             }
@@ -157,6 +163,117 @@ class MassCollections extends Connection
         }
     }
 
+    public function finish_collections()
+    {
+        try {
+            $this->checker();
+            $this->begin_transaction();
+
+            if ($this->inputs['mass_collection_id'] > 0) {
+                $mass_collection_id = $this->inputs['mass_collection_id'];
+            } else {
+                $this->inputs['reference_number'] = $this->generate();
+                $mass_collection_id = $this->add();
+                if ($mass_collection_id < 1)
+                    throw new Exception($mass_collection_id);
+            }
+
+            $details = $this->inputs['details'];
+
+            foreach ($details as $row) {
+                $form_detail = [
+                    'mass_collection_id'    => $mass_collection_id,
+                    'client_id'             => $row['client_id'],
+                    'loan_id'               => $row['loan_id'],
+                    'receipt_number'        => $row['receipt_number'],
+                    'old_atm_balance'       => $row['old_atm_balance'],
+                    'atm_withdrawal'        => $row['atm_withdrawal'],
+                    'deduction'             => $row['deduction'],
+                    'emergency_loan'        => $row['emergency_loan'],
+                    'atm_charge'            => $row['atm_charge'],
+                    'atm_balance'           => $row['atm_balance'],
+                    'excess'                => $row['excess'],
+                    'atm_account_no'        => $row['atm_account_no'],
+                    'is_included'           => $row['is_included']
+                ];
+
+                $is_inserted = $row['mass_collection_detail_id'] > 0 ? $this->update($this->table_detail, $form_detail, "mass_collection_detail_id = '" . $row['mass_collection_detail_id'] . "'") : $this->insert($this->table_detail, $form_detail);
+                if ($is_inserted != 1)
+                    throw new Exception($is_inserted);
+
+                if ($row['is_included'] == 1) {
+                    $form_collection = [
+                        'branch_id'         => $this->clean($this->inputs['branch_id']),
+                        'reference_number'  => "CL-" . $row['client_id'] . "-" . $row['loan_id'] . "-" . date("YmdHis"),
+                        'chart_id'          => $this->clean($this->inputs['chart_id']),
+                        'collection_date'   => $this->clean($this->inputs['collection_date']),
+                        'penalty_amount'    => 0,
+                        'remarks'           => "",
+                        'loan_id'           => $row['loan_id'],
+                        'client_id'         => $row['client_id'],
+                        'amount'            => $row['deduction'],
+                        'atm_balance'       => $row['atm_balance'],
+                        'atm_withdrawal'    => $row['atm_withdrawal'],
+                        'atm_charge'        => $row['atm_charge'],
+                        'receipt_number'    => $row['receipt_number'],
+                    ];
+
+                    $Collections = new Collections;
+                    $Collections->inputs = $form_collection;
+                    $cl_id = $Collections->add();
+                    if ($cl_id < 1)
+                        throw new Exception($cl_id);
+                }
+            }
+            $this->update($this->table, ['status' => 'F'], "mass_collection_id = '$mass_collection_id'");
+            $this->commit();
+            return [
+                'status' => 'success',
+                'data' => $mass_collection_id
+            ];
+        } catch (Exception $e) {
+            $this->rollback();
+            Logs::error("MassCollections->finish_collections", "Mass Collection", $e->getMessage());
+            return [
+                'status' => 'failed',
+                'error' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function add_mass_collection()
+    {
+        $loan_type_id = $this->inputs['loan_type_id'];
+        $collection_date = $this->inputs['collection_date'];
+        $employer_id = $this->inputs['employer_id'];
+        $chart_id = $this->inputs['chart_id'];
+        $branch_id = $this->inputs['branch_id'];
+        $details = $this->inputs['details'];
+
+        foreach ($details as $row) {
+            $reference_number = "CL-" . date("Ymd") . $row['loan_id'];
+            $form = [
+                'branch_id' => $branch_id,
+                'reference_number' => $reference_number,
+                'chart_id' => $chart_id,
+                'collection_date' => $collection_date,
+                'loan_id' => $row['loan_id'],
+                'client_id' => $row['client_id'],
+                'amount' => $row['deduction'],
+                'penalty_amount' => 0,
+                'remarks' => "",
+                'atm_balance' => $row['atm_balance'],
+                'atm_withdrawal' => $row['atm_withdrawal'],
+                'atm_charge' => $row['atm_charge'],
+                'receipt_number' => $row['receipt_number']
+            ];
+
+            $Collections = new Collections;
+            $Collections->inputs = $form;
+            $Collections->add();
+        }
+    }
+
     public function view_saved()
     {
         $mass_collection_id = $this->inputs['id'];
@@ -167,12 +284,13 @@ class MassCollections extends Connection
         $result = $this->select($this->table_detail, "*", "mass_collection_id = '$mass_collection_id'");
         while ($row = $result->fetch_assoc()) {
             $row['client_name'] = $Clients->initial_name($row['client_id']);
-            $row['status_display'] = "";
             $rows[] = $row;
         }
         $response['clients'] = $rows;
 
         $response['headers'] = $this->view();
+        $response['headers']["prepared_by_name"] = Users::fullname($response['headers']['prepared_by']);
+        $response['headers']["finished_by_name"] = Users::fullname($_SESSION['lms_user_id']);
         return $response;
     }
 
