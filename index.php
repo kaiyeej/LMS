@@ -237,23 +237,23 @@ $User = new Users;
 
     function logout() {
       swal({
-        title: 'Are you sure?',
-        text: 'Your session will expire!',
-        icon: 'warning',
-        buttons: ["Cancel", "Logout"],
-        dangerMode: true,
-      })
-      .then((willDelete) => {
-        if (willDelete) {
-          var url = "controllers/sql.php?c=Users&q=logout";
-          $.ajax({
-            url: url,
-            success: function(data) {
-              location.reload();
-            }
-          });
-        }
-      });
+          title: 'Are you sure?',
+          text: 'Your session will expire!',
+          icon: 'warning',
+          buttons: ["Cancel", "Logout"],
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            var url = "controllers/sql.php?c=Users&q=logout";
+            $.ajax({
+              url: url,
+              success: function(data) {
+                location.reload();
+              }
+            });
+          }
+        });
     }
 
     function schema() {
@@ -359,6 +359,8 @@ $User = new Users;
     $("#frm_submit").submit(function(e) {
       e.preventDefault();
 
+      var old_submit_html = $("#btn_submit").html();
+
       $("#btn_submit").prop('disabled', true);
       $("#btn_submit").html("<span class='fa fa-spinner fa-spin'></span> Submitting ...");
 
@@ -395,7 +397,7 @@ $User = new Users;
           }
 
           $("#btn_submit").prop('disabled', false);
-          $("#btn_submit").html("Submit");
+          $("#btn_submit").html(old_submit_html);
         },
         error: function(jqXHR, textStatus, errorThrown) {
           errorLogger('Error:', textStatus, errorThrown);
@@ -439,7 +441,7 @@ $User = new Users;
 
             c_status = "update";
             $(".client_span").html(jsonParse.data['client_fullname']);
-            var clienttypes =  jsonParse.data['client_type_id'].split(',').map(Number);
+            var clienttypes = jsonParse.data['client_type_id'].split(',').map(Number);
             $("#client_type_id").val(clienttypes).trigger('change');
             // $("#client_type_id").select2().select2('val', []);
           } else if (route_settings.class_name == "Collections") {

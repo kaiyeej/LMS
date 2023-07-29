@@ -12,12 +12,12 @@ class Vouchers extends Connection
 
     public function add()
     {
-        
+
         $Journals = new Journals;
         $code = $Journals->journal_code($this->inputs['journal_id']);
-        $ref_code = $code."-". date('YmdHis');
+        $ref_code = $code . "-" . date('YmdHis');
         $loan_id = (!isset($this->inputs['loan_id']) ? "" : $this->inputs['loan_id']);
-        
+
         $form = array(
             $this->name         => $this->clean($this->inputs[$this->name]),
             'branch_id'         => $this->inputs['branch_id'],
@@ -46,15 +46,14 @@ class Vouchers extends Connection
             'status'            => 'S',
             'is_manual'         => 'N'
         );
-        
+
         $this->insert("tbl_journal_entries", $form_journal);
         return $this->insertIfNotExist($this->table, $form, '', 'Y');
-
     }
 
     public function edit()
     {
-        
+
         $loan_id = (!isset($this->inputs['loan_id']) ? "" : $this->inputs['loan_id']);
 
         $form = array(
@@ -73,11 +72,11 @@ class Vouchers extends Connection
         );
         return $this->updateIfNotExist($this->table, $form);
     }
-    
+
 
     public function update_approved_by()
     {
-        
+
         $primary_id = $this->inputs['id'];
         $form = array(
             'approved_by' => $this->inputs['approved_by'],
@@ -85,25 +84,26 @@ class Vouchers extends Connection
         return $this->update($this->table, $form, "$this->pk = '$primary_id'");
     }
 
-    public function cancel(){
+    public function cancel()
+    {
         $journal_entry_id = $this->inputs['journal_entry_id'];
         $voucher_id = $this->inputs['voucher_id'];
         $row = $this->view($voucher_id);
         $Journals = new Journals;
         $code = $Journals->journal_code($row['journal_id']);
-        $ref_code = $code."-". date('YmdHis');
+        $ref_code = $code . "-" . date('YmdHis');
         $form_journal = array(
             'reference_number'  => $ref_code,
-            'cross_reference'   => "C".$row['reference_number'],
+            'cross_reference'   => "C" . $row['reference_number'],
             'branch_id'         => $row['branch_id'],
             'journal_id'        => $row['journal_id'],
-            'remarks'           => "Reverse Entry for Cancelled Voucher (".$row['reference_number'].").",
+            'remarks'           => "Reverse Entry for Cancelled Voucher (" . $row['reference_number'] . ").",
             'journal_date'      => $row['voucher_date'],
             'status'            => 'F',
             'user_id'           => $_SESSION['lms_user_id'],
             'is_manual'         => 'N'
         );
-        
+
         $j_id = $this->insert('tbl_journal_entries', $form_journal, 'Y');
 
         $jlFetch = $this->select("tbl_journal_entry_details", '*', "journal_entry_id='$journal_entry_id'");
@@ -113,16 +113,16 @@ class Vouchers extends Connection
                 'chart_id'              => $jlRow['chart_id'],
                 'debit'                 => $jlRow['credit'],
                 'credit'                => $jlRow['debit'],
-                'description'           => $jlRow['description']." (Reverse Entry)",
+                'description'           => $jlRow['description'] . " (Reverse Entry)",
             );
-            
+
             $this->insert("tbl_journal_entry_details", $form_details);
         }
 
         $form = array(
             'status' => 'C'
         );
-        return $this->update($this->table, $form,'voucher_id="'.$voucher_id.'"');
+        return $this->update($this->table, $form, 'voucher_id="' . $voucher_id . '"');
     }
 
     public function show()
@@ -137,21 +137,22 @@ class Vouchers extends Connection
         $result = $this->select($this->table, '*', $param);
         while ($row = $result->fetch_assoc()) {
             // $details = $this->total_details($row['journal_entry_id']);
-            $row['account'] = $row['account_type'] == "S"? $Suppliers->name($row['account_id']) : $Clients->name($row['account_id'])." <strong style='color:#4caf50;'>(".$Loans->name($row['loan_id']).")</strong>";
+            $row['account'] = $row['account_type'] == "S" ? $Suppliers->name($row['account_id']) : $Clients->name($row['account_id']) . " <strong style='color:#4caf50;'>(" . $Loans->name($row['loan_id']) . ")</strong>";
             $row['encoded_by'] = $Users->fullname($row['user_id']);
-            $row['amount'] = number_format($row['amount'],2);
+            $row['amount'] = number_format($row['amount'], 2);
             $rows[] = $row;
         }
         return $rows;
     }
 
-    function total_details($primary_id){
+    function total_details($primary_id)
+    {
         $result = $this->select($this->table_detail, "sum(debit) as total_debit, sum(credit) as total_credit", "journal_entry_id = '$primary_id'");
         $row = $result->fetch_assoc();
 
         $status = $row['total_debit'] == $row['total_credit'] ? 0 : 1;
-        
-        return [$row['total_debit']*1,$row['total_credit']*1, $status];
+
+        return [$row['total_debit'] * 1, $row['total_credit'] * 1, $status];
     }
 
     public function view($primary_id = null)
@@ -165,8 +166,8 @@ class Vouchers extends Connection
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $row['encoded_by'] = $Users->fullname($row['user_id']);
-            $row['account'] = $row['account_type'] == "S"? $Suppliers->name($row['account_id']) : $Clients->name($row['account_id'])." (".$Loans->name($row['loan_id']).")";
-            $row['voucher_amount'] = number_format($row['amount'],2);
+            $row['account'] = $row['account_type'] == "S" ? $Suppliers->name($row['account_id']) : $Clients->name($row['account_id']) . " (" . $Loans->name($row['loan_id']) . ")";
+            $row['voucher_amount'] = number_format($row['amount'], 2);
             $row['cv_date'] = date('F d, Y', strtotime($row["voucher_date"]));
             $row['amount_word'] = $this->convertNumberToWord($row['amount']);
             return $row;
@@ -189,10 +190,10 @@ class Vouchers extends Connection
         $row = $this->view($primary_id);
         $amount = $row['amount'];
         $loan_id = $row['loan_id'];
-        if($total[0] == $total[1]){
-            if($amount != $total[0]){
+        if ($total[0] == $total[1]) {
+            if ($amount != $total[0]) {
                 return -2; //not equal amount
-            }else{
+            } else {
                 $form = array(
                     'status' => 'F',
                 );
@@ -203,8 +204,7 @@ class Vouchers extends Connection
                 );
                 return $this->update('tbl_loans', $form_loan, "loan_id = '$loan_id'");
             }
-            
-        }else{
+        } else {
             return -1; //not equal
         }
     }
@@ -243,10 +243,10 @@ class Vouchers extends Connection
     public function dataRow($primary_id, $field)
     {
         $result = $this->select($this->table, $field, "$this->pk = '$primary_id'");
-        if($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             $row = $result->fetch_array();
             return $row[$field];
-        }else{
+        } else {
             return "";
         }
     }
@@ -254,24 +254,24 @@ class Vouchers extends Connection
     public function detailsRow($primary_id, $field)
     {
         $result = $this->select($this->table_detail, $field, "$this->pk2 = '$primary_id'");
-        if($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             $row = $result->fetch_array();
             return $row[$field];
-        }else{
+        } else {
             return "";
         }
     }
 
     public function add_detail()
     {
-        if($this->inputs['type'] == "D"){
+        if ($this->inputs['type'] == "D") {
             $debit = $this->inputs['amount'];
             $credit = 0;
-        }else{
+        } else {
             $credit = $this->inputs['amount'];
             $debit = 0;
         }
-        
+
         $form = array(
             'journal_entry_id'      => $this->inputs['journal_entry_id'],
             $this->fk_det           => $this->inputs[$this->fk_det],
@@ -292,8 +292,8 @@ class Vouchers extends Connection
         while ($row = $result->fetch_assoc()) {
             $row['chart'] = $ChartOfAccounts->name($row['chart_id']);
             $row['count'] = $count++;
-            $row['debit'] = number_format($row['debit'],2);
-            $row['credit'] = number_format($row['credit'],2);
+            $row['debit'] = number_format($row['debit'], 2);
+            $row['credit'] = number_format($row['credit'], 2);
             $rows[] = $row;
         }
         return $rows;

@@ -33,7 +33,7 @@
                         </div>
                         <div class="form-group col hide-for-save">
                             <label>ATM Charge</label>
-                            <input min="0" type="number" class="form-control input-item" autocomplete="off" name="input[atm_charge]" id="atm_charge">
+                            <input min="0" type="number" class="form-control input-item" autocomplete="off" name="input[atm_charge]" id="mass_atm_charge">
                         </div>
                         <div class="form-group col hide-for-save">
                             <br />
@@ -48,7 +48,7 @@
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <!-- <button type="button" id="btn_mass_prev" class="btn btn-warning" onclick="goStep1()"><span class='fa fa-arrow-left'></span> Back</button> -->
-                    <button type="button" id="btn_mass_submit" onclick="saveMassCollection()" class="btn btn-primary">
+                    <button type="button" id="btn_mass_save" onclick="saveMassCollection()" class="btn btn-primary">
                         Save
                     </button>
                     <button type="button" id="btn_mass_finish" onclick="finishCollection()" class="btn btn-success">
@@ -145,11 +145,6 @@
                 const json = jsonParse.data;
                 mc_header_data = json.headers;
                 get_mass_collections(json);
-                // $("#mass_collection_step").val(2);
-                // // $("#btn_mass_submit").html("<span class='fa fa-check-circle'></span> Save");
-                // $("#btn_mass_submit").show();
-                // // $("#mass_collection_step_1").hide();
-                // // $("#btn_mass_prev").show();
             }
         });
     });
@@ -160,6 +155,10 @@
             if ($(".negative").length > 0) {
                 swal("Cannot proceed!", "Negative values are found!", "warning");
             } else {
+
+                $("#btn_mass_save").prop("disabled", true);
+                $("#btn_mass_save").html("<span class='fa fa-spin fa-spinner'></span> Saving");
+
                 var form_mass_collection = mc_header_data;
                 form_mass_collection.details = mc_client_data;
 
@@ -170,6 +169,9 @@
                     contentType: 'application/json',
                     success: function(response) {
                         const json = response.data;
+
+                        $("#btn_mass_save").prop("disabled", false);
+                        $("#btn_mass_save").html("Save");
 
                         $('#modalMassCollection').modal('hide');
                         if (json.status == 'success') {
@@ -195,6 +197,10 @@
             if ($(".negative").length > 0) {
                 swal("Cannot proceed!", "Negative values are found!", "warning");
             } else {
+
+                $("#btn_mass_finish").prop("disabled", true);
+                $("#btn_mass_finish").html("<span class='fa fa-spin fa-spinner'></span> Finishing");
+
                 var form_mass_collection = mc_header_data;
                 form_mass_collection.details = mc_client_data;
 
@@ -205,6 +211,9 @@
                     contentType: 'application/json',
                     success: function(response) {
                         const json = response.data;
+
+                        $("#btn_mass_finish").prop("disabled", false);
+                        $("#btn_mass_finish").html("Save");
 
                         $('#modalMassCollection').modal('hide');
                         if (json.status == 'success') {
@@ -233,7 +242,8 @@
         $("#mass_branch_id").html($("#branch_id").html()).val(null).select2().trigger('change').prop("disabled", false);
         $("#loan_type_id").val(0).select2().trigger('change').prop("disabled", false);
         $("#employer_id").val(0).select2().trigger('change').prop("disabled", false);
-        $("#mass_collection_date").val('').prop("disabled", false);
+        $("#mass_collection_date").val('').prop("disabled", false).attr('readonly', false);
+        $("#mass_atm_charge").val('').prop("disabled", false).attr('readonly', false);
 
         $(".hide-for-save").show();
 
@@ -324,7 +334,7 @@
             mc_client_data.push(client_data);
             client_tds += `<tr data-client-index='${clientIndex}' class='${excluded_loan}'>
                 <td>${clientIndex + 1}</td>
-                <td><input type='checkbox' onchange="changeMassCollectionLoanStatus(this)" ${checked_loan_status}></td>
+                <td class="center"><input class='checkbox-loan' type='checkbox' onchange="changeMassCollectionLoanStatus(this)" ${checked_loan_status}></td>
                 <td>${client.client_name}</td>
                 <td data-column='receipt_number' onblur="editCollectionCell(this,false)" contenteditable="${is_editable}" class='right editable-cell'>${receipt_number}</td>
                 <td data-column='old_atm_balance' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(old_atm_balance)}</td>
@@ -342,7 +352,7 @@
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th></th>
+                    <th><input type='checkbox' onchange='checkAllLoan(this)' checked></th>
                     <th>Name</th>
                     <th class='w-8'>Receipt #</th>
                     <th class='w-8 fs-9'>ATM Balance Before Withdrawal</th>
@@ -365,7 +375,6 @@
                 <th data-column='total_atm_charge' class="right">${numberFormat(total_atm_charge)}</th>
                 <th data-column='total_atm_balance' class="right">${numberFormat(total_atm_balance)}</th>
                 <th data-column='total_excess' class="right">${numberFormat(total_excess)}</th>
-                <th></th>
                 <th></th>
               </tr>
         </table>
@@ -509,6 +518,39 @@
             var column_data = element.getAttribute('data-column');
             if (column_data != 'receipt_number')
                 totalSolvers(column_data);
+        }
+    }
+
+    function checkAllLoan(ele) {
+        var checkboxes = document.getElementsByClassName('checkbox-loan');
+        if (ele.checked) {
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].type == 'checkbox') {
+                    checkboxes[i].checked = true;
+                    changeMassCollectionLoanStatus(checkboxes[i]);
+                }
+            }
+        } else {
+            swal({
+                    title: 'Are you sure?',
+                    text: 'Your data will be cleared!',
+                    icon: 'warning',
+                    buttons: ["Cancel", "Proceed"],
+                    dangerMode: true,
+                })
+                .then((willProceed) => {
+                    if (willProceed) {
+                        for (var i = 0; i < checkboxes.length; i++) {
+                            //console.log(i)
+                            if (checkboxes[i].type == 'checkbox') {
+                                checkboxes[i].checked = false;
+                                changeMassCollectionLoanStatus(checkboxes[i]);
+                            }
+                        }
+                    } else {
+                        ele.checked = true;
+                    }
+                });
         }
     }
 </script>

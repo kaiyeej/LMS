@@ -51,19 +51,27 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Amount</label>
-                                    <input type="number" step="0.01" class="form-control input-item" placeholder="Collection amount" autocomplete="off" name="input[amount]" id="amount" required>
+                                    <input type="number" min="0" step="0.01" class="form-control input-item" placeholder="Collection amount" autocomplete="off" name="input[amount]" id="amount" onchange="atmComputers()" required>
                                 </div>
-                                <div class="form-group col-md-4">
-                                    <label><strong style="color:red;">*</strong> ATM Balance</label>
-                                    <input type="number" step="0.01" class="form-control input-item" placeholder="ATM Balance" autocomplete="off" name="input[atm_balance]" id="atm_balance" required>
+                                <div class="form-group col-md-6">
+                                    <label><strong style="color:red;">*</strong> ATM Balance Before Withdrawal</label>
+                                    <input type="number" min="0" step="0.01" class="form-control input-item" placeholder="ATM Balance Before Withdrawal" autocomplete="off" name="input[old_atm_balance]" id="old_atm_balance" onchange="atmComputers()" required>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> ATM Withdrawal</label>
-                                    <input type="number" step="0.01" class="form-control input-item" placeholder="ATM Balance" autocomplete="off" name="input[atm_withdrawal]" id="atm_withdrawal" required>
+                                    <input type="number" min="0" step="0.01" class="form-control input-item" placeholder="ATM Withdrawal" autocomplete="off" name="input[atm_withdrawal]" onchange="atmComputers()" id="atm_withdrawal" required>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label><strong style="color:red;">*</strong> ATM Charge</label>
-                                    <input type="number" step="0.01" class="form-control input-item" placeholder="ATM Charge" autocomplete="off" name="input[atm_charge]" id="atm_charge" required>
+                                    <label>ATM Charge</label>
+                                    <input type="number" min="0" step="0.01" class="form-control input-item" placeholder="ATM Charge" autocomplete="off" name="input[atm_charge]" id="atm_charge" onchange="atmComputers()">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>ATM Balance</label>
+                                    <input type="number" min="0" step="0.01" class="form-control input-item" placeholder="ATM Balance" autocomplete="off" name="input[atm_balance]" id="atm_balance">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Excess</label>
+                                    <input type="number" min="0" step="0.01" class="form-control input-item" placeholder="Excess" autocomplete="off" name="input[excess]" id="excess">
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label>Remarks</label>
@@ -102,8 +110,8 @@
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" id="btn_submit" class="btn btn-primary">
-                        Save
+                    <button type="submit" id="btn_submit" class="btn btn-success">
+                        Finish
                     </button>
                 </div>
             </div>

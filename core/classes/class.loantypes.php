@@ -22,7 +22,7 @@ class LoanTypes extends Connection
         return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
     }
 
-    
+
     public function edit()
     {
         $primary_id = $this->inputs[$this->pk];
@@ -70,6 +70,14 @@ class LoanTypes extends Connection
     {
         $primary_id = $primary_id == null ? $this->inputs['id'] : $primary_id;
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
+        if ($result->num_rows < 1)
+            return array(
+                'loan_type'             => '',
+                'loan_type_interest'    => '',
+                'penalty_percentage'    => 0,
+                'remarks'               => '',
+                'fixed_interest'        => 0,
+            );
         return $result->fetch_assoc();
     }
 
@@ -89,26 +97,24 @@ class LoanTypes extends Connection
     public function name($primary_id)
     {
         $result = $this->select($this->table, 'loan_type', "$this->pk = '$primary_id'");
-        if($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             return $row['loan_type'];
-        }else{
+        } else {
             return "---";
         }
-       
     }
 
 
     public function penalty_percentage($primary_id)
     {
         $result = $this->select($this->table, 'penalty_percentage', "$this->pk = '$primary_id'");
-        if($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             return $row['penalty_percentage'];
-        }else{
+        } else {
             return null;
         }
-        
     }
 
     public function idByName($loan_type)

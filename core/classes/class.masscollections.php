@@ -212,10 +212,13 @@ class MassCollections extends Connection
                         'loan_id'           => $row['loan_id'],
                         'client_id'         => $row['client_id'],
                         'amount'            => $row['deduction'],
+                        'old_atm_balance'   => $row['old_atm_balance'],
                         'atm_balance'       => $row['atm_balance'],
                         'atm_withdrawal'    => $row['atm_withdrawal'],
                         'atm_charge'        => $row['atm_charge'],
+                        'excess'            => $row['excess'],
                         'receipt_number'    => $row['receipt_number'],
+                        'mass_collection_detail_id' => $row['mass_collection_detail_id'],
                     ];
 
                     $Collections = new Collections;

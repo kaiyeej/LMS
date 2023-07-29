@@ -212,6 +212,12 @@ class Loans extends Connection
         $Clients = new Clients;
         $Branches = new Branches;
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
+
+        if ($result->num_rows < 1)
+            return [
+                'amount' => 0, 'branch_id' => 0, 'branch_name' => "", 'client' => "", 'client_id' => 0, 'date_added' => "", 'date_last_modified' => "", 'deduct_to_loan' => 0, 'due_date' => "", 'loan_amount' => 0, 'loan_date' => "", 'loan_id' => 0, 'loan_interest' => 0, 'loan_period' => 0, 'loan_type' => "", 'loan_type_id' => 0, 'main_loan_id' => 0, 'monthly_payment' => 0, 'payment_terms' => 0, 'penalty_percentage' => 0, 'reference_number' => "", 'renewal_status' => "", 'service_fee' => 0, 'status' => "", 'user_id' => 0
+            ];
+
         $row = $result->fetch_assoc();
         $row['loan_type'] = $LoanTypes->name($row['loan_type_id']);
         $row['amount'] = number_format($row['loan_amount'], 2);
