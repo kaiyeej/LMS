@@ -6,7 +6,7 @@ header('Access-Control-Allow-Methods: GET, POST');
 header("Access-Control-Allow-Headers: X-Requested-With");
 
 $api_methods = array(
-    'Loans->save_upload',
+    'LoanUploads->save_upload',
     'MassCollections->save_collections',
     'MassCollections->finish_collections'
 );

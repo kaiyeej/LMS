@@ -288,6 +288,10 @@ $User = new Users;
       swal("Success!", "Successfully cancelled entry!", "success");
     }
 
+    function success_upload() {
+      swal("Success!", "Successfully uploaded!", "success");
+    }
+
     function entry_already_exists() {
       swal("Cannot proceed!", "Entry already exists!", "warning");
     }

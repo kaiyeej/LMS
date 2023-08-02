@@ -1,7 +1,6 @@
 <form id='frm_upload' method="POST" enctype="multipart/form-data">
     <div class="modal fade" id="modalUpload" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" id="import_dialog"
-            style="width: 100%;max-width: 2000px;margin: 0.5rem;">
+        <div class="modal-dialog" role="document" id="import_dialog" style="width: 100%;max-width: 2000px;margin: 0.5rem;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><span class='ion-compose'></span> Statement of Account/Ledger</h5>
@@ -25,8 +24,7 @@
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn_back" onclick="backToLoan()"><span
-                            class="fa fa-arrow-left"></span> Back</button>
+                    <button type="button" class="btn btn-primary" id="btn_back" onclick="backToLoan()"><span class="fa fa-arrow-left"></span> Back</button>
                     <button type="submit" id="btn_upload" class="btn btn-primary">
                         Submit
                     </button>
@@ -36,7 +34,9 @@
     </div>
 </form>
 <script>
-    var loan_from_excels = [], loan_types = [], clients_masterdata = [];
+    var loan_from_excels = [],
+        loan_types = [],
+        clients_masterdata = [];
     document.addEventListener("keydown", function(event) {
         if (event.key === "Enter") {
             var activeElement = document.activeElement;
@@ -73,7 +73,7 @@
             var formData = new FormData(this);
             $('#upload_result_content').html(`<center><img src="assets/icons/loader.gif"></center>`);
             $.ajax({
-                url: "controllers/sql.php?c=" + route_settings.class_name + "&q=upload",
+                url: "controllers/sql.php?c=LoanUploads&q=upload",
                 type: 'POST',
                 data: formData,
                 dataType: 'html',
@@ -95,24 +95,32 @@
                 }
             });
         } else {
-            $('#upload_result_content').html(`<center><img src="assets/icons/loader.gif"></center>`);
-            var data = {
-                loan_data: loan_from_excels
-            };
-            $.ajax({
-                type: 'POST',
-                url: "controllers/sql.php?c=" + route_settings.class_name + "&q=save_upload",
-                data: JSON.stringify(data),
-                contentType: 'application/json',
-                success: function(response) {
-                    console.log(response); // Process the response data here
-                    $("#modalUpload").modal('hide');
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText); // Handle any errors here
-                }
-            });
-
+            if ($(".unacceptable_data").length > 0) {
+                swal("Cannot proceed!", "Please check invalid inputs.", "warning");
+            } else {
+                $('#upload_result_content').html(`<center><img src="assets/icons/loader.gif"></center>`);
+                var data = {
+                    loan_data: loan_from_excels
+                };
+                $.ajax({
+                    type: 'POST',
+                    url: "controllers/sql.php?c=LoanUploads&q=save_upload",
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        if (response.data > 0) {
+                            success_upload();
+                        } else {
+                            failed_query();
+                        }
+                        console.log(response); // Process the response data here
+                        $("#modalUpload").modal('hide');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText); // Handle any errors here
+                    }
+                });
+            }
         }
     });
 
@@ -136,7 +144,7 @@
 
                 client_tds += `<tr data-client-index="${clientIndex}" data-loan-index="${loanIndex}">
                 <td colspan="2"></td>
-                <td>
+                <td class='center'>
                     <button type="button" onclick="show_loan_collections(${clientIndex},${loanIndex})" class="btn btn-sm btn-primary" style="float:right"><span class="fa fa-list"></span></button>
                 </td>
                 <td onblur="editLoanCell(this,false)" data-loan-column="loan_type_name" contenteditable="true" class='${unacceptable_data(loan.loan_type_id)}'>${loan.loan_type_name}</td>
@@ -262,6 +270,7 @@
             return 'unacceptable_data';
         return '';
     }
+
     function numberFormatClearZero(y, n = 2) {
         y = y * 1;
         if (y == 0)
@@ -302,14 +311,15 @@
     }
 
     function editClientCell(el) {
-        var new_client_name = el.innerHTML.toUpperCase();
+        var new_client_name = el.innerText.toUpperCase().trim(' ');
         el.innerHTML = new_client_name;
 
-        var new_client_name = el.innerHTML.toUpperCase();
-        var client_id = 0;
+        var client_id = 0,
+            branch_id = 0;
         for (var i = 0; i < clients_masterdata.length; i++) {
             if (clients_masterdata[i].fullname == new_client_name) {
                 client_id = clients_masterdata[i].client_id;
+                branch_id = clients_masterdata[i].branch_id;
                 break;
             }
         }
@@ -319,33 +329,9 @@
 
         loan_from_excels[client_index][client_column] = new_client_name;
         loan_from_excels[client_index].client_id = client_id;
+        loan_from_excels[client_index].branch_id = branch_id;
 
         if (client_id > 0) {
-            el.classList.remove('unacceptable_data');
-        } else {
-            el.classList.add('unacceptable_data');
-        }
-    }
-    function clientNameChecker(el) {
-        var loan_column = el.getAttribute("data-loan-column");
-        if (loan_column != 'client_name')
-            return;
-
-        var new_loan_type_name = el.innerHTML.toUpperCase();
-        var loan_type_id = 0;
-        for (var i = 0; i < loan_types.length; i++) {
-            if (loan_types[i].loan_type == new_loan_type_name) {
-                loan_type_id = loan_types[i].loan_type_id;
-                break;
-            }
-        }
-
-        var client_index = el.parentNode.getAttribute("data-client-index");
-        var loan_index = el.parentNode.getAttribute("data-loan-index");
-
-        loan_from_excels[client_index].loans[loan_index].loan_type_id = loan_type_id;
-
-        if (loan_type_id > 0) {
             el.classList.remove('unacceptable_data');
         } else {
             el.classList.add('unacceptable_data');

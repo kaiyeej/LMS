@@ -44,7 +44,7 @@
         var formData = new FormData(this);
         $('#import_result_content').html(`<center><img src="assets/icons/loader.gif"></center>`);
         $.ajax({
-            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=import",
+            url: "controllers/sql.php?c=LoanUploads&q=import",
             type: 'POST',
             data: formData,
             dataType: 'html',

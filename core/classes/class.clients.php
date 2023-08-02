@@ -393,7 +393,7 @@ class Clients extends Connection
 
     public function showFullnames()
     {
-        $result = $this->select($this->table, "client_id,UCASE(CONCAT(client_fname,IF(client_mname != '', CONCAT(' ',client_mname),''),' ',client_lname,IF(client_name_extension != '', CONCAT(' ',client_name_extension),''))) AS fullname");
+        $result = $this->select($this->table, "client_id,UCASE(CONCAT(client_fname,IF(client_mname != '', CONCAT(' ',client_mname),''),' ',client_lname,IF(client_name_extension != '', CONCAT(' ',client_name_extension),''))) AS fullname,branch_id");
 
         if ($result->num_rows < 1)
             return [];

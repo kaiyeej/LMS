@@ -44,4 +44,5 @@ $classes = array(
     'CashPositioning'       => $pre_class . 'cashpositioning.php',
     'FixedInterest'         => $pre_class . 'fixedinterest.php',
     'Logs'                  => $pre_class . 'logs.php',
+    'LoanUploads'           => $pre_class . 'loanupload.php',
 );
