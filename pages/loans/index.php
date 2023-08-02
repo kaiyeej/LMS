@@ -41,10 +41,10 @@
                                 <div class="dropdown">
                                     <a href="#" data-toggle="dropdown" class="btn btn-info dropdown-toggle"><i class="fas fa-file-excel"></i> Template</a>
                                     <div class="dropdown-menu">
-                                        <a href="#" class="dropdown-item has-icon" onclick="exportTemplate()"><i class="fas fa-download"></i> Export</a>
-                                        <a href="#" class="dropdown-item has-icon" onclick="importTemplate()"><i class="far fa-upload"></i> Import</a>
+                                        <a href="#" class="dropdown-item has-icon" onclick="exportTemplate()"><i class="fas fa-download"></i> Export Loan Template</a>
+                                        <a href="#" class="dropdown-item has-icon" onclick="importTemplate()"><i class="far fa-upload"></i> Import Loan Template</a>
                                         <a href="#" class="dropdown-item has-icon" onclick="uploadFile()"><i class="far fa-upload"></i>
-                                            Upload File</a>
+                                            Upload Ledger</a>
                                     </div>
                                 </div>
                                 <div class="dropdown">
@@ -482,13 +482,16 @@
         });
     }
 
-    function getBalance(loan_id) {
+    function getBalance() {
+        var loan_date = $("#loan_date_renewal").val();
+        var loan_id = $("#loan_id_renewal").val();
         $.ajax({
             type: "POST",
             url: "controllers/sql.php?c=Loans&q=loan_balance",
             data: {
                 input: {
-                    loan_id: loan_id
+                    loan_id: loan_id,
+                    loan_date:loan_date
                 }
             },
             success: function(data) {

@@ -46,58 +46,63 @@ class Collections extends Connection
 
         $cl_id = $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
 
-        if ($Loans->loan_balance($this->inputs['loan_id']) <= 0) {
-            $form_finished = array(
-                'status' => 'F'
+        if ($cl_id) {
+
+            if ($Loans->loan_balance($this->inputs['loan_id'], $this->inputs['collection_date']) <= 0) {
+                $form_finished = array(
+                    'status' => 'F'
+                );
+                $this->update("tbl_loans", $form_finished, 'loan_id="' . $this->inputs['loan_id'] . '"');
+            }
+
+
+            $form_journal = array(
+                'reference_number'  => $ref_code,
+                'cross_reference'   => $this->clean($this->inputs[$this->name]),
+                'branch_id'         => $this->clean($this->inputs['branch_id']),
+                'journal_id'        => $jl['journal_id'],
+                'remarks'           => $this->inputs['remarks'],
+                'journal_date'      => $this->inputs['collection_date'],
+                'status'            => 'F',
+                'user_id'           => $_SESSION['lms_user_id'],
+                'is_manual'         => 'N'
             );
-            $this->update("tbl_loans", $form_finished, 'loan_id="' . $this->inputs['loan_id'] . '"');
-        }
+
+            $journal_entry_id = $this->insert("tbl_journal_entries", $form_journal, 'Y');
+
+            // FOR CASH IN BANK
+            $cnb_total = $amount + $this->inputs['penalty_amount'];
+            $form_cnb = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $this->clean($this->inputs['chart_id']), 'debit' => $cnb_total);
+            $this->insert('tbl_journal_entry_details', $form_cnb);
 
 
-        $form_journal = array(
-            'reference_number'  => $ref_code,
-            'cross_reference'   => $this->clean($this->inputs[$this->name]),
-            'branch_id'         => $this->clean($this->inputs['branch_id']),
-            'journal_id'        => $jl['journal_id'],
-            'remarks'           => $this->inputs['remarks'],
-            'journal_date'      => $this->inputs['collection_date'],
-            'status'            => 'F',
-            'user_id'           => $_SESSION['lms_user_id'],
-            'is_manual'         => 'N'
-        );
-
-        $journal_entry_id = $this->insert("tbl_journal_entries", $form_journal, 'Y');
-
-        // FOR CASH IN BANK
-        $cnb_total = $amount + $this->inputs['penalty_amount'];
-        $form_cnb = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $this->clean($this->inputs['chart_id']), 'debit' => $cnb_total);
-        $this->insert('tbl_journal_entry_details', $form_cnb);
+            // FOR INTEREST
+            $int_chart = $ChartOfAccounts->chart_data('Interest Income - ' . $branch_name);
+            $form_interest = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $int_chart['chart_id'], 'credit' => $interest);
+            $this->insert('tbl_journal_entry_details', $form_interest);
 
 
-        // FOR INTEREST
-        $int_chart = $ChartOfAccounts->chart_data('Interest Income - ' . $branch_name);
-        $form_interest = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $int_chart['chart_id'], 'credit' => $interest);
-        $this->insert('tbl_journal_entry_details', $form_interest);
+            // FOR PENALTY
+            if ($this->inputs['penalty_amount'] > 0) {
+
+                $penalty_chart = $ChartOfAccounts->chart_data('Penalty Income - ' . $branch_name);
+                $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $penalty_chart['chart_id'], 'credit' => $this->inputs['penalty_amount']);
+                $this->insert('tbl_journal_entry_details', $form_penalty);
+            }
 
 
-        // FOR PENALTY
-        if ($this->inputs['penalty_amount'] > 0) {
-
-            $penalty_chart = $ChartOfAccounts->chart_data('Penalty Income - ' . $branch_name);
-            $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $penalty_chart['chart_id'], 'credit' => $this->inputs['penalty_amount']);
+            // FOR LOANS RECEIVABLE
+            $lr_total = $cnb_total - ($this->inputs['penalty_amount'] + $interest);
+            $loan_type = $LoanTypes->name($loan_row['loan_type_id']);
+            $lr_chart = $ChartOfAccounts->chart_data('Loans Receivable - ' . $loan_type . " - " . $branch_name);
+            $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $lr_chart['chart_id'], 'credit' => $lr_total);
             $this->insert('tbl_journal_entry_details', $form_penalty);
+
+
+            return $cl_id;//$Loans->loan_balance($this->inputs['loan_id'], $this->inputs['collection_date']); //$cl_id;
+        } else {
+            return 0;
         }
-
-
-        // FOR LOANS RECEIVABLE
-        $lr_total = $cnb_total - ($this->inputs['penalty_amount'] + $interest);
-        $loan_type = $LoanTypes->name($loan_row['loan_type_id']);
-        $lr_chart = $ChartOfAccounts->chart_data('Loans Receivable - ' . $loan_type . " - " . $branch_name);
-        $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $lr_chart['chart_id'], 'credit' => $lr_total);
-        $this->insert('tbl_journal_entry_details', $form_penalty);
-
-
-        return $cl_id;
     }
 
     public function edit()
@@ -147,7 +152,7 @@ class Collections extends Connection
         $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
         $row = $result->fetch_assoc();
         $loan = $Loans->view($row['loan_id']);
-        $row['loan_amount'] = number_format($loan['loan_amount'],2);
+        $row['loan_amount'] = number_format($loan['loan_amount'], 2);
         return $row;
     }
 
@@ -220,14 +225,14 @@ class Collections extends Connection
         return $row['total'];
     }
 
-    
+
     public function penalty_checker($date, $loan_id)
     {
         $result = $this->select("tbl_collections as c, tbl_loans as l", '*', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND (MONTH(c.collection_date) = MONTH('$date') AND YEAR(c.collection_date)= YEAR('$date'))");
-       
-        if($result->num_rows > 0){
+
+        if ($result->num_rows > 0) {
             return 1;
-        }else{
+        } else {
             return 0;
         }
     }
@@ -238,25 +243,36 @@ class Collections extends Connection
         $row = $result->fetch_assoc();
         return $row['total'];
     }
-    
-    public function late_collection($loan_id,$date)
+
+    public function late_collection($loan_id, $date)
     {
         $result = $this->select("tbl_collections as c, tbl_loans as l", 'sum(c.amount) as total', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND c.collection_date > '$date'");
         $row = $result->fetch_assoc();
         return $row['total'];
     }
 
-    public function late_collection_checker($loan_id,$date)
+    public function late_collection_checker($loan_id, $date)
     {
         $result = $this->select("tbl_collections as c, tbl_loans as l", 'collection_date', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' AND c.collection_date > '$date' order by collection_date desc
         limit 1;");
-        if($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            return $row['collection_date']; 
-        }else{
+            return $row['collection_date'];
+        } else {
             return 0;
         }
-        
+    }
+
+    public function last_collection($loan_id)
+    {
+        $result = $this->select("tbl_collections as c, tbl_loans as l", 'collection_date', "l.loan_id='$loan_id' AND c.loan_id='$loan_id' order by collection_date desc
+        limit 1;");
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['collection_date'];
+        } else {
+            return 0;
+        }
     }
 
 
@@ -269,17 +285,17 @@ class Collections extends Connection
 
     public function total_collected($loan_id)
     {
-        $result = $this->select($this->table, 'sum(amount) as total', "loan_id='$loan_id' AND status='F'");
+        $result = $this->select($this->table, '(sum(amount-penalty_amount)) as total', "loan_id='$loan_id' AND status='F'");
         $row = $result->fetch_assoc();
-        return $row['total'];
+        return ($row['total']);
     }
-    
-    
+
+
     public function total_collected_by_loan($loan_id)
     {
         $result = $this->select($this->table, 'sum(amount) as total, sum(penalty_amount) as penalty', "loan_id='$loan_id' AND status='F'");
         $row = $result->fetch_assoc();
-        return [$row['total'],$row['penalty']];
+        return [$row['total'], $row['penalty']];
     }
 
     public function monthly_collection($month, $year, $branch_id = null)
@@ -313,8 +329,8 @@ class Collections extends Connection
             $ondate_ref_number = "CL-" . date("Ymd") . $row['loan_id'];
             $count_collection_on_date = $this->select($this->table, "loan_id", "$this->name = '$ondate_ref_number'");
             $count_collection = $count_collection_on_date->num_rows;
-            $status_display = $count_collection>0?"Paid by Date":"";
-            $monthly_payment_display = $count_collection>0?"":$row['monthly_payment'];
+            $status_display = $count_collection > 0 ? "Paid by Date" : "";
+            $monthly_payment_display = $count_collection > 0 ? "" : $row['monthly_payment'];
 
             $row['client_name'] = $Clients->formal_name($row['client_id']);
             $row['atm_charge'] = $atm_charge;
@@ -375,13 +391,13 @@ class Collections extends Connection
         }
     }
 
-    
+
     public function client_id()
     {
         $primary_id = $this->inputs['id'];
         $result = $this->select($this->table, "client_id,loan_id", "$this->pk = '$primary_id'");
         $row = $result->fetch_assoc();
-        return [$row['client_id'],$row['loan_id']];
+        return [$row['client_id'], $row['loan_id']];
     }
 
     public function import()

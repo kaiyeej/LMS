@@ -265,7 +265,7 @@
                 var jsonParse = JSON.parse(data);
                 const json = jsonParse.data;
                 $("#loan_amount_span").html(json['amount']);
-                $("#monthly_payment_span").html(json['monthly_payment']);
+                $("#monthly_payment_span").html(json['monthly_payment_amount']);
             }
         });
     }

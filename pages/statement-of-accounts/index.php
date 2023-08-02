@@ -44,7 +44,6 @@
                 </div>
             </form>
         </div>
-
         <div class="row">
             <div class="col-md-12">
                 <div class="col-12 col-xl-12 card shadow mb-4">

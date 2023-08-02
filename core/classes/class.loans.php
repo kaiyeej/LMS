@@ -36,7 +36,7 @@ class Loans extends Connection
         if (isset($this->inputs['last_id']))
             $last_id = $this->inputs['last_id'];
 
-        return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'",$last_id);
+        return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'", $last_id);
     }
 
     public function renew()
@@ -45,7 +45,7 @@ class Loans extends Connection
         $primary_id = $this->inputs[$this->pk];
         $row = $this->view($primary_id);
         $deduct_to_loan = (!isset($this->inputs['deduct_to_loan']) ? 0 : 1);
-        $monthly_payment = $this->inputs['monthly_payment'] - $row['monthly_payment'];
+        $monthly_payment = $this->inputs['monthly_payment']; // - $row['monthly_payment'];
         $form = array(
             $this->name             => $this->clean($this->inputs[$this->name]),
             'branch_id'             => $row['branch_id'],
@@ -147,7 +147,7 @@ class Loans extends Connection
                     $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $lr_chart['chart_id'], 'credit' => $lr_total);
                     $this->insert('tbl_journal_entry_details', $form_penalty);
 
-                    if ($this->loan_balance($this->inputs['loan_id']) <= 0) {
+                    if ($this->loan_balance($this->inputs['loan_id'], $this->inputs['loan_date']) <= 0) {
                         $form_finished = array(
                             'status' => 'F'
                         );
@@ -156,6 +156,8 @@ class Loans extends Connection
                 }
             }
         }
+
+        $bal = $this->loan_balance($this->inputs['loan_id'], $this->inputs['loan_date']);
         return $sql;
     }
 
@@ -215,9 +217,11 @@ class Loans extends Connection
         $row['loan_type'] = $LoanTypes->name($row['loan_type_id']);
         $row['amount'] = number_format($row['loan_amount'], 2);
         $row['monthly_payment'] = $row['monthly_payment']; //number_format($row['monthly_payment'], 2);
+        $row['monthly_payment_amount'] = number_format($row['monthly_payment'], 2);
         $row['client'] = $Clients->name($row['client_id']);
         $row['branch_name'] = $Branches->name($row['branch_id']);
         $row['loan_type'] = $LoanTypes->name($row['branch_id']);
+        $row['renew_loan_date'] = $this->getCurrentDate();
         return $row;
     }
 
@@ -374,6 +378,7 @@ class Loans extends Connection
         $result = $this->select($this->table, '*', "$param");
 
         $rows = array();
+        $bal = 0;
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
 
@@ -387,10 +392,10 @@ class Loans extends Connection
             $Collection = new Collections;
             $lt_row = $LoanTypes->view($loan_type_id);
 
-            $loandate = date('Y-m-d', strtotime('+'.$loan_period.' month', strtotime($loan_date)));
-            $col_checker_date = $Collection->late_collection_checker($row['loan_id'],$loandate);
-            
-            if($col_checker_date != 0){
+            $loandate = date('Y-m-d', strtotime('+' . $loan_period . ' month', strtotime($loan_date)));
+            $col_checker_date = $Collection->late_collection_checker($row['loan_id'], $loandate);
+
+            if ($col_checker_date != 0) {
                 $ts1 = strtotime($loandate);
                 $ts2 = strtotime($col_checker_date);
 
@@ -402,7 +407,7 @@ class Loans extends Connection
 
                 $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
                 $late_col = $diff;
-            }else{
+            } else {
                 $late_col = 0;
             }
 
@@ -414,9 +419,9 @@ class Loans extends Connection
 
             $balance = $loan_amount;
             $payment_count = 1;
-            while ($count <= ($loan_period+$late_col)) {
+            while ($count <= ($loan_period + $late_col)) {
 
-                $loan_date = date('Y-m-d', strtotime("first day of next month",strtotime($loan_date)));
+                $loan_date = date('Y-m-d', strtotime("first day of next month", strtotime($loan_date)));
 
                 if ($payment_count == $payment_terms) { // matches every 3 iterations
                     $payment_count = 1;
@@ -438,7 +443,7 @@ class Loans extends Connection
 
                 $penalty = $Collection->penalty_per_month($loan_date, $row['loan_id']);
                 // $payment = $count == 1 ? $Collection->collected_per_month($loan_date,$row['loan_id'])+$Collection->advance_collection($row['loan_id']) : $Collection->collected_per_month($loan_date,$row['loan_id']);
-                $balance -= ($principal_amount-$penalty); //($payment + $penalty);
+                $balance -= ($principal_amount - $penalty); //($payment + $penalty);
 
 
                 $row['date'] = date('F Y', strtotime($loan_date));
@@ -480,10 +485,10 @@ class Loans extends Connection
             $balance = $loan_amount;
             $Collection = new Collections;
 
-            $loandate = date('Y-m-d', strtotime('+'.$loan_period.' month', strtotime($loan_date)));
-            $col_checker_date = $Collection->late_collection_checker($row['loan_id'],$loandate);
-            
-            if($col_checker_date != 0){
+            $loandate = date('Y-m-d', strtotime('+' . $loan_period . ' month', strtotime($loan_date)));
+            $col_checker_date = $Collection->late_collection_checker($row['loan_id'], $loandate);
+
+            if ($col_checker_date != 0) {
                 $ts1 = strtotime($loandate);
                 $ts2 = strtotime($col_checker_date);
 
@@ -493,16 +498,16 @@ class Loans extends Connection
                 $month1 = date('m', $ts1);
                 $month2 = date('m', $ts2);
 
-                $diff = (($year2 - $year1) * 12) + ($month2 - $month1)-1;
+                $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
                 $late_col = $diff;
-            }else{
+            } else {
                 $late_col = 0;
             }
 
             $payment_count = 1;
-            while ($count <= ($loan_period+$late_col)) {
+            while ($count <= ($loan_period + $late_col)) {
 
-                $loan_date = date('Y-m-d', strtotime('+1 month', strtotime($loan_date)));
+                $loan_date = date('Y-m-d', strtotime("first day of next month", strtotime($loan_date)));
 
                 if ($payment_count == $payment_terms) { // matches every 3 iterations
                     $payment_count = 1;
@@ -511,7 +516,7 @@ class Loans extends Connection
                     $payment_count += 1;
                     $payment = 0;
                 }
-                
+
 
                 // $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
 
@@ -525,7 +530,36 @@ class Loans extends Connection
                 // $monthly_interest = $balance * $monthly_interest_rate;
                 $principal_amount = $payment - $monthly_interest;
                 $penalty = $Collection->penalty_per_month($loan_date, $row['loan_id']);
-                $balance -= ($principal_amount + $penalty);
+
+                $addCounter = $this->select($this->table, 'count(loan_id) as counter,renewal_status', "main_loan_id='$row[loan_id]'"); // AND renewal_status = 'N'
+                $alRow = $addCounter->fetch_assoc();
+
+                // if ($alRow['counter'] > 0) {
+                //     $th_additional = $alRow['renewal_status'] == "N" ? '<th style="color:#fff;">ADDITIONAL LOAN</th>' : "";
+                //     $th_renewal = $alRow['renewal_status'] == "Y" ? '<th style="color:#fff;"></th>' : "";
+                //     $colspan = 6;
+                // } else {
+                //     $th_additional = "";
+                //     $th_renewal = "";
+                //     $colspan = 5;
+                // }
+                $year = date('Y', strtotime($loan_date));
+                $month = date('m', strtotime($loan_date));
+
+                if ($alRow['counter'] > 0) {
+                    $additional_amount = $this->additional_loan($month, $year, $row['loan_id']);
+                    $renewal_status = $additional_amount > 0 ? "<strong style='color:red;'>RENEWAL</strong>" : "";
+                    $td_add = $alRow['renewal_status'] == "N" ? $additional_amount : "";
+                    $td_renewal = $alRow['renewal_status'] == "Y" ? $renewal_status : "";
+                    $balance += (($additional_amount - $principal_amount) - $penalty);
+                    $td_colspan = "3";
+                } else {
+                    $td_add = "";
+                    $td_renewal = "";
+                    $additional_amount = 0;
+                    $balance -= ($principal_amount - $penalty);
+                    $td_colspan = "2";
+                }
 
 
                 $row['date'] = date('F Y', strtotime($loan_date));
@@ -665,16 +699,16 @@ class Loans extends Connection
         $payment_count = 1;
         $Collection = new Collections;
         while ($count <= $diff) {
-            $loan_date = date('Y-m-d', strtotime("first day of next month",strtotime($loan_date)));
-            $counter_date = date('Y-m-d', strtotime('-'.$payment_count.' month', strtotime($loan_date)));
-            
+            $loan_date = date('Y-m-d', strtotime("first day of next month", strtotime($loan_date)));
+            $counter_date = date('Y-m-d', strtotime('-' . $payment_count . ' month', strtotime($loan_date)));
+
             if ($payment_terms > 1) {
                 if ($payment_count == $payment_terms) { // matches every terms iterations
                     $payment_count = 1;
                     $payment = $Collection->collected_per_month($loan_date, $loan_id);
                     $suggested_total += $monthly_payment;
                     $payment_total += $payment;
-                }else if($Collection->penalty_checker($counter_date, $loan_id) <= 0){
+                } else if ($Collection->penalty_checker($counter_date, $loan_id) <= 0) {
                     $payment_count = 2;
                     $payment = $Collection->collected_per_month($loan_date, $loan_id);
                     $suggested_total += $monthly_payment;
@@ -721,18 +755,112 @@ class Loans extends Connection
 
     public function additional_loan($month, $year, $loan_id)
     {
-        $result = $this->select($this->table, 'sum(loan_amount) as total', "(MONTH(loan_date) = '$month' AND YEAR(loan_date)= '$year') AND main_loan_id='$loan_id' AND renewal_status='N'");
+        $result = $this->select($this->table, 'sum(loan_amount) as total', "(MONTH(loan_date) = '$month' AND YEAR(loan_date)= '$year') AND main_loan_id='$loan_id'"); // AND renewal_status='N'
         $row = $result->fetch_assoc();
         return $row['total'];
     }
 
-    public function loan_balance($primary_id = null)
+    public function loan_balance($primary_id = null, $date = null)
     {
-        $primary_id = $primary_id == "" ? $this->inputs[$this->pk] : $primary_id;
-        $Collections = new Collections;
-        $bal = $this->total_loan($primary_id) - $Collections->total_collected($primary_id);
+        $primary_id = $primary_id != "" ? $primary_id : $this->inputs[$this->pk];
+        $date = $date != "" ? $date : $this->inputs['loan_date'];
 
-        return $bal;
+        // $Collections = new Collections;
+
+        // $bal = $this->total_loan($primary_id)-$Collections->total_collected($primary_id);
+        // return $bal;
+
+        $result = $this->select($this->table, '*', "loan_id='$primary_id'");
+
+        $row = $result->fetch_assoc();
+
+        $loan_interest = $row['loan_interest'];
+        $loan_period = $row['loan_period'];
+        $loan_amount = $row['loan_amount'];
+        $loan_date = $row['loan_date'];
+        $payment_terms = $row['payment_terms'];
+        $loan_type_id = $row['loan_type_id'];
+        $LoanTypes = new LoanTypes;
+        $Collection = new Collections;
+        $lt_row = $LoanTypes->view($loan_type_id);
+
+        $loandate = date('Y-m-d', strtotime('+' . $loan_period . ' month', strtotime($loan_date)));
+        $col_checker_date = $Collection->late_collection_checker($row['loan_id'], $loandate);
+
+        if ($col_checker_date != 0) {
+            $ts1 = strtotime($loandate);
+            $ts2 = strtotime($col_checker_date);
+
+            $year1 = date('Y', $ts1);
+            $year2 = date('Y', $ts2);
+
+            $month1 = date('m', $ts1);
+            $month2 = date('m', $ts2);
+
+            $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
+            $late_col = $diff;
+        } else {
+            $late_col = 0;
+        }
+
+        $ldate = strtotime($loan_date);
+        $cdate = strtotime($date);
+
+        $year_1 = date('Y', $ldate);
+        $year_2 = date('Y', $cdate);
+
+        $month_1 = date('m', $ldate);
+        $month_2 = date('m', $cdate);
+
+        $l_period = ((($year_2 - $year_1) * 12) + ($month_2 - $month_1));
+
+
+        $count = 1;
+
+        $monthly_interest_rate = ($loan_interest / 100) / 12;
+
+        $balance = $loan_amount;
+        $payment_count = 1;
+        while ($count <= ($l_period + $late_col)) {
+
+            $loan_date = date('Y-m-d', strtotime("first day of next month", strtotime($loan_date)));
+
+            if ($payment_count == $payment_terms) { // matches every 3 iterations
+                $payment_count = 1;
+                $payment = $count == 1 ? $Collection->collected_per_month($loan_date, $row['loan_id']) + $Collection->advance_collection($row['loan_id']) : $Collection->collected_per_month($loan_date, $row['loan_id']);
+            } else {
+                $payment_count += 1;
+                $payment = 0;
+            }
+
+            if ($lt_row['fixed_interest'] == "Y") {
+                $monthly_interest = $loan_interest;
+            } else {
+                $monthly_interest_rate = ($loan_interest / 100) / 12;
+                $monthly_interest = $balance * $monthly_interest_rate;
+            }
+
+            $addCounter = $this->select($this->table, 'count(loan_id) as counter,renewal_status', "main_loan_id='$row[loan_id]'"); // AND renewal_status = 'N'
+            $alRow = $addCounter->fetch_assoc();
+
+            $year = date('Y', strtotime($loan_date));
+            $month = date('m', strtotime($loan_date));
+
+            $principal_amount = $payment - $monthly_interest; //$payment > 0 ? $payment - $monthly_interest : 0;
+            $penalty = $Collection->penalty_per_month($loan_date, $row['loan_id']);
+            if ($alRow['counter'] > 0) {
+                $additional_amount = $this->additional_loan($month, $year, $row['loan_id']);
+                $balance += (($additional_amount - $principal_amount) - $penalty);
+            } else {
+                $additional_amount = 0;
+                $balance -= ($principal_amount - $penalty);
+            }
+
+            $balance -= ($principal_amount - $penalty);
+            $count++;
+        }
+
+        return round($balance, 2);
     }
 
 
@@ -767,15 +895,15 @@ class Loans extends Connection
                     $this->metadata('loan_amount', 'decimal', '12,4'),
                     $this->metadata('loan_interest', 'decimal', '12,4'),
                     $this->metadata('loan_period', 'int', 4),
-                    $this->metadata('penalty_percentage','decimal', '12,4'),
-                    $this->metadata('payment_terms','decimal', '4,2'),
+                    $this->metadata('penalty_percentage', 'decimal', '12,4'),
+                    $this->metadata('payment_terms', 'decimal', '4,2'),
                     $this->metadata('due_date', 'date'),
                     $this->metadata('status', 'varchar', 1, 'NOT NULL', "'A'", '', "P - Pending; A - Approved; R - Released; D - Denied; F- Fully paid"),
                     $this->metadata('renewal_status', 'varchar', 1),
                     $this->metadata('loan_date', 'date'),
-                    $this->metadata('service_fee','decimal', '12,3'),
-                    $this->metadata('monthly_payment','decimal', '12,4'),
-                    $this->metadata('deduct_to_loan','int', '1'),
+                    $this->metadata('service_fee', 'decimal', '12,3'),
+                    $this->metadata('monthly_payment', 'decimal', '12,4'),
+                    $this->metadata('deduct_to_loan', 'int', '1'),
                     $default['user_id'],
                     $default['date_added'],
                     $default['date_last_modified']
@@ -981,22 +1109,22 @@ class Loans extends Connection
     {
         $Clients = new Clients;
         $loan_data = $this->inputs['loan_data'];
-        foreach($loan_data as $clients){
+        foreach ($loan_data as $clients) {
             $client_id = $clients['client_id'] > 0 ? $clients['client_id'] : $Clients->idByFullname($this->clean($clients['client_name']));
-            if($client_id > 0){
-                $this->save_client_loans($client_id,$clients);
+            if ($client_id > 0) {
+                $this->save_client_loans($client_id, $clients);
             }
         }
     }
 
-    public function save_client_loans($client_id,$client_data)
+    public function save_client_loans($client_id, $client_data)
     {
         $response = [];
         $count = 1;
         $Clients = new Clients;
-        
-        foreach($client_data['loans'] as $loan_data){
-            $reference_number = "LN-$client_id-".$count++.date("Ymdhis");
+
+        foreach ($client_data['loans'] as $loan_data) {
+            $reference_number = "LN-$client_id-" . $count++ . date("Ymdhis");
             $form = array(
                 'reference_number'      => $reference_number,
                 'branch_id'             => $Clients->getBranch($client_id),
@@ -1012,22 +1140,22 @@ class Loans extends Connection
                 'payment_terms'         => $loan_data['payment_terms'],
                 'status'                => "R",
             );
-            $loan_id = $this->insert($this->table,$form,"Y");
-            if($loan_id > 0){
-                $this->save_loan_collections($client_id,$loan_id,$loan_data['collections']);
+            $loan_id = $this->insert($this->table, $form, "Y");
+            if ($loan_id > 0) {
+                $this->save_loan_collections($client_id, $loan_id, $loan_data['collections']);
                 $response[] = $loan_id;
             }
         }
         return $response;
     }
 
-    public function save_loan_collections($client_id,$loan_id,$collections)
+    public function save_loan_collections($client_id, $loan_id, $collections)
     {
         $count = 1;
         $Clients = new Clients;
         foreach ($collections as $collection_data) {
-            if($collection_data['payment_amount'] > 0){
-                $reference_number = "CL-$client_id-".$count++.date("Ymdhis");
+            if ($collection_data['payment_amount'] > 0) {
+                $reference_number = "CL-$client_id-" . $count++ . date("Ymdhis");
                 $form = array(
                     'reference_number'  => $reference_number,
                     'loan_id'           => $loan_id,
@@ -1044,7 +1172,7 @@ class Loans extends Connection
                     'atm_withdrawal'    => 0,
                     'atm_charge'        => 0,
                 );
-                $this->insert("tbl_collections",$form,"Y");
+                $this->insert("tbl_collections", $form, "Y");
             }
         }
     }

@@ -111,7 +111,7 @@
                         <div class="col-6">
                             <ul class="nav justify-content-end">
                                 <li class="nav-item">
-                                    <a id="menu-edit-transaction" class="nav-link" href="#" style="font-size: small;"><i class='ti ti-pencil'></i> Edit Journal Entry</a>
+                                    <a id="menu-edit-transaction" class="nav-link" href="#" style="font-size: small;"><i class='ti ti-pencil'></i> Edit Entry</a>
                                 </li>
                                 <li class="nav-item">
                                     <a id="menu-delete-selected-items" class="nav-link" href="#" style="font-size: small;"><i class='ti ti-trash'></i> Delete Selected</a>
