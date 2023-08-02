@@ -23,41 +23,54 @@
                     <div class="col-md-3">
                         <label><strong>Start Date</strong></label>
                         <div>
-                            <input type="date" required class="form-control" id="start_date" value="<?php echo date('Y-m-01', strtotime(date("Y-m-d"))); ?>" name="input[start_date]">
+                            <input type="date" required class="form-control" id="start_date"
+                                value="<?php echo date('Y-m-01', strtotime(date(" Y-m-d"))); ?>"
+                            name="input[start_date]">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <label><strong>End Date</strong></label>
                         <div>
-                            <input type="date" required class="form-control" id="end_date" value="<?php echo date('Y-m-t', strtotime(date("Y-m-d"))) ?>" name="input[end_date]">
+                            <input type="date" required class="form-control" id="end_date"
+                                value="<?php echo date('Y-m-t', strtotime(date(" Y-m-d"))) ?>" name="input[end_date]">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <label>&nbsp;</label>
                         <div>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-warning" onclick="getEntries()"><i class="fas fa-refresh"></i> Generate</button>
+                                <button type="button" class="btn btn-warning" onclick="getEntries()"><i
+                                        class="fas fa-refresh"></i> Generate</button>
 
                                 <div class="dropdown">
-                                    <a href="#" data-toggle="dropdown" class="btn btn-info dropdown-toggle"><i class="fas fa-file-excel"></i> Template</a>
+                                    <a href="#" data-toggle="dropdown" class="btn btn-info dropdown-toggle"><i
+                                            class="fas fa-file-excel"></i> Template</a>
                                     <div class="dropdown-menu">
-                                        <a href="#" class="dropdown-item has-icon" onclick="exportTemplate()"><i class="fas fa-download"></i> Export</a>
-                                        <a href="#" class="dropdown-item has-icon" onclick="importTemplate()"><i class="far fa-upload"></i> Import</a>
-                                        <a href="#" class="dropdown-item has-icon" onclick="uploadFile()"><i class="far fa-upload"></i>
-                                            Upload File</a>
+                                        <a href="#" class="dropdown-item has-icon" onclick="exportTemplate()"><i
+                                                class="fas fa-download"></i> Export</a>
+                                        <a href="#" class="dropdown-item has-icon" onclick="importTemplate()"><i
+                                                class="far fa-upload"></i> Import</a>
+                                        <a href="#" class="dropdown-item has-icon" onclick="uploadFile()"><i
+                                                class="far fa-upload"></i>
+                                            Upload Ledger</a>
                                     </div>
                                 </div>
                                 <div class="dropdown">
-                                    <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><i class="fas fa-plus"></i> Add</a>
+                                    <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><i
+                                            class="fas fa-plus"></i> Add</a>
                                     <div class="dropdown-menu">
-                                        <a href="#" class="dropdown-item has-icon" onclick="addModal()"><i class="fas fa-add"></i> Add New Loan</a>
-                                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan('Y')"><i class="far fa-repeat"></i> Loan Renewal</a>
-                                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan('N')"><i class="far fa-file-circle-plus"></i> Additional Loan</a>
+                                        <a href="#" class="dropdown-item has-icon" onclick="addModal()"><i
+                                                class="fas fa-add"></i> Add New Loan</a>
+                                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan('Y')"><i
+                                                class="far fa-repeat"></i> Loan Renewal</a>
+                                        <a href="#" class="dropdown-item has-icon" onclick="addOtherLoan('N')"><i
+                                                class="far fa-file-circle-plus"></i> Additional Loan</a>
                                     </div>
                                 </div>
                                 <div class="dropdown">
                                     <div class="btn-group btn-group" role="group" aria-label="Basic example">
-                                        <button type="button" class="btn btn-danger" onclick="deleteEntry()"><i class="fas fa-trash"></i> Delete</button>
+                                        <button type="button" class="btn btn-danger" onclick="deleteEntry()"><i
+                                                class="fas fa-trash"></i> Delete</button>
                                     </div>
                                 </div>
                             </div>
@@ -77,7 +90,9 @@
                                     <tr>
                                         <th style="width:10px;">
                                             <div class="custom-checkbox custom-control">
-                                                <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1" onchange="checkAll(this, 'dt_id')">
+                                                <input type="checkbox" data-checkboxes="mygroup"
+                                                    class="custom-control-input" id="checkbox-1"
+                                                    onchange="checkAll(this, 'dt_id')">
                                                 <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
                                             </div>
                                         </th>
@@ -109,7 +124,7 @@
         var start_date = $("#start_date").val();
         var end_date = $("#end_date").val();
         var param = "(loan_date >= '" + start_date + "' AND loan_date <= '" + end_date + "')";
- 
+
         $("#dt_entries").DataTable().destroy();
         $("#dt_entries").DataTable({
             "processing": true,
@@ -128,38 +143,38 @@
             ],
             "columns": [{
 
-                    "mRender": function(data, type, row) {
-                        return row.status == "D" || row.status == "A" ? '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.loan_id + '" value=' + row.loan_id + '><label for="checkbox-b' + row.loan_id + '" class="custom-control-label">&nbsp;</label></div>' : "";
-                    }
-                },
-                {
-                    "mRender": function(data, type, row) {
-                        return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.loan_id + ")'><span class='fa fa-edit'></span></button></center>";
-                    }
-                },
-                {
-                    "data": "reference_number"
-                },
-                {
-                    "data": "client"
-                },
-                {
-                    "data": "loan_type"
-                },
-                {
-                    "data": "loan_amount"
-                },
-                {
-                    "mRender": function(data, type, row) {
-                        return row.status == "P" ? '<a href="#" class="badge badge-light">Pending</a>' : row.status == "A" ? '<a href="#" class="badge badge-success">Approved</a>' : row.status == "R" ? '<a href="#" class="badge badge-info">Released</a>' : row.status == "F" ? '<a href="#" class="badge badge-primary">Fully Paid</a>' : '<a href="#" class="badge badge-danger">Denied</a>';
-                    }
-                },
-                {
-                    "data": "date_added"
-                },
-                {
-                    "data": "date_last_modified"
+                "mRender": function(data, type, row) {
+                    return row.status == "D" || row.status == "A" ? '<div class="custom-checkbox custom-control"><input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" name="dt_id" id="checkbox-b' + row.loan_id + '" value=' + row.loan_id + '><label for="checkbox-b' + row.loan_id + '" class="custom-control-label">&nbsp;</label></div>' : "";
                 }
+            },
+            {
+                "mRender": function(data, type, row) {
+                    return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.loan_id + ")'><span class='fa fa-edit'></span></button></center>";
+                }
+            },
+            {
+                "data": "reference_number"
+            },
+            {
+                "data": "client"
+            },
+            {
+                "data": "loan_type"
+            },
+            {
+                "data": "loan_amount"
+            },
+            {
+                "mRender": function(data, type, row) {
+                    return row.status == "P" ? '<a href="#" class="badge badge-light">Pending</a>' : row.status == "A" ? '<a href="#" class="badge badge-success">Approved</a>' : row.status == "R" ? '<a href="#" class="badge badge-info">Released</a>' : row.status == "F" ? '<a href="#" class="badge badge-primary">Fully Paid</a>' : '<a href="#" class="badge badge-danger">Denied</a>';
+                }
+            },
+            {
+                "data": "date_added"
+            },
+            {
+                "data": "date_last_modified"
+            }
             ]
         });
     }
@@ -185,12 +200,12 @@
     function releasedLoan() {
         $("#btn_release").html("<span class='fa fa-spinner fa-spin'></span>");
         swal({
-                title: 'Are you sure?',
-                text: 'You will not be able to recover these entries!',
-                icon: 'info',
-                buttons: true,
-                dangerMode: true,
-            })
+            title: 'Are you sure?',
+            text: 'You will not be able to recover these entries!',
+            icon: 'info',
+            buttons: true,
+            dangerMode: true,
+        })
             .then((willDelete) => {
                 if (willDelete) {
                     var loan_id = $("#hidden_id").val();
@@ -343,24 +358,24 @@
                     },
                 },
                 "columns": [{
-                        "data": "date"
-                    },
-                    {
-                        "data": "payment",
-                        className: "text-right"
-                    },
-                    {
-                        "data": "interest",
-                        className: "text-right"
-                    },
-                    {
-                        "data": "applicable_principal",
-                        className: "text-right"
-                    },
-                    {
-                        "data": "balance",
-                        className: "text-right"
-                    }
+                    "data": "date"
+                },
+                {
+                    "data": "payment",
+                    className: "text-right"
+                },
+                {
+                    "data": "interest",
+                    className: "text-right"
+                },
+                {
+                    "data": "applicable_principal",
+                    className: "text-right"
+                },
+                {
+                    "data": "balance",
+                    className: "text-right"
+                }
                 ]
             });
         }
@@ -397,24 +412,24 @@
                 },
             },
             "columns": [{
-                    "data": "date"
-                },
-                {
-                    "data": "payment",
-                    className: "text-right"
-                },
-                {
-                    "data": "interest",
-                    className: "text-right"
-                },
-                {
-                    "data": "applicable_principal",
-                    className: "text-right"
-                },
-                {
-                    "data": "balance",
-                    className: "text-right"
-                }
+                "data": "date"
+            },
+            {
+                "data": "payment",
+                className: "text-right"
+            },
+            {
+                "data": "interest",
+                className: "text-right"
+            },
+            {
+                "data": "applicable_principal",
+                className: "text-right"
+            },
+            {
+                "data": "balance",
+                className: "text-right"
+            }
             ]
         });
     }
@@ -443,23 +458,23 @@
                 },
             },
             "columns": [{
-                    "data": "date"
-                },
-                {
-                    "data": "payment"
-                },
-                {
-                    "data": "interest"
-                },
-                {
-                    "data": "penalty"
-                },
-                {
-                    "data": "applicable_principal"
-                },
-                {
-                    "data": "balance"
-                }
+                "data": "date"
+            },
+            {
+                "data": "payment"
+            },
+            {
+                "data": "interest"
+            },
+            {
+                "data": "penalty"
+            },
+            {
+                "data": "applicable_principal"
+            },
+            {
+                "data": "balance"
+            }
             ]
         });
     }

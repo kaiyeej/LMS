@@ -884,31 +884,44 @@ class Loans extends Connection
 
     public function upload()
     {
+        try {
+            ini_set('memory_limit', '-1');
+            ini_set('max_execution_time', 0);
 
-        ini_set('memory_limit', '-1');
-        ini_set('max_execution_time', 0);
+            require_once '../vendor/autoload.php';
 
-        require_once '../vendor/autoload.php';
+            $uploadedFile = $_FILES['excel_file']['tmp_name'];
+            $spreadsheet = IOFactory::load($uploadedFile);
+            $sheetNames = $spreadsheet->getSheetNames();
 
-        $uploadedFile = $_FILES['excel_file']['tmp_name'];
-        $spreadsheet = IOFactory::load($uploadedFile);
-        $sheetNames = $spreadsheet->getSheetNames();
+            $Clients = new Clients();
+            $LoanTypes = new LoanTypes();
 
-        $Clients = new Clients();
+            $data = [];
 
-        $data = [];
-
-        foreach ($sheetNames as $sheetName) {
-            $worksheet = $spreadsheet->getSheetByName($sheetName);
-            $client_name = $worksheet->getCell('A6')->getValue();
-            $client_id = $Clients->idByFullname($this->clean($client_name));
-            // if ($client_id > 0) {
-            $data[] = $this->worksheetLoans($worksheet, $client_id, $client_name);
-            // }
+            foreach ($sheetNames as $sheetName) {
+                $worksheet = $spreadsheet->getSheetByName($sheetName);
+                $client_name = $worksheet->getCell('A6')->getValue();
+                $is_template = $worksheet->getCell('A5')->getValue();
+                if ($is_template != 'STATEMENT OF ACCOUNT/LEDGER')
+                    throw new Exception("INVALID");
+                $client_id = $Clients->idByFullname($this->clean($client_name));
+                $data[] = $this->worksheetLoans($worksheet, $client_id, $client_name);
+            }
+            $response['sheets'] = $data;
+            $response['loan_types'] = $LoanTypes->show();
+            $response['clients'] = $Clients->showFullnames();
+            return [
+                'status' => 'success',
+                'data' => $response
+            ];
+        } catch (Exception $e) {
+            Logs::error("Loans->upload", "Loans", $e->getMessage());
+            return [
+                'status' => 'failed',
+                'error' => $e->getMessage()
+            ];
         }
-        $response['sheets'] = $data;
-
-        return $response;
     }
 
     public function worksheetLoans($worksheet, $client_id, $client_name)
@@ -945,13 +958,13 @@ class Loans extends Connection
         $monthly_row = $loan_row + 5;
 
         $loan_amount = $worksheet->getCell('J' . $amount_row)->getValue();
-        $cellDateValue = $worksheet->getCell('J' . $voucher_date_row)->getValue();
-        $loan_date = Date::excelToDateTimeObject($cellDateValue)->format('m/d/Y');
+        $cellDateValue = (float) $worksheet->getCell('J' . $voucher_date_row)->getValue();
+        $loan_date = $cellDateValue > 0 ? Date::excelToDateTimeObject($cellDateValue)->format('m/d/Y') : '';
 
         $loan_period = $worksheet->getCell('J' . $term_row)->getValue();
         $loan_period  = str_replace('MOS', '', $loan_period);
-        $payment_terms = $worksheet->getCell('J' . $payment_term_row)->getValue() * 1;
-        $penalty_percentage = $worksheet->getCell('J' . $penalty_interest_row)->getValue() * 100;
+        $payment_terms = (float) $worksheet->getCell('J' . $payment_term_row)->getValue();
+        $penalty_percentage = ((float) $worksheet->getCell('J' . $penalty_interest_row)->getValue()) * 100;
         $loan_interest = $worksheet->getCell('J' . $interest_row)->getValue();
         $loan_interest = $loan_interest < 1 ? $loan_interest * 100 : $loan_interest;
         $monthly_payment = $worksheet->getCell('D' . $monthly_row)->getValue();
@@ -966,12 +979,12 @@ class Loans extends Connection
                 $balance = $worksheet->getCell('I' . $row)->getCalculatedValue();
                 $status = $worksheet->getCell('J' . $row)->getValue();
                 $collections[] = [
-                    'payment_month' => date("Y-m-t", strtotime($payment_month)),
+                    'payment_month' => date("m/t/Y", strtotime($payment_month)),
                     'payment_amount' => (float) $payment_amount,
-                    'interest' => $worksheet->getCell('E' . $row)->getCalculatedValue(),
+                    'interest' => (float) $worksheet->getCell('E' . $row)->getCalculatedValue(),
                     'penalty' => (float) $penalty,
-                    'principal' => $worksheet->getCell('G' . $row)->getCalculatedValue(),
-                    'balance' => $worksheet->getCell('I' . $row)->getCalculatedValue(),
+                    'principal' => (float) $worksheet->getCell('G' . $row)->getCalculatedValue(),
+                    'balance' => (float) $worksheet->getCell('I' . $row)->getCalculatedValue(),
                     'status' => $status ? $status : '',
                 ];
             }
@@ -985,9 +998,9 @@ class Loans extends Connection
             'loan_type_id' => $loan_type_id,
             'loan_type_name' => $loan_name,
             'loan_amount' => (float) $loan_amount,
-            'loan_interest' => $loan_interest,
+            'loan_interest' => (float) $loan_interest,
             'loan_terms' => 0,
-            'loan_period' => $loan_period,
+            'loan_period' => (float) $loan_period,
             'penalty_percentage' => $penalty_percentage,
             'service_fee' => 0,
             'payment_terms' => $payment_terms,

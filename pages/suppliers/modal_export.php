@@ -13,10 +13,10 @@
                     <div style='width:100%' class='w3-animate-left'>
                         <table id="tbl_export_template">
                             <tr>
-                                <th style="min-width: 150px;">SUPPLIER NAME</th>
-                                <th style="min-width: 150px;">CONTACT NUMBER</th>
-                                <th style="min-width: 200px;">ADDRESS</th>
-                                <th style="min-width: 250px;">REMARKS</th>
+                                <th style="min-width: 150px;">Supplier Name</th>
+                                <th style="min-width: 150px;">Contact Number</th>
+                                <th style="min-width: 200px;">Adrress</th>
+                                <th style="min-width: 250px;">Remarks</th>
                             </tr>
                             <tr>
                                 <td contenteditable="true">&nbsp;</td>
