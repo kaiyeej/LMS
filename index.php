@@ -392,7 +392,7 @@ $User = new Users;
             } else if (json.data == 2) {
               entry_already_exists();
             } else {
-              failed_query(json);
+              failed_query(json.data);
             }
           }
 

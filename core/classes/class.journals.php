@@ -49,7 +49,6 @@ class Journals extends Connection
         } else {
             return null;
         }
-        
     }
 
     public function remove()
@@ -84,11 +83,9 @@ class Journals extends Connection
     public function jl_data($code)
     {
         $result = $this->select($this->table, '*', "journal_name like '%$code%'");
-        if ($result->num_rows > 0) {
-            return $result->fetch_assoc();
-        } else {
+        if ($result->num_rows < 1)
             return null;
-        }
+        return $result->fetch_assoc();
     }
 
     public function idByName($name)

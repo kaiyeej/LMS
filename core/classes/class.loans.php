@@ -228,6 +228,12 @@ class Loans extends Connection
         return $row;
     }
 
+    public function finish()
+    {
+        $loan_id = $this->inputs['loan_id'];
+        return $this->update($this->table, ['status' => 'F'], "loan_id = '$loan_id'");
+    }
+
     public function client_id()
     {
         $primary_id = $this->inputs['id'];
@@ -318,6 +324,8 @@ class Loans extends Connection
     public function loan_data($primary_id)
     {
         $result = $this->select($this->table, '*', "$this->pk = '$primary_id'");
+        if ($result->num_rows < 1)
+            return null;
         return $result->fetch_assoc();
     }
 

@@ -6,6 +6,7 @@ class Branches extends Connection
     public $pk = 'branch_id';
     public $name = 'branch_name';
 
+    public $inputs;
 
     public function add()
     {
@@ -53,15 +54,14 @@ class Branches extends Connection
         return $this->delete($this->table, "$this->pk IN($ids)");
     }
 
-    public function name($primary_id)
+    public function name($primary_id, $no_branch_text = false)
     {
         $result = $this->select($this->table, 'branch_name', "$this->pk = '$primary_id'");
-        if($result->num_rows > 0){
-            $row = $result->fetch_assoc();
-            return $row['branch_name'];
-        }else{
+        if ($result->num_rows < 1)
             return null;
-        }
+
+        $row = $result->fetch_assoc();
+        return $no_branch_text ? $row['branch_name'] : str_replace(" Branch", "", $row['branch_name']);
     }
 
 
