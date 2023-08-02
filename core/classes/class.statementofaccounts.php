@@ -8,11 +8,12 @@ class StatementOfAccounts extends Connection
 
     public function report()
     {
-        $param = isset($this->inputs['param']) ? $this->inputs['param'] . " AND (renewal_status != 'N' OR main_loan_id='0')" : null;
+        $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
         $data = "";
         $LoanTypes = new LoanTypes;
         $ClientInsurance = new ClientInsurance;
         $Insurance = new Insurance;
+        $Loans = new Loans;
         $result = $this->select($this->table, '*', "$param");
         while ($row = $result->fetch_assoc()) {
 
@@ -24,7 +25,7 @@ class StatementOfAccounts extends Connection
             $lt_row = $LoanTypes->view($loan_type_id);
 
             if ($row['main_loan_id'] != 0 and $row['renewal_status'] == "Y") {
-                $renewal_loan = "<strong>Main Loan ID: " . $row['reference_number'] . " <span class='badge badge-primary' style='font-size:10px;'>Renewal Loan</span></strong><br>";
+                $renewal_loan = "<strong>Main Loan ID: " . $Loans->name($row['main_loan_id']) . " <span class='badge badge-primary' style='font-size:10px;'>Renewal Loan</span></strong><br>";
             } else {
                 $renewal_loan = "";
             }
@@ -87,7 +88,6 @@ class StatementOfAccounts extends Connection
             $count = 1;
             $balance = $loan_amount;
             $Collection = new Collections;
-            $Loans = new Loans;
             $total_payment = 0;
             $total_interest = 0;
             $total_penalty = 0;

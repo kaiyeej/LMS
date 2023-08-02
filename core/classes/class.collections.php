@@ -44,65 +44,62 @@ class Collections extends Connection
             'receipt_number'    => $this->clean($this->inputs['receipt_number']),
         );
 
-        $cl_id = $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
-
-        if ($cl_id) {
-
-            if ($Loans->loan_balance($this->inputs['loan_id'], $this->inputs['collection_date']) <= 0) {
-                $form_finished = array(
-                    'status' => 'F'
-                );
-                $this->update("tbl_loans", $form_finished, 'loan_id="' . $this->inputs['loan_id'] . '"');
-            }
+        $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
 
 
-            $form_journal = array(
-                'reference_number'  => $ref_code,
-                'cross_reference'   => $this->clean($this->inputs[$this->name]),
-                'branch_id'         => $this->clean($this->inputs['branch_id']),
-                'journal_id'        => $jl['journal_id'],
-                'remarks'           => $this->inputs['remarks'],
-                'journal_date'      => $this->inputs['collection_date'],
-                'status'            => 'F',
-                'user_id'           => $_SESSION['lms_user_id'],
-                'is_manual'         => 'N'
+        if ($Loans->loan_balance($this->inputs['loan_id'], $this->inputs['collection_date']) <= 0) {
+            $form_finished = array(
+                'status' => 'F'
             );
-
-            $journal_entry_id = $this->insert("tbl_journal_entries", $form_journal, 'Y');
-
-            // FOR CASH IN BANK
-            $cnb_total = $amount + $this->inputs['penalty_amount'];
-            $form_cnb = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $this->clean($this->inputs['chart_id']), 'debit' => $cnb_total);
-            $this->insert('tbl_journal_entry_details', $form_cnb);
-
-
-            // FOR INTEREST
-            $int_chart = $ChartOfAccounts->chart_data('Interest Income - ' . $branch_name);
-            $form_interest = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $int_chart['chart_id'], 'credit' => $interest);
-            $this->insert('tbl_journal_entry_details', $form_interest);
-
-
-            // FOR PENALTY
-            if ($this->inputs['penalty_amount'] > 0) {
-
-                $penalty_chart = $ChartOfAccounts->chart_data('Penalty Income - ' . $branch_name);
-                $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $penalty_chart['chart_id'], 'credit' => $this->inputs['penalty_amount']);
-                $this->insert('tbl_journal_entry_details', $form_penalty);
-            }
-
-
-            // FOR LOANS RECEIVABLE
-            $lr_total = $cnb_total - ($this->inputs['penalty_amount'] + $interest);
-            $loan_type = $LoanTypes->name($loan_row['loan_type_id']);
-            $lr_chart = $ChartOfAccounts->chart_data('Loans Receivable - ' . $loan_type . " - " . $branch_name);
-            $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $lr_chart['chart_id'], 'credit' => $lr_total);
-            $this->insert('tbl_journal_entry_details', $form_penalty);
-
-
-            return $cl_id;//$Loans->loan_balance($this->inputs['loan_id'], $this->inputs['collection_date']); //$cl_id;
-        } else {
-            return 0;
+            $this->update("tbl_loans", $form_finished, 'loan_id="' . $this->inputs['loan_id'] . '"');
         }
+
+
+        $form_journal = array(
+            'reference_number'  => $ref_code,
+            'cross_reference'   => $this->clean($this->inputs[$this->name]),
+            'branch_id'         => $this->clean($this->inputs['branch_id']),
+            'journal_id'        => $jl['journal_id'],
+            'remarks'           => $this->inputs['remarks'],
+            'journal_date'      => $this->inputs['collection_date'],
+            'status'            => 'F',
+            'user_id'           => $_SESSION['lms_user_id'],
+            'is_manual'         => 'N'
+        );
+
+        $journal_entry_id = $this->insert("tbl_journal_entries", $form_journal, 'Y');
+
+        // FOR CASH IN BANK
+        $cnb_total = $amount + $this->inputs['penalty_amount'];
+        $form_cnb = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $this->clean($this->inputs['chart_id']), 'debit' => $cnb_total);
+        $this->insert('tbl_journal_entry_details', $form_cnb);
+
+
+        // FOR INTEREST
+        $int_chart = $ChartOfAccounts->chart_data('Interest Income - ' . $branch_name);
+        $form_interest = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $int_chart['chart_id'], 'credit' => $interest);
+        $this->insert('tbl_journal_entry_details', $form_interest);
+
+
+        // FOR PENALTY
+        if ($this->inputs['penalty_amount'] > 0) {
+
+            $penalty_chart = $ChartOfAccounts->chart_data('Penalty Income - ' . $branch_name);
+            $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $penalty_chart['chart_id'], 'credit' => $this->inputs['penalty_amount']);
+            $this->insert('tbl_journal_entry_details', $form_penalty);
+        }
+
+
+        // FOR LOANS RECEIVABLE
+        $lr_total = $cnb_total - ($this->inputs['penalty_amount'] + $interest);
+        $loan_type = $LoanTypes->name($loan_row['loan_type_id']);
+        $lr_chart = $ChartOfAccounts->chart_data('Loans Receivable - ' . $loan_type . " - " . $branch_name);
+        $form_penalty = array('journal_entry_id' => $journal_entry_id, 'chart_id' => $lr_chart['chart_id'], 'credit' => $lr_total);
+        $this->insert('tbl_journal_entry_details', $form_penalty);
+
+
+        return 1; //$Loans->loan_balance($this->inputs['loan_id'], $this->inputs['collection_date']); //$cl_id;
+
     }
 
     public function edit()
