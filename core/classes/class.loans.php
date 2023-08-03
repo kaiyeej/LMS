@@ -26,10 +26,10 @@ class Loans extends Connection
                 'service_fee'           => $this->clean($this->inputs['service_fee']),
                 'monthly_payment'       => $this->clean($this->inputs['monthly_payment']),
                 'payment_terms'         => $this->clean($this->inputs['payment_terms']),
-                'status'                => $this->clean($this->inputs['status']) ?? 'A',
-                'main_loan_id'          => isset($this->inputs['main_loan_id']) ?? 0,
-                'renewal_status'        => isset($this->inputs['renewal_status']) ?? 'N',
-                'deduct_to_loan'        => isset($this->inputs['deduct_to_loan']) ?? 0,
+                'status'                => $this->inputs['status'] ?? 'A',
+                'main_loan_id'          => $this->inputs['main_loan_id'] ?? 0,
+                'renewal_status'        => $this->inputs['renewal_status'] ?? 'N',
+                'deduct_to_loan'        => $this->inputs['deduct_to_loan'] ?? 0,
             );
 
             $last_id = $this->inputs['last_id'] ?? "N";
