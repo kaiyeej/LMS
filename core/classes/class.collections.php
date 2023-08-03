@@ -331,9 +331,9 @@ class Collections extends Connection
 
     public function total_collected($loan_id)
     {
-        $result = $this->select($this->table, 'sum(amount) as total', "loan_id='$loan_id' AND status='F'");
+        $result = $this->select($this->table, '(sum(amount-penalty_amount)) as total', "loan_id='$loan_id' AND status='F'");
         $row = $result->fetch_assoc();
-        return $row['total'];
+        return ($row['total']);
     }
 
 

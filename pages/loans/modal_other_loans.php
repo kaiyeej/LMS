@@ -12,7 +12,7 @@
                     <div class="form-row">
                         <div class="col-lg-7">
                             <div class="row">
-                                <input type="hidden" class="input-renewal" autocomplete="off" id="renewal_status_renewal" name="input[renewal_status]" readonly>
+                                <input type="text" class="form-control" autocomplete="off" id="renewal_status_renewal" name="input[renewal_status]" readonly>
                                 <div class="form-group col-md-12">
                                     <label style="color: #6777ef;font-weight: bold;">Ref. #: </label>
                                     <input type="text" autocomplete="off" name="input[reference_number]" id="reference_number_renewal" class="reference_number" style="background: transparent;border: none;outline: none;color: #6777ef;font-size: 18px;font-weight: bold;" readonly required>
@@ -38,7 +38,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Loan Date</label>
-                                    <input type="date" class="form-control input-renewal" autocomplete="off" name="input[loan_date]" id="loan_date_renewal" required>
+                                    <input type="date" class="form-control" autocomplete="off" name="input[loan_date]" id="loan_date_renewal" onchange="getBalance()" required>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Loan amount</label>
@@ -138,36 +138,40 @@
     }
 
     function addOtherLoan(renewal_status) {
-        
+
         $("#modalEntryRenewal").modal('show');
+
+        document.getElementById("frm_other_loan").reset();
+        $('.select2').select2().trigger('change');
+
         var element = document.getElementById('reference_number_renewal');
         if (typeof(element) != 'undefined' && element != null) {
             generateReference(route_settings.class_name);
         }
 
-        
+
         $('.input-renewal').attr('readonly', false);
         $(".select2").prop("disabled", false);
         $("#btn_submit_renew").show();
         $("#renewal_status_renewal").val(renewal_status);
-        $("#loan_type_renewal").prop("readonly",true);
+        $("#loan_type_renewal").prop("readonly", true);
 
-        if(renewal_status == "Y"){
+        if (renewal_status == "Y") {
             $(".div_renewal").show();
             $(".div_collection").show();
             getSelectOption('ChartOfAccounts', 'chart_id', 'chart_name', "chart_name LIKE '%Bank%'", [], '', 'Please Select', '', 1);
-            $("#chart_id_renewal").prop('required',true);
-            $("#penalty_amount_renewal").prop('required',true);
-            $("#amount_renewal").prop('required',true);
-            $(".input-al").prop("readonly",false);
+            $("#chart_id_renewal").prop('required', true);
+            $("#penalty_amount_renewal").prop('required', true);
+            $("#amount_renewal").prop('required', true);
+            $(".input-al").prop("readonly", false);
             $("#modal_span_label").html("Renew Loan");
-        }else{
+        } else {
             $(".div_renewal").hide();
             $(".div_collection").hide();
-            $("#chart_id_renewal").prop('required',false);
-            $("#penalty_amount_renewal").prop('required',false);
-            $("#amount_renewal").prop('required',false);
-            $(".input-al").prop("readonly",true);
+            $("#chart_id_renewal").prop('required', false);
+            $("#penalty_amount_renewal").prop('required', false);
+            $("#amount_renewal").prop('required', false);
+            $(".input-al").prop("readonly", true);
             $("#modal_span_label").html("Additional Loan");
         }
     }
@@ -185,12 +189,16 @@
     function loan_renewal() {
 
         var loan_id = $("#loan_id_renewal").val();
-        getOldLoan(loan_id);
-        getBalance(loan_id);
-        getPenalty(loan_id);
-        $("#chart_id_renewal").prop("disabled", false);
-        // sampleCalculation2();
-        
+        if (loan_id == "") {
+            $('.input-renewal').val("");
+            $("#amount_renewal").val("");
+        } else {
+            getOldLoan(loan_id);
+            getBalance(loan_id);
+            getPenalty(loan_id);
+            $("#chart_id_renewal").prop("disabled", false);
+            // sampleCalculation2();
+        }
     }
 
     function getOldLoan(id) {
@@ -210,6 +218,8 @@
                     this.value = json[id_name];
                     $("#" + id_name).val(json[id_name].slice(0, -8)).trigger('change');
                 });
+                console.log(jsonParse.data['renew_loan_date']);
+                $("#loan_date_renewal").val(jsonParse.data['renew_loan_date']);
             }
         });
     }

@@ -44,7 +44,6 @@
                 </div>
             </form>
         </div>
-
         <div class="row">
             <div class="col-md-12">
                 <div class="col-12 col-xl-12 card shadow mb-4">
@@ -97,7 +96,7 @@
 
     function getReport() {
         var client_id = $("#client_id").val();
-        var param = "client_id= '" + client_id + "'AND status !='F'"; //(status!='D' OR status!='P')
+        var param = "client_id= '" + client_id + "'AND status !='F'  AND (renewal_status != 'N' OR main_loan_id='0')"; //(status!='D' OR status!='P')
 
         $("#soa_report").html("<br><center><h3><span class='fa fa-spinner fa-spin'></span> Loading ...</h3></center>");
 
