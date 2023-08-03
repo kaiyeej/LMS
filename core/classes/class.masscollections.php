@@ -220,9 +220,9 @@ class MassCollections extends Connection
                         'mass_collection_detail_id' => $row['mass_collection_detail_id'],
                     ];
 
-                    $Collections = new Collections;
-                    $Collections->inputs = $form_collection;
-                    $cl_id = $Collections->add();
+                    $MassCollections = new MassCollections;
+                    $MassCollections->inputs = $form_collection;
+                    $cl_id = $MassCollections->add_collection();
                     if ($cl_id < 1)
                         throw new Exception($cl_id);
                 }
@@ -234,6 +234,146 @@ class MassCollections extends Connection
             $this->rollback();
             Logs::error("MassCollections->finish_collections", "Mass Collection", $e->getMessage());
             return $e->getMessage();
+        }
+    }
+
+    public function add_collection()
+    {
+        try {
+            $Loans              = new Loans;
+            $Branches           = new Branches;
+            $ChartOfAccounts    = new ChartOfAccounts;
+            $Journals           = new Journals;
+            $LoanTypes          = new LoanTypes;
+            $JournalEntry       = new JournalEntry;
+            $Collections        = new Collections;
+
+            $branch_name    = $Branches->name($this->inputs['branch_id']);
+            $jl             = $Journals->jl_data('Collection');
+            $loan_row       = $Loans->loan_data($this->inputs['loan_id']);
+            $int_chart      = $ChartOfAccounts->chart_data('Interest Income - ' . $branch_name);
+            $penalty_chart  = $ChartOfAccounts->chart_data('Penalty Income - ' . $branch_name);
+            $loan_type      = $loan_row != null ? $LoanTypes->name($loan_row['loan_type_id']) : '';
+            $lr_chart       = $ChartOfAccounts->chart_data('Loans Receivable - ' . $loan_type . " - " . $branch_name);
+
+            if ($jl == null)
+                throw new Exception("Kindly add the journal \n Collection Receipt Journal");
+            if ($loan_row == null)
+                throw new Exception("The selected loan does not exists.");
+            if ($int_chart == null)
+                throw new Exception("Kindly add the chart of account for \n Interest Income - $branch_name.");
+            if ($penalty_chart == null)
+                throw new Exception("Kindly add the chart of account for \n Penalty Income - $branch_name.");
+            if ($lr_chart == null)
+                throw new Exception("Kindly add the chart of account for \n Loans Receivable - $loan_type - $branch_name.");
+
+            $ref_code       = $JournalEntry->generate($jl['journal_code']);
+            $amount         = $this->clean($this->inputs['amount']);
+            $interest       = $Collections->interest_calculator($amount, $loan_row['loan_amount'], $loan_row['loan_interest'], $loan_row['loan_period']);
+
+            $form = array(
+                'reference_number'  => $this->clean($this->inputs['reference_number']),
+                'loan_id'           => $this->clean($this->inputs['loan_id']),
+                'branch_id'         => $this->clean($this->inputs['branch_id']),
+                'chart_id'          => $this->clean($this->inputs['chart_id']),
+                'client_id'         => $this->clean($this->inputs['client_id']),
+                'interest'          => $interest,
+                'amount'            => $amount,
+                'collection_date'   => $this->clean($this->inputs['collection_date']),
+                'penalty_amount'    => $this->clean($this->inputs['penalty_amount']),
+                'remarks'           => $this->clean($this->inputs['remarks']),
+                'user_id'           => $this->clean($_SESSION['lms_user_id']),
+                'old_atm_balance'   => $this->clean($this->inputs['old_atm_balance']),
+                'atm_withdrawal'    => $this->clean($this->inputs['atm_withdrawal']),
+                'atm_charge'        => $this->clean($this->inputs['atm_charge']),
+                'atm_balance'       => $this->clean($this->inputs['atm_balance']),
+                'excess'            => $this->clean($this->inputs['excess']),
+                'receipt_number'    => $this->clean($this->inputs['receipt_number']),
+                'mass_collection_detail_id' => $this->clean($this->inputs['mass_collection_detail_id']),
+            );
+
+            $cl_id = $this->insert($this->table_collections, $form, 'Y');
+            if ($cl_id < 1)
+                throw new Exception($cl_id);
+
+            if ($Loans->loan_balance($this->inputs['loan_id'], $this->inputs['collection_date']) <= 0)
+                $Loans->finish();
+
+            // FOR JOURNAL ENTRY
+            $form_journal = array(
+                'reference_number'  => $ref_code,
+                'cross_reference'   => $this->clean($this->inputs[$this->name]),
+                'branch_id'         => $this->clean($this->inputs['branch_id']),
+                'journal_id'        => $jl['journal_id'],
+                'remarks'           => $this->inputs['remarks'],
+                'journal_date'      => $this->inputs['collection_date'],
+                'status'            => 'F',
+                'user_id'           => $_SESSION['lms_user_id'],
+                'is_manual'         => 'N'
+            );
+            $JournalEntry->inputs = $form_journal;
+            $journal_entry_id = $JournalEntry->add();
+            if ($journal_entry_id < 1)
+                throw new Exception($journal_entry_id);
+
+
+            // FOR CASH IN BANK
+            $cnb_total = $amount + $this->inputs['penalty_amount'];
+            $form_cnb = array(
+                'type'              => 'D',
+                'journal_entry_id'  => $journal_entry_id,
+                'chart_id'          => $this->clean($this->inputs['chart_id']),
+                'amount'            => $cnb_total,
+            );
+            $JournalEntry->inputs = $form_cnb;
+            $journal_entry_detail_id = $JournalEntry->add_detail();
+            if ($journal_entry_detail_id < 1)
+                throw new Exception($journal_entry_detail_id);
+
+
+            // FOR INTEREST
+            $form_interest = array(
+                'type'              => 'C',
+                'journal_entry_id'  => $journal_entry_id,
+                'chart_id'          => $int_chart['chart_id'],
+                'amount'            => $interest,
+            );
+            $JournalEntry->inputs = $form_interest;
+            $journal_entry_detail_id = $JournalEntry->add_detail();
+            if ($journal_entry_detail_id < 1)
+                throw new Exception($journal_entry_detail_id);
+
+
+            // FOR PENALTY
+            if ($this->inputs['penalty_amount'] > 0) {
+                $form_penalty = array(
+                    'type'              => 'C',
+                    'journal_entry_id'  => $journal_entry_id,
+                    'chart_id'          => $penalty_chart['chart_id'],
+                    'amount'            => $this->inputs['penalty_amount']
+                );
+                $JournalEntry->inputs = $form_penalty;
+                $journal_entry_detail_id = $JournalEntry->add_detail();
+                if ($journal_entry_detail_id < 1)
+                    throw new Exception($journal_entry_detail_id);
+            }
+
+
+            // FOR LOANS RECEIVABLE
+            $form_receivable = array(
+                'type'              => 'C',
+                'journal_entry_id'  => $journal_entry_id,
+                'chart_id'          => $lr_chart['chart_id'],
+                'amount'            => $cnb_total - ($this->inputs['penalty_amount'] + $interest)
+            );
+            $JournalEntry->inputs = $form_receivable;
+            $journal_entry_detail_id = $JournalEntry->add_detail();
+            if ($journal_entry_detail_id < 1)
+                throw new Exception($journal_entry_detail_id);
+            return $cl_id;
+        } catch (Exception $e) {
+            Logs::error("MassCollections->add_collection", "Collection", $e->getMessage());
+            return 0;
         }
     }
 

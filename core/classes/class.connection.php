@@ -101,11 +101,9 @@ class Connection
         }
 
         $sql = "UPDATE  $table SET " . implode(',', $args);
-
         $sql .= " WHERE $id";
 
-        $result = $this->mysqli->query($sql) or die($this->mysqli->error);
-        return $result ? 1 : 0;
+        return $this->mysqli->query($sql) === TRUE ? 1 : $this->mysqli->error;
     }
 
     public function updateIfNotExist($table, $form)

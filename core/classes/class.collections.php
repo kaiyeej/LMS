@@ -69,7 +69,7 @@ class Collections extends Connection
             if ($cl_id < 1)
                 throw new Exception($cl_id);
 
-            if ($Loans->loan_balance($this->inputs['loan_id']) <= 0)
+            if ($Loans->loan_balance($this->inputs['loan_id'], $this->inputs['collection_date']) <= 0)
                 $Loans->finish();
 
             // FOR JOURNAL ENTRY

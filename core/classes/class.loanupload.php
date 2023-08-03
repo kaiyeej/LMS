@@ -290,13 +290,10 @@ class LoanUploads extends Connection
                     'monthly_payment'       => $loan_data['monthly_payment'],
                     'payment_terms'         => $loan_data['payment_terms'],
                     'status'                => "R",
-                    'last_id'               => "Y",
+                    'is_imported'           => 1,
                 );
 
-                $Loans = new Loans;
-                $Loans->inputs = $form_loan;
-                $loan_id = $Loans->add();
-
+                $loan_id = $this->insert($this->table, $form_loan, 'Y');
                 if ($loan_id < 1)
                     throw new Exception($loan_id);
 
@@ -364,13 +361,10 @@ class LoanUploads extends Connection
                             'renewal_status'        => "Y",
                             'deduct_to_loan'        => 1,
                             'status'                => "R",
-                            'last_id'               => "Y",
+                            'is_imported'           => 1,
                         );
 
-                        $Loans = new Loans;
-                        $Loans->inputs = $form_loan;
-                        $loan_id = $Loans->add();
-
+                        $loan_id = $this->insert($this->table, $form_loan, 'Y');
                         if ($loan_id < 1)
                             throw new Exception($loan_id);
 

@@ -1,6 +1,7 @@
 <form id='frm_upload' method="POST" enctype="multipart/form-data">
     <div class="modal fade" id="modalUpload" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" id="import_dialog" style="width: 100%;max-width: 2000px;margin: 0.5rem;">
+        <div class="modal-dialog" role="document" id="import_dialog"
+            style="width: 100%;max-width: 2000px;margin: 0.5rem;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><span class='ion-compose'></span> Statement of Account/Ledger</h5>
@@ -24,7 +25,8 @@
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn_back" onclick="backToLoan()"><span class="fa fa-arrow-left"></span> Back</button>
+                    <button type="button" class="btn btn-primary" id="btn_back" onclick="backToLoan()"><span
+                            class="fa fa-arrow-left"></span> Back</button>
                     <button type="submit" id="btn_upload" class="btn btn-primary">
                         Submit
                     </button>
@@ -318,8 +320,8 @@
             branch_id = 0;
         for (var i = 0; i < clients_masterdata.length; i++) {
             if (clients_masterdata[i].fullname == new_client_name) {
-                client_id = clients_masterdata[i].client_id;
-                branch_id = clients_masterdata[i].branch_id;
+                client_id = clients_masterdata[i].client_id * 1;
+                branch_id = clients_masterdata[i].branch_id * 1;
                 break;
             }
         }
@@ -332,9 +334,9 @@
         loan_from_excels[client_index].branch_id = branch_id;
 
         if (client_id > 0) {
-            el.classList.remove('unacceptable_data');
+            el.parentNode.classList.remove('unacceptable_data');
         } else {
-            el.classList.add('unacceptable_data');
+            el.parentNode.classList.add('unacceptable_data');
         }
     }
 

@@ -30,6 +30,7 @@ class Loans extends Connection
                 'main_loan_id'          => $this->inputs['main_loan_id'] ?? 0,
                 'renewal_status'        => $this->inputs['renewal_status'] ?? 'N',
                 'deduct_to_loan'        => $this->inputs['deduct_to_loan'] ?? 0,
+                'is_imported'           => $this->inputs['is_imported'] ?? 0,
             );
 
             $last_id = $this->inputs['last_id'] ?? "N";
@@ -924,6 +925,7 @@ class Loans extends Connection
                     $this->metadata('service_fee', 'decimal', '12,3'),
                     $this->metadata('monthly_payment', 'decimal', '12,4'),
                     $this->metadata('deduct_to_loan', 'int', '1'),
+                    $this->metadata('is_imported', 'int', '1'),
                     $default['user_id'],
                     $default['date_added'],
                     $default['date_last_modified']
