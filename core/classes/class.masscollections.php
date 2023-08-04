@@ -267,7 +267,7 @@ class MassCollections extends Connection
             if ($lr_chart == null)
                 throw new Exception("Kindly add the chart of account for \n Loans Receivable - $loan_type - $branch_name.");
 
-            $ref_code       = $JournalEntry->generate($jl['journal_code']);
+            $ref_code       = $JournalEntry->generate($jl['journal_code'] . "-" . $this->inputs['mass_collection_detail_id']);
             $amount         = $this->clean($this->inputs['amount']);
             $interest       = $Collections->interest_calculator($amount, $loan_row['loan_amount'], $loan_row['loan_interest'], $loan_row['loan_period']);
 
