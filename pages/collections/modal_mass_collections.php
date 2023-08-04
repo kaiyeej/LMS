@@ -1,6 +1,7 @@
 <form id='frmMassCollection' method="POST">
     <div class="modal fade" id="modalMassCollection" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" id="import_dialog" style="width: 100%;max-width: 2000px;margin: 0.5rem;">
+        <div class="modal-dialog" role="document" id="import_dialog"
+            style="width: 100%;max-width: 2000px;margin: 0.5rem;">
             <div class="modal-content">
                 <div class="modal-header" id="mass-modal-header">
                     <h5 class="modal-title"><span class='ion-compose'></span> Add Mass Collection</h5>
@@ -9,35 +10,42 @@
                     <div class="form-row w3-animate-left">
                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Branch</label>
-                            <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]" style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]"
+                                style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Loan Type</label>
-                            <select class="form-control select2 input-item" id="loan_type_id" name="input[loan_type_id]" style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="loan_type_id" name="input[loan_type_id]"
+                                style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Bank</label>
-                            <select class="form-control select2 input-item" id="mass_chart_id" name="input[chart_id]" style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="mass_chart_id" name="input[chart_id]"
+                                style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Collection Date</label>
-                            <input type="date" class="form-control input-item" autocomplete="off" name="input[collection_date]" id="mass_collection_date" required>
+                            <input type="date" class="form-control input-item" autocomplete="off"
+                                name="input[collection_date]" id="mass_collection_date" required>
                         </div>
                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Employer</label>
-                            <select class="form-control select2 input-item" id="employer_id" name="input[employer_id]" style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="employer_id" name="input[employer_id]"
+                                style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col hide-for-save">
                             <label>ATM Charge</label>
-                            <input min="0" type="number" class="form-control input-item" autocomplete="off" name="input[atm_charge]" id="mass_atm_charge">
+                            <input min="0" type="number" class="form-control input-item" autocomplete="off"
+                                name="input[atm_charge]" id="mass_atm_charge">
                         </div>
                         <div class="form-group col hide-for-save">
                             <br />
-                            <button type="submit" id="btn_mass_generate" style="margin-top:10px;" class="btn btn-primary">
+                            <button type="submit" id="btn_mass_generate" style="margin-top:10px;"
+                                class="btn btn-primary">
                                 Generate
                             </button>
                         </div>
@@ -213,7 +221,7 @@
                         const json = response.data;
 
                         $("#btn_mass_finish").prop("disabled", false);
-                        $("#btn_mass_finish").html("Save");
+                        $("#btn_mass_finish").html("Finish");
 
                         $('#modalMassCollection').modal('hide');
                         if (json > 0) {
@@ -532,12 +540,12 @@
             }
         } else {
             swal({
-                    title: 'Are you sure?',
-                    text: 'Your data will be cleared!',
-                    icon: 'warning',
-                    buttons: ["Cancel", "Proceed"],
-                    dangerMode: true,
-                })
+                title: 'Are you sure?',
+                text: 'Your data will be cleared!',
+                icon: 'warning',
+                buttons: ["Cancel", "Proceed"],
+                dangerMode: true,
+            })
                 .then((willProceed) => {
                     if (willProceed) {
                         for (var i = 0; i < checkboxes.length; i++) {
