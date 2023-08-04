@@ -294,7 +294,7 @@ class MassCollections extends Connection
 
             $cl_id = $this->insert($this->table_collections, $form, 'Y');
             if ($cl_id < 1)
-                throw new Exception($cl_id);
+                throw new Exception("cl_id:" . $cl_id);
 
             if ($Loans->loan_balance($this->inputs['loan_id'], $this->inputs['collection_date']) <= 0)
                 $Loans->finish();
@@ -314,7 +314,7 @@ class MassCollections extends Connection
             $JournalEntry->inputs = $form_journal;
             $journal_entry_id = $JournalEntry->add();
             if ($journal_entry_id < 1)
-                throw new Exception($journal_entry_id);
+                throw new Exception("form_journal:" . $journal_entry_id);
 
 
             // FOR CASH IN BANK
@@ -328,7 +328,7 @@ class MassCollections extends Connection
             $JournalEntry->inputs = $form_cnb;
             $journal_entry_detail_id = $JournalEntry->add_detail();
             if ($journal_entry_detail_id < 1)
-                throw new Exception($journal_entry_detail_id);
+                throw new Exception("form_cnb:" . $journal_entry_detail_id);
 
 
             // FOR INTEREST
@@ -341,7 +341,7 @@ class MassCollections extends Connection
             $JournalEntry->inputs = $form_interest;
             $journal_entry_detail_id = $JournalEntry->add_detail();
             if ($journal_entry_detail_id < 1)
-                throw new Exception($journal_entry_detail_id);
+                throw new Exception("form_interest:" . $journal_entry_detail_id);
 
 
             // FOR PENALTY
@@ -355,7 +355,7 @@ class MassCollections extends Connection
                 $JournalEntry->inputs = $form_penalty;
                 $journal_entry_detail_id = $JournalEntry->add_detail();
                 if ($journal_entry_detail_id < 1)
-                    throw new Exception($journal_entry_detail_id);
+                    throw new Exception("form_penalty:" . $journal_entry_detail_id);
             }
 
 
@@ -369,7 +369,7 @@ class MassCollections extends Connection
             $JournalEntry->inputs = $form_receivable;
             $journal_entry_detail_id = $JournalEntry->add_detail();
             if ($journal_entry_detail_id < 1)
-                throw new Exception($journal_entry_detail_id);
+                throw new Exception("form_receivable:" . $journal_entry_detail_id);
             return $cl_id;
         } catch (Exception $e) {
             Logs::error("MassCollections->add_collection", "Collection", $e->getMessage());
