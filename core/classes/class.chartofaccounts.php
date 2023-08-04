@@ -238,9 +238,11 @@ class ChartOfAccounts extends Connection
         return $row['chart_class_id'];
     }
 
-    public function chart_data($code)
+    public function chart_data($code = "Interest Income - Bacolod", $to_replace = false)
     {
-        $result = $this->select($this->table, '*', "chart_name like '%$code%'");
+        $code = $to_replace ? strtoupper(str_replace(" - ", " ", $code)) : $code;
+        $param = $to_replace ? "UCASE(REPLACE(chart_name,' - ',' ')) LIKE '%$code%'" : "chart_name like '%$code%'";
+        $result = $this->select($this->table, '*', $param);
         if ($result->num_rows > 0) {
             return $result->fetch_assoc();
         } else {

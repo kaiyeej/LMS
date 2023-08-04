@@ -7,7 +7,7 @@ class Loans extends Connection
     public $name = 'reference_number';
 
     public $inputs;
-    
+
 
     public function add()
     {

@@ -25,10 +25,10 @@ class Collections extends Connection
             $branch_name    = $Branches->name($this->inputs['branch_id']);
             $jl             = $Journals->jl_data('Collection');
             $loan_row       = $Loans->loan_data($this->inputs['loan_id']);
-            $int_chart      = $ChartOfAccounts->chart_data('Interest Income - ' . $branch_name);
-            $penalty_chart  = $ChartOfAccounts->chart_data('Penalty Income - ' . $branch_name);
+            $int_chart      = $ChartOfAccounts->chart_data('Interest Income ' . $branch_name, true);
+            $penalty_chart  = $ChartOfAccounts->chart_data('Penalty Income ' . $branch_name, true);
             $loan_type      = $loan_row != null ? $LoanTypes->name($loan_row['loan_type_id']) : '';
-            $lr_chart       = $ChartOfAccounts->chart_data('Loans Receivable - ' . $loan_type . " - " . $branch_name);
+            $lr_chart       = $ChartOfAccounts->chart_data('Loans Receivable ' . $loan_type . " " . $branch_name, true);
 
             if ($jl == null)
                 throw new Exception("Kindly add the journal \n Collection Receipt Journal");

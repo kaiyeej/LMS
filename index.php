@@ -165,9 +165,12 @@ $User = new Users;
               </div>
             </div>
           </li> -->
-          <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+          <li class="dropdown"><a href="#" data-toggle="dropdown"
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user">
               <img alt="image" src="assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-              <div class="d-sm-none d-lg-inline-block">Hi, <?= $User->fullname($_SESSION['lms_user_id']); ?></div>
+              <div class="d-sm-none d-lg-inline-block">Hi,
+                <?= $User->fullname($_SESSION['lms_user_id']); ?>
+              </div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
               <a href="profile" class="dropdown-item has-icon">
@@ -194,7 +197,8 @@ $User = new Users;
       </div>
       <footer class="main-footer">
         <div class="footer-left">
-          Copyright &copy; <script>
+          Copyright &copy;
+          <script>
             document.write(new Date().getFullYear());
           </script>
           <div class="bullet"></div> <a href="https://juancoder.com/">Juancoder IT Solutions</a>
@@ -206,9 +210,8 @@ $User = new Users;
     </div>
   </div>
   <script type='text/javascript'>
-    <?php
-    echo "var route_settings = " . $route_settings . ";\n";
-    echo "var company_name = 'Featherleaf Lending Corporation'";
+    <?= "var route_settings = ".$route_settings. ";\n"; ?>
+    <?= "var company_name = 'Featherleaf Lending Corporation'";
     ?>
   </script>
   <script type="text/javascript">
@@ -237,12 +240,12 @@ $User = new Users;
 
     function logout() {
       swal({
-          title: 'Are you sure?',
-          text: 'Your session will expire!',
-          icon: 'warning',
-          buttons: ["Cancel", "Logout"],
-          dangerMode: true,
-        })
+        title: 'Are you sure?',
+        text: 'Your session will expire!',
+        icon: 'warning',
+        buttons: ["Cancel", "Logout"],
+        dangerMode: true,
+      })
         .then((willDelete) => {
           if (willDelete) {
             var url = "controllers/sql.php?c=Users&q=logout";
@@ -332,7 +335,7 @@ $User = new Users;
       $('.select2').select2().trigger('change');
 
       var element = document.getElementById('reference_number');
-      if (typeof(element) != 'undefined' && element != null) {
+      if (typeof (element) != 'undefined' && element != null) {
         generateReference(route_settings.class_name);
       }
 
@@ -448,13 +451,6 @@ $User = new Users;
             var clienttypes = jsonParse.data['client_type_id'].split(',').map(Number);
             $("#client_type_id").val(clienttypes).trigger('change');
             // $("#client_type_id").select2().select2('val', []);
-          } else if (route_settings.class_name == "Collections") {
-            // getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + json['client_id'] + "' AND status = 'R'");
-            clients();
-            $("#loan_amount_span").html(json['loan_amount']);
-            $('.input-item').attr('readonly', true);
-            $(".select2").prop("disabled", true);
-            $("#btn_submit").hide();
           } else if (route_settings.class_name == "Loans") {
             $("#loan_amount_span").html(json['amount']);
 
@@ -517,12 +513,12 @@ $User = new Users;
 
       if (count_checked > 0) {
         swal({
-            title: 'Are you sure?',
-            text: 'You will not be able to recover these entries!',
-            icon: 'warning',
-            buttons: true,
-            dangerMode: true,
-          })
+          title: 'Are you sure?',
+          text: 'You will not be able to recover these entries!',
+          icon: 'warning',
+          buttons: true,
+          dangerMode: true,
+        })
           .then((willDelete) => {
             if (willDelete) {
               var checkedValues = $("input[name='dt_id']:checked").map(function() {
@@ -606,28 +602,28 @@ $User = new Users;
 
           if (json.status == 'F') {
             transaction_edit.classList.add('disabled');
-            (typeof(transaction_delete_items) != 'undefined' && transaction_delete_items != null) ? transaction_delete_items.classList.add('disabled'): '';
+            (typeof (transaction_delete_items) != 'undefined' && transaction_delete_items != null) ? transaction_delete_items.classList.add('disabled') : '';
             transaction_finish.classList.add('disabled');
 
             transaction_edit.setAttribute("onclick", "");
-            (typeof(transaction_delete_items) != 'undefined' && transaction_delete_items != null) ? transaction_delete_items.setAttribute("onclick", ""): '';
+            (typeof (transaction_delete_items) != 'undefined' && transaction_delete_items != null) ? transaction_delete_items.setAttribute("onclick", "") : '';
             transaction_finish.setAttribute("onclick", "");
 
-            (typeof(col_item) != 'undefined' && col_item != null) ? col_item.style.display = "none": '';
-            (typeof(col_list) != 'undefined' && col_list != null) ? col_list.classList.remove('col-8'): '';
-            (typeof(col_list) != 'undefined' && col_list != null) ? col_list.classList.add('col-12'): '';
+            (typeof (col_item) != 'undefined' && col_item != null) ? col_item.style.display = "none" : '';
+            (typeof (col_list) != 'undefined' && col_list != null) ? col_list.classList.remove('col-8') : '';
+            (typeof (col_list) != 'undefined' && col_list != null) ? col_list.classList.add('col-12') : '';
           } else {
             transaction_edit.classList.remove('disabled');
-            (typeof(transaction_delete_items) != 'undefined' && transaction_delete_items != null) ? transaction_delete_items.classList.remove('disabled'): '';
+            (typeof (transaction_delete_items) != 'undefined' && transaction_delete_items != null) ? transaction_delete_items.classList.remove('disabled') : '';
             transaction_finish.classList.remove('disabled');
 
             transaction_edit.setAttribute("onclick", "getEntryDetails(" + id + ",1)");
-            (typeof(transaction_delete_items) != 'undefined' && transaction_delete_items != null) ? transaction_delete_items.setAttribute("onclick", "deleteEntry2()"): '';
+            (typeof (transaction_delete_items) != 'undefined' && transaction_delete_items != null) ? transaction_delete_items.setAttribute("onclick", "deleteEntry2()") : '';
             transaction_finish.setAttribute("onclick", "finishTransaction()");
 
-            (typeof(col_item) != 'undefined' && col_item != null) ? col_item.style.display = "block": '';
-            (typeof(col_list) != 'undefined' && col_list != null) ? col_list.classList.remove('col-12'): '';
-            (typeof(col_list) != 'undefined' && col_list != null) ? col_list.classList.add('col-8'): '';
+            (typeof (col_item) != 'undefined' && col_item != null) ? col_item.style.display = "block" : '';
+            (typeof (col_list) != 'undefined' && col_list != null) ? col_list.classList.remove('col-12') : '';
+            (typeof (col_list) != 'undefined' && col_list != null) ? col_list.classList.add('col-8') : '';
           }
           getEntries2();
 
@@ -676,12 +672,12 @@ $User = new Users;
         $("#btn_delete_member").prop("disabled", true);
         $("#btn_delete_member").html("<span class='fa fa-spinner fa-spin'></span>");
         swal({
-            title: 'Are you sure?',
-            text: 'You will not be able to recover these entries!',
-            icon: 'warning',
-            buttons: true,
-            dangerMode: true,
-          })
+          title: 'Are you sure?',
+          text: 'You will not be able to recover these entries!',
+          icon: 'warning',
+          buttons: true,
+          dangerMode: true,
+        })
           .then((willDelete) => {
             if (willDelete) {
               var checkedValues = $("input[name='dt_id_2']:checked").map(function() {
@@ -727,12 +723,12 @@ $User = new Users;
       var count_checked = $("input[name='dt_id_2']").length;
       if (count_checked > 0) {
         swal({
-            title: 'Are you sure?',
-            text: 'This entries will be finished!',
-            icon: 'warning',
-            buttons: true,
-            dangerMode: true,
-          })
+          title: 'Are you sure?',
+          text: 'This entries will be finished!',
+          icon: 'warning',
+          buttons: true,
+          dangerMode: true,
+        })
           .then((willDelete) => {
             if (willDelete) {
               $.ajax({
@@ -771,7 +767,7 @@ $User = new Users;
     }
     // END MODULE
 
-    function getSelectOption(class_name, primary_id, label, param = '', attributes = [], pre_value = '', pre_label = 'Please Select', sub_option = '', is_class = '') {
+    function getSelectOption(class_name, primary_id, label, param = '', attributes = [], pre_value = '', pre_label = 'Please Select', sub_option = '', is_class = '', selected = 0) {
       $("#" + primary_id).prepend($('<option></option>').html('Loading...'));
       $.ajax({
         type: "POST",
@@ -798,6 +794,9 @@ $User = new Users;
               data_attributes['value'] = list[primary_id.slice(0, -2)];
             } else {
               data_attributes['value'] = list[primary_id];
+            }
+            if (data_attributes['value'] == selected) {
+              data_attributes['selected'] = true;
             }
             for (var attr_index in attributes) {
               const attr = attributes[attr_index];
