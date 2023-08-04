@@ -7,9 +7,11 @@ class Loans extends Connection
     public $name = 'reference_number';
 
     public $inputs;
+    
 
     public function add()
     {
+        $LoanTypes = new LoanTypes;
         try {
             $this->checker();
             $this->begin_transaction();
@@ -26,6 +28,7 @@ class Loans extends Connection
                 'service_fee'           => $this->clean($this->inputs['service_fee']),
                 'monthly_payment'       => $this->clean($this->inputs['monthly_payment']),
                 'payment_terms'         => $this->clean($this->inputs['payment_terms']),
+                'fixed_interest'        => $this->clean($LoanTypes->fixed_status($this->inputs['loan_type_id'])),
                 'status'                => $this->inputs['status'] ?? 'A',
                 'main_loan_id'          => $this->inputs['main_loan_id'] ?? 0,
                 'renewal_status'        => $this->inputs['renewal_status'] ?? 'N',
@@ -930,6 +933,7 @@ class Loans extends Connection
                     $this->metadata('main_loan_id', 'int', 11),
                     $this->metadata('deduct_to_loan', 'int', '1'),
                     $this->metadata('is_imported', 'int', '1'),
+                    $this->metadata('fixed_interest', 'varchar', '1'),
                     $default['user_id'],
                     $default['date_added'],
                     $default['date_last_modified']

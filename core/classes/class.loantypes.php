@@ -105,6 +105,17 @@ class LoanTypes extends Connection
         }
     }
 
+    public function fixed_status($primary_id)
+    {
+        $result = $this->select($this->table, 'fixed_interest', "$this->pk = '$primary_id'");
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['fixed_interest'];
+        } else {
+            return "";
+        }
+    }
+
 
     public function penalty_percentage($primary_id)
     {
