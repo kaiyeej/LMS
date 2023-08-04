@@ -172,7 +172,7 @@
             },
             {
                 "mRender": function(data, type, row) {
-                    return row.status == "P" ? ('<a href="#" class="badge badge-light">Pending</a>') : (row.status == 'F' ? '<a href="#" class="badge badge-success">Finished</a>' : '<a href="#" class="badge badge-danger">Canceled</a>');
+                    return row.status == "P" ? ('<a href="#" class="badge badge-light">Pending</a>') : ((row.status == 'F') ? '<a href="#" class="badge badge-success">Finished</a>' : '<a href="#" class="badge badge-danger">Canceled</a>');
                 }
             },
             {
