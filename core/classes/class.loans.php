@@ -202,6 +202,9 @@ class Loans extends Connection
         $Clients = new Clients;
         $LoanTypes = new LoanTypes;
         $result = $this->select($this->table, '*', $param);
+        if ($result->num_rows < 1)
+            return [];
+
         while ($row = $result->fetch_assoc()) {
             $row['client'] = $Clients->name($row['client_id']);
             $row['loan_account'] = $Clients->name($row['client_id']) . " - " . $row['reference_number'];
