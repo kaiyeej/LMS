@@ -152,7 +152,7 @@
             },
             {
                 "mRender": function(data, type, row) {
-                    return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetails(" + row.collection_id + ")'><span class='fa fa-edit'></span></button></center>";
+                    return "<center><button class='btn btn-sm btn-info' onclick='getEntryDetailsCollection(" + row.collection_id + ")'><span class='fa fa-edit'></span></button></center>";
                 }
             },
             {
@@ -183,6 +183,112 @@
                 "data": "date_last_modified"
             }
             ]
+        });
+    }
+
+    function getEntryDetailsCollection(id) {
+        // $('.select-item').map(function() {
+        //     $(this).off("change");
+        // });
+        // $("#collection_date").off('change');
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=view",
+            data: {
+                input: {
+                    id: id
+                }
+            },
+            success: function(data) {
+                var jsonParse = JSON.parse(data);
+                const json = jsonParse.data;
+
+                $("#hidden_id").val(id);
+
+                // $('.select2').select2().trigger('change');
+
+                getSelectOption('Branches', 'branch_id', 'branch_name', "branch_id='" + json.branch_id + "'", [], '', 'Please Select', '', '', json.branch_id);
+                getSelectOption('Clients', 'client_id', 'client_fullname', "client_id='" + json.client_id + "'", [], '', 'Please Select', '', '', json.client_id);
+                getSelectOption('Loans', 'loan_id', "reference_number", "loan_id = '" + json.loan_id + "'", [], '', 'Please Select', '', '', json.loan_id);
+                getSelectOption('ChartOfAccounts', 'chart_id', 'chart_name', "chart_id = '" + json.chart_id + "'", [], '', 'Please Select', '', '', json.chart_id);
+
+
+                $('.input-item').map(function() {
+                    const id_name = this.id;
+                    this.value = json[id_name];
+                    $("#" + id_name).val(json[id_name]);
+                });
+
+                $('.check-item').map(function() {
+                    const id_name = this.id;
+                    if (json[id_name] == "Yes") {
+                        $("#" + id_name).prop("checked", true);
+                    } else {
+                        $("#" + id_name).prop("checked", false);
+                    }
+                });
+
+                loanDetails(json.loan_id);
+
+
+                // if (route_settings.class_name == "Clients") {
+
+                //   c_status = "update";
+                //   $(".client_span").html(jsonParse.data['client_fullname']);
+                //   var clienttypes = jsonParse.data['client_type_id'].split(',').map(Number);
+                //   $("#client_type_id").val(clienttypes).trigger('change');
+                //   // $("#client_type_id").select2().select2('val', []);
+                // } else if (route_settings.class_name == "Collections") {
+                //   // getSelectOption('Loans', 'loan_id', "reference_number", "client_id = '" + json['client_id'] + "' AND status = 'R'");
+                //   clients();
+                //   $("#loan_amount_span").html(json['loan_amount']);
+                //   $('.input-item').attr('readonly', true);
+                //   $(".select2").prop("disabled", true);
+                //   $("#btn_submit").hide();
+                // } else if (route_settings.class_name == "Loans") {
+                //   $("#loan_amount_span").html(json['amount']);
+
+                //   $("#div_amount").html('<label><strong style="color:red;">*</strong> Loan amount</label><input type="number" step="0.01" class="form-control input-item" onchange="calculateInterest()" autocomplete="off" name="input[loan_amount]" id="loan_amount" required>');
+
+                //   $("#monthly_payment_span").html(json['monthly_payment']);
+                //   if (jsonParse.data['status'] != "A") {
+                //     $('#loan_container :input').attr('readonly', true);
+                //     $(".select2").prop("disabled", true);
+                //     $("#btn_submit").hide();
+                //     // $("#btn_release").hide();
+                //     // if (jsonParse.data['status'] == "R") {
+                //     //   $("#btn_reloan").show();
+                //     // } else {
+                //     //   $("#btn_reloan").hide();
+                //     // }
+                //   } else if (jsonParse.data['status'] == "A") {
+                //     $("#btn_submit").show();
+                //     // $("#btn_release").show();
+                //     // $("#btn_reloan").hide();
+                //   }
+                //   clients();
+
+                //   $("#div_sample_calculation").hide();
+                //   $("#div_soa").show();
+                //   loanDetails(2);
+                //   $("#hidden_id_2").val(id);
+
+                //   $("#loan_amount").val(json['loan_amount']);
+                //   $("#loan_amount").val(json['loan_amount']).trigger('change');
+                // } else if (route_settings.class_name == "LoanTypes") {
+                //   if (json['fixed_interest'] != "Y") {
+                //     $("#fixed_interest").prop("checked", false);
+                //   } else {
+                //     $("#fixed_interest").prop("checked", true);
+                //   }
+                //   fixedInterest();
+
+                // }
+
+
+                $("#modalLabel").html("<i class='flaticon-edit'></i> Update Entry");
+                $("#modalEntry").modal('show');
+            }
         });
     }
 
@@ -226,12 +332,12 @@
     }
 
 
-    function loanDetails() {
+    function loanDetails(_loan_id = 0) {
 
-        var loan_id = $("#loan_id").val();
-        // if (loan_id > 0 ) {
-        getPenalty();
+        var loan_id = _loan_id > 0 ? _loan_id : $("#loan_id").val() * 1;
+        _loan_id > 0 ? '' : getPenalty();
         getloanDetails(loan_id);
+
         var param = "loan_id= '" + loan_id + "' ";
         $("#dt_loan_details").DataTable().destroy();
         $("#dt_loan_details").DataTable({
@@ -303,6 +409,7 @@
     function getClients() {
         var branch_id = $("#branch_id").val();
         getSelectOption('Clients', 'client_id', 'client_fullname', "branch_id='" + branch_id + "'");
+
     }
 
     function clients() {
