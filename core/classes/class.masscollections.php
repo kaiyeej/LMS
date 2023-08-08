@@ -237,6 +237,12 @@ class MassCollections extends Connection
         }
     }
 
+    public function remove()
+    {
+        $ids = implode(",", $this->inputs['ids']);
+        return $this->delete($this->table, "$this->pk IN($ids)");
+    }
+
     public function add_collection()
     {
         try {
@@ -464,5 +470,18 @@ class MassCollections extends Connection
 
             return $this->schemaCreator($tables);
         }
+    }
+
+    public function triggers()
+    {
+        // HEADER
+        $triggers[] = array(
+            'table' => $this->table,
+            'name' => 'delete_mass_collections',
+            'action_time' => 'AFTER', // ['AFTER','BEFORE']
+            'event' => "DELETE", // ['INSERT','UPDATE', 'DELETE']
+            "statement" => "DELETE FROM $this->table_detail WHERE $this->pk = OLD.$this->pk"
+        );
+        return $this->triggerCreator($triggers);
     }
 }

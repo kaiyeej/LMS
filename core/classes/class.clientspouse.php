@@ -77,36 +77,35 @@ class ClientSpouse extends Connection
 
     public function schema()
     {
-        if (DEVELOPMENT) {
-            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
-            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
+
+        $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+        $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
 
 
-            // TABLE HEADER
-            $tables[] = array(
-                'name'      => $this->table,
-                'primary'   => $this->pk,
-                'fields' => array(
-                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
-                    $this->metadata($this->name, 'varchar', 75),
-                    $this->metadata('spouse_residence', 'varchar', 150),
-                    $this->metadata('certificate_no', 'varchar', 50),
-                    $this->metadata('certificate_issued_at', 'varchar', 150),
-                    $this->metadata('certificate_date', 'date'),
-                    $this->metadata('spouse_employer', 'varchar', 150),
-                    $this->metadata('spouse_employer_address', 'varchar', 150),
-                    $this->metadata('spouse_employer_contact', 'varchar', 50),
-                    $this->metadata('spouse_employment_status', 'varchar', 10),
-                    $this->metadata('spouse_employment_length', 'varchar', 10),
-                    $this->metadata('spouse_employment_income', 'DECIMAL', '15,3'),
-                    $this->metadata('spouse_last_employment', 'varchar', 50),
-                    $default['date_added'],
-                    $default['date_last_modified']
-                )
-            );
+        // TABLE HEADER
+        $tables[] = array(
+            'name'      => $this->table,
+            'primary'   => $this->pk,
+            'fields' => array(
+                $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                $this->metadata($this->name, 'varchar', 75),
+                $this->metadata('spouse_residence', 'varchar', 150),
+                $this->metadata('certificate_no', 'varchar', 50),
+                $this->metadata('certificate_issued_at', 'varchar', 150),
+                $this->metadata('certificate_date', 'date'),
+                $this->metadata('spouse_employer', 'varchar', 150),
+                $this->metadata('spouse_employer_address', 'varchar', 150),
+                $this->metadata('spouse_employer_contact', 'varchar', 50),
+                $this->metadata('spouse_employment_status', 'varchar', 10),
+                $this->metadata('spouse_employment_length', 'varchar', 10),
+                $this->metadata('spouse_employment_income', 'DECIMAL', '15,3'),
+                $this->metadata('spouse_last_employment', 'varchar', 50),
+                $default['date_added'],
+                $default['date_last_modified']
+            )
+        );
 
-            return $this->schemaCreator($tables);
-        }
+        return $this->schemaCreator($tables);
     }
 }
 

@@ -3,14 +3,14 @@
 class LoanReport extends Connection
 {
 
-
+    public $inputs;
     public function view()
     {
-        
+
         $start_date = $this->inputs['start_date'];
         $end_date = $this->inputs['end_date'];
         $date_range = $this->inputs['date_range'];
-        
+
 
         if ($this->inputs['report_type'] == "type") {
             $query = $this->inputs['loan_type_id'] == -1 ? "loan_id > 0" : 'loan_type_id= "' . $this->inputs['loan_type_id'] . '"';
@@ -19,13 +19,12 @@ class LoanReport extends Connection
         }
 
         $rows = array();
-        if($date_range == 1){
+        if ($date_range == 1) {
             $result = $this->select("tbl_loans", "*", "$query");
-        }else{
+        } else {
             $result = $this->select("tbl_loans", "*", "(loan_date >= '$start_date' AND loan_date <= '$end_date') AND $query");
-
         }
-        
+
 
         $Clients = new Clients;
         $LoanTypes = new LoanTypes;
@@ -73,15 +72,15 @@ class LoanReport extends Connection
         $Clients = new Clients;
         $data = "";
         $result = $this->select("tbl_loans", '*', "status='A'");
-        if($result->num_rows <= 0){
+        if ($result->num_rows <= 0) {
             $data = "<center><h5>!No details found.</h5></center>";
-        }else{
+        } else {
             while ($row = $result->fetch_assoc()) {
                 $data .= ' <li class="media">
                             <div class="media-body">
-                                <div class="media-right">&#8369; '.number_format($row['loan_amount'],2).'</div>
-                                <div class="media-title"><a href="#">'.$row['reference_number'].'</a></div>
-                                <div class="text-muted text-small"> <a href="#">'.$Clients->name($row['client_id']).'</a>  ('.$row['loan_date'].')
+                                <div class="media-right">&#8369; ' . number_format($row['loan_amount'], 2) . '</div>
+                                <div class="media-title"><a href="#">' . $row['reference_number'] . '</a></div>
+                                <div class="text-muted text-small"> <a href="#">' . $Clients->name($row['client_id']) . '</a>  (' . $row['loan_date'] . ')
                                 </div>
                             </div>
                         </li>';

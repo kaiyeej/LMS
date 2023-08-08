@@ -648,6 +648,30 @@ class Clients extends Connection
             return $this->schemaCreator($tables);
         }
     }
+
+    public function triggers()
+    {
+        // HEADER
+        $triggers[] = array(
+            'table' => $this->table,
+            'name' => 'delete_client',
+            'action_time' => 'AFTER', // ['AFTER','BEFORE']
+            'event' => "DELETE", // ['INSERT','UPDATE', 'DELETE']
+            "statement" => [
+                "DELETE FROM tbl_children WHERE client_id = OLD.client_id;",
+                "DELETE FROM tbl_client_atm WHERE client_id = OLD.client_id;",
+                "DELETE FROM tbl_client_business WHERE client_id = OLD.client_id;",
+                "DELETE FROM tbl_client_dependents WHERE client_id = OLD.client_id;",
+                "DELETE FROM tbl_client_employment WHERE client_id = OLD.client_id;",
+                "DELETE FROM tbl_client_insurance WHERE client_id = OLD.client_id;",
+                "DELETE FROM tbl_client_reference WHERE client_id = OLD.client_id;",
+                "DELETE FROM tbl_client_residence WHERE client_id = OLD.client_id;",
+                "DELETE FROM tbl_client_soi WHERE client_id = OLD.client_id;",
+                "DELETE FROM tbl_client_spouse WHERE client_id = OLD.client_id;",
+            ]
+        );
+        return $this->triggerCreator($triggers);
+    }
 }
 
 

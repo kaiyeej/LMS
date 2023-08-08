@@ -54,32 +54,71 @@
                 }
             },
             "columns": [{
-                "mRender": function(data, type, row) {
-                    return "<center><button class='btn btn-sm btn-info' onclick='viewMassCollection(" + row.mass_collection_id + ")'><span class='fa fa-edit'></span></button></center>";
+                    "mRender": function(data, type, row) {
+
+                        return '<div class="dropdown d-inline"><button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button><div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;"><a class="dropdown-item has-icon" href="#" onclick="viewMassCollection(' + row.mass_collection_id + ')"><i class="far fa-edit"></i> Update</a><a class="dropdown-item has-icon" href="#" onclick="deleteMassCollection(' + row.mass_collection_id + ')"><i class="far fa-trash"></i> Remove</a>';
+                    }
+                },
+                {
+                    "data": "reference_number"
+                },
+                {
+                    "data": "branch"
+                },
+                {
+                    "data": "loan_type"
+                },
+                {
+                    "data": "bank"
+                },
+                {
+                    "data": "collection_date"
+                },
+                {
+                    "data": "employer"
+                },
+                {
+                    "data": "prepared"
                 }
-            },
-            {
-                "data": "reference_number"
-            },
-            {
-                "data": "branch"
-            },
-            {
-                "data": "loan_type"
-            },
-            {
-                "data": "bank"
-            },
-            {
-                "data": "collection_date"
-            },
-            {
-                "data": "employer"
-            },
-            {
-                "data": "prepared"
-            }
             ]
         });
+    }
+
+    function deleteMassCollection(mass_collection_id) {
+        swal({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover these entries!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "POST",
+                        url: "controllers/sql.php?c=MassCollections&q=remove",
+                        data: {
+                            input: {
+                                ids: [mass_collection_id]
+                            }
+                        },
+                        success: function(data) {
+                            getSavedMassCollection();
+                            var json = JSON.parse(data);
+                            console.log(json);
+                            if (json.data == 1) {
+                                success_delete();
+                            } else {
+                                failed_query(json);
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            errorLogger('Error:', textStatus, errorThrown);
+                        }
+                    });
+                } else {
+                    swal("Cancelled", "Entries are safe :)", "error");
+                }
+            });
     }
 </script>

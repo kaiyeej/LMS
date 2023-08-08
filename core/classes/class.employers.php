@@ -95,27 +95,25 @@ class Employers extends Connection
 
     public function schema()
     {
-        if (DEVELOPMENT) {
-            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
-            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
+        $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+        $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
 
 
-            // TABLE HEADER
-            $tables[] = array(
-                'name'      => $this->table,
-                'primary'   => $this->pk,
-                'fields' => array(
-                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
-                    $this->metadata($this->name, 'varchar', 150),
-                    $this->metadata('employer_address', 'varchar', 255),
-                    $this->metadata('employer_contact_no', 'varchar', 50),
-                    $default['date_added'],
-                    $default['date_last_modified']
-                )
-            );
+        // TABLE HEADER
+        $tables[] = array(
+            'name'      => $this->table,
+            'primary'   => $this->pk,
+            'fields' => array(
+                $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                $this->metadata($this->name, 'varchar', 150),
+                $this->metadata('employer_address', 'varchar', 255),
+                $this->metadata('employer_contact_no', 'varchar', 50),
+                $default['date_added'],
+                $default['date_last_modified']
+            )
+        );
 
-            return $this->schemaCreator($tables);
-        }
+        return $this->schemaCreator($tables);
     }
 }
 

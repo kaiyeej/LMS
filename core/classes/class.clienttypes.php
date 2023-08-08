@@ -70,28 +70,26 @@ class ClientTypes extends Connection
 
     public function schema()
     {
-        if (DEVELOPMENT) {
-            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
-            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
-            $default['user_id'] = $this->metadata('user_id', 'int', 11);
+        $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+        $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
+        $default['user_id'] = $this->metadata('user_id', 'int', 11);
 
 
-            // TABLE HEADER
-            $tables[] = array(
-                'name'      => $this->table,
-                'primary'   => $this->pk,
-                'fields' => array(
-                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
-                    $this->metadata($this->name, 'varchar', 50),
-                    $this->metadata('remarks', 'text'),
-                    $default['user_id'],
-                    $default['date_added'],
-                    $default['date_last_modified']
-                )
-            );
+        // TABLE HEADER
+        $tables[] = array(
+            'name'      => $this->table,
+            'primary'   => $this->pk,
+            'fields' => array(
+                $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                $this->metadata($this->name, 'varchar', 50),
+                $this->metadata('remarks', 'text'),
+                $default['user_id'],
+                $default['date_added'],
+                $default['date_last_modified']
+            )
+        );
 
-            return $this->schemaCreator($tables);
-        }
+        return $this->schemaCreator($tables);
     }
 }
 

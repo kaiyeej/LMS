@@ -420,4 +420,32 @@ class Expenses extends Connection
         $response['unsuccess_import'] = $unsuccess_import;
         return $response;
     }
+
+    public function schema()
+    {
+        $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+        $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', '', 'ON UPDATE CURRENT_TIMESTAMP');
+
+
+        // TABLE HEADER
+        $tables[] = array(
+            'name'      => $this->table,
+            'primary'   => $this->pk,
+            'fields' => array(
+                $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                $this->metadata($this->name, 'varchar', 150),
+                $this->metadata('expense_date', 'date'),
+                $this->metadata('remarks', 'varchar', 255),
+                $this->metadata('journal_id', 'int', 11),
+                $this->metadata('status', 'varchar', 1),
+                $this->metadata('user_id', 'int', 11),
+                $this->metadata('credit_method', 'int', 11),
+                $this->metadata('branch_id', 'int', 11),
+                $default['date_added'],
+                $default['date_last_modified']
+            )
+        );
+
+        return $this->schemaCreator($tables);
+    }
 }

@@ -49,23 +49,23 @@ class Insurance extends Connection
         return $result->fetch_assoc();
 
         if ($result->num_rows < 1)
-        return array(
-            'insurance_id'                      => '',
-            'insurance'                         => '',
-            'insurance_amount'                  => 0,
-            'insurance_bank_transaction'        => '',
-            'insurance_maturity'                => 0,
-            'insurance_salary_withdrawal'       => '',
-            'insurance_unpaid_obligation'       => 0,
-            'paymaster_address'                 => '',
-            'paymaster_client_deduct_salary'    => '',
-            'paymaster_conformity'              => '',
-            'paymaster_deduct_salary'           => '',
-            'paymaster_name'                    => '',
-            'paymaster_res_cert_date'           => '',
-            'paymaster_res_cert_issued_at'      => '',
-            'paymaster_res_cert_no'             => '',
-        );
+            return array(
+                'insurance_id'                      => '',
+                'insurance'                         => '',
+                'insurance_amount'                  => 0,
+                'insurance_bank_transaction'        => '',
+                'insurance_maturity'                => 0,
+                'insurance_salary_withdrawal'       => '',
+                'insurance_unpaid_obligation'       => 0,
+                'paymaster_address'                 => '',
+                'paymaster_client_deduct_salary'    => '',
+                'paymaster_conformity'              => '',
+                'paymaster_deduct_salary'           => '',
+                'paymaster_name'                    => '',
+                'paymaster_res_cert_date'           => '',
+                'paymaster_res_cert_issued_at'      => '',
+                'paymaster_res_cert_no'             => '',
+            );
 
 
 
@@ -174,26 +174,24 @@ class Insurance extends Connection
 
     public function schema()
     {
-        if (DEVELOPMENT) {
-            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
-            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
+        $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+        $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
 
 
-            // TABLE HEADER
-            $tables[] = array(
-                'name'      => $this->table,
-                'primary'   => $this->pk,
-                'fields' => array(
-                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
-                    $this->metadata($this->name, 'decimal', "12,4"),
-                    $this->metadata('insurance_desc', 'varchar', 250),
-                    $this->metadata('insurance_amount', 'decimal', "12,4"),
-                    $default['date_added'],
-                    $default['date_last_modified']
-                )
-            );
+        // TABLE HEADER
+        $tables[] = array(
+            'name'      => $this->table,
+            'primary'   => $this->pk,
+            'fields' => array(
+                $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                $this->metadata($this->name, 'decimal', "12,4"),
+                $this->metadata('insurance_desc', 'varchar', 250),
+                $this->metadata('insurance_amount', 'decimal', "12,4"),
+                $default['date_added'],
+                $default['date_last_modified']
+            )
+        );
 
-            return $this->schemaCreator($tables);
-        }
+        return $this->schemaCreator($tables);
     }
 }

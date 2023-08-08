@@ -73,30 +73,28 @@ class ClientResidence extends Connection
 
     public function schema()
     {
-        if (DEVELOPMENT) {
-            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
-            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
+        $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+        $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
 
 
-            // TABLE HEADER
-            $tables[] = array(
-                'name'      => $this->table,
-                'primary'   => $this->pk,
-                'fields' => array(
-                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
-                    $this->metadata('client_id', 'int', 11),
-                    $this->metadata('residence', 'text'),
-                    $this->metadata('residence_status', 'varchar', 15, 'NOT NULL', '', '', "'Owned,Rented, Free of use'"),
-                    $this->metadata('residence_certificate_no', 'varchar', 50),
-                    $this->metadata('certificate_issued_at', 'varchar', 150),
-                    $this->metadata('certificate_date', 'date'),
-                    $default['date_added'],
-                    $default['date_last_modified']
-                )
-            );
+        // TABLE HEADER
+        $tables[] = array(
+            'name'      => $this->table,
+            'primary'   => $this->pk,
+            'fields' => array(
+                $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                $this->metadata('client_id', 'int', 11),
+                $this->metadata('residence', 'text'),
+                $this->metadata('residence_status', 'varchar', 15, 'NOT NULL', '', '', "'Owned,Rented, Free of use'"),
+                $this->metadata('residence_certificate_no', 'varchar', 50),
+                $this->metadata('certificate_issued_at', 'varchar', 150),
+                $this->metadata('certificate_date', 'date'),
+                $default['date_added'],
+                $default['date_last_modified']
+            )
+        );
 
-            return $this->schemaCreator($tables);
-        }
+        return $this->schemaCreator($tables);
     }
 }
 

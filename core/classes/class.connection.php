@@ -177,7 +177,7 @@ class Connection
 
     public function schemaCreator($tables)
     {
-        $create = "";
+        $create = [];
         foreach ($tables as $table) {
             $name = $table['name'];
             $fields = $table['fields'];
@@ -213,10 +213,41 @@ class Connection
                 }
                 $query .= implode(",", $field_list);
                 $query .= $is_exists == 1 ? "" : ') ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;';
-                $create .= $query;
-                $this->mysqli->query($query);
+                $status = $this->mysqli->query($query);
+                $create[] = ['table' => $name, 'status' => $status, 'query' => $query, 'error' => $this->mysqli->error];
             }
         }
+        return $create;
+    }
+
+    public function triggerCreator($triggers)
+    {
+        $create = [];
+        foreach ($triggers as $trigger) {
+            $trigger_name   = $trigger['name'];
+            $table          = $trigger['table'];
+            $action_time    = $trigger['action_time'];
+            $event          = $trigger['event'];
+            $statement      = $trigger['statement'];
+
+            $query = "";
+
+            if (is_array($statement) == 1) {
+                // $query .= "DELIMITER $$";
+                $statements = "\n\t" . implode("\n\t", $statement) . "\n";
+                $begin = "BEGIN";
+                $end = "END;";
+            } else {
+                $statements = $statement;
+                $begin = "";
+                $end = "";
+            }
+
+            $query .= "CREATE TRIGGER $trigger_name $action_time $event ON $table FOR EACH ROW $begin $statements $end";
+            $status = $this->mysqli->query($query);
+            $create[] = ['trigger_name' => $trigger_name, 'status' => $status, 'query' => $query, 'error' => $this->mysqli->error];
+        }
+
         return $create;
     }
 

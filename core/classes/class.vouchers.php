@@ -10,6 +10,8 @@ class Vouchers extends Connection
     public $pk2 = 'journal_entry_detail_id';
     public $fk_det = 'chart_id';
 
+    public $inputs;
+
     public function add()
     {
 
@@ -346,5 +348,25 @@ class Vouchers extends Connection
 
             return $this->schemaCreator($tables);
         }
+    }
+
+    public function triggers()
+    {
+        $triggers[] = array(
+            'table' => $this->table,
+            'name' => 'delete_voucher',
+            'action_time' => 'AFTER', // ['AFTER','BEFORE']
+            'event' => "DELETE", // ['INSERT','UPDATE', 'DELETE']
+            "statement" => "DELETE FROM tbl_journal_entries WHERE cross_reference = OLD.reference_number AND is_manual != 'Y'"
+        );
+
+        $triggers[] = array(
+            'table' => $this->table,
+            'name' => 'finish_voucher',
+            'action_time' => 'AFTER', // ['AFTER','BEFORE']
+            'event' => "UPDATE", // ['INSERT','UPDATE', 'DELETE']
+            "statement" => "UPDATE tbl_journal_entries SET status = IF (NEW.status = 'F', 'F', 'S') WHERE cross_reference = NEW.reference_number AND old.status != 'F'"
+        );
+        return $this->triggerCreator($triggers);
     }
 }
