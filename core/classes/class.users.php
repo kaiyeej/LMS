@@ -6,6 +6,8 @@ class Users extends Connection
     private $pk = 'user_id';
     private $name = 'username';
 
+    public $inputs;
+
     public function add()
     {
         $username = $this->clean($this->inputs['username']);
@@ -67,8 +69,8 @@ class Users extends Connection
         $UserCategories = new UserCategories;
         $result = $this->select($this->table, '*', $param);
         while ($row = $result->fetch_assoc()) {
-            $row['user_fullname'] = $row['user_fname']." ".$row['user_mname']." ".$row['user_lname'];
-            $row['user_category_name'] = "";//$UserCategories->name($row['user_category_id']);
+            $row['user_fullname'] = $row['user_fname'] . " " . $row['user_mname'] . " " . $row['user_lname'];
+            $row['user_category_name'] = ""; //$UserCategories->name($row['user_category_id']);
             $rows[] = $row;
         }
         return $rows;
@@ -96,7 +98,7 @@ class Users extends Connection
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            return $row['user_fname']." ".$row['user_mname']." ".$row['user_lname'];
+            return $row['user_fname'] . " " . $row['user_mname'] . " " . $row['user_lname'];
         } else {
             return "---";
         }
@@ -106,10 +108,10 @@ class Users extends Connection
     {
         $self = new self;
         $result = $self->select($self->table, 'user_contact_num', "$self->pk  = '$primary_id'");
-        if($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             $row = $result->fetch_array();
             return $row[0];
-        }else{
+        } else {
             return null;
         }
     }
@@ -118,10 +120,10 @@ class Users extends Connection
     {
         $self = new self;
         $result = $self->select($self->table, $field, "$self->pk  = '$primary_id'");
-        if($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             $row = $result->fetch_array();
             return $row[$field];
-        }else{
+        } else {
             return null;
         }
     }
@@ -148,7 +150,7 @@ class Users extends Connection
 
         return $res;
     }
-    
+
     public function logout()
     {
         session_destroy();
@@ -157,30 +159,28 @@ class Users extends Connection
 
     public function schema()
     {
-        if (DEVELOPMENT) {
-            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
-            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
+        $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+        $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
 
 
-            // TABLE HEADER
-            $tables[] = array(
-                'name'      => $this->table,
-                'primary'   => $this->pk,
-                'fields' => array(
-                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
-                    $this->metadata($this->name, 'varchar', 50),
-                    $this->metadata('user_fname', 'varchar', 50),
-                    $this->metadata('user_mname', 'varchar', 50),
-                    $this->metadata('user_lname', 'varchar', 50),
-                    $this->metadata('user_category_id', 'int', 11),
-                    $this->metadata('user_category', 'varchar', 1),
-                    $this->metadata('password', 'text'),
-                    $default['date_added'],
-                    $default['date_last_modified']
-                )
-            );
+        // TABLE HEADER
+        $tables[] = array(
+            'name'      => $this->table,
+            'primary'   => $this->pk,
+            'fields' => array(
+                $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                $this->metadata($this->name, 'varchar', 50),
+                $this->metadata('user_fname', 'varchar', 50),
+                $this->metadata('user_mname', 'varchar', 50),
+                $this->metadata('user_lname', 'varchar', 50),
+                $this->metadata('user_category_id', 'int', 11),
+                $this->metadata('user_category', 'varchar', 1),
+                $this->metadata('password', 'text'),
+                $default['date_added'],
+                $default['date_last_modified']
+            )
+        );
 
-            return $this->schemaCreator($tables);
-        }
+        return $this->schemaCreator($tables);
     }
 }

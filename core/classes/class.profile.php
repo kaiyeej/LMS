@@ -6,6 +6,7 @@ class Profile extends Connection
     private $pk = 'user_id';
     private $name = 'username';
 
+    public $inputs;
 
     public function edit()
     {

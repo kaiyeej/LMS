@@ -620,33 +620,31 @@ class Clients extends Connection
 
     public function schema()
     {
-        if (DEVELOPMENT) {
-            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
-            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
+        $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+        $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
 
 
-            // TABLE HEADER
-            $tables[] = array(
-                'name'      => $this->table,
-                'primary'   => $this->pk,
-                'fields' => array(
-                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
-                    $this->metadata('branch_id', 'int', 11),
-                    $this->metadata('client_type_id', 'int', 11),
-                    $this->metadata('client_fname', 'varchar', 50),
-                    $this->metadata('client_mname', 'varchar', 50),
-                    $this->metadata('client_lname', 'varchar', 50),
-                    $this->metadata('client_name_extension', 'varchar', 5),
-                    $this->metadata('client_dob', 'date'),
-                    $this->metadata('client_contact_no', 'varchar', 30),
-                    $this->metadata('client_civil_status', 'varchar', 10),
-                    $default['date_added'],
-                    $default['date_last_modified']
-                )
-            );
+        // TABLE HEADER
+        $tables[] = array(
+            'name'      => $this->table,
+            'primary'   => $this->pk,
+            'fields' => array(
+                $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                $this->metadata('branch_id', 'int', 11),
+                $this->metadata('client_type_id', 'int', 11),
+                $this->metadata('client_fname', 'varchar', 50),
+                $this->metadata('client_mname', 'varchar', 50),
+                $this->metadata('client_lname', 'varchar', 50),
+                $this->metadata('client_name_extension', 'varchar', 5),
+                $this->metadata('client_dob', 'date'),
+                $this->metadata('client_contact_no', 'varchar', 30),
+                $this->metadata('client_civil_status', 'varchar', 10),
+                $default['date_added'],
+                $default['date_last_modified']
+            )
+        );
 
-            return $this->schemaCreator($tables);
-        }
+        return $this->schemaCreator($tables);
     }
 
     public function triggers()

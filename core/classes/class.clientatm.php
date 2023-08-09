@@ -67,9 +67,10 @@ class ClientAtm extends Connection
             'primary'   => $this->pk,
             'fields' => array(
                 $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                $this->metadata($this->fk, 'int', 11),
                 $this->metadata($this->name, 'varchar', 50),
                 $this->metadata('atm_bank', 'varchar', 50),
-                $this->metadata('atm_balance', 'varchar', '15,3', 'NOT NULL', 0),
+                $this->metadata('atm_balance', 'decimal', '15,3', 'NOT NULL', "'0'"),
                 $default['date_added'],
                 $default['date_last_modified']
             )

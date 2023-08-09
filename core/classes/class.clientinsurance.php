@@ -110,9 +110,9 @@ class ClientInsurance extends Connection
                 $this->metadata('paymaster_res_cert_no', 'varchar', 50),
                 $this->metadata('paymaster_res_cert_issued_at', 'varchar', 50),
                 $this->metadata('paymaster_res_cert_date', 'date'),
-                $this->metadata('paymaster_deduct_salary', 'varchar', 3, 'NOT NULL', 'NULL', '', "'Yes,No'"),
-                $this->metadata('paymaster_client_deduct_salary', 'varchar', 3, 'NOT NULL', 'NULL', '', "'Yes,No'"),
-                $this->metadata('paymaster_conformity', 'varchar', 3, 'NOT NULL', 'NULL', '', "'Yes,No'"),
+                $this->metadata('paymaster_deduct_salary', 'varchar', 3, 'NOT NULL', '', '', "'Yes,No'"),
+                $this->metadata('paymaster_client_deduct_salary', 'varchar', 3, 'NOT NULL', '', '', "'Yes,No'"),
+                $this->metadata('paymaster_conformity', 'varchar', 3, 'NOT NULL', '', '', "'Yes,No'"),
                 $default['date_added'],
                 $default['date_last_modified']
             )

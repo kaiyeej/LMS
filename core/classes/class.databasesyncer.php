@@ -6,18 +6,31 @@ class DatabaseSyncer extends Connection
 	public function runner()
 	{
 		$this->schemas();
+		$this->triggers();
 		return $this->response;
 	}
 
 	public function schemas()
 	{
 		$modules = [
-			'Branches', 'ChartClassification', 'ChartOfAccounts', 'ClientAtm', 'ClientBusiness', 'ClientDependent', 'ClientEmployment', 'ClientInsurance', 'ClientReference', 'ClientResidence', 'ClientSoi', 'ClientSpouse', 'ClientTypes', 'Collections', 'Employers', 'ExpenseCategory', 'Expenses', 'FixedInterest', 'Insurance', 'JournalEntry', 'Journals', 'Loans'
+			'Branches', 'ChartClassification', 'ChartOfAccounts', 'ClientAtm', 'ClientBusiness', 'ClientDependent', 'ClientEmployment', 'ClientInsurance', 'ClientReference', 'ClientResidence', 'Clients', 'ClientSoi', 'ClientSpouse', 'ClientTypes', 'Collections', 'Employers', 'ExpenseCategory', 'Expenses', 'FixedInterest', 'Insurance', 'JournalEntry', 'Journals', 'Loans', 'LoanTypes', 'MassCollections', 'Suppliers', 'UserCategories', 'UserPrivileges', 'Users', 'Vouchers'
 		];
 
 		foreach ($modules as $module) {
 			$instance = new $module;
-			$this->response[] = $instance->schema();
+			$this->response['schemas'][$module] = $instance->schema();
+		}
+	}
+
+	public function triggers()
+	{
+		$modules = [
+			'MassCollections', 'Vouchers', 'Clients'
+		];
+
+		foreach ($modules as $module) {
+			$instance = new $module;
+			$this->response['triggers'][$module] = $instance->triggers();
 		}
 	}
 }

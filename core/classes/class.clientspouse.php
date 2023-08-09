@@ -90,12 +90,13 @@ class ClientSpouse extends Connection
                 $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
                 $this->metadata($this->name, 'varchar', 75),
                 $this->metadata('spouse_residence', 'varchar', 150),
-                $this->metadata('certificate_no', 'varchar', 50),
-                $this->metadata('certificate_issued_at', 'varchar', 150),
-                $this->metadata('certificate_date', 'date'),
+                $this->metadata('spouse_res_cert_no', 'varchar', 50),
+                $this->metadata('spouse_res_cert_issued_at', 'varchar', 150),
+                $this->metadata('spouse_res_cert_date', 'date'),
                 $this->metadata('spouse_employer', 'varchar', 150),
                 $this->metadata('spouse_employer_address', 'varchar', 150),
                 $this->metadata('spouse_employer_contact', 'varchar', 50),
+                $this->metadata('spouse_employment_position', 'varchar', 50),
                 $this->metadata('spouse_employment_status', 'varchar', 10),
                 $this->metadata('spouse_employment_length', 'varchar', 10),
                 $this->metadata('spouse_employment_income', 'DECIMAL', '15,3'),
@@ -108,25 +109,3 @@ class ClientSpouse extends Connection
         return $this->schemaCreator($tables);
     }
 }
-
-// CREATE TABLE `tbl_client_spouse` (
-//     `spouse_id` INT(11) NOT NULL AUTO_INCREMENT,
-//     `spouse_name` VARCHAR(50) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
-//     `spouse_residence` VARCHAR(150) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
-//     `certificate_no` VARCHAR(50) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
-//     `certificate_issued_at` VARCHAR(150) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
-//     `certificate_date` DATE NOT NULL DEFAULT '0000-00-00',
-//     `spouse_employer` VARCHAR(150) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
-//     `spouse_employer_address` VARCHAR(150) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
-//     `spouse_employer_contact` VARCHAR(50) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
-//     `spouse_employment_status` VARCHAR(10) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
-//     `spouse_employment_length` VARCHAR(10) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
-//     `spouse_employment_income` DECIMAL(15,3) NULL DEFAULT NULL,
-//     `spouse_last_employment` VARCHAR(50) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
-//     `date_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-//     `date_last_modified` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-//     PRIMARY KEY (`spouse_id`) USING BTREE
-// )
-// COLLATE='latin1_swedish_ci'
-// ENGINE=InnoDB
-// ;

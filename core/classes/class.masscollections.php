@@ -417,59 +417,57 @@ class MassCollections extends Connection
 
     public function schema()
     {
-        if (DEVELOPMENT) {
-            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
-            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
-            $default['user_id'] = $this->metadata('user_id', 'int', 11);
+        $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+        $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
+        $default['user_id'] = $this->metadata('user_id', 'int', 11);
 
 
-            // TABLE HEADER
-            $tables[] = array(
-                'name'      => $this->table,
-                'primary'   => $this->pk,
-                'fields' => array(
-                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
-                    $this->metadata($this->name, 'varchar', 75),
-                    $this->metadata('branch_id', 'int', 11),
-                    $this->metadata('loan_type_id', 'int', 11),
-                    $this->metadata('chart_id', 'int', 11),
-                    $this->metadata('collection_date', 'date'),
-                    $this->metadata('employer_id', 'int', 11),
-                    $this->metadata('atm_charge', 'decimal', '12,2'),
-                    $this->metadata('status', 'varchar', 1, 'NOT NULL', "'S'", '', "'S:Saved;F:Finished'"),
-                    $this->metadata('prepared_by', 'int', 11),
-                    $this->metadata('finished_by', 'int', 11),
-                    $default['date_added'],
-                    $default['date_last_modified']
-                )
-            );
+        // TABLE HEADER
+        $tables[] = array(
+            'name'      => $this->table,
+            'primary'   => $this->pk,
+            'fields' => array(
+                $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                $this->metadata($this->name, 'varchar', 75),
+                $this->metadata('branch_id', 'int', 11),
+                $this->metadata('loan_type_id', 'int', 11),
+                $this->metadata('chart_id', 'int', 11),
+                $this->metadata('collection_date', 'date'),
+                $this->metadata('employer_id', 'int', 11),
+                $this->metadata('atm_charge', 'decimal', '12,2'),
+                $this->metadata('status', 'varchar', 1, 'NOT NULL', "'S'", '', "'S:Saved;F:Finished'"),
+                $this->metadata('prepared_by', 'int', 11),
+                $this->metadata('finished_by', 'int', 11),
+                $default['date_added'],
+                $default['date_last_modified']
+            )
+        );
 
-            // TABLE DETAILS
-            $tables[] = array(
-                'name'      => $this->table_detail,
-                'primary'   => $this->pk2,
-                'fields' => array(
-                    $this->metadata($this->pk2, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
-                    $this->metadata('mass_collection_id', 'int', 11),
-                    $this->metadata('client_id', 'int', 11),
-                    $this->metadata('loan_id', 'int', 11),
-                    $this->metadata('receipt_number', 'varchar', 5),
-                    $this->metadata('old_atm_balance', 'decimal', '12,4'),
-                    $this->metadata('atm_withdrawal', 'decimal', '12,4'),
-                    $this->metadata('deduction', 'decimal', '12,4'),
-                    $this->metadata('emergency_loan', 'decimal', '12,4'),
-                    $this->metadata('atm_charge', 'decimal', '12,4'),
-                    $this->metadata('atm_balance', 'decimal', '12,4'),
-                    $this->metadata('excess', 'decimal', '12,4'),
-                    $this->metadata('atm_account_no', 'varchar', 50),
-                    $this->metadata('is_included', 'int', 1),
-                    $default['date_added'],
-                    $default['date_last_modified']
-                )
-            );
+        // TABLE DETAILS
+        $tables[] = array(
+            'name'      => $this->table_detail,
+            'primary'   => $this->pk2,
+            'fields' => array(
+                $this->metadata($this->pk2, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                $this->metadata('mass_collection_id', 'int', 11),
+                $this->metadata('client_id', 'int', 11),
+                $this->metadata('loan_id', 'int', 11),
+                $this->metadata('receipt_number', 'varchar', 5),
+                $this->metadata('old_atm_balance', 'decimal', '12,4'),
+                $this->metadata('atm_withdrawal', 'decimal', '12,4'),
+                $this->metadata('deduction', 'decimal', '12,4'),
+                $this->metadata('emergency_loan', 'decimal', '12,4'),
+                $this->metadata('atm_charge', 'decimal', '12,4'),
+                $this->metadata('atm_balance', 'decimal', '12,4'),
+                $this->metadata('excess', 'decimal', '12,4'),
+                $this->metadata('atm_account_no', 'varchar', 50),
+                $this->metadata('is_included', 'int', 1),
+                $default['date_added'],
+                $default['date_last_modified']
+            )
+        );
 
-            return $this->schemaCreator($tables);
-        }
+        return $this->schemaCreator($tables);
     }
 
     public function triggers()

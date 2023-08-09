@@ -66,10 +66,10 @@ class Suppliers extends Connection
     public function name($primary_id)
     {
         $result = $this->select($this->table, 'supplier_name', "$this->pk = '$primary_id'");
-        if($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             return $row['supplier_name'];
-        }else{
+        } else {
             return null;
         }
     }
@@ -140,32 +140,30 @@ class Suppliers extends Connection
         $response['unsuccess_import'] = $unsuccess_import;
         return $response;
     }
-    
+
 
     public function schema()
     {
-        if (DEVELOPMENT) {
-            $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
-            $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
+        $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
+        $default['date_last_modified'] = $this->metadata('date_last_modified', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP');
 
 
-            // TABLE HEADER
-            $tables[] = array(
-                'name'      => $this->table,
-                'primary'   => $this->pk,
-                'fields' => array(
-                    $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
-                    $this->metadata($this->name, 'varchar', 50),
-                    $this->metadata('branch_id', 'int', 11),
-                    $this->metadata('supplier_address', 'varchar', 250),
-                    $this->metadata('supplier_contact_no', 'varchar', 15),
-                    $this->metadata('remarks', 'varchar', 250),
-                    $default['date_added'],
-                    $default['date_last_modified']
-                )
-            );
+        // TABLE HEADER
+        $tables[] = array(
+            'name'      => $this->table,
+            'primary'   => $this->pk,
+            'fields' => array(
+                $this->metadata($this->pk, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
+                $this->metadata($this->name, 'varchar', 50),
+                $this->metadata('branch_id', 'int', 11),
+                $this->metadata('supplier_address', 'varchar', 250),
+                $this->metadata('supplier_contact_no', 'varchar', 15),
+                $this->metadata('remarks', 'varchar', 250),
+                $default['date_added'],
+                $default['date_last_modified']
+            )
+        );
 
-            return $this->schemaCreator($tables);
-        }
+        return $this->schemaCreator($tables);
     }
 }
