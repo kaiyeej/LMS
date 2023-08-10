@@ -287,110 +287,6 @@ class Clients extends Connection
         return $this->delete($this->table, "$this->pk = $id");
     }
 
-    public function delete_property()
-    {
-        $id = $this->inputs['id'];
-
-        return $this->delete('tbl_property_owned', "property_id = $id");
-    }
-
-    public function delete_child()
-    {
-        $id = $this->inputs['id'];
-
-        return $this->delete('tbl_children', "child_id = $id");
-    }
-
-    public function addProperty()
-    {
-
-        $property_location = $this->clean($this->inputs['property_location']);
-        $form = array(
-            $this->pk                   => $this->inputs[$this->pk],
-            'property_location'         => $property_location,
-            'property_area'             => $this->clean($this->inputs['property_area']),
-            'property_acquisition_cost' => $this->clean($this->inputs['property_acquisition_cost']),
-            'property_pres_market_val'  => $this->clean($this->inputs['property_pres_market_val']),
-            'property_improvement'      => $this->clean($this->inputs['property_improvement']),
-
-        );
-
-        return $this->insertIfNotExist("tbl_property_owned", $form, "property_location = '" . $property_location . "' AND $this->pk='" . $this->inputs[$this->pk] . "'");
-    }
-
-
-
-    public function showProperty()
-    {
-        $rows = array();
-        $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
-        $rows = array();
-        $result = $this->select("tbl_property_owned", '*', $param);
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
-        return $rows;
-    }
-
-    public function get_property()
-    {
-        $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
-        $rows = "";
-        $result = $this->select("tbl_property_owned", '*', $param);
-        while ($row = $result->fetch_assoc()) {
-
-            $rows .=    '<div class="col-md-3"><h6>' . $row['property_location'] . '</h6></div>' .
-                '<div class="col-md-2"><h6>' . $row['property_area'] . '</h6></div>' .
-                '<div class="col-md-2"><h6>' . $row['property_acquisition_cost'] . '</h6></div>' .
-                '<div class="col-md-2"><h6>' . $row['property_pres_market_val'] . '</h6></div>' .
-                '<div class="col-md-3"><h6>' . $row['property_improvement'] . '</h6></div>';
-        }
-        return $rows;
-    }
-
-    public function get_children()
-    {
-        $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
-        $rows = "";
-        $result = $this->select("tbl_children", '*', $param);
-        while ($row = $result->fetch_assoc()) {
-
-            $rows .=    '<div class="col-md-3"><h6>' . $row['child_name'] . '</h6></div>' .
-                '<div class="col-md-2"><h6>' . $row['child_sex'] . '</h6></div>' .
-                '<div class="col-md-2"><h6>' . $row['child_age'] . '</h6></div>' .
-                '<div class="col-md-5"><h6>' . $row['child_occupation'] . '</h6></div>';
-        }
-        return $rows;
-    }
-
-    public function showChildren()
-    {
-        $rows = array();
-        $param = isset($this->inputs['param']) ? $this->inputs['param'] : null;
-        $rows = array();
-        $result = $this->select("tbl_children", '*', $param);
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
-        return $rows;
-    }
-
-    public function addChildren()
-    {
-
-        $child_name = $this->clean($this->inputs['child_name']);
-        $form = array(
-            $this->pk                   => $this->inputs[$this->pk],
-            'child_name'                => $child_name,
-            'child_age'                 => $this->clean($this->inputs['child_age']),
-            'child_sex'                 => $this->clean($this->inputs['child_sex']),
-            'child_occupation'          => $this->clean($this->inputs['child_occupation'])
-
-        );
-
-        return $this->insertIfNotExist("tbl_children", $form, "child_name = '" . $child_name . "' AND $this->pk='" . $this->inputs[$this->pk] . "'");
-    }
-
     public function showFullnames()
     {
         $result = $this->select($this->table, "client_id,UCASE(CONCAT(client_fname,IF(client_mname != '', CONCAT(' ',client_mname),''),' ',client_lname,IF(client_name_extension != '', CONCAT(' ',client_name_extension),''))) AS fullname,branch_id");
@@ -571,15 +467,15 @@ class Clients extends Connection
                         $property_pres_market_val = $row[$location + 3];
                         $property_improvement = $row[$location + 4];
 
-                        $Clients = new Clients;
+                        $ClientProperty = new ClientProperty;
                         if ($property_location != "") {
-                            $Clients->inputs['client_id'] = $client_id;
-                            $Clients->inputs['property_location'] = $property_location;
-                            $Clients->inputs['property_area'] = $property_area;
-                            $Clients->inputs['property_acquisition_cost'] = $property_acquisition_cost;
-                            $Clients->inputs['property_pres_market_val'] = $property_pres_market_val;
-                            $Clients->inputs['property_improvement'] = $property_improvement;
-                            $Clients->addProperty();
+                            $ClientProperty->inputs['client_id'] = $client_id;
+                            $ClientProperty->inputs['property_location'] = $property_location;
+                            $ClientProperty->inputs['property_area'] = $property_area;
+                            $ClientProperty->inputs['property_acquisition_cost'] = $property_acquisition_cost;
+                            $ClientProperty->inputs['property_pres_market_val'] = $property_pres_market_val;
+                            $ClientProperty->inputs['property_improvement'] = $property_improvement;
+                            $ClientProperty->add();
                             $location_list[] = $property_location;
                         }
                     }
@@ -592,14 +488,14 @@ class Clients extends Connection
                         $child_sex = $row[$children + 2];
                         $child_occupation = $row[$children + 3];
 
-                        $Clients = new Clients;
+                        $ClientChildren = new ClientChildren;
                         if ($child_name != "") {
-                            $Clients->inputs['client_id'] = $client_id;
-                            $Clients->inputs['child_name'] = $child_name;
-                            $Clients->inputs['child_age'] = $child_age;
-                            $Clients->inputs['child_sex'] = $child_sex;
-                            $Clients->inputs['child_occupation'] = $child_occupation;
-                            $Clients->addChildren();
+                            $ClientChildren->inputs['client_id'] = $client_id;
+                            $ClientChildren->inputs['child_name'] = $child_name;
+                            $ClientChildren->inputs['child_age'] = $child_age;
+                            $ClientChildren->inputs['child_sex'] = $child_sex;
+                            $ClientChildren->inputs['child_occupation'] = $child_occupation;
+                            $ClientChildren->add();
                             $children_list[] = $child_name;
                         }
                     }
@@ -656,7 +552,7 @@ class Clients extends Connection
             'action_time' => 'AFTER', // ['AFTER','BEFORE']
             'event' => "DELETE", // ['INSERT','UPDATE', 'DELETE']
             "statement" => [
-                "DELETE FROM tbl_children WHERE client_id = OLD.client_id;",
+                "DELETE FROM tbl_client_children WHERE client_id = OLD.client_id;",
                 "DELETE FROM tbl_client_atm WHERE client_id = OLD.client_id;",
                 "DELETE FROM tbl_client_business WHERE client_id = OLD.client_id;",
                 "DELETE FROM tbl_client_dependents WHERE client_id = OLD.client_id;",
@@ -666,6 +562,7 @@ class Clients extends Connection
                 "DELETE FROM tbl_client_residence WHERE client_id = OLD.client_id;",
                 "DELETE FROM tbl_client_soi WHERE client_id = OLD.client_id;",
                 "DELETE FROM tbl_client_spouse WHERE client_id = OLD.client_id;",
+                "DELETE FROM tbl_client_property WHERE client_id = OLD.client_id;",
             ]
         );
         return $this->triggerCreator($triggers);

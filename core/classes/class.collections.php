@@ -41,9 +41,9 @@ class Collections extends Connection
             if ($lr_chart == null)
                 throw new Exception("Kindly add the chart of account for \n Loans Receivable - $loan_type - $branch_name.");
 
-            $ref_code       = $JournalEntry->generate($jl['journal_code']);
-            $amount         = $this->clean($this->inputs['amount']);
-            $interest       = $this->interest_calculator($amount, $loan_row['loan_amount'], $loan_row['loan_interest'], $loan_row['loan_period']);
+            $journal_ref_code   = $JournalEntry->generate($jl['journal_code']);
+            $amount             = $this->clean($this->inputs['amount']);
+            $interest           = $this->interest_calculator($amount, $loan_row['loan_amount'], $loan_row['loan_interest'], $loan_row['loan_period']);
 
             $form = array(
                 $this->name         => $this->clean($this->inputs[$this->name]),
@@ -74,7 +74,7 @@ class Collections extends Connection
 
             // FOR JOURNAL ENTRY
             $form_journal = array(
-                'reference_number'  => $ref_code,
+                'reference_number'  => $journal_ref_code,
                 'cross_reference'   => $this->clean($this->inputs[$this->name]),
                 'branch_id'         => $this->clean($this->inputs['branch_id']),
                 'journal_id'        => $jl['journal_id'],
@@ -487,5 +487,18 @@ class Collections extends Connection
         );
 
         return $this->schemaCreator($tables);
+    }
+
+
+    public function triggers()
+    {
+        $triggers[] = array(
+            'table' => $this->table,
+            'name' => 'delete_collections',
+            'action_time' => 'AFTER', // ['AFTER','BEFORE']
+            'event' => "DELETE", // ['INSERT','UPDATE', 'DELETE']
+            "statement" => "DELETE FROM tbl_journal_entries WHERE cross_reference = OLD.reference_number"
+        );
+        return $this->triggerCreator($triggers);
     }
 }

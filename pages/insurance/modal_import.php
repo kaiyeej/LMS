@@ -13,7 +13,7 @@
                         <div class="form-group">
                             <div class="col-lg-12" style="padding: 10px;">
                                 <label class="text-md-right text-left">Insurance Template (CSV)</label>
-                                <input type="file" name="csv_file" accept=".csv" class="form-control" required>
+                                <input type="file" id="csv_file" name="csv_file" accept=".csv" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -33,6 +33,7 @@
 </form>
 <script type="text/javascript">
     function importTemplate() {
+        $("#csv_file").val('');
         $('#import_result_content').html("");
         $("#import_file").show();
         $("#btn_import").show();
@@ -52,29 +53,30 @@
             contentType: false,
             processData: false,
             success: function(response) {
-                var res = JSON.parse(response);
+                try {
+                    var res = JSON.parse(response);
 
-                $("#import_file").hide();
-                if (res.data.status == -1) {
-                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">${res.data.text}</div>`);
-                } else if (res.data.status == 1) {
-                    getEntries();
-                    $("#btn_import").hide();
-                    if (res.data.insurances.length > 0) {
-                        var insurances_tr = "";
-                        for (var insuranceIndex = 0; insuranceIndex < res.data.insurances.length; insuranceIndex++) {
-                            const insurance = res.data.insurances[insuranceIndex];
-                            var is_import_failed = insurance.import_status == 0 ? "import_failed" : "";
-                            var branch_name = insurance.branch_id == 2 ? "La Carlota" : "Bacolod";
-                            insurances_tr += `<tr class='${is_import_failed}'>
+                    $("#import_file").hide();
+                    if (res.data.status == -1) {
+                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">${res.data.text}</div>`);
+                    } else if (res.data.status == 1) {
+                        getEntries();
+                        $("#btn_import").hide();
+                        if (res.data.insurances.length > 0) {
+                            var insurances_tr = "";
+                            for (var insuranceIndex = 0; insuranceIndex < res.data.insurances.length; insuranceIndex++) {
+                                const insurance = res.data.insurances[insuranceIndex];
+                                var is_import_failed = insurance.import_status == 0 ? "import_failed" : "";
+                                var branch_name = insurance.branch_id == 2 ? "La Carlota" : "Bacolod";
+                                insurances_tr += `<tr class='${is_import_failed}'>
                                 <td>${insuranceIndex + 1}</td>
                                 <td>${branch_name}</td>
                                 <td>${insurance.insurance_name}</td>
                                 <td>${insurance.insurance_amount}</td>
                                 <td>${insurance.insurance_desc}</td>
                               </tr>`;
-                        }
-                        $('#import_result_content').html(`<div style='width:100%'>
+                            }
+                            $('#import_result_content').html(`<div style='width:100%'>
                             <div class="mb-2">
                                 <button type="button" class="btn btn-primary">Successful imports <span class="badge badge-transparent">${res.data.success_import}</span>
                                 </button>
@@ -92,11 +94,16 @@
                               ${insurances_tr}
                         </table>
                         </div>`);
+                        } else {
+                            $('#import_result_content').html(`<div class="alert alert-danger" role="alert">No insurance</div>`);
+                        }
                     } else {
-                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">No insurance</div>`);
+                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing insurance</div>`);
                     }
-                } else {
-                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing insurance</div>`);
+                } catch (error) {
+                    $("#csv_file").val('');
+                    $("#import_file").show();
+                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing file. Please contact Juancoder IT Solutions.</div>`);
                 }
             },
             error: function(xhr, ajaxOptions, thrownError) {

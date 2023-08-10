@@ -13,7 +13,7 @@ class DatabaseSyncer extends Connection
 	public function schemas()
 	{
 		$modules = [
-			'Branches', 'ChartClassification', 'ChartOfAccounts', 'ClientAtm', 'ClientBusiness', 'ClientDependent', 'ClientEmployment', 'ClientInsurance', 'ClientReference', 'ClientResidence', 'Clients', 'ClientSoi', 'ClientSpouse', 'ClientTypes', 'Collections', 'Employers', 'ExpenseCategory', 'Expenses', 'FixedInterest', 'Insurance', 'JournalEntry', 'Journals', 'Loans', 'LoanTypes', 'MassCollections', 'Suppliers', 'UserCategories', 'UserPrivileges', 'Users', 'Vouchers'
+			'Branches', 'ChartClassification', 'ChartOfAccounts', 'ClientAtm', 'ClientBusiness', 'ClientDependent', 'ClientEmployment', 'ClientInsurance', 'ClientReference', 'ClientResidence', 'Clients', 'ClientSoi', 'ClientSpouse', 'ClientTypes', 'ClientChildren', 'ClientProperty', 'Collections', 'Employers', 'ExpenseCategory', 'Expenses', 'FixedInterest', 'Insurance', 'JournalEntry', 'Journals', 'Loans', 'LoanTypes', 'MassCollections', 'Suppliers', 'UserCategories', 'UserPrivileges', 'Users', 'Vouchers'
 		];
 
 		foreach ($modules as $module) {
@@ -25,7 +25,7 @@ class DatabaseSyncer extends Connection
 	public function triggers()
 	{
 		$modules = [
-			'MassCollections', 'Vouchers', 'Clients'
+			'MassCollections', 'Vouchers', 'Clients', 'JournalEntry', 'Collections'
 		];
 
 		foreach ($modules as $module) {

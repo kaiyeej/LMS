@@ -409,7 +409,7 @@
         var param = "client_id = '" + id + "'";
         $.ajax({
             type: "POST",
-            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=get_property",
+            url: "controllers/sql.php?c=ClientProperty&q=show",
             data: {
                 input: {
                     param: param
@@ -419,7 +419,20 @@
                 var jsonParse = JSON.parse(data);
                 const json = jsonParse.data;
                 console.log(json);
-                $("#property_container").html(json);
+
+                var property_container = "";
+                if (json.length > 0) {
+                    for (var cIndex = 0; cIndex < json.length; cIndex++) {
+                        var property_data = json[cIndex];
+                        property_container += `<div class="col-md-3"><h6>${property_data.property_location}</h6></div>
+                            <div class="col-md-2"><h6>${property_data.property_area}</h6></div>
+                            <div class="col-md-2"><h6>${numberFormat(property_data.property_acquisition_cost)}</h6></div>
+                            <div class="col-md-2"><h6>${numberFormat(property_data.property_pres_market_val)}</h6></div>
+                            <div class="col-md-3"><h6>${property_data.property_improvement}</h6></div>`;
+                    }
+                }
+
+                $("#property_container").html(property_container);
             }
         });
     }
@@ -428,7 +441,7 @@
         var param = "client_id = '" + id + "'";
         $.ajax({
             type: "POST",
-            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=get_children",
+            url: "controllers/sql.php?c=ClientChildren&q=show",
             data: {
                 input: {
                     param: param
@@ -437,8 +450,19 @@
             success: function(data) {
                 var jsonParse = JSON.parse(data);
                 const json = jsonParse.data;
+
+                var children_container = "";
+                if (json.length > 0) {
+                    for (var cIndex = 0; cIndex < json.length; cIndex++) {
+                        var child_data = json[cIndex];
+                        children_container += `<div class="col-md-3"><h6>${child_data.child_name}</h6></div>
+                            <div class="col-md-2"><h6>${child_data.child_sex}</h6></div>
+                            <div class="col-md-2"><h6>${child_data.child_age}</h6></div>
+                            <div class="col-md-5"><h6>${child_data.child_occupation}</h6></div>`;
+                    }
+                }
                 console.log(json);
-                $("#children_container").html(json);
+                $("#children_container").html(children_container);
             }
         });
     }

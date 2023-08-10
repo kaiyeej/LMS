@@ -1,7 +1,6 @@
 <form id='frm_upload' method="POST" enctype="multipart/form-data">
     <div class="modal fade" id="modalUpload" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" id="import_dialog"
-            style="width: 100%;max-width: 2000px;margin: 0.5rem;">
+        <div class="modal-dialog" role="document" id="import_dialog" style="width: 100%;max-width: 2000px;margin: 0.5rem;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><span class='ion-compose'></span> Statement of Account/Ledger</h5>
@@ -15,7 +14,7 @@
                         <div class="form-group">
                             <div class="col-lg-12" style="padding: 10px;">
                                 <label class="text-md-right text-left">Loans (XLS)</label>
-                                <input type="file" name="excel_file" accept=".xlsx, .xls" class="form-control" required>
+                                <input type="file" id="excel_file" name="excel_file" accept=".xlsx, .xls" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -25,8 +24,7 @@
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn_back" onclick="backToLoan()"><span
-                            class="fa fa-arrow-left"></span> Back</button>
+                    <button type="button" class="btn btn-primary" id="btn_back" onclick="backToLoan()"><span class="fa fa-arrow-left"></span> Back</button>
                     <button type="submit" id="btn_upload" class="btn btn-primary">
                         Submit
                     </button>
@@ -60,6 +58,7 @@
     }
 
     function uploadFile() {
+        $("#excel_file").val('');
         $("#upload_step").val(1);
         $('#upload_result_content').html("");
         $("#upload_file").show();
@@ -83,13 +82,19 @@
                 contentType: false,
                 processData: false,
                 success: function(response) {
-                    var json = JSON.parse(response);
-                    if (json.data.status == 'success') {
-                        get_loan_collections(json.data);
-                        $("#upload_file").hide();
-                        $("#upload_step").val(2);
-                    } else {
-                        $('#upload_result_content').html(`INVALID`);
+                    try {
+                        var json = JSON.parse(response);
+                        if (json.data.status == 'success') {
+                            get_loan_collections(json.data);
+                            $("#upload_file").hide();
+                            $("#upload_step").val(2);
+                        } else {
+                            $("#excel_file").val('');
+                            $('#upload_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing file. Please contact Juancoder IT Solutions.</div>`);
+                        }
+                    } catch (error) {
+                        $("#excel_file").val('');
+                        $('#upload_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing file. Please contact Juancoder IT Solutions.</div>`);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
@@ -271,20 +276,6 @@
         if (amount <= 0)
             return 'unacceptable_data';
         return '';
-    }
-
-    function numberFormatClearZero(y, n = 2) {
-        y = y * 1;
-        if (y == 0)
-            return '';
-        x = y.toFixed(n);
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-
-    function numberFormat(y, n = 2) {
-        y = y * 1;
-        x = y.toFixed(n);
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
     function editLoanCell(el, is_number = true) {

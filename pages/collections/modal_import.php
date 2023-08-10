@@ -13,7 +13,7 @@
                         <div class="form-group">
                             <div class="col-lg-12" style="padding: 10px;">
                                 <label class="text-md-right text-left">Collections Template (CSV)</label>
-                                <input type="file" name="csv_file" accept=".csv" class="form-control" required>
+                                <input type="file" id="csv_file" name="csv_file" accept=".csv" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -33,6 +33,7 @@
 </form>
 <script type="text/javascript">
     function importTemplate() {
+        $("#csv_file").val('');
         $('#import_result_content').html("");
         $("#import_file").show();
         $("#btn_import").show();
@@ -52,20 +53,21 @@
             contentType: false,
             processData: false,
             success: function(response) {
-                var res = JSON.parse(response);
+                try {
+                    var res = JSON.parse(response);
 
-                $("#import_file").hide();
-                if (res.data.status == -1) {
-                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">${res.data.text}</div>`);
-                } else if (res.data.status == 1) {
-                    getEntries();
-                    $("#btn_import").hide();
-                    if (res.data.collections.length > 0) {
-                        var loans_tr = "";
-                        for (var loanIndex = 0; loanIndex < res.data.collections.length; loanIndex++) {
-                            const collection = res.data.collections[loanIndex];
-                            var is_import_failed = collection.import_status == 0 ? "import_failed" : "";
-                            loans_tr += `<tr class='${is_import_failed}'>
+                    $("#import_file").hide();
+                    if (res.data.status == -1) {
+                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">${res.data.text}</div>`);
+                    } else if (res.data.status == 1) {
+                        getEntries();
+                        $("#btn_import").hide();
+                        if (res.data.collections.length > 0) {
+                            var loans_tr = "";
+                            for (var loanIndex = 0; loanIndex < res.data.collections.length; loanIndex++) {
+                                const collection = res.data.collections[loanIndex];
+                                var is_import_failed = collection.import_status == 0 ? "import_failed" : "";
+                                loans_tr += `<tr class='${is_import_failed}'>
                                 <td>${loanIndex + 1}</td>
                                 <td>${collection.branch_name}</td>
                                 <td>${collection.loan_reference_number}</td>
@@ -76,8 +78,8 @@
                                 <td>${collection.amount}</td>
                                 <td>${collection.remarks}</td>
                               </tr>`;
-                        }
-                        $('#import_result_content').html(`<div style='width:100%'>
+                            }
+                            $('#import_result_content').html(`<div style='width:100%'>
                             <div class="mb-2">
                                 <button type="button" class="btn btn-primary">Successful imports <span class="badge badge-transparent">${res.data.success_import}</span>
                                 </button>
@@ -99,11 +101,18 @@
                               ${loans_tr}
                         </table>
                         </div>`);
+                        } else {
+                            $("#csv_file").val('');
+                            $("#import_file").show();
+                            $('#import_result_content').html(`<div class="alert alert-danger" role="alert">No collections</div>`);
+                        }
                     } else {
-                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">No collections</div>`);
+                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing collections</div>`);
                     }
-                } else {
-                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing collections</div>`);
+                } catch (error) {
+                    $("#csv_file").val('');
+                    $("#import_file").show();
+                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing file. Please contact Juancoder IT Solutions.</div>`);
                 }
             },
             error: function(xhr, ajaxOptions, thrownError) {

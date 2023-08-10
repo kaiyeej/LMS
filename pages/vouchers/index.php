@@ -3,9 +3,6 @@
         font-weight: bold;
         text-transform: uppercase;
     }
-
-
-    
 </style>
 <section class="section">
     <div class="section-header">
@@ -22,7 +19,7 @@
 
     <div class="section-body shadow">
         <div class="alert alert-light alert-has-icon" style="border: 1px dashed #3C84AB;">
-            
+
             <!-- <div>
                 <div class="dropdown">
                     <a href="#" data-toggle="dropdown" class="btn btn-info dropdown-toggle" style="display: none;"><i class="fas fa-file-excel"></i> Template</a>
@@ -57,7 +54,7 @@
                                 <button type="button" class="btn btn-warning" onclick="getEntries()"><i class="fas fa-refresh"></i> Generate</button>
 
                                 <div class="dropdown">
-                                <button type="button" class="btn btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</button>
+                                    <button type="button" class="btn btn-primary" onclick="addModal()"><i class="fas fa-plus"></i> Add</button>
                                 </div>
                                 <div class="dropdown">
                                     <div class="btn-group btn-group" role="group" aria-label="Basic example">
@@ -137,7 +134,7 @@
         var start_date = $("#start_date").val();
         var end_date = $("#end_date").val();
         var param = "(voucher_date >= '" + start_date + "' AND voucher_date <= '" + end_date + "')";
- 
+
         $("#dt_entries").DataTable().destroy();
         $("#dt_entries").DataTable({
             "processing": true,

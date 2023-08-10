@@ -37,7 +37,7 @@ $User = new Users;
 
   <script src="assets/modules/jquery.min.js"></script>
 
-  <link rel="shortcut icon" href="assets/img/logo2.png" />
+  <link rel="shortcut icon" href="assets/img/jcis_logo.png" />
 
   <!-- JS Libraies -->
   <script src="assets/modules/datatables/datatables.min.js"></script>
@@ -83,6 +83,11 @@ $User = new Users;
 
     .form-control {
       border-color: #BDBDBD;
+    }
+
+    .modal-body {
+      max-height: 500px !important;
+      overflow: auto !important;
     }
   </style>
 </head>
@@ -165,8 +170,7 @@ $User = new Users;
               </div>
             </div>
           </li> -->
-          <li class="dropdown"><a href="#" data-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+          <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
               <img alt="image" src="assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
               <div class="d-sm-none d-lg-inline-block">Hi,
                 <?= $User->fullname($_SESSION['lms_user_id']); ?>
@@ -210,7 +214,7 @@ $User = new Users;
     </div>
   </div>
   <script type='text/javascript'>
-    <?= "var route_settings = ".$route_settings. ";\n"; ?>
+    <?= "var route_settings = " . $route_settings . ";\n"; ?>
     <?= "var company_name = 'Featherleaf Lending Corporation'";
     ?>
   </script>
@@ -240,12 +244,12 @@ $User = new Users;
 
     function logout() {
       swal({
-        title: 'Are you sure?',
-        text: 'Your session will expire!',
-        icon: 'warning',
-        buttons: ["Cancel", "Logout"],
-        dangerMode: true,
-      })
+          title: 'Are you sure?',
+          text: 'Your session will expire!',
+          icon: 'warning',
+          buttons: ["Cancel", "Logout"],
+          dangerMode: true,
+        })
         .then((willDelete) => {
           if (willDelete) {
             var url = "controllers/sql.php?c=Users&q=logout";
@@ -308,6 +312,20 @@ $User = new Users;
       //alert('Something is wrong. Failed to execute query. Please try again.');
     }
 
+    function numberFormatClearZero(y, n = 2) {
+      y = y * 1;
+      if (y == 0)
+        return '';
+      x = y.toFixed(n);
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function numberFormat(y, n = 2) {
+      y = y * 1;
+      x = y.toFixed(n);
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
     function checkAll(ele, ref) {
       var checkboxes = document.getElementsByName(ref);
       if (ele.checked) {
@@ -335,7 +353,7 @@ $User = new Users;
       $('.select2').select2().trigger('change');
 
       var element = document.getElementById('reference_number');
-      if (typeof (element) != 'undefined' && element != null) {
+      if (typeof(element) != 'undefined' && element != null) {
         generateReference(route_settings.class_name);
       }
 
@@ -498,9 +516,7 @@ $User = new Users;
       });
 
       if (is_det == 1) {
-        modal_detail_status == 1 ? setTimeout(() => {
-          $("#modalEntry2").modal('hide')
-        }, 500) : '';
+        $("#modalEntry2").modal('hide');
       } else {
         modal_detail_status = 0;
       }
@@ -513,12 +529,12 @@ $User = new Users;
 
       if (count_checked > 0) {
         swal({
-          title: 'Are you sure?',
-          text: 'You will not be able to recover these entries!',
-          icon: 'warning',
-          buttons: true,
-          dangerMode: true,
-        })
+            title: 'Are you sure?',
+            text: 'You will not be able to recover these entries!',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+          })
           .then((willDelete) => {
             if (willDelete) {
               var checkedValues = $("input[name='dt_id']:checked").map(function() {
@@ -602,28 +618,28 @@ $User = new Users;
 
           if (json.status == 'F') {
             transaction_edit.classList.add('disabled');
-            (typeof (transaction_delete_items) != 'undefined' && transaction_delete_items != null) ? transaction_delete_items.classList.add('disabled') : '';
+            (typeof(transaction_delete_items) != 'undefined' && transaction_delete_items != null) ? transaction_delete_items.classList.add('disabled'): '';
             transaction_finish.classList.add('disabled');
 
             transaction_edit.setAttribute("onclick", "");
-            (typeof (transaction_delete_items) != 'undefined' && transaction_delete_items != null) ? transaction_delete_items.setAttribute("onclick", "") : '';
+            (typeof(transaction_delete_items) != 'undefined' && transaction_delete_items != null) ? transaction_delete_items.setAttribute("onclick", ""): '';
             transaction_finish.setAttribute("onclick", "");
 
-            (typeof (col_item) != 'undefined' && col_item != null) ? col_item.style.display = "none" : '';
-            (typeof (col_list) != 'undefined' && col_list != null) ? col_list.classList.remove('col-8') : '';
-            (typeof (col_list) != 'undefined' && col_list != null) ? col_list.classList.add('col-12') : '';
+            (typeof(col_item) != 'undefined' && col_item != null) ? col_item.style.display = "none": '';
+            (typeof(col_list) != 'undefined' && col_list != null) ? col_list.classList.remove('col-8'): '';
+            (typeof(col_list) != 'undefined' && col_list != null) ? col_list.classList.add('col-12'): '';
           } else {
             transaction_edit.classList.remove('disabled');
-            (typeof (transaction_delete_items) != 'undefined' && transaction_delete_items != null) ? transaction_delete_items.classList.remove('disabled') : '';
+            (typeof(transaction_delete_items) != 'undefined' && transaction_delete_items != null) ? transaction_delete_items.classList.remove('disabled'): '';
             transaction_finish.classList.remove('disabled');
 
             transaction_edit.setAttribute("onclick", "getEntryDetails(" + id + ",1)");
-            (typeof (transaction_delete_items) != 'undefined' && transaction_delete_items != null) ? transaction_delete_items.setAttribute("onclick", "deleteEntry2()") : '';
+            (typeof(transaction_delete_items) != 'undefined' && transaction_delete_items != null) ? transaction_delete_items.setAttribute("onclick", "deleteEntry2()"): '';
             transaction_finish.setAttribute("onclick", "finishTransaction()");
 
-            (typeof (col_item) != 'undefined' && col_item != null) ? col_item.style.display = "block" : '';
-            (typeof (col_list) != 'undefined' && col_list != null) ? col_list.classList.remove('col-12') : '';
-            (typeof (col_list) != 'undefined' && col_list != null) ? col_list.classList.add('col-8') : '';
+            (typeof(col_item) != 'undefined' && col_item != null) ? col_item.style.display = "block": '';
+            (typeof(col_list) != 'undefined' && col_list != null) ? col_list.classList.remove('col-12'): '';
+            (typeof(col_list) != 'undefined' && col_list != null) ? col_list.classList.add('col-8'): '';
           }
           getEntries2();
 
@@ -672,12 +688,12 @@ $User = new Users;
         $("#btn_delete_member").prop("disabled", true);
         $("#btn_delete_member").html("<span class='fa fa-spinner fa-spin'></span>");
         swal({
-          title: 'Are you sure?',
-          text: 'You will not be able to recover these entries!',
-          icon: 'warning',
-          buttons: true,
-          dangerMode: true,
-        })
+            title: 'Are you sure?',
+            text: 'You will not be able to recover these entries!',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+          })
           .then((willDelete) => {
             if (willDelete) {
               var checkedValues = $("input[name='dt_id_2']:checked").map(function() {
@@ -723,12 +739,12 @@ $User = new Users;
       var count_checked = $("input[name='dt_id_2']").length;
       if (count_checked > 0) {
         swal({
-          title: 'Are you sure?',
-          text: 'This entries will be finished!',
-          icon: 'warning',
-          buttons: true,
-          dangerMode: true,
-        })
+            title: 'Are you sure?',
+            text: 'This entries will be finished!',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+          })
           .then((willDelete) => {
             if (willDelete) {
               $.ajax({

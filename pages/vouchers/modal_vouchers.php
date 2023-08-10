@@ -1,7 +1,7 @@
-<form method='POST' id='frm_submit'>
-    <div class="modal fade" id="modalEntry" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+<div class="modal fade" id="modalEntry" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form method='POST' id='frm_submit'>
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalLabel"><span class='ion-compose'></span> Add Entry</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -24,12 +24,12 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label><strong style="color:red;">*</strong> Branch</label>
-                            <select class="form-control select2 branch_id input-item" id="branch_id" name="input[branch_id]" style="width:100%;" onchange="getAccount()" required>
+                            <select class="form-control select2s branch_id input-item" id="branch_id" name="input[branch_id]" style="width:100%;" onchange="getAccount()" required>
                             </select>
                         </div>
                         <div class="form-group col-md-4">
                             <label><strong style="color:red;">*</strong> Account Type</label>
-                            <select class="form-control select2 input-item" id="account_type" name="input[account_type]" style="width:100%;" onchange="getAccount()" required>
+                            <select class="form-control select2s input-item" id="account_type" name="input[account_type]" style="width:100%;" onchange="getAccount()" required>
                                 <option value="">&mdash;Please Select&mdash;</option>
                                 <option value="S">Supplier</option>
                                 <option value="C">Client</option>
@@ -37,12 +37,12 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label><strong style="color:red;">*</strong> Account</label>
-                            <select class="form-control select2 input-item" id="account_id" onchange="getLoan()" name="input[account_id]" style="width:100%;" required>
+                            <select class="form-control select2s input-item" id="account_id" onchange="getLoan()" name="input[account_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div id="div_loan" class="form-group col-md-6">
                             <label><strong style="color:red;">*</strong> Loan</label>
-                            <select class="form-control select2 input-item" id="loan_id" name="input[loan_id]" style="width:100%;" required>
+                            <select class="form-control select2s input-item" id="loan_id" name="input[loan_id]" style="width:100%;" required>
                             </select>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label><strong style="color:red;">*</strong> Journal</label>
-                            <select class="form-control select2 input-item" id="journal_id" name="input[journal_id]" style="width:100%;" required>
+                            <select class="form-control select2s input-item" id="journal_id" name="input[journal_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col-md-12">
@@ -83,10 +83,11 @@
                         Submit
                     </button>
                 </div>
-            </div>
+
+            </form>
         </div>
     </div>
-</form>
+</div>
 
 
 <div class="modal fade" id="modalEntry2" role="dialog" aria-labelledby="myModalLabel">

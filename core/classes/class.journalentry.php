@@ -318,4 +318,17 @@ class JournalEntry extends Connection
 
         return $this->schemaCreator($tables);
     }
+
+    public function triggers()
+    {
+        $triggers[] = array(
+            'table' => $this->table,
+            'name' => 'delete_journal_entry',
+            'action_time' => 'AFTER', // ['AFTER','BEFORE']
+            'event' => "DELETE", // ['INSERT','UPDATE', 'DELETE']
+            "statement" => "DELETE FROM $this->table_detail WHERE $this->pk = OLD.$this->pk"
+        );
+
+        return $this->triggerCreator($triggers);
+    }
 }

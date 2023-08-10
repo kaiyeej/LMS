@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-if (isset($_SESSION["pms_status"])) {
+if (isset($_SESSION["lms_user_id"])) {
     header("location:homepage");
 }
 ?>
@@ -13,7 +13,7 @@ if (isset($_SESSION["pms_status"])) {
     <title>Login — Juancoder IT Solutions</title>
 
     <link rel="shortcut icon" href="assets/img/logo2.png" />
-    
+
     <!-- General CSS Files -->
     <link rel="stylesheet" href="assets/modules/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/modules/fontawesome/css/all.min.css">
@@ -26,7 +26,7 @@ if (isset($_SESSION["pms_status"])) {
     <link rel="stylesheet" href="assets/css/components.css">
 
     <script src="assets/modules/jquery.min.js"></script>
-    
+
 </head>
 
 <body>
@@ -40,7 +40,7 @@ if (isset($_SESSION["pms_status"])) {
                         </div>
 
                         <div class="card card-primary">
-                           <div class="card-header">
+                            <div class="card-header">
                                 <h4>Login</h4>
                             </div>
 

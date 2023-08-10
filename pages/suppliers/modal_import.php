@@ -13,7 +13,7 @@
                         <div class="form-group">
                             <div class="col-lg-12" style="padding: 10px;">
                                 <label class="text-md-right text-left">Supplier Template (CSV)</label>
-                                <input type="file" name="csv_file" accept=".csv" class="form-control" required>
+                                <input type="file" id="csv_file" name="csv_file" accept=".csv" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -33,6 +33,7 @@
 </form>
 <script type="text/javascript">
     function importTemplate() {
+        $("#csv_file").val('');
         $('#import_result_content').html("");
         $("#import_file").show();
         $("#btn_import").show();
@@ -52,28 +53,29 @@
             contentType: false,
             processData: false,
             success: function(response) {
-                var res = JSON.parse(response);
+                try {
+                    var res = JSON.parse(response);
 
-                $("#import_file").hide();
-                if (res.data.status == -1) {
-                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">${res.data.text}</div>`);
-                } else if (res.data.status == 1) {
-                    getEntries();
-                    $("#btn_import").hide();
-                    if (res.data.suppliers.length > 0) {
-                        var suppliers_tr = "";
-                        for (var suppIndex = 0; suppIndex < res.data.suppliers.length; suppIndex++) {
-                            const supplier = res.data.suppliers[suppIndex];
-                            var is_import_failed = supplier.import_status == 0 ? "import_failed" : "";
-                            suppliers_tr += `<tr class='${is_import_failed}'>
+                    $("#import_file").hide();
+                    if (res.data.status == -1) {
+                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">${res.data.text}</div>`);
+                    } else if (res.data.status == 1) {
+                        getEntries();
+                        $("#btn_import").hide();
+                        if (res.data.suppliers.length > 0) {
+                            var suppliers_tr = "";
+                            for (var suppIndex = 0; suppIndex < res.data.suppliers.length; suppIndex++) {
+                                const supplier = res.data.suppliers[suppIndex];
+                                var is_import_failed = supplier.import_status == 0 ? "import_failed" : "";
+                                suppliers_tr += `<tr class='${is_import_failed}'>
                                 <td>${suppIndex + 1}</td>
                                 <td>${supplier.supplier_name}</td>
                                 <td>${supplier.supplier_contact_no}</td>
                                 <td>${supplier.supplier_address}</td>
                                 <td>${supplier.remarks}</td>
                               </tr>`;
-                        }
-                        $('#import_result_content').html(`<div style='width:100%'>
+                            }
+                            $('#import_result_content').html(`<div style='width:100%'>
                             <div class="mb-2">
                                 <button type="button" class="btn btn-primary">Successful imports <span class="badge badge-transparent">${res.data.success_import}</span>
                                 </button>
@@ -91,11 +93,16 @@
                               ${suppliers_tr}
                         </table>
                         </div>`);
+                        } else {
+                            $('#import_result_content').html(`<div class="alert alert-danger" role="alert">No supplier</div>`);
+                        }
                     } else {
-                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">No supplier</div>`);
+                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing supplier</div>`);
                     }
-                } else {
-                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing supplier</div>`);
+                } catch (error) {
+                    $("#csv_file").val('');
+                    $("#import_file").show();
+                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing file. Please contact Juancoder IT Solutions.</div>`);
                 }
             },
             error: function(xhr, ajaxOptions, thrownError) {

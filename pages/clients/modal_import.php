@@ -13,7 +13,7 @@
                         <div class="form-group">
                             <div class="col-lg-12" style="padding: 10px;">
                                 <label class="text-md-right text-left">Client Template (CSV)</label>
-                                <input type="file" name="csv_file" accept=".csv" class="form-control" required>
+                                <input type="file" id="csv_file" name="csv_file" accept=".csv" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -33,6 +33,7 @@
 </form>
 <script type="text/javascript">
     function importTemplate() {
+        $("#csv_file").val('');
         $('#import_result_content').html("");
         $("#import_file").show();
         $("#btn_import").show();
@@ -52,21 +53,21 @@
             contentType: false,
             processData: false,
             success: function(response) {
-                var res = JSON.parse(response);
-
-                $("#import_file").hide();
-                if (res.data.status == -1) {
-                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">${res.data.text}</div>`);
-                } else if (res.data.status == 1) {
-                    getEntries();
-                    $("#btn_import").hide();
-                    if (res.data.clients.length > 0) {
-                        var clients_tr = "";
-                        for (var clientIndex = 0; clientIndex < res.data.clients.length; clientIndex++) {
-                            const client = res.data.clients[clientIndex];
-                            var client_name = client.client_fname + " " + client.client_mname + " " + client.client_lname + " " + client.client_name_extension;
-                            var is_import_failed = client.import_status == 0 ? "import_failed" : "";
-                            clients_tr += `<tr class='${is_import_failed}'>
+                try {
+                    $("#import_file").hide();
+                    var res = JSON.parse(response);
+                    if (res.data.status == -1) {
+                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">${res.data.text}</div>`);
+                    } else if (res.data.status == 1) {
+                        getEntries();
+                        $("#btn_import").hide();
+                        if (res.data.clients.length > 0) {
+                            var clients_tr = "";
+                            for (var clientIndex = 0; clientIndex < res.data.clients.length; clientIndex++) {
+                                const client = res.data.clients[clientIndex];
+                                var client_name = client.client_fname + " " + client.client_mname + " " + client.client_lname + " " + client.client_name_extension;
+                                var is_import_failed = client.import_status == 0 ? "import_failed" : "";
+                                clients_tr += `<tr class='${is_import_failed}'>
                                 <td>${clientIndex + 1}</td>
                                 <td>${client_name}</td>
                                 <td>${client.client_civil_status}</td>
@@ -77,8 +78,8 @@
                                 <td>${client.locations.length}</td>
                                 <td>${client.childrens.length}</td>
                               </tr>`;
-                        }
-                        $('#import_result_content').html(`<div style='width:100%'>
+                            }
+                            $('#import_result_content').html(`<div style='width:100%'>
                             <div class="mb-2">
                                 <button type="button" class="btn btn-primary">Successful imports <span class="badge badge-transparent">${res.data.success_import}</span>
                                 </button>
@@ -100,11 +101,16 @@
                               ${clients_tr}
                         </table>
                         </div>`);
+                        } else {
+                            $('#import_result_content').html(`<div class="alert alert-danger" role="alert">No clients</div>`);
+                        }
                     } else {
-                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">No clients</div>`);
+                        $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing clients</div>`);
                     }
-                } else {
-                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing clients</div>`);
+                } catch (error) {
+                    $("#csv_file").val('');
+                    $("#import_file").show();
+                    $('#import_result_content').html(`<div class="alert alert-danger" role="alert">Error occur while importing file. Please contact Juancoder IT Solutions.</div>`);
                 }
             },
             error: function(xhr, ajaxOptions, thrownError) {
