@@ -138,6 +138,11 @@ class Connection
         return $this->mysqli->query($sql);
     }
 
+    public function query($sql)
+    {
+        return $this->mysqli->query($sql);
+    }
+
     public function encrypt($password, $algo = PASSWORD_DEFAULT)
     {
         return password_hash($password, $algo);

@@ -545,7 +545,7 @@ class Clients extends Connection
 
     public function triggers()
     {
-        // HEADER
+        //DELETE CLIENT
         $triggers[] = array(
             'table' => $this->table,
             'name' => 'delete_client',
@@ -565,6 +565,16 @@ class Clients extends Connection
                 "DELETE FROM tbl_client_property WHERE client_id = OLD.client_id;",
             ]
         );
+
+        //DELETE TABLE DATA
+        $triggers[] = array(
+            'table' => $this->table,
+            'name' => 'delete_' . $this->table,
+            'action_time' => 'BEFORE', // ['AFTER','BEFORE']
+            'event' => "DELETE", // ['INSERT','UPDATE', 'DELETE']
+            "statement" => "INSERT INTO " . $this->table . "_deleted SELECT * FROM $this->table WHERE $this->pk = OLD.$this->pk"
+        );
+
         return $this->triggerCreator($triggers);
     }
 }

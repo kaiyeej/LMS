@@ -109,7 +109,7 @@ class ClientInsurance extends Connection
                 $this->metadata('paymaster_address', 'varchar', 50),
                 $this->metadata('paymaster_res_cert_no', 'varchar', 50),
                 $this->metadata('paymaster_res_cert_issued_at', 'varchar', 50),
-                $this->metadata('paymaster_res_cert_date', 'date'),
+                $this->metadata('paymaster_res_cert_date', 'date', 'NULL'),
                 $this->metadata('paymaster_deduct_salary', 'varchar', 3, 'NOT NULL', '', '', "'Yes,No'"),
                 $this->metadata('paymaster_client_deduct_salary', 'varchar', 3, 'NOT NULL', '', '', "'Yes,No'"),
                 $this->metadata('paymaster_conformity', 'varchar', 3, 'NOT NULL', '', '', "'Yes,No'"),
@@ -119,6 +119,19 @@ class ClientInsurance extends Connection
         );
 
         return $this->schemaCreator($tables);
+    }
+
+    public function triggers()
+    {
+        // HEADER
+        $triggers[] = array(
+            'table' => $this->table,
+            'name' => 'delete_' . $this->table,
+            'action_time' => 'BEFORE', // ['AFTER','BEFORE']
+            'event' => "DELETE", // ['INSERT','UPDATE', 'DELETE']
+            "statement" => "INSERT INTO " . $this->table . "_deleted SELECT * FROM $this->table WHERE $this->pk = OLD.$this->pk"
+        );
+        return $this->triggerCreator($triggers);
     }
 }
 

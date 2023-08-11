@@ -92,7 +92,7 @@ class ClientSpouse extends Connection
                 $this->metadata('spouse_residence', 'varchar', 150),
                 $this->metadata('spouse_res_cert_no', 'varchar', 50),
                 $this->metadata('spouse_res_cert_issued_at', 'varchar', 150),
-                $this->metadata('spouse_res_cert_date', 'date'),
+                $this->metadata('spouse_res_cert_date', 'date', 'NULL'),
                 $this->metadata('spouse_employer', 'varchar', 150),
                 $this->metadata('spouse_employer_address', 'varchar', 150),
                 $this->metadata('spouse_employer_contact', 'varchar', 50),
@@ -107,5 +107,18 @@ class ClientSpouse extends Connection
         );
 
         return $this->schemaCreator($tables);
+    }
+
+    public function triggers()
+    {
+        // HEADER
+        $triggers[] = array(
+            'table' => $this->table,
+            'name' => 'delete_' . $this->table,
+            'action_time' => 'BEFORE', // ['AFTER','BEFORE']
+            'event' => "DELETE", // ['INSERT','UPDATE', 'DELETE']
+            "statement" => "INSERT INTO " . $this->table . "_deleted SELECT * FROM $this->table WHERE $this->pk = OLD.$this->pk"
+        );
+        return $this->triggerCreator($triggers);
     }
 }

@@ -73,6 +73,17 @@ class ChartClassification extends Connection
         return $row['chart_class_code'];
     }
 
+    public function idByName($name)
+    {
+        $result = $this->select($this->table, $this->pk, "UCASE($this->name) = UCASE('$name')");
+
+        if ($result->num_rows < 1)
+            return 0;
+
+        $row = $result->fetch_assoc();
+        return $row[$this->pk];
+    }
+
     public function schema()
     {
         $default['date_added'] = $this->metadata('date_added', 'datetime', '', 'NOT NULL', 'CURRENT_TIMESTAMP');
@@ -97,15 +108,17 @@ class ChartClassification extends Connection
         return $this->schemaCreator($tables);
     }
 
-    public function idByName($name)
+    public function triggers()
     {
-        $result = $this->select($this->table, $this->pk, "UCASE($this->name) = UCASE('$name')");
-
-        if ($result->num_rows < 1)
-            return 0;
-
-        $row = $result->fetch_assoc();
-        return $row[$this->pk];
+        // HEADER
+        $triggers[] = array(
+            'table' => $this->table,
+            'name' => 'delete_' . $this->table,
+            'action_time' => 'BEFORE', // ['AFTER','BEFORE']
+            'event' => "DELETE", // ['INSERT','UPDATE', 'DELETE']
+            "statement" => "INSERT INTO " . $this->table . "_deleted SELECT * FROM $this->table WHERE $this->pk = OLD.$this->pk"
+        );
+        return $this->triggerCreator($triggers);
     }
 }
 
