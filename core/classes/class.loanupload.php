@@ -124,7 +124,7 @@ class LoanUploads extends Connection
                 $client_name = $worksheet->getCell('A6')->getValue();
                 $is_template = $worksheet->getCell('A5')->getValue();
                 if ($is_template != 'STATEMENT OF ACCOUNT/LEDGER')
-                    throw new Exception("INVALID");
+                    throw new Exception("INVALID - " . $sheetName);
                 $client_id = $Clients->idByFullname($this->clean($client_name));
                 $data[] = $this->worksheetLoans($worksheet, $client_id, $client_name);
             }

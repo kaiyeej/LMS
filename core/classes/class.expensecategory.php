@@ -87,6 +87,19 @@ class ExpenseCategory extends Connection
 
         return $this->schemaCreator($tables);
     }
+
+    public function triggers()
+    {
+        // HEADER
+        $triggers[] = array(
+            'table' => $this->table,
+            'name' => 'delete_' . $this->table,
+            'action_time' => 'BEFORE', // ['AFTER','BEFORE']
+            'event' => "DELETE", // ['INSERT','UPDATE', 'DELETE']
+            "statement" => "INSERT INTO " . $this->table . "_deleted SELECT * FROM $this->table WHERE $this->pk = OLD.$this->pk"
+        );
+        return $this->triggerCreator($triggers);
+    }
 }
 // CREATE TABLE `tbl_expense_category` (
 //     `expense_category_id` INT(11) NOT NULL AUTO_INCREMENT,

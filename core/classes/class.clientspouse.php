@@ -92,7 +92,7 @@ class ClientSpouse extends Connection
                 $this->metadata('spouse_residence', 'varchar', 150),
                 $this->metadata('spouse_res_cert_no', 'varchar', 50),
                 $this->metadata('spouse_res_cert_issued_at', 'varchar', 150),
-                $this->metadata('spouse_res_cert_date', 'date', 'NULL'),
+                $this->metadata('spouse_res_cert_date', 'date', '', 'NULL'),
                 $this->metadata('spouse_employer', 'varchar', 150),
                 $this->metadata('spouse_employer_address', 'varchar', 150),
                 $this->metadata('spouse_employer_contact', 'varchar', 50),

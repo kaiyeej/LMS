@@ -65,13 +65,7 @@ class DatabaseSyncer extends Connection
 	public function triggers()
 	{
 		$modules = [
-			'Branches', 'ChartClassification', 'ChartOfAccounts',
-			'ClientAtm', 'ClientBusiness', 'ClientDependent',
-			'ClientEmployment', 'ClientInsurance', 'ClientReference',
-			'ClientResidence', 'Clients', 'ClientSoi',
-			'ClientSpouse', 'ClientTypes', 'ClientChildren',
-			'ClientProperty',
-			'MassCollections', 'Vouchers', 'Clients', 'JournalEntry', 'Collections'
+			'Branches', 'ChartClassification', 'ChartOfAccounts', 'ClientAtm', 'ClientBusiness', 'ClientDependent', 'ClientEmployment', 'ClientInsurance', 'ClientReference', 'ClientResidence', 'Clients', 'ClientSoi', 'ClientSpouse', 'ClientTypes', 'ClientChildren', 'ClientProperty', 'Collections', 'Employers', 'ExpenseCategory', 'Expenses', 'FixedInterest', 'Insurance', 'JournalEntry', 'Journals', 'Loans', 'LoanTypes', 'MassCollections', 'Suppliers', 'UserCategories', 'UserPrivileges', 'Users', 'Vouchers'
 		];
 
 		foreach ($modules as $module) {

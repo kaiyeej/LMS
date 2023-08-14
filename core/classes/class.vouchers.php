@@ -365,6 +365,16 @@ class Vouchers extends Connection
             'event' => "UPDATE", // ['INSERT','UPDATE', 'DELETE']
             "statement" => "UPDATE tbl_journal_entries SET status = IF (NEW.status = 'F', 'F', 'S') WHERE cross_reference = NEW.reference_number AND old.status != 'F'"
         );
+
+        // HEADER
+        $triggers[] = array(
+            'table' => $this->table,
+            'name' => 'delete_' . $this->table,
+            'action_time' => 'BEFORE', // ['AFTER','BEFORE']
+            'event' => "DELETE", // ['INSERT','UPDATE', 'DELETE']
+            "statement" => "INSERT INTO " . $this->table . "_deleted SELECT * FROM $this->table WHERE $this->pk = OLD.$this->pk"
+        );
+
         return $this->triggerCreator($triggers);
     }
 }
