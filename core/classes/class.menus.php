@@ -1,6 +1,11 @@
 <?php
 class Menus extends Connection
 {
+    public $current_url;
+    public $menus;
+    public $dir;
+    public $route_settings;
+
     public function lists()
     {
         $this->menus = array(
@@ -8,12 +13,12 @@ class Menus extends Connection
                 array('url' => 'branches', 'name' => 'Branches', 'class_name' => 'Branches', 'has_detail' => 0),
                 array('url' => 'client-types', 'name' => 'Client Types', 'class_name' => 'ClientTypes', 'has_detail' => 0),
                 // array('url' => 'expense-category', 'name' => 'Expense Category', 'class_name' => 'ExpenseCategory', 'has_detail' => 0),
-                array('url' => 'clients', 'name' => 'Clients', 'class_name' => 'Clients', 'has_detail' => 0),array('url' => 'client-update', 'name' => 'Client Profile', 'class_name' => 'Clients', 'has_detail' => 0),
-                
+                array('url' => 'clients', 'name' => 'Clients', 'class_name' => 'Clients', 'has_detail' => 0), array('url' => 'client-update', 'name' => 'Client Profile', 'class_name' => 'Clients', 'has_detail' => 0),
+
                 array('url' => 'employers', 'name' => 'Employers', 'class_name' => 'Employers', 'has_detail' => 0),
                 array('url' => 'loan-types', 'name' => 'Loan Types', 'class_name' => 'LoanTypes', 'has_detail' => 0),
-                 array('url' => 'insurance', 'name' => 'Insurance', 'class_name' => 'Insurance', 'has_detail' => 0),
-                 array('url' => 'suppliers', 'name' => 'Suppliers', 'class_name' => 'Suppliers', 'has_detail' => 0),
+                array('url' => 'insurance', 'name' => 'Insurance', 'class_name' => 'Insurance', 'has_detail' => 0),
+                array('url' => 'suppliers', 'name' => 'Suppliers', 'class_name' => 'Suppliers', 'has_detail' => 0),
             ),
             'transaction' => array(
                 array('url' => 'loans', 'name' => 'Loans', 'class_name' => 'Loans', 'has_detail' => 0),
@@ -64,6 +69,9 @@ class Menus extends Connection
         if ($page == 'homepage' || $page == 'profile') {
             $this->dir = $dir;
             $this->route_settings = [];
+        } else if ($page == 'jcis-admin') {
+            $this->dir = $dir;
+            $this->route_settings = [];
         } else {
             $has_page = false;
             $main_column = '';
@@ -100,8 +108,8 @@ class Menus extends Connection
     {
         $UserPrivileges = new UserPrivileges();
         if ($UserPrivileges->check($url, $_SESSION['lms_user_category_id']) == 1) {
-
-            echo '<li><a class="nav-link" href="./' . $url . '"><i class="' . $ti . '"></i> <span>' . $name . '</span></a></li></li>';
+            $is_active = $url == $this->current_url ? "class='active'" : "";
+            echo '<li ' . $is_active . '><a class="nav-link" href="./' . $url . '"><i class="' . $ti . '"></i> <span>' . $name . '</span></a></li></li>';
         }
     }
 
@@ -111,25 +119,17 @@ class Menus extends Connection
 
         $ui = str_replace(' ', '', strtolower($name));
         $child_label = "";
+        $has_active = 0;
         foreach ($child as $row) {
             if ($UserPrivileges->check($row[1], $_SESSION['lms_user_category_id']) == 1) {
-
-                $child_label .=  '<li><a class="nav-link" href="./' . $row[1] . '">' . $row[0] . '</a></li>';
+                $is_active = $row[1] == $this->current_url ? "class='active'" : "";
+                $has_active += $row[1] == $this->current_url ? 1 : 0;
+                $child_label .=  '<li ' . $is_active . '><a class="nav-link" href="./' . $row[1] . '">' . $row[0] . '</a></li>';
             }
         }
         if ($child_label != '') {
-            //     echo '<li class="nav-item">
-            //     <a class="nav-link" data-toggle="collapse" href="#ui-' . $ui . '" aria-expanded="false" aria-controls="ui-' . $ui . '">
-            //         <i class="ti ti-' . $ti . ' menu-icon"></i>
-            //         <span class="menu-title">' . $name . '</span>
-            //         <i class="menu-arrow"></i>
-            //     </a>
-            //     <div class="collapse" id="ui-' . $ui . '">
-            //         <ul class="nav flex-column sub-menu">' . $child_label . '</ul>
-            //     </div>
-            // </li>';
-
-            echo '<li class="dropdown">
+            $is_parent_active = $has_active > 0 ? "active" : "";
+            echo '<li class="dropdown ' . $is_parent_active . '">
                     <a href="#" class="nav-link has-dropdown"><i class="' . $ti . '"></i> <span>' . $name . '</span></a>
                     <ul class="dropdown-menu">
                         ' . $child_label . '

@@ -5,6 +5,8 @@ if (!isset($_SESSION['lms_user_id'])) {
   header("location:./login.php");
 }
 
+require_once 'routes/init.routes.php';
+
 $User = new Users;
 ?>
 <!DOCTYPE html>
