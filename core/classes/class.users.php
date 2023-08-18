@@ -135,24 +135,24 @@ class Users extends Connection
         $password = $this->inputs['password'];
 
         $result = $this->select($this->table, "*", "username = '$username' AND password = md5('$password')");
-        $row = $result->fetch_assoc();
 
-        if ($row) {
-            $_SESSION['lms_user_id'] = $row['user_id'];
-            $_SESSION['lms_user_category_id'] = $row['user_category_id'];
-
-            $res = 1;
-        } else {
-            $res = 0;
+        if ($result->num_rows < 1) {
+            Logs::action("Login attempt ($username)", "Login", "Users->login", -1);
+            return 0;
         }
 
-        // return $row[$this->name];
+        $row = $result->fetch_assoc();
+        $_SESSION['lms_user_id'] = $row['user_id'];
+        $_SESSION['lms_user_category_id'] = $row['user_category_id'];
 
-        return $res;
+        Logs::action("Successfully Login", "Login", "Users->login", $row['user_id']);
+
+        return 1;
     }
 
     public function logout()
     {
+        Logs::action("Successfully Logout", "Logout", "Users->logout");
         session_destroy();
         return 1;
     }

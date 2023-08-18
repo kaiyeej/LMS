@@ -18,12 +18,13 @@ class Suppliers extends Connection
             'remarks'               => $this->clean($this->inputs['remarks']),
         );
 
-        return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
+        $response = $this->insertIfNotExist($this->table, $form);
+        Logs::action($this->action_response, "Suppliers", "Suppliers->add");
+        return $response;
     }
 
     public function edit()
     {
-        $primary_id = $this->inputs[$this->pk];
         $form = array(
             $this->name             => $this->clean($this->inputs[$this->name]),
             'branch_id'             => $this->clean($this->inputs['branch_id']),
@@ -32,7 +33,9 @@ class Suppliers extends Connection
             'remarks'               => $this->clean($this->inputs['remarks']),
         );
 
-        return $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");
+        $response = $this->updateIfNotExist($this->table, $form);
+        Logs::action($this->action_response, "Suppliers", "Suppliers->edit");
+        return $response;
     }
 
     public function show()
@@ -58,9 +61,14 @@ class Suppliers extends Connection
 
     public function remove()
     {
-        $ids = implode(",", $this->inputs['ids']);
-
-        return $this->delete($this->table, "$this->pk IN($ids)");
+        foreach ($this->inputs['ids'] as $id) {
+            $name = $this->name($id);
+            $res = $this->delete($this->table, "$this->pk = '$id'");
+            if ($res == 1) {
+                Logs::action("Successfuly deleted Supplier: $name", "Suppliers", "Suppliers->remove");
+            }
+        }
+        return 1;
     }
 
     public function name($primary_id)

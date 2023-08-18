@@ -10,39 +10,31 @@ class Employers extends Connection
 
     public function add()
     {
-        $employer_name = $this->clean($this->inputs['employer_name']);
-        $employer_contact_no = $this->clean($this->inputs['employer_contact_no']);
-        $employer_address = $this->clean($this->inputs['employer_address']);
-        $is_exist = $this->select($this->table, $this->pk, "employer_name = '$employer_name'");
-
-        if ($is_exist->num_rows > 0)
-            return 2;
-
         $form = array(
-            'employer_name'         => $employer_name,
-            'employer_contact_no'   => $employer_contact_no,
-            'employer_address'      => $employer_address,
+            $this->name             => $this->clean($this->inputs[$this->name]),
+            'employer_contact_no'   => $this->clean($this->inputs['employer_contact_no']),
+            'employer_address'      => $this->clean($this->inputs['employer_address']),
         );
-        return $this->insert($this->table, $form);
+
+        $response = $this->insertIfNotExist($this->table, $form);
+        Logs::action($this->action_response, "Employers", "Employers->add");
+        return $response;
     }
 
     public function edit()
     {
-        $primary_id = $this->inputs[$this->pk];
-        $employer_name = $this->clean($this->inputs['employer_name']);
-        $employer_contact_no = $this->clean($this->inputs['employer_contact_no']);
-        $employer_address = $this->clean($this->inputs['employer_address']);
-
-        $is_exist = $this->select($this->table, $this->pk, "employer_name = '$employer_name' AND $this->pk != '$primary_id'");
-        if ($is_exist->num_rows > 0)
-            return 2;
+        $employer_name          = $this->clean($this->inputs['employer_name']);
+        $employer_contact_no    = $this->clean($this->inputs['employer_contact_no']);
+        $employer_address       = $this->clean($this->inputs['employer_address']);
 
         $form = array(
             'employer_name'         => $employer_name,
             'employer_contact_no'   => $employer_contact_no,
             'employer_address'      => $employer_address,
         );
-        return $this->update($this->table, $form, "$this->pk = '$primary_id'");
+        $response = $this->updateIfNotExist($this->table, $form);
+        Logs::action($this->action_response, "Employers", "Employers->edit");
+        return $response;
     }
 
     public function show()
@@ -89,8 +81,14 @@ class Employers extends Connection
 
     public function remove()
     {
-        $ids = implode(",", $this->inputs['ids']);
-        return $this->delete($this->table, "$this->pk IN($ids)");
+        foreach ($this->inputs['ids'] as $id) {
+            $name = $this->name($id);
+            $res = $this->delete($this->table, "$this->pk = '$id'");
+            if ($res == 1) {
+                Logs::action("Successfuly deleted Employer: $name", "Employers", "Employers->remove");
+            }
+        }
+        return 1;
     }
 
     public function schema()

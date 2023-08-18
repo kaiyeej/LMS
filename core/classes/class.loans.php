@@ -41,6 +41,7 @@ class Loans extends Connection
             if ($is_success_or_id < 1)
                 throw new Exception($is_success_or_id);
             $this->commit();
+            Logs::action($this->action_response, "Loans", "Loans->add");
             return $is_success_or_id;
         } catch (Exception $e) {
             $this->rollback();
@@ -77,24 +78,26 @@ class Loans extends Connection
         if (isset($this->inputs['status']))
             $form['status'] = $this->inputs['status'];
 
-        $sql =  $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
+        $sql =  $this->insertIfNotExist($this->table, $form);
+        Logs::action($this->action_response, "Loans", "Loans->renew");
 
         if ($this->inputs['renewal_status'] == "Y") {
             if ($deduct_to_loan != 1) {
                 if ($sql) {
-                    $Branches = new Branches;
-                    $ChartOfAccounts = new ChartOfAccounts;
-                    $Journals = new Journals;
-                    $LoanTypes = new LoanTypes;
-                    $jl = $Journals->jl_data('Collection');
-                    $ref_code = $jl['journal_code'] . "-" . date('YmdHis');
-                    $branch_name = str_replace(" Branch", "", $Branches->name($this->clean($row['branch_id'])));
+                    $Branches           = new Branches;
+                    $ChartOfAccounts    = new ChartOfAccounts;
+                    $Journals           = new Journals;
+                    $LoanTypes          = new LoanTypes;
 
-                    $loan_row = $this->loan_data($this->inputs['loan_id']);
-                    $amount = $this->clean($this->inputs['amount']);
-                    $monthly_interest_rate = ($loan_row['loan_interest'] / 100) / 12;
-                    $total_interest = ($loan_row['loan_amount'] * $monthly_interest_rate) * $loan_row['loan_period'];
-                    $interest = ($amount / ($loan_row['loan_amount'] + $total_interest)) * $total_interest;
+                    $jl             = $Journals->jl_data('Collection');
+                    $ref_code       = $jl['journal_code'] . "-" . date('YmdHis');
+                    $branch_name    = str_replace(" Branch", "", $Branches->name($this->clean($row['branch_id'])));
+
+                    $loan_row               = $this->loan_data($this->inputs['loan_id']);
+                    $amount                 = $this->clean($this->inputs['amount']);
+                    $monthly_interest_rate  = ($loan_row['loan_interest'] / 100) / 12;
+                    $total_interest         = ($loan_row['loan_amount'] * $monthly_interest_rate) * $loan_row['loan_period'];
+                    $interest               = ($amount / ($loan_row['loan_amount'] + $total_interest)) * $total_interest;
 
                     $collection_num = 'CL-' . date('YmdHis');
 
@@ -165,6 +168,7 @@ class Loans extends Connection
                     }
                 }
             }
+            Logs::action("Sucessfully renewed loan (" . $this->name($this->inputs['loan_id']) . " -> " . $this->clean($this->inputs[$this->name]) . ")", "Loans", "Loans->renew");
         }
 
         $bal = $this->loan_balance($this->inputs['loan_id'], $this->inputs['loan_date']);

@@ -49,6 +49,7 @@
     <ul class="sidebar-menu" style="padding-top: 15px;">
         <?php
         $Menus = new Menus();
+        $Menus->current_url = $page;
 
         $Menus->sidebar('Dashboard', 'homepage', 'fas fa-th-large');
 

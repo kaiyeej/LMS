@@ -18,8 +18,10 @@ class Clients extends Connection
 
         $is_exist = $this->select($this->table, $this->pk, "client_fname = '$client_fname' AND client_mname = '$client_mname' AND client_lname='$client_lname' AND client_name_extension='$client_name_extension'");
 
-        if ($is_exist->num_rows > 0)
+        if ($is_exist->num_rows > 0) {
+            Logs::action("Data already exist ($client_fname $client_mname $client_lname $client_name_extension)", "Clients", "Clients->add");
             return -2;
+        }
 
         $form = array(
             'branch_id'             => $branch_id,
@@ -34,16 +36,21 @@ class Clients extends Connection
         );
 
         $client_id = $this->insert($this->table, $form, 'Y');
-        if ($client_id < 1)
+        if ($client_id < 1) {
+            Logs::action("Error occur while adding data ($client_fname $client_mname $client_lname $client_name_extension)", "Clients", "Clients->add");
             return 0;
+        }
 
         $client_modules = ['ClientResidence', 'ClientEmployment'];
         foreach ($client_modules as $ModuleClass) {
             $ModuleInstance = new $ModuleClass;
             $ModuleInstance->inputs = $this->inputs;
             $ModuleInstance->inputs['client_id'] = $client_id;
-            $ModuleInstance->addOrUpdate();
+            if ($ModuleInstance->addOrUpdate()) {
+                Logs::action("Successfully added or updated data", $ModuleClass, $ModuleClass . "->addOrUpdate");
+            }
         }
+        Logs::action("Successfully added data ($client_fname $client_mname $client_lname $client_name_extension)", "Clients", "Clients->add");
         return $client_id;
     }
 
@@ -59,8 +66,10 @@ class Clients extends Connection
         $client_types = implode(',', $this->inputs['client_type_id']);
 
         $is_exist = $this->select($this->table, $this->pk, "client_fname = '$client_fname' AND client_mname = '$client_mname' AND client_lname='$client_lname' AND client_name_extension='$client_name_extension' AND $this->pk != '$primary_id'");
-        if ($is_exist->num_rows > 0)
+        if ($is_exist->num_rows > 0) {
+            Logs::action("Data already exist ($client_fname $client_mname $client_lname $client_name_extension)", "Clients", "Clients->edit");
             return 2;
+        }
 
         $form = array(
             'branch_id'             => $branch_id,
@@ -82,9 +91,12 @@ class Clients extends Connection
                 $ModuleInstance = new $ModuleClass;
                 $ModuleInstance->inputs = $this->inputs;
                 $ModuleInstance->inputs['client_id'] = $primary_id;
-                $ModuleInstance->addOrUpdate();
+                if ($ModuleInstance->addOrUpdate()) {
+                    Logs::action("Successfully added or updated data", $ModuleClass, $ModuleClass . "->addOrUpdate");
+                }
             }
         }
+        Logs::action("Successfully updated data ($client_fname $client_mname $client_lname $client_name_extension)", "Clients", "Clients->edit");
         return $is_updated;
     }
 
@@ -123,7 +135,9 @@ class Clients extends Connection
                 $ModuleInstance = new $ModuleClass;
                 $ModuleInstance->inputs = $this->inputs;
                 $ModuleInstance->inputs['client_id'] = $primary_id;
-                $ModuleInstance->addOrUpdate();
+                if ($ModuleInstance->addOrUpdate()) {
+                    Logs::action("Successfully added or updated data", $ModuleClass, $ModuleClass . "->addOrUpdate");
+                }
             }
         }
         return $is_updated;
@@ -139,7 +153,9 @@ class Clients extends Connection
             $ModuleInstance = new $ModuleClass;
             $ModuleInstance->inputs = $this->inputs;
             $ModuleInstance->inputs['client_id'] = $primary_id;
-            $ModuleInstance->addOrUpdate();
+            if ($ModuleInstance->addOrUpdate()) {
+                Logs::action("Successfully added or updated data", $ModuleClass, $ModuleClass . "->addOrUpdate");
+            }
         }
 
         return 1;
@@ -155,7 +171,9 @@ class Clients extends Connection
             $ModuleInstance = new $ModuleClass;
             $ModuleInstance->inputs = $this->inputs;
             $ModuleInstance->inputs['client_id'] = $primary_id;
-            $ModuleInstance->addOrUpdate();
+            if ($ModuleInstance->addOrUpdate()) {
+                Logs::action("Successfully added or updated data", $ModuleClass, $ModuleClass . "->addOrUpdate");
+            }
         }
 
         return 1;
@@ -171,7 +189,9 @@ class Clients extends Connection
             $ModuleInstance = new $ModuleClass;
             $ModuleInstance->inputs = $this->inputs;
             $ModuleInstance->inputs['client_id'] = $primary_id;
-            $ModuleInstance->addOrUpdate();
+            if ($ModuleInstance->addOrUpdate()) {
+                Logs::action("Successfully added or updated data", $ModuleClass, $ModuleClass . "->addOrUpdate");
+            }
         }
 
         return 1;
@@ -229,8 +249,14 @@ class Clients extends Connection
 
     public function remove()
     {
-        $ids = implode(",", $this->inputs['ids']);
-        return $this->delete($this->table, "$this->pk IN($ids)");
+        foreach ($this->inputs['ids'] as $id) {
+            $name = $this->name($id);
+            $res = $this->delete($this->table, "$this->pk = '$id'");
+            if ($res == 1) {
+                Logs::action("Successfuly deleted Client: $name", "Clients", "Clients->remove");
+            }
+        }
+        return 1;
     }
 
     public function name($primary_id)

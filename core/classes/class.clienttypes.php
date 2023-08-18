@@ -16,24 +16,22 @@ class ClientTypes extends Connection
             'user_id'       => $_SESSION['lms_user_id'],
         );
 
-        return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
+        $response = $this->insertIfNotExist($this->table, $form);
+        Logs::action($this->action_response, "Client Types", "Branches->add");
+        return $response;
     }
 
     public function edit()
     {
-        $primary_id = $this->inputs[$this->pk];
-        $is_exist = $this->select($this->table, $this->pk, "$this->name = '" . $this->inputs[$this->name] . "' AND $this->pk != '$primary_id'");
-        if ($is_exist->num_rows > 0) {
-            return 2;
-        } else {
-            $form = array(
-                $this->name     => $this->clean($this->inputs[$this->name]),
-                'remarks'       => $this->clean($this->inputs['remarks']),
-                'user_id'       => $_SESSION['lms_user_id'],
-            );
+        $form = array(
+            $this->name => $this->clean($this->inputs[$this->name]),
+            'remarks'   => $this->clean($this->inputs['remarks']),
+            'user_id'   => $_SESSION['lms_user_id'],
+        );
 
-            return $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");
-        }
+        $response = $this->updateIfNotExist($this->table, $form);
+        Logs::action($this->action_response, "Client Types", "ClientTypes->edit");
+        return $response;
     }
 
     public function show()
@@ -56,9 +54,14 @@ class ClientTypes extends Connection
 
     public function remove()
     {
-        $ids = implode(",", $this->inputs['ids']);
-
-        return $this->delete($this->table, "$this->pk IN($ids)");
+        foreach ($this->inputs['ids'] as $id) {
+            $name = $this->name($id);
+            $res = $this->delete($this->table, "$this->pk = '$id'");
+            if ($res == 1) {
+                Logs::action("Successfuly deleted Client Type: $name", "ClientTypes", "ClientTypes->remove");
+            }
+        }
+        return 1;
     }
 
     public function name($primary_id)

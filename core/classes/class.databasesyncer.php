@@ -3,6 +3,7 @@
 class DatabaseSyncer extends Connection
 {
 	public $response;
+
 	public function sync()
 	{
 		$this->schemas();
@@ -19,15 +20,24 @@ class DatabaseSyncer extends Connection
 		return $this->response;
 	}
 
+	public function fresh_transaction()
+	{
+		$this->schemas();
+		$this->drop_table_deleted();
+		$this->clone_table_deleted();
+		$this->triggers();
+		$this->truncate_transactions();
+		return $this->response;
+	}
+
 	public function truncate_transactions()
 	{
 		// DELETE TRANSACTIONS DATA
+		$tables = ['tbl_loans', 'tbl_vouchers', 'tbl_collections', 'tbl_mass_collections', 'tbl_mass_collection_details', 'tbl_journal_entries', 'tbl_journal_entry_details'];
 
-		// LOANS
-		// VOUCHERS
-		// COLLECTIONS
-		// MASS COLLECTIONS
-		// JOURNAL ENTRY
+		foreach ($tables as $table) {
+			$this->query("TRUNCATE $table");
+		}
 	}
 
 	public function drop_table_deleted()

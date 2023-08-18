@@ -8,6 +8,8 @@ class Connection
     private $dbname = DBNAME;
     private $result = array();
     private $mysqli = '';
+
+    public $action_response = "";
     //private $userID = USERID;
 
 
@@ -83,12 +85,16 @@ class Connection
 
     public function insertIfNotExist($table, $form, $param = '', $last_id = 'N')
     {
-        $inject = $param != '' ? $param : "$this->name = '" . $this->clean($this->inputs[$this->name]) . "'";
+        $name = $this->clean($this->inputs[$this->name]);
+        $inject = $param != '' ? $param : "$this->name = '$name'";
         $is_exist = $this->select($table, $this->pk, $inject);
         if ($is_exist->num_rows > 0) {
+            $this->action_response = "Data already exist ($name)";
             return $last_id == 'Y' ? -2 : 2;
         } else {
-            return $this->insert($table, $form, $last_id);
+            $response = $this->insert($table, $form, $last_id);
+            $this->action_response =  $response > 0 ? "Successfully added data ($name)" : "Error occur while adding data ($name)";
+            return $response;
         }
     }
 
@@ -112,10 +118,12 @@ class Connection
         $name = $this->clean($this->inputs[$this->name]);
         $is_exist = $this->select($table, $this->pk, "$this->name = '$name' AND $this->pk != '$primary_id'");
         if ($is_exist->num_rows > 0) {
+            $this->action_response = "Data already exist ($name)";
             return 2;
-        } else {
-            return $this->update($table, $form, "$this->pk = '$primary_id'");
         }
+        $response =  $this->update($table, $form, "$this->pk = '$primary_id'");
+        $this->action_response =  $response > 0 ? "Successfully updated data ($name)" : "Error occur while updating data ($name)";
+        return $response;
     }
 
     public function delete($table, $id)
@@ -123,7 +131,7 @@ class Connection
         $sql = "DELETE FROM $table";
         $sql .= " WHERE $id ";
         $sql;
-        return $this->mysqli->query($sql) or die($this->mysqli->error);
+        return $this->mysqli->query($sql) === TRUE ? 1 : $this->mysqli->error;
     }
 
     public $sql;

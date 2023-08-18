@@ -19,29 +19,28 @@ class LoanTypes extends Connection
             'fixed_interest'        => $this->clean($fixed_interest),
         );
 
-        return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
+        $response = $this->insertIfNotExist($this->table, $form);
+        Logs::action($this->action_response, "LoanTypes", "LoanTypes->add");
+        return $response;
     }
 
 
     public function edit()
     {
-        $primary_id = $this->inputs[$this->pk];
-        $name = $this->clean($this->inputs['loan_type']);
+        $name           = $this->clean($this->inputs[$this->name]);
         $fixed_interest = (!isset($this->inputs['fixed_interest']) ? "" : "Y");
-        $is_exist = $this->select($this->table, $this->pk, "$this->name = '" . $this->inputs[$this->name] . "' AND $this->pk != '$primary_id'");
-        if ($is_exist->num_rows > 0) {
-            return 2;
-        } else {
-            $form = array(
-                $this->name             => $this->clean($this->inputs[$this->name]),
-                'loan_type_interest'    => $this->clean($this->inputs['loan_type_interest']),
-                'penalty_percentage'    => $this->clean($this->inputs['penalty_percentage']),
-                'remarks'               => $this->clean($this->inputs['remarks']),
-                'fixed_interest'        => $this->clean($fixed_interest),
-            );
 
-            return $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");
-        }
+        $form = array(
+            $this->name             => $name,
+            'loan_type_interest'    => $this->clean($this->inputs['loan_type_interest']),
+            'penalty_percentage'    => $this->clean($this->inputs['penalty_percentage']),
+            'remarks'               => $this->clean($this->inputs['remarks']),
+            'fixed_interest'        => $this->clean($fixed_interest),
+        );
+
+        $response = $this->updateIfNotExist($this->table, $form);
+        Logs::action($this->action_response, "LoanTypes", "LoanTypes->edit");
+        return $response;
     }
 
     public function show()
@@ -83,9 +82,14 @@ class LoanTypes extends Connection
 
     public function remove()
     {
-        $ids = implode(",", $this->inputs['ids']);
-
-        return $this->delete($this->table, "$this->pk IN($ids)");
+        foreach ($this->inputs['ids'] as $id) {
+            $name = $this->name($id);
+            $res = $this->delete($this->table, "$this->pk = '$id'");
+            if ($res == 1) {
+                Logs::action("Successfuly deleted Loan Type: $name", "Employers", "Employers->remove");
+            }
+        }
+        return 1;
     }
 
     public function delete_fixed()

@@ -16,19 +16,21 @@ class Insurance extends Connection
             'insurance_amount'  => $this->clean($this->inputs['insurance_amount']),
         );
 
-        return $this->insertIfNotExist($this->table, $form, "$this->name = '" . $this->inputs[$this->name] . "'");
+        $response = $this->insertIfNotExist($this->table, $form);
+        Logs::action($this->action_response, "Insurance", "Insurance->add");
+        return $response;
     }
 
     public function edit()
     {
-        $primary_id = $this->inputs[$this->pk];
         $form = array(
             $this->name         => $this->clean($this->inputs[$this->name]),
             'insurance_desc'    => $this->clean($this->inputs['insurance_desc']),
             'insurance_amount'  => $this->clean($this->inputs['insurance_amount']),
         );
-
-        return $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");
+        $response = $this->updateIfNotExist($this->table, $form);
+        Logs::action($this->action_response, "Insurance", "Insurance->edit");
+        return $response;
     }
 
     public function show()
@@ -67,19 +69,20 @@ class Insurance extends Connection
                 'paymaster_res_cert_no'             => '',
             );
 
-
-
-
-
         $row = $result->fetch_assoc();
         return $row;
     }
 
     public function remove()
     {
-        $ids = implode(",", $this->inputs['ids']);
-
-        return $this->delete($this->table, "$this->pk IN($ids)");
+        foreach ($this->inputs['ids'] as $id) {
+            $name = $this->name($id);
+            $res = $this->delete($this->table, "$this->pk = '$id'");
+            if ($res == 1) {
+                Logs::action("Successfuly deleted Insurance: $name", "Insurance", "Insurance->remove");
+            }
+        }
+        return 1;
     }
 
     public function name($primary_id)
