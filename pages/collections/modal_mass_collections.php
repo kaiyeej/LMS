@@ -7,16 +7,16 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-row w3-animate-left">
-                        <div class="form-group col">
+<!--                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Branch</label>
                             <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]" style="width:100%;" required>
                             </select>
-                        </div>
-                        <div class="form-group col">
+                        </div> -->
+<!--                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Loan Type</label>
                             <select class="form-control select2 input-item" id="loan_type_id" name="input[loan_type_id]" style="width:100%;" required>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Bank</label>
                             <select class="form-control select2 input-item" id="mass_chart_id" name="input[chart_id]" style="width:100%;" required>
@@ -26,11 +26,11 @@
                             <label><strong style="color:red;">*</strong> Collection Date</label>
                             <input type="date" class="form-control input-item" autocomplete="off" name="input[collection_date]" id="mass_collection_date" required>
                         </div>
-                        <div class="form-group col">
+<!--                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Employer</label>
                             <select class="form-control select2 input-item" id="employer_id" name="input[employer_id]" style="width:100%;" required>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="form-group col hide-for-save">
                             <label>ATM Charge</label>
                             <input min="0" type="number" class="form-control input-item" autocomplete="off" name="input[atm_charge]" id="mass_atm_charge">
@@ -63,36 +63,17 @@
     var mc_client_data = [],
         mc_header_data = [];
     document.addEventListener("keydown", function(event) {
-        if (event.key === "Enter") {
-            var activeElement = document.activeElement;
-            var nextElement = activeElement.nextElementSibling;
-
-            if (nextElement) {
-                focusAndSelectText(nextElement);
-                event.preventDefault();
-            }
-
-            var last_row_element = activeElement.getAttribute("data-column");
-            if (last_row_element == 'atm_charge') {
-                var parentRow = activeElement.parentNode;
-                let nextRow = parentRow.nextElementSibling;
-                while (nextRow && nextRow.classList.contains('excluded_loan')) {
-                    nextRow = nextRow.nextElementSibling;
-                }
-
-                if (nextRow) {
-                    var next_row_column = nextRow.querySelector("td[data-column='receipt_number']");
-                    if (next_row_column) {
-                        focusAndSelectText(next_row_column);
-                        event.preventDefault();
-                    } else {
-                        focusFirstReceiptNumber();
-                    }
-                } else {
-                    console.log("No next sibling without class 'is_excluded' found.");
-                }
-            }
-        }
+  if (event.key === 'Enter') {
+    const activeElement = document.activeElement;
+    const editableElements = document.querySelectorAll('[contenteditable="true"]');
+    const currentIndex = Array.from(editableElements).indexOf(activeElement);
+    
+    if (currentIndex !== -1) {
+      const nextIndex = (currentIndex + 1) % editableElements.length;
+      editableElements[nextIndex].focus();
+      event.preventDefault(); // Prevent default behavior of the Enter key
+    }
+  }
     });
 
     function focusAndSelectText(myElement) {
@@ -235,13 +216,13 @@
 
     function resetMassCollection() {
 
-        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);
-        getSelectOption('Employers', 'employer_id', 'employer_name');
+        // getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);
+        // getSelectOption('Employers', 'employer_id', 'employer_name');
 
         $("#mass_chart_id").html($("#chart_id").html()).val(null).select2().trigger('change').prop("disabled", false);
-        $("#mass_branch_id").html($("#branch_id").html()).val(null).select2().trigger('change').prop("disabled", false);
-        $("#loan_type_id").val(0).select2().trigger('change').prop("disabled", false);
-        $("#employer_id").val(0).select2().trigger('change').prop("disabled", false);
+        // $("#mass_branch_id").html($("#branch_id").html()).val(null).select2().trigger('change').prop("disabled", false);
+        // $("#loan_type_id").val(0).select2().trigger('change').prop("disabled", false);
+        // $("#employer_id").val(0).select2().trigger('change').prop("disabled", false);
         $("#mass_collection_date").val('').prop("disabled", false).attr('readonly', false);
         $("#mass_atm_charge").val('').prop("disabled", false).attr('readonly', false);
 
@@ -282,6 +263,8 @@
         var client_tds = "";
         mc_client_data = [];
 
+        var loan_types = json.headers.loan_types, skin_loan_types = "", skin_total_loan_types = "";
+
         var total_old_atm_balance = 0,
             total_atm_withdrawal = 0,
             total_deduction = 0,
@@ -310,17 +293,15 @@
             var client_data = {
                 mass_collection_detail_id: client.mass_collection_detail_id * 1,
                 client_id: client.client_id * 1,
-                loan_id: client.loan_id * 1,
                 old_atm_balance: old_atm_balance,
                 atm_withdrawal: atm_withdrawal,
-                deduction: deduction,
-                emergency_loan: emergency_loan,
                 atm_charge: atm_charge,
                 atm_balance: atm_balance,
                 excess: excess,
                 receipt_number: receipt_number,
                 atm_account_no: atm_account_no,
-                is_included: is_included
+                is_included: is_included,
+                loans:client.loans
             };
 
             total_old_atm_balance += old_atm_balance;
@@ -333,36 +314,40 @@
 
             mc_client_data.push(client_data);
             client_tds += `<tr data-client-index='${clientIndex}' class='${excluded_loan}'>
-                <td>${clientIndex + 1}</td>
-                <td class="center"><input class='checkbox-loan' type='checkbox' onchange="changeMassCollectionLoanStatus(this)" ${checked_loan_status}></td>
-                <td>${client.client_name}</td>
+                <td class="sticky-column">${clientIndex + 1}</td>
+                <td class="center sticky-column"><input class='checkbox-loan' type='checkbox' onchange="changeMassCollectionLoanStatus(this)" ${checked_loan_status}></td>
+                <td class="sticky-column">${client.client_name}</td>
                 <td data-column='receipt_number' onblur="editCollectionCell(this,false)" contenteditable="${is_editable}" class='right editable-cell'>${receipt_number}</td>
                 <td data-column='old_atm_balance' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(old_atm_balance)}</td>
                 <td data-column='atm_withdrawal' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(atm_withdrawal)}</td>
-                <td data-column='deduction' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(deduction)}</td>
-                <td data-column='emergency_loan' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(emergency_loan)}</td>
+                ${skinLoanTypes(client.loans)}
                 <td data-column='atm_charge' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(atm_charge)}</td>
                 <td data-column='atm_balance' class='right'>${numberFormatClearZero(atm_balance)}</td>
                 <td data-column='excess' class='right ${nega_excess}'>${numberFormatClearZero(excess)}</td>
                 <td data-column='atm_account_no' class='center'>${atm_account_no}</td>
               </tr>`;
         }
-        $('#mass_collection_result_content').html(`<div style='width:100%' class='w3-animate-left table-container'>
+
+        for (var loanTypeIndex = 0; loanTypeIndex < loan_types.length; loanTypeIndex++) {
+            var loan_type = loan_types[loanTypeIndex];
+            skin_loan_types += `<th class='w-8'>${loan_type.loan_type}</th>`;
+            skin_total_loan_types += `<th data-column='total_loan_type_${loan_type.loan_type_id}' class="right"></th>`;
+        }
+        $('#mass_collection_result_content').html(`<div class='w3-animate-left table-container'>
             <table id="tbl_mass_collection">
                 <thead>
                   <tr>
-                    <th>#</th>
-                    <th><input type='checkbox' onchange='checkAllLoan(this)' checked></th>
-                    <th>Name</th>
+                    <th class="sticky-column">#</th>
+                    <th class="sticky-column"><input type='checkbox' onchange='checkAllLoan(this)' checked></th>
+                    <th class="sticky-column" style="width:35%;">Name</th>
                     <th class='w-8'>Receipt #</th>
                     <th class='w-8 fs-9'>ATM Balance Before Withdrawal</th>
                     <th class='w-8'>ATM Withdrawal</th>
-                    <th class='w-8'>Deduction</th>
-                    <th class='w-8'>Emergency Loan</th>
+                    ${skin_loan_types}
                     <th class='w-8'>ATM Charge</th>
                     <th class='w-8'>ATM Balance</th>
                     <th class='w-8'>Excess</th>
-                    <th>Account Number</th>
+                    <th style="width:35%;">Account Number</th>
                   </tr>
                 </thead>
               ${client_tds}
@@ -370,8 +355,7 @@
                 <th colspan="4" class="end">TOTAL:</th>
                 <th data-column='total_old_atm_balance' class="right">${numberFormat(total_old_atm_balance)}</th>
                 <th data-column='total_atm_withdrawal' class="right">${numberFormat(total_atm_withdrawal)}</th>
-                <th data-column='total_deduction' class="right">${numberFormat(total_deduction)}</th>
-                <th data-column='total_emergency_loan' class="right">${numberFormat(total_emergency_loan)}</th>
+                ${skin_total_loan_types}
                 <th data-column='total_atm_charge' class="right">${numberFormat(total_atm_charge)}</th>
                 <th data-column='total_atm_balance' class="right">${numberFormat(total_atm_balance)}</th>
                 <th data-column='total_excess' class="right">${numberFormat(total_excess)}</th>
@@ -390,6 +374,20 @@
             </div>
         </div>`);
         focusFirstReceiptNumber();
+
+    // <td data-column='deduction' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(deduction)}</td>
+    // <td data-column='emergency_loan' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(emergency_loan)}</td>
+    }
+
+    function skinLoanTypes(loans){
+        var skin_loans = "";
+        for (var loanIndex = 0; loanIndex < loans.length; loanIndex++) {
+            var loan = loans[loanIndex];
+            var is_editable = (loan.loan_id) * 1 > 0;
+            var cell_class = is_editable ? "editable-cell":"gray";
+            skin_loans += `<td data-column='loan_type_${loan.loan_type_id}' data-loan-index='${loanIndex}' data-type-id='${loan.loan_type_id}' onblur="editLoanCollectionCell(this)" contenteditable="${is_editable}" class='right ${cell_class}'>${numberFormatClearZero(loan.monthly_payment)}</td>`;
+        }
+        return skin_loans;
     }
 
     function editCollectionCell(el, is_number = true) {
@@ -414,6 +412,24 @@
         }
     }
 
+    function editLoanCollectionCell(el, is_number = true) {
+        var str = el.innerText;
+
+        var replace_number = parseFloat(str.replaceAll(",", ""));
+        var actual_data = replace_number ? replace_number : 0;
+        el.innerHTML = numberFormatClearZero(actual_data);
+        
+        var column = el.getAttribute("data-column");
+        var loan_index = el.getAttribute("data-loan-index");
+        var client_index = el.parentNode.getAttribute("data-client-index");
+
+        mc_client_data[client_index].loans[loan_index].monthly_payment = actual_data;
+
+        totalSolvers(column);
+        collectionSolvers(el, client_index);
+        
+    }
+
     function totalSolvers(column) {
         // Get all elements with the attribute data-column='excess'
         const data_column = document.querySelectorAll(`[data-column='${column}']`);
@@ -436,12 +452,11 @@
     function collectionSolvers(el, client_index) {
         var old_atm_balance = mc_client_data[client_index].old_atm_balance * 1;
         var atm_withdrawal = mc_client_data[client_index].atm_withdrawal * 1;
-        var deduction = mc_client_data[client_index].deduction * 1;
-        var emergency_loan = mc_client_data[client_index].emergency_loan * 1;
+        var deduction = getLoanTotalDeduction(mc_client_data[client_index].loans);
         var atm_charge = mc_client_data[client_index].atm_charge * 1;
 
         var atm_balance = old_atm_balance - atm_withdrawal;
-        var excess = atm_withdrawal - deduction - emergency_loan - atm_charge;
+        var excess = atm_withdrawal - deduction - atm_charge;
 
         mc_client_data[client_index].atm_balance = atm_balance;
         mc_client_data[client_index].excess = excess;
@@ -456,6 +471,15 @@
         atm_balance_column.innerHTML = numberFormatClearZero(atm_balance);
         negativeIdentifier(atm_balance_column, atm_balance);
         totalSolvers('atm_balance');
+    }
+
+    function getLoanTotalDeduction(loans){
+        var total_deduction = 0;
+        for (var loanIndex = 0; loanIndex < loans.length; loanIndex++) {
+            var loan = loans[loanIndex];
+            total_deduction += loan.monthly_payment;
+        }
+        return total_deduction;
     }
 
     function negativeIdentifier(el, value) {
@@ -596,7 +620,7 @@
     .table-container {
         /* Set a max height to make the table scrollable */
         max-height: 300px;
-        overflow-y: auto;
+        overflow: auto;
     }
 
     .table-container thead {
@@ -606,6 +630,15 @@
         /* Set the background color for the sticky header */
         font-weight: bold;
         /* Optionally, you can style the sticky header */
+      z-index: 2;
+    }
+
+
+    .sticky-column {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background-color: #f9f9f9;
     }
 
     #tbl_mass_collection td,
@@ -661,6 +694,11 @@
 
     .negative {
         background: red;
+        color: #fff;
+    }
+
+    .gray {
+        background: gray;
         color: #fff;
     }
 

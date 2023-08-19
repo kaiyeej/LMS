@@ -17,11 +17,8 @@ class MassCollections extends Connection
     {
         $form = array(
             $this->name         => $this->clean($this->inputs[$this->name]),
-            'branch_id'         => $this->clean($this->inputs['branch_id']),
-            'loan_type_id'      => $this->clean($this->inputs['loan_type_id']),
             'chart_id'          => $this->clean($this->inputs['chart_id']),
             'collection_date'   => $this->clean($this->inputs['collection_date']),
-            'employer_id'       => $this->clean($this->inputs['employer_id']),
             'atm_charge'        => $this->clean($this->inputs['atm_charge']),
             'status'            => $this->clean($this->inputs['status']),
             'prepared_by'       => $this->clean($_SESSION['lms_user_id']),
@@ -62,57 +59,89 @@ class MassCollections extends Connection
         $ClientAtm          = new ClientAtm;
         $LoanTypes          = new LoanTypes;
 
-        $loan_type_id       = $this->inputs['loan_type_id'];
+        // $loan_type_id       = $this->inputs['loan_type_id'];
         $collection_date    = $this->inputs['collection_date'];
-        $employer_id        = $this->inputs['employer_id'];
+        // $employer_id        = $this->inputs['employer_id'];
         $chart_id           = $this->inputs['chart_id'];
-        $branch_id          = $this->inputs['branch_id'];
+        // $branch_id          = $this->inputs['branch_id'];
         $atm_charge         = (float) $this->inputs['atm_charge'];
+        $loan_types         = $LoanTypes->show();
 
         $rows = array();
         $result = $this->select(
-            "tbl_clients AS c, tbl_client_employment AS e,tbl_loans AS l",
-            'l.*',
-            "c.client_id = e.client_id AND c.client_id = l.client_id AND c.branch_id = '$branch_id' AND e.employer_id = '$employer_id' AND l.loan_type_id = '$loan_type_id' AND l.status = 'R'"
+            "tbl_loans",
+            '*',
+            "status = 'R' GROUP BY client_id"
         );
         while ($row = $result->fetch_assoc()) {
+            $row_details=[];
+            $row_details['client_id']       = $row['client_id'];
+            $row_details['client_name']     = $Clients->initial_name($row['client_id']);
+            $row_details['receipt_number']  = "";
+            $row_details['old_atm_balance'] = 0;
+            $row_details['atm_withdrawal']  = 0;
+            $row_details['deduction']       = $row['monthly_payment'];
+            $row_details['emergency_loan']  = 0;
+            $row_details['atm_charge']      = $atm_charge;
+            $row_details['atm_balance']     = 0;
+            $row_details['excess']          = 0;
+            $row_details['atm_account_no']  = $ClientAtm->name($row['client_id']);
+            $row_details['is_included']     = 1;
+            $row_details['mass_collection_detail_id'] = 0;
+            $row_details['loans'] = $this->loans_per_type($loan_types,$row['client_id']);
 
-            $row['client_name']     = $Clients->initial_name($row['client_id']);
-            $row['receipt_number']  = "";
-            $row['old_atm_balance'] = 0;
-            $row['atm_withdrawal']  = 0;
-            $row['deduction']       = $row['monthly_payment'];
-            $row['emergency_loan']  = 0;
-            $row['atm_charge']      = $atm_charge;
-            $row['atm_balance']     = 0;
-            $row['excess']          = 0;
-            $row['atm_account_no']  = $ClientAtm->name($row['client_id']);
-            $row['is_included']     = 1;
-
-            $row['mass_collection_detail_id'] = 0;
-
-            $rows[] = $row;
+            $rows[] = $row_details;
         }
         $response['clients'] = $rows;
 
         $response['headers'] = [
-            "loan_type_id"          => $loan_type_id,
-            "loan_name"             => $LoanTypes->name($loan_type_id),
+            // "loan_type_id"          => $loan_type_id,
+            // "loan_name"             => $LoanTypes->name($loan_type_id),
             "collection_date"       => date("Y-m-d", strtotime($collection_date)),
             "collection_date_label" => date("F d, Y", strtotime($collection_date)),
-            "employer_id"           => $employer_id,
-            "employer_name"         => $Employers->name($employer_id),
+            // "employer_id"           => $employer_id,
+            // "employer_name"         => $Employers->name($employer_id),
             "prepared_by_name"      => Users::fullname($_SESSION['lms_user_id']),
             "finished_by_name"      => Users::fullname($_SESSION['lms_user_id']),
             "chart_id"              => $chart_id,
             "chart_name"            => $ChartOfAccounts->name($chart_id),
-            "branch_id"             => $branch_id,
-            "branch_name"           => $Branches->name($branch_id),
+            // "branch_id"             => $branch_id,
+            // "branch_name"           => $Branches->name($branch_id),
             "atm_charge"            => $atm_charge,
             "status"                => "S",
             "mass_collection_id"    => 0,
+            "loan_types"            => $loan_types,
         ];
         return $response;
+    }
+
+    public function loans_per_type($loan_types,$client_id)
+    {
+        $response = [];
+        foreach($loan_types as $row)
+        {
+            $loan_data = $this->loan_per_type($client_id,$row['loan_type_id']);
+            $loan_data['loan_type_id'] = (int) $row['loan_type_id'];
+            $response[] = $loan_data;
+        }
+        return $response;
+    }
+
+    public function loan_per_type($client_id,$loan_type_id)
+    {
+        $result = $this->select("tbl_loans", 'loan_id,monthly_payment', "client_id = '$client_id' AND loan_type_id = '$loan_type_id' AND status = 'R'");
+
+        if ($result->num_rows < 1)
+            return [
+                'loan_id' => 0,
+                'monthly_payment' => 0
+            ];
+
+        $row = $result->fetch_assoc();
+        return [
+            'loan_id' => (int) $row['loan_id'],
+            'monthly_payment' => (float) $row['monthly_payment']
+        ];
     }
 
     public function save_collections()
@@ -136,17 +165,15 @@ class MassCollections extends Connection
                 $form_detail = [
                     'mass_collection_id'    => $mass_collection_id,
                     'client_id'             => $row['client_id'],
-                    'loan_id'               => $row['loan_id'],
                     'receipt_number'        => $row['receipt_number'],
                     'old_atm_balance'       => $row['old_atm_balance'],
                     'atm_withdrawal'        => $row['atm_withdrawal'],
-                    'deduction'             => $row['deduction'],
-                    'emergency_loan'        => $row['emergency_loan'],
                     'atm_charge'            => $row['atm_charge'],
                     'atm_balance'           => $row['atm_balance'],
                     'excess'                => $row['excess'],
                     'atm_account_no'        => $row['atm_account_no'],
-                    'is_included'           => $row['is_included']
+                    'is_included'           => $row['is_included'],
+                    'loans'                 => json_encode($row['loans'])
                 ];
 
                 $is_inserted = $row['mass_collection_detail_id'] > 0 ? $this->update($this->table_detail, $form_detail, "mass_collection_detail_id = '" . $row['mass_collection_detail_id'] . "'") : $this->insert($this->table_detail, $form_detail);
@@ -451,16 +478,14 @@ class MassCollections extends Connection
                 $this->metadata($this->pk2, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
                 $this->metadata('mass_collection_id', 'int', 11),
                 $this->metadata('client_id', 'int', 11),
-                $this->metadata('loan_id', 'int', 11),
                 $this->metadata('receipt_number', 'varchar', 5),
                 $this->metadata('old_atm_balance', 'decimal', '12,4'),
                 $this->metadata('atm_withdrawal', 'decimal', '12,4'),
-                $this->metadata('deduction', 'decimal', '12,4'),
-                $this->metadata('emergency_loan', 'decimal', '12,4'),
                 $this->metadata('atm_charge', 'decimal', '12,4'),
                 $this->metadata('atm_balance', 'decimal', '12,4'),
                 $this->metadata('excess', 'decimal', '12,4'),
                 $this->metadata('atm_account_no', 'varchar', 50),
+                $this->metadata('loans', 'text'),
                 $this->metadata('is_included', 'int', 1),
                 $default['date_added'],
                 $default['date_last_modified']
