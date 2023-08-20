@@ -28,6 +28,7 @@ class Loans extends Connection
                 'service_fee'           => $this->clean($this->inputs['service_fee']),
                 'monthly_payment'       => $this->clean($this->inputs['monthly_payment']),
                 'payment_terms'         => $this->clean($this->inputs['payment_terms']),
+                'payment_date_start'    => $this->clean($this->inputs['payment_date_start']),
                 'fixed_interest'        => $this->clean($LoanTypes->fixed_status($this->inputs['loan_type_id'])),
                 'status'                => $this->inputs['status'] ?? 'A',
                 'main_loan_id'          => $this->inputs['main_loan_id'] ?? 0,
@@ -68,6 +69,7 @@ class Loans extends Connection
             'loan_interest'         => $this->clean($this->inputs['loan_interest']),
             'penalty_percentage'    => $this->clean($this->inputs['penalty_percentage']),
             'service_fee'           => $this->clean($this->inputs['service_fee']),
+            'payment_date_start'    => $this->clean($this->inputs['payment_date_start']),
             'monthly_payment'       => $monthly_payment,
             'main_loan_id'          => $this->clean($this->inputs['loan_id']),
             'payment_terms'         => $this->clean($this->inputs['payment_terms']),
@@ -196,6 +198,7 @@ class Loans extends Connection
                 'service_fee'           => $this->clean($this->inputs['service_fee']),
                 'monthly_payment'       => $this->clean($this->inputs['monthly_payment']),
                 'payment_terms'         => $this->clean($this->inputs['payment_terms']),
+                'payment_date_start'    => $this->clean($this->inputs['payment_date_start']),
             );
 
             return $this->updateIfNotExist($this->table, $form, "$this->pk = '$primary_id'");
@@ -358,6 +361,7 @@ class Loans extends Connection
         $monthlypayment = isset($this->inputs['monthly_payment']) ? $this->inputs['monthly_payment'] : null;
         $payment_terms = isset($this->inputs['payment_terms']) ? $this->inputs['payment_terms'] : null;
         $loan_fixed_interest = isset($this->inputs['loan_fixed_interest']) ? $this->inputs['loan_fixed_interest'] : null;
+        $payment_date_start = isset($this->inputs['payment_date_start']) ? $this->inputs['payment_date_start'] : null;
 
         $count = 1;
         $rows = array();
@@ -366,8 +370,9 @@ class Loans extends Connection
         $Collection = new Collections;
         while ($count <= $loan_period) {
 
-            $loan_date = date('M d, Y', strtotime('+1 month', strtotime($loan_date)));
-
+            // $loan_date = date('M d, Y', strtotime('+1 month', strtotime($loan_date)));
+            $payment_start = date('F Y', strtotime($payment_date_start));
+            $loan_date = date('F Y', strtotime("first day of next month", strtotime($loan_date)));
             if ($loan_fixed_interest == 1) {
                 $total_amount_with_interest = ($loan_interest * $loan_period) + $loan_amount;
                 $monthly_interest = $loan_interest;
@@ -379,7 +384,7 @@ class Loans extends Connection
 
             $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
 
-            if ($payment_count == $payment_terms) { // matches every 3 iterations
+            if ($payment_start == $loan_date OR $payment_count == $payment_terms) { // matches every iterations
                 $payment_count = 1;
                 $monthly_payment = $monthlypayment > 0 ? $monthlypayment : ($suggested_payment * $payment_terms);
             } else {
@@ -419,6 +424,7 @@ class Loans extends Connection
             $loan_date = $row['loan_date'];
             $payment_terms = $row['payment_terms'];
             $loan_type_id = $row['loan_type_id'];
+            $payment_date_start = $row['payment_date_start'];
             $LoanTypes = new LoanTypes;
             $Collection = new Collections;
             $lt_row = $LoanTypes->view($loan_type_id);
@@ -454,15 +460,13 @@ class Loans extends Connection
 
                 $loan_date = date('Y-m-d', strtotime("first day of next month", strtotime($loan_date)));
 
-                if ($payment_count == $payment_terms) { // matches every 3 iterations
+                if ($payment_count == $payment_terms OR $payment_date_start == $loan_date) { // matches every 3 iterations
                     $payment_count = 1;
                     $payment = $row['monthly_payment'];
                 } else {
                     $payment_count += 1;
                     $payment = 0;
                 }
-
-                // $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
 
                 if ($lt_row['fixed_interest'] == "Y") {
                     $monthly_interest = $loan_interest;

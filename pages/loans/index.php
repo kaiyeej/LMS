@@ -322,15 +322,16 @@
         // $("#loan_interest").val(loan_type_interest);
     }
 
-    function sampleCalculation() {
+    function sampleCalculation(type) {
         var loan_date = $("#loan_date").val();
         var loan_amount = $("#loan_amount").val();
         var loan_period = $("#loan_period").val();
         var loan_interest = $("#loan_interest").val();
+        var payment_date_start = $("#payment_date_start").val();
         var monthly_payment = $("#monthly_payment").val() * 1;
         var payment_terms = $("#payment_terms").val() * 1;
 
-        if (loan_amount == "" || loan_period == "" || loan_interest == "" || payment_terms == "") {
+        if ((loan_amount == "" || loan_period == "" || loan_interest == "" || payment_terms == "") && type != "add") {
             swal("Ops!", "Fill out all required fields.", "warning");
         } else {
 
@@ -353,7 +354,8 @@
                             loan_date: loan_date,
                             monthly_payment: monthly_payment,
                             payment_terms: payment_terms,
-                            loan_fixed_interest: loan_fixed_interest
+                            loan_fixed_interest: loan_fixed_interest,
+                            payment_date_start:payment_date_start
                         }
                     },
                 },
@@ -388,6 +390,8 @@
         var loan_interest = $("#loan_interest_renewal").val();
         var monthly_payment = $("#monthly_payment_renewal").val();
         var payment_terms = $("#payment_terms_renewal").val();
+        var payment_date_start = $("#payment_date_start").val();
+        
 
         $("#dt_calculation2").DataTable().destroy();
         $("#dt_calculation2").DataTable({
@@ -407,7 +411,8 @@
                         loan_amount: loan_amount,
                         loan_date: loan_date,
                         monthly_payment: monthly_payment,
-                        payment_terms: payment_terms
+                        payment_terms: payment_terms,
+                        payment_date_start:payment_date_start
                     }
                 },
             },

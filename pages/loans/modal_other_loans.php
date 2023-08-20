@@ -41,6 +41,11 @@
                                     <input type="date" class="form-control" autocomplete="off" name="input[loan_date]" id="loan_date_renewal" onchange="getBalance()" required>
                                 </div>
                                 <div class="form-group col-md-6">
+                                    <label><strong style="color:red;">*</strong> Payment Start</label>
+                                    <input type="date" class="form-control input-item" autocomplete="off"
+                                        name="input[payment_date_start]" id="payment_date_start_renewal" required>
+                                </div>
+                                <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Loan amount</label>
                                     <input type="number" step="0.01" class="form-control input-renewal" onchange="calculateInterest2()" autocomplete="off" name="input[loan_amount]" id="loan_amount_renewal" required>
                                 </div>
