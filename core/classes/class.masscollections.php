@@ -21,13 +21,21 @@ class MassCollections extends Connection
             'collection_date'   => $this->clean($this->inputs['collection_date']),
             'atm_charge'        => $this->clean($this->inputs['atm_charge']),
             'status'            => $this->clean($this->inputs['status']),
-            'prepared_by'       => $this->clean($_SESSION['lms_user_id']),
-            'finished_by'       => $this->clean($this->inputs['status']) == 'F' ? $this->clean($_SESSION['lms_user_id']) : 0,
+            'prepared_by'       => $this->inputs['prepared_by'] ?? $_SESSION['lms_user_id'],
+            'finished_by'       => $this->inputs['finished_by'] ?? $_SESSION['lms_user_id'],
         );
 
         return $this->insert($this->table, $form, 'Y');
     }
+    public function edit()
+    {
+        $form = array(
+            'prepared_by'   => $this->inputs['prepared_by'],
+            'finished_by'   => $this->inputs['finished_by'],
+        );
 
+        return $this->update($this->table, $form, "mass_collection_id = '" . $this->inputs['mass_collection_id'] . "'");
+    }
     public function show()
     {
         $Branches           = new Branches;
@@ -58,6 +66,7 @@ class MassCollections extends Connection
         $Employers          = new Employers;
         $ClientAtm          = new ClientAtm;
         $LoanTypes          = new LoanTypes;
+        $Users              = new Users;
 
         // $loan_type_id       = $this->inputs['loan_type_id'];
         $collection_date    = $this->inputs['collection_date'];
@@ -74,8 +83,9 @@ class MassCollections extends Connection
             "status = 'R' GROUP BY client_id"
         );
         while ($row = $result->fetch_assoc()) {
-            $row_details=[];
+            $row_details = [];
             $row_details['client_id']       = $row['client_id'];
+            $row_details['branch_id']       = $row['branch_id'];
             $row_details['client_name']     = $Clients->initial_name($row['client_id']);
             $row_details['receipt_number']  = "";
             $row_details['old_atm_balance'] = 0;
@@ -88,7 +98,7 @@ class MassCollections extends Connection
             $row_details['atm_account_no']  = $ClientAtm->name($row['client_id']);
             $row_details['is_included']     = 1;
             $row_details['mass_collection_detail_id'] = 0;
-            $row_details['loans'] = $this->loans_per_type($loan_types,$row['client_id']);
+            $row_details['loans'] = $this->loans_per_type($loan_types, $row['client_id']);
 
             $rows[] = $row_details;
         }
@@ -101,8 +111,8 @@ class MassCollections extends Connection
             "collection_date_label" => date("F d, Y", strtotime($collection_date)),
             // "employer_id"           => $employer_id,
             // "employer_name"         => $Employers->name($employer_id),
-            "prepared_by_name"      => Users::fullname($_SESSION['lms_user_id']),
-            "finished_by_name"      => Users::fullname($_SESSION['lms_user_id']),
+            "prepared_by"           => $_SESSION['lms_user_id'],
+            "finished_by"           => $_SESSION['lms_user_id'],
             "chart_id"              => $chart_id,
             "chart_name"            => $ChartOfAccounts->name($chart_id),
             // "branch_id"             => $branch_id,
@@ -111,23 +121,23 @@ class MassCollections extends Connection
             "status"                => "S",
             "mass_collection_id"    => 0,
             "loan_types"            => $loan_types,
+            "users"                 => $Users->show()
         ];
         return $response;
     }
 
-    public function loans_per_type($loan_types,$client_id)
+    public function loans_per_type($loan_types, $client_id)
     {
         $response = [];
-        foreach($loan_types as $row)
-        {
-            $loan_data = $this->loan_per_type($client_id,$row['loan_type_id']);
+        foreach ($loan_types as $row) {
+            $loan_data = $this->loan_per_type($client_id, $row['loan_type_id']);
             $loan_data['loan_type_id'] = (int) $row['loan_type_id'];
             $response[] = $loan_data;
         }
         return $response;
     }
 
-    public function loan_per_type($client_id,$loan_type_id)
+    public function loan_per_type($client_id, $loan_type_id)
     {
         $result = $this->select("tbl_loans", 'loan_id,monthly_payment', "client_id = '$client_id' AND loan_type_id = '$loan_type_id' AND status = 'R'");
 
@@ -152,8 +162,10 @@ class MassCollections extends Connection
 
             if ($this->inputs['mass_collection_id'] > 0) {
                 $mass_collection_id = $this->inputs['mass_collection_id'];
+                $this->edit();
             } else {
                 $this->inputs['reference_number'] = $this->generate();
+                $this->inputs['prepared_by'] = $this->inputs['prepared_by'];
                 $mass_collection_id = $this->add();
                 if ($mass_collection_id < 1)
                     throw new Exception($mass_collection_id);
@@ -165,6 +177,7 @@ class MassCollections extends Connection
                 $form_detail = [
                     'mass_collection_id'    => $mass_collection_id,
                     'client_id'             => $row['client_id'],
+                    'branch_id'             => $row['branch_id'],
                     'receipt_number'        => $row['receipt_number'],
                     'old_atm_balance'       => $row['old_atm_balance'],
                     'atm_withdrawal'        => $row['atm_withdrawal'],
@@ -210,17 +223,16 @@ class MassCollections extends Connection
                 $form_detail = [
                     'mass_collection_id'    => $mass_collection_id,
                     'client_id'             => $row['client_id'],
-                    'loan_id'               => $row['loan_id'],
+                    'branch_id'             => $row['branch_id'],
                     'receipt_number'        => $row['receipt_number'],
                     'old_atm_balance'       => $row['old_atm_balance'],
                     'atm_withdrawal'        => $row['atm_withdrawal'],
-                    'deduction'             => $row['deduction'],
-                    'emergency_loan'        => $row['emergency_loan'],
                     'atm_charge'            => $row['atm_charge'],
                     'atm_balance'           => $row['atm_balance'],
                     'excess'                => $row['excess'],
                     'atm_account_no'        => $row['atm_account_no'],
-                    'is_included'           => $row['is_included']
+                    'is_included'           => $row['is_included'],
+                    'loans'                 => json_encode($row['loans'])
                 ];
 
                 $is_inserted = $row['mass_collection_detail_id'] > 0 ? $this->update($this->table_detail, $form_detail, "mass_collection_detail_id = '" . $row['mass_collection_detail_id'] . "'") : $this->insert($this->table_detail, $form_detail);
@@ -228,30 +240,34 @@ class MassCollections extends Connection
                     throw new Exception($is_inserted);
 
                 if ($row['is_included'] == 1) {
-                    $form_collection = [
-                        'branch_id'         => $this->clean($this->inputs['branch_id']),
-                        'reference_number'  => "CL-" . $row['client_id'] . "-" . $row['loan_id'] . "-" . date("YmdHis"),
-                        'chart_id'          => $this->clean($this->inputs['chart_id']),
-                        'collection_date'   => $this->clean($this->inputs['collection_date']),
-                        'penalty_amount'    => 0,
-                        'remarks'           => "",
-                        'loan_id'           => $row['loan_id'],
-                        'client_id'         => $row['client_id'],
-                        'amount'            => $row['deduction'],
-                        'old_atm_balance'   => $row['old_atm_balance'],
-                        'atm_balance'       => $row['atm_balance'],
-                        'atm_withdrawal'    => $row['atm_withdrawal'],
-                        'atm_charge'        => $row['atm_charge'],
-                        'excess'            => $row['excess'],
-                        'receipt_number'    => $row['receipt_number'],
-                        'mass_collection_detail_id' => $row['mass_collection_detail_id'],
-                    ];
+                    foreach ($row['loans'] as $loan_data) {
+                        if ($loan_data['loan_id'] > 0) {
+                            $form_collection = [
+                                'branch_id'         => $row['branch_id'],
+                                'reference_number'  => "CL-" . $row['client_id'] . "-" . $loan_data['loan_id'] . "-" . date("YmdHis"),
+                                'chart_id'          => $this->clean($this->inputs['chart_id']),
+                                'collection_date'   => $this->clean($this->inputs['collection_date']),
+                                'penalty_amount'    => 0,
+                                'remarks'           => "",
+                                'loan_id'           => $loan_data['loan_id'],
+                                'client_id'         => $row['client_id'],
+                                'amount'            => $loan_data['monthly_payment'],
+                                'old_atm_balance'   => $row['old_atm_balance'],
+                                'atm_balance'       => $row['atm_balance'],
+                                'atm_withdrawal'    => $row['atm_withdrawal'],
+                                'atm_charge'        => $row['atm_charge'],
+                                'excess'            => $row['excess'],
+                                'receipt_number'    => $row['receipt_number'],
+                                'mass_collection_detail_id' => $row['mass_collection_detail_id'],
+                            ];
 
-                    $MassCollections = new MassCollections;
-                    $MassCollections->inputs = $form_collection;
-                    $cl_id = $MassCollections->add_collection();
-                    if ($cl_id < 1)
-                        throw new Exception($cl_id);
+                            $MassCollections = new MassCollections;
+                            $MassCollections->inputs = $form_collection;
+                            $cl_id = $MassCollections->add_collection();
+                            if ($cl_id < 1)
+                                throw new Exception($cl_id);
+                        }
+                    }
                 }
             }
             $this->update($this->table, ['status' => 'F'], "mass_collection_id = '$mass_collection_id'");
@@ -415,18 +431,21 @@ class MassCollections extends Connection
         $mass_collection_id = $this->inputs['id'];
 
         $Clients = new Clients;
+        $LoanTypes = new LoanTypes;
+        $Users = new Users;
 
         $rows = array();
         $result = $this->select($this->table_detail, "*", "mass_collection_id = '$mass_collection_id'");
         while ($row = $result->fetch_assoc()) {
             $row['client_name'] = $Clients->initial_name($row['client_id']);
+            $row['loans'] = json_decode($row['loans'], true);
             $rows[] = $row;
         }
         $response['clients'] = $rows;
 
         $response['headers'] = $this->view();
-        $response['headers']["prepared_by_name"] = Users::fullname($response['headers']['prepared_by']);
-        $response['headers']["finished_by_name"] = Users::fullname($_SESSION['lms_user_id']);
+        $response['headers']['loan_types'] = $LoanTypes->show();
+        $response['headers']['users'] = $Users->show();
         return $response;
     }
 
@@ -478,6 +497,7 @@ class MassCollections extends Connection
                 $this->metadata($this->pk2, 'int', 11, 'NOT NULL', '', 'AUTO_INCREMENT'),
                 $this->metadata('mass_collection_id', 'int', 11),
                 $this->metadata('client_id', 'int', 11),
+                $this->metadata('branch_id', 'int', 11),
                 $this->metadata('receipt_number', 'varchar', 5),
                 $this->metadata('old_atm_balance', 'decimal', '12,4'),
                 $this->metadata('atm_withdrawal', 'decimal', '12,4'),

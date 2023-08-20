@@ -11,11 +11,8 @@
                             <tr>
                                 <th></th>
                                 <th>Reference #</th>
-                                <th>Branch</th>
-                                <th>Loan Type</th>
                                 <th>Bank</th>
                                 <th>Collection Date</th>
-                                <th>Employer</th>
                                 <th>Prepared By</th>
                             </tr>
                         </thead>
@@ -63,19 +60,10 @@
                     "data": "reference_number"
                 },
                 {
-                    "data": "branch"
-                },
-                {
-                    "data": "loan_type"
-                },
-                {
                     "data": "bank"
                 },
                 {
                     "data": "collection_date"
-                },
-                {
-                    "data": "employer"
                 },
                 {
                     "data": "prepared"

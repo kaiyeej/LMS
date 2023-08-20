@@ -7,12 +7,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-row w3-animate-left">
-<!--                         <div class="form-group col">
+                        <!--                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Branch</label>
                             <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]" style="width:100%;" required>
                             </select>
                         </div> -->
-<!--                         <div class="form-group col">
+                        <!--                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Loan Type</label>
                             <select class="form-control select2 input-item" id="loan_type_id" name="input[loan_type_id]" style="width:100%;" required>
                             </select>
@@ -26,7 +26,7 @@
                             <label><strong style="color:red;">*</strong> Collection Date</label>
                             <input type="date" class="form-control input-item" autocomplete="off" name="input[collection_date]" id="mass_collection_date" required>
                         </div>
-<!--                         <div class="form-group col">
+                        <!--                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Employer</label>
                             <select class="form-control select2 input-item" id="employer_id" name="input[employer_id]" style="width:100%;" required>
                             </select>
@@ -63,17 +63,17 @@
     var mc_client_data = [],
         mc_header_data = [];
     document.addEventListener("keydown", function(event) {
-  if (event.key === 'Enter') {
-    const activeElement = document.activeElement;
-    const editableElements = document.querySelectorAll('[contenteditable="true"]');
-    const currentIndex = Array.from(editableElements).indexOf(activeElement);
-    
-    if (currentIndex !== -1) {
-      const nextIndex = (currentIndex + 1) % editableElements.length;
-      editableElements[nextIndex].focus();
-      event.preventDefault(); // Prevent default behavior of the Enter key
-    }
-  }
+        if (event.key === 'Enter') {
+            const activeElement = document.activeElement;
+            const editableElements = document.querySelectorAll('[contenteditable="true"]');
+            const currentIndex = Array.from(editableElements).indexOf(activeElement);
+
+            if (currentIndex !== -1) {
+                const nextIndex = (currentIndex + 1) % editableElements.length;
+                editableElements[nextIndex].focus();
+                event.preventDefault(); // Prevent default behavior of the Enter key
+            }
+        }
     });
 
     function focusAndSelectText(myElement) {
@@ -263,7 +263,9 @@
         var client_tds = "";
         mc_client_data = [];
 
-        var loan_types = json.headers.loan_types, skin_loan_types = "", skin_total_loan_types = "";
+        var loan_types = json.headers.loan_types,
+            skin_loan_types = "",
+            skin_total_loan_types = "";
 
         var total_old_atm_balance = 0,
             total_atm_withdrawal = 0,
@@ -278,11 +280,10 @@
             var receipt_number = client.receipt_number;
             var old_atm_balance = client.old_atm_balance * 1;
             var atm_withdrawal = client.atm_withdrawal * 1;
-            var deduction = client.deduction * 1;
-            var emergency_loan = client.emergency_loan * 1;
+            var deduction = getLoanTotalDeduction(client.loans);
             var atm_charge = client.atm_charge * 1;
             var atm_balance = client.atm_balance * 1;
-            var excess = atm_withdrawal - deduction - emergency_loan - atm_charge;
+            var excess = atm_withdrawal - deduction - atm_charge;
             var atm_account_no = client.atm_account_no;
             var is_included = client.is_included * 1;
             var nega_excess = excess < 0 ? "negative" : "";
@@ -293,6 +294,7 @@
             var client_data = {
                 mass_collection_detail_id: client.mass_collection_detail_id * 1,
                 client_id: client.client_id * 1,
+                branch_id: client.branch_id * 1,
                 old_atm_balance: old_atm_balance,
                 atm_withdrawal: atm_withdrawal,
                 atm_charge: atm_charge,
@@ -301,13 +303,12 @@
                 receipt_number: receipt_number,
                 atm_account_no: atm_account_no,
                 is_included: is_included,
-                loans:client.loans
+                loans: client.loans
             };
 
             total_old_atm_balance += old_atm_balance;
             total_atm_withdrawal += atm_withdrawal;
             total_deduction += deduction;
-            total_emergency_loan += emergency_loan;
             total_atm_charge += atm_charge;
             total_atm_balance += atm_balance;
             total_excess += excess;
@@ -364,27 +365,42 @@
         </table>
         </div>
         <div class='col-md-12 row' style="color:#0a0a0a;">
-            <div class='col-md-6'>
-                <span>PREPARED BY: </span><br>
-                <span><b>${json.headers.prepared_by_name}</b></span>
+            <div class="form-group col">
+                <label>PREPARED BY:</label>
+                <select onchange="changeUsers(this)" data-column="prepared_by" class="form-control select2" style="width:100%;" required>${optionUsers(json.headers.users,json.headers.prepared_by)}</select>
             </div>
-            <div class='col-md-6'>
-                <span>CHECKED BY: </span><br>
-                <span><b>${json.headers.finished_by_name}</b></span>
+            <div class="form-group col">
+                <label>CHECKED BY:</label>
+                <select onchange="changeUsers(this)" data-column="finished_by" class="form-control select2" style="width:100%;" required>${optionUsers(json.headers.users,json.headers.finished_by)}</select>
             </div>
         </div>`);
         focusFirstReceiptNumber();
 
-    // <td data-column='deduction' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(deduction)}</td>
-    // <td data-column='emergency_loan' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(emergency_loan)}</td>
+        // <td data-column='deduction' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(deduction)}</td>
+        // <td data-column='emergency_loan' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(emergency_loan)}</td>
     }
 
-    function skinLoanTypes(loans){
+    function optionUsers(users, user_id = 0) {
+        var option = "<option value=''>&mdash; Please Select &mdash; </option>";
+        for (var userIndex = 0; userIndex < users.length; userIndex++) {
+            var user = users[userIndex];
+            var selected = user.user_id == user_id ? "selected" : "";
+            option += `<option ${selected} value='${user.user_id}'>${user.user_fullname}</option>`;
+        }
+        return option;
+    }
+
+    function changeUsers(el) {
+        var column = el.getAttribute("data-column");
+        mc_header_data[column] = el.value;
+    }
+
+    function skinLoanTypes(loans) {
         var skin_loans = "";
         for (var loanIndex = 0; loanIndex < loans.length; loanIndex++) {
             var loan = loans[loanIndex];
             var is_editable = (loan.loan_id) * 1 > 0;
-            var cell_class = is_editable ? "editable-cell":"gray";
+            var cell_class = is_editable ? "editable-cell" : "gray";
             skin_loans += `<td data-column='loan_type_${loan.loan_type_id}' data-loan-index='${loanIndex}' data-type-id='${loan.loan_type_id}' onblur="editLoanCollectionCell(this)" contenteditable="${is_editable}" class='right ${cell_class}'>${numberFormatClearZero(loan.monthly_payment)}</td>`;
         }
         return skin_loans;
@@ -418,7 +434,7 @@
         var replace_number = parseFloat(str.replaceAll(",", ""));
         var actual_data = replace_number ? replace_number : 0;
         el.innerHTML = numberFormatClearZero(actual_data);
-        
+
         var column = el.getAttribute("data-column");
         var loan_index = el.getAttribute("data-loan-index");
         var client_index = el.parentNode.getAttribute("data-client-index");
@@ -427,7 +443,7 @@
 
         totalSolvers(column);
         collectionSolvers(el, client_index);
-        
+
     }
 
     function totalSolvers(column) {
@@ -473,7 +489,7 @@
         totalSolvers('atm_balance');
     }
 
-    function getLoanTotalDeduction(loans){
+    function getLoanTotalDeduction(loans) {
         var total_deduction = 0;
         for (var loanIndex = 0; loanIndex < loans.length; loanIndex++) {
             var loan = loans[loanIndex];
@@ -630,15 +646,15 @@
         /* Set the background color for the sticky header */
         font-weight: bold;
         /* Optionally, you can style the sticky header */
-      z-index: 2;
+        z-index: 2;
     }
 
 
     .sticky-column {
-      position: sticky;
-      left: 0;
-      z-index: 1;
-      background-color: #f9f9f9;
+        position: sticky;
+        left: 0;
+        z-index: 1;
+        background-color: #f9f9f9;
     }
 
     #tbl_mass_collection td,
