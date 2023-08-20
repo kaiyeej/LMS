@@ -366,8 +366,9 @@ $User = new Users;
         $(".select2").prop("disabled", false);
         $("#div_sample_calculation").show();
         $("#div_soa").hide();
-        // sampleCalculation();
+        sampleCalculation('add');
         $("#btn_submit").show();
+        $("#btn_sample_cal").show();
         // $("#btn_release").hide();
         // $("#btn_reloan").hide();
 
@@ -476,17 +477,13 @@ $User = new Users;
 
             $("#div_amount").html('<label><strong style="color:red;">*</strong> Loan amount</label><input type="number" step="0.01" class="form-control input-item" onchange="calculateInterest()" autocomplete="off" name="input[loan_amount]" id="loan_amount" required>');
 
+            $("#btn_sample_cal").hide();
             $("#monthly_payment_span").html(json['monthly_payment']);
             if (jsonParse.data['status'] != "A") {
               $('#loan_container :input').attr('readonly', true);
               $(".select2").prop("disabled", true);
               $("#btn_submit").hide();
-              // $("#btn_release").hide();
-              // if (jsonParse.data['status'] == "R") {
-              //   $("#btn_reloan").show();
-              // } else {
-              //   $("#btn_reloan").hide();
-              // }
+              
             } else if (jsonParse.data['status'] == "A") {
               $("#btn_submit").show();
               // $("#btn_release").show();

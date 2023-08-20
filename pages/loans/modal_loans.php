@@ -32,22 +32,27 @@
                                         name="input[client_id]" style="width:100%;" required>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
                                     <label><strong style="color:red;">*</strong> Loan Type</label>
                                     <select class="form-control select2 input-item" onchange="changeLoanType()"
                                         id="loan_type_id" name="input[loan_type_id]" style="width:100%;" required>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-4">
-                                    <label><strong style="color:red;">*</strong> Loan Date</label>
-                                    <input type="date" class="form-control input-item" autocomplete="off"
-                                        name="input[loan_date]" id="loan_date" required>
-                                </div>
-                                <div class="form-group col-md-4" id="div_amount">
+                                <div class="form-group col-md-6" id="div_amount">
                                     <label><strong style="color:red;">*</strong> Loan amount</label>
                                     <input type="number" step="0.01" class="form-control input-item"
                                         onchange="calculateInterest()" autocomplete="off" name="input[loan_amount]"
                                         id="loan_amount" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label><strong style="color:red;">*</strong> Loan Date</label>
+                                    <input type="date" class="form-control input-item" autocomplete="off"
+                                        name="input[loan_date]" id="loan_date" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label><strong style="color:red;">*</strong> Payment Start</label>
+                                    <input type="date" class="form-control input-item" autocomplete="off"
+                                        name="input[payment_date_start]" id="payment_date_start" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label><strong style="color:red;">*</strong> Loan Interest</label>
@@ -137,7 +142,7 @@
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-warning" onclick="sampleCalculation()">Sample
+                    <button type="button" id="btn_sample_cal" class="btn btn-warning" onclick="sampleCalculation()">Sample
                         Calculation</button>
                     <button type="submit" id="btn_submit" class="btn btn-primary">
                         Submit
