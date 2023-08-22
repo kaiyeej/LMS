@@ -378,17 +378,18 @@
         <div class='col-md-12 row' style="color:#0a0a0a;" id="mass_users">
             <div class="form-group col">
                 <label>PREPARED BY:</label>
-                <select onchange="changeUsers(this)" data-column="prepared_by" id="prepared_by" class="form-control select2" style="width:100%;" required>${optionUsers(json.headers.users, json.headers.prepared_by)}</select>
+                <select onchange="changeUsers(this)" data-column="prepared_by" id="prepared_by" class="form-control select2-mass" style="width:100%;" required>${optionUsers(json.headers.users, json.headers.prepared_by)}</select>
             </div>
             <div class="form-group col">
                 <label>CHECKED BY:</label>
-                <select onchange="changeUsers(this)" data-column="finished_by" id="finished_by" class="form-control select2" style="width:100%;" required>${optionUsers(json.headers.users, json.headers.finished_by)}</select>
+                <select onchange="changeUsers(this)" data-column="finished_by" id="finished_by" class="form-control select2-mass" style="width:100%;" required>${optionUsers(json.headers.users, json.headers.finished_by)}</select>
             </div>
         </div>`);
         focusFirstReceiptNumber();
 
         // <td data-column='deduction' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(deduction)}</td>
         // <td data-column='emergency_loan' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(emergency_loan)}</td>
+        $('.select2-mass').select2();
     }
 
     function optionUsers(users, user_id = 0) {
