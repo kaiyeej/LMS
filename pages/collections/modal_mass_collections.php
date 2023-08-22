@@ -47,6 +47,9 @@
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="btn_mass_print" onclick="printMassCollection()" class="btn btn-primary">
+                        Print
+                    </button>
                     <!-- <button type="button" id="btn_mass_prev" class="btn btn-warning" onclick="goStep1()"><span class='fa fa-arrow-left'></span> Back</button> -->
                     <button type="button" id="btn_mass_save" onclick="saveMassCollection()" class="btn btn-primary">
                         Save
@@ -101,6 +104,9 @@
     }
 
     function addMassCollection() {
+        $('#btn_mass_print').hide();
+        $('#btn_mass_save').hide();
+        $('#btn_mass_finish').hide();
 
         resetMassCollection();
 
@@ -126,6 +132,10 @@
                 const json = jsonParse.data;
                 mc_header_data = json.headers;
                 get_mass_collections(json);
+
+                $('#btn_mass_save').show();
+                $('#btn_mass_finish').show();
+                $('#btn_mass_print').hide();
             }
         });
     });
@@ -316,8 +326,8 @@
             mc_client_data.push(client_data);
             client_tds += `<tr data-client-index='${clientIndex}' class='${excluded_loan}'>
                 <td class="sticky-column">${clientIndex + 1}</td>
-                <td class="center sticky-column"><input class='checkbox-loan' type='checkbox' onchange="changeMassCollectionLoanStatus(this)" ${checked_loan_status}></td>
-                <td class="sticky-column">${client.client_name}</td>
+                <td class="center sticky-column checked-input"><input class='checkbox-loan' type='checkbox' onchange="changeMassCollectionLoanStatus(this)" ${checked_loan_status}></td>
+                <td class="sticky-column" style="font-size:9pt !important;min-width:150px !important;">${client.client_name}</td>
                 <td data-column='receipt_number' onblur="editCollectionCell(this,false)" contenteditable="${is_editable}" class='right editable-cell'>${receipt_number}</td>
                 <td data-column='old_atm_balance' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(old_atm_balance)}</td>
                 <td data-column='atm_withdrawal' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(atm_withdrawal)}</td>
@@ -339,8 +349,8 @@
                 <thead>
                   <tr>
                     <th class="sticky-column">#</th>
-                    <th class="sticky-column"><input type='checkbox' onchange='checkAllLoan(this)' checked></th>
-                    <th class="sticky-column" style="width:35%;">Name</th>
+                    <th class="sticky-column checked-input"><input type='checkbox' onchange='checkAllLoan(this)' checked></th>
+                    <th class="sticky-column">Name</th>
                     <th class='w-8'>Receipt #</th>
                     <th class='w-8 fs-9'>ATM Balance Before Withdrawal</th>
                     <th class='w-8'>ATM Withdrawal</th>
@@ -348,12 +358,13 @@
                     <th class='w-8'>ATM Charge</th>
                     <th class='w-8'>ATM Balance</th>
                     <th class='w-8'>Excess</th>
-                    <th style="width:35%;">Account Number</th>
+                    <th>Account Number</th>
                   </tr>
                 </thead>
               ${client_tds}
               <tr class='table-footer'>
-                <th colspan="4" class="end">TOTAL:</th>
+                <th class="checked-input"></th>
+                <th colspan="3" class="end">TOTAL:</th>
                 <th data-column='total_old_atm_balance' class="right">${numberFormat(total_old_atm_balance)}</th>
                 <th data-column='total_atm_withdrawal' class="right">${numberFormat(total_atm_withdrawal)}</th>
                 ${skin_total_loan_types}
@@ -364,14 +375,14 @@
               </tr>
         </table>
         </div>
-        <div class='col-md-12 row' style="color:#0a0a0a;">
+        <div class='col-md-12 row' style="color:#0a0a0a;" id="mass_users">
             <div class="form-group col">
                 <label>PREPARED BY:</label>
-                <select onchange="changeUsers(this)" data-column="prepared_by" class="form-control select2" style="width:100%;" required>${optionUsers(json.headers.users,json.headers.prepared_by)}</select>
+                <select onchange="changeUsers(this)" data-column="prepared_by" id="prepared_by" class="form-control select2" style="width:100%;" required>${optionUsers(json.headers.users, json.headers.prepared_by)}</select>
             </div>
             <div class="form-group col">
                 <label>CHECKED BY:</label>
-                <select onchange="changeUsers(this)" data-column="finished_by" class="form-control select2" style="width:100%;" required>${optionUsers(json.headers.users,json.headers.finished_by)}</select>
+                <select onchange="changeUsers(this)" data-column="finished_by" id="finished_by" class="form-control select2" style="width:100%;" required>${optionUsers(json.headers.users, json.headers.finished_by)}</select>
             </div>
         </div>`);
         focusFirstReceiptNumber();
@@ -581,13 +592,16 @@
     }
 </script>
 <script>
-    function viewMassCollection(mass_collection_id) {
-        getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);
-        getSelectOption('Employers', 'employer_id', 'employer_name');
+    function viewMassCollection(mass_collection_id, is_finish = false) {
+        // getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);
+        // getSelectOption('Employers', 'employer_id', 'employer_name');
         $("#mass_chart_id").html($("#chart_id").html());
         $("#mass_branch_id").html($("#branch_id").html());
         $(".hide-for-save").hide();
 
+        is_finish ? $('#btn_mass_save').hide() : $('#btn_mass_save').show();
+        is_finish ? $('#btn_mass_finish').hide() : $('#btn_mass_finish').show();
+        is_finish ? $('#btn_mass_print').show() : $('#btn_mass_print').hide();
 
         $("#modalSavedMassCollection").modal("hide");
         $("#mass-modal-header").html(`<h5 class="modal-title"><span class='ion-compose'></span> View Saved Mass Collection</h5>`);
@@ -612,10 +626,10 @@
                 const json = jsonParse.data;
                 mc_header_data = json.headers;
 
-                $("#loan_type_id").val(mc_header_data.loan_type_id).select2().trigger('change').prop("disabled", true);
-                $("#employer_id").val(mc_header_data.employer_id).select2().trigger('change').prop("disabled", true);
+                // $("#loan_type_id").val(mc_header_data.loan_type_id).select2().trigger('change').prop("disabled", true);
+                // $("#employer_id").val(mc_header_data.employer_id).select2().trigger('change').prop("disabled", true);
                 $("#mass_chart_id").val(mc_header_data.chart_id).select2().trigger('change').prop("disabled", true);
-                $("#mass_branch_id").val(mc_header_data.branch_id).select2().trigger('change').prop("disabled", true);
+                // $("#mass_branch_id").val(mc_header_data.branch_id).select2().trigger('change').prop("disabled", true);
 
                 $("#mass_collection_date").val(mc_header_data.collection_date).prop("disabled", true);
 
@@ -623,11 +637,42 @@
             }
         });
     }
+
+    function printMassCollection() {
+        var original_html = $("#mass_collection_result_content").html();
+        var prepared_by_ = $("#prepared_by option:selected").text();
+        var finished_by_ = $("#finished_by option:selected").text();
+        $(".checked-input").remove();
+        $("#mass_users").html('');
+
+        var myWindow = window.open('', 'Print Mass Collection', 'height=600,width=2500');
+        myWindow.document.write('<html><head><title>Print Mass Collection</title>');
+        myWindow.document.write('<style>#tbl_mass_collection{font-family:arial,sans-serif;font-size:10pt;border-collapse:collapse;width:100%;color:#0a0a0a}.table-container{max-height:300px;overflow:auto}.table-container thead{background-color:#f2f2f2;font-weight:bold;}.sticky-column{background-color:#f9f9f9}#tbl_mass_collection td,th{border:1px solid #ddd;padding:2px}#tbl_mass_collection th{text-align:center;font-size:8pt!important}#tbl_mass_collection td{font-size:11pt!important}.table-footer{font-size:12pt!important}.import_failed{background-color:#db5151;color:#fff}.w-10{width:10%!important}.w-8{width:8% !important}.w-5{width:5%!important}.fs-9{font-size:9px!important}.right{text-align:right!important}.center{text-align:center!important}.end{text-align:end!important}.negative{background:red;color:#fff}.gray{background:gray;color:#fff}.excluded_loan{background:gray;color:white;text-decoration:line-through}.form-group{width:50%;}.row{width:100%;}</style>');
+        /*optional stylesheet*/ //myWindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
+        myWindow.document.write('</head><body>');
+        // myWindow.document.write('<div align="center" style="font-size:12pt; font-weight:bold; width: 100%;">');
+        // myWindow.document.write(data_header + '<br></div>');
+        myWindow.document.write(`<div>
+            <span>FEATHERLEAF LENDING CORP.</span><br>
+            <span>DATE: ${$("#mass_collection_date").val()}</span><br>
+            <span>BANK: ${$("#mass_chart_id option:selected").text()}</span>
+        </div>`);
+        myWindow.document.write('<div>' + $("#mass_collection_result_content").html() + "</div>");
+        myWindow.document.write(`<div>
+            <span>Prepared by: <b>${prepared_by_}</b></span><br>
+            <span>Checked by: <b>${finished_by_}</b></span>
+        </div>`);
+        myWindow.document.write('</body>');
+        myWindow.document.write('</html>');
+        myWindow.document.close();
+        myWindow.print();
+        $("#mass_collection_result_content").html(original_html);
+    }
 </script>
 <style>
     #tbl_mass_collection {
         font-family: arial, sans-serif;
-        font-size: 12px;
+        font-size: 10pt;
         border-collapse: collapse;
         width: 100%;
         color: #0a0a0a;
@@ -665,6 +710,7 @@
 
     #tbl_mass_collection th {
         text-align: center;
+        font-size: 8pt !important;
     }
 
     #tbl_mass_collection td {
@@ -672,7 +718,7 @@
     }
 
     .table-footer {
-        font-size: 11pt !important;
+        font-size: 12pt !important;
     }
 
     .import_failed {
@@ -685,7 +731,7 @@
     }
 
     .w-8 {
-        width: 8% !important;
+        width: 50px !important;
     }
 
     .w-5 {

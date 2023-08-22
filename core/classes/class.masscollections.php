@@ -53,6 +53,7 @@ class MassCollections extends Connection
             $row['bank']        = $ChartOfAccounts->name($row['chart_id']);
             $row['employer']    = $Employers->name($row['employer_id']);
             $row['prepared']    = $Users->name($row['prepared_by']);
+            $row['checked']     = $Users->name($row['finished_by']);
             $rows[] = $row;
         }
         return $rows;

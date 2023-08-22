@@ -193,6 +193,9 @@ class LoanUploads extends Connection
 
         $collections = [];
         $balance = 0;
+
+        $payment_date_start = '';
+        $payment_day = date('d', strtotime($loan_date));
         for ($row = $payment_row; $row < $rowCount; $row++) {
             $payment_month = $worksheet->getCell('C' . $row)->getValue();
             if ($payment_month != '') {
@@ -211,6 +214,8 @@ class LoanUploads extends Connection
                     'balance'           => $balance,
                     'status'            => $status ?? '',
                 ];
+                if ($payment_date_start == '' && $payment_amount > 0)
+                    $payment_date_start = date("m/t/Y", strtotime($payment_month));
             }
             if ($payment_month == '')
                 break;
@@ -229,6 +234,7 @@ class LoanUploads extends Connection
             'service_fee'           => 0,
             'payment_terms'         => $payment_terms,
             'loan_date'             => $loan_date,
+            'payment_date_start'    => $payment_date_start,
             'monthly_payment'       => (float) $monthly_payment,
             'balance'               => (float) $balance,
             'collections'           => $collections
@@ -282,6 +288,7 @@ class LoanUploads extends Connection
                     'client_id'             => $client_id,
                     'loan_type_id'          => $loan_data['loan_type_id'],
                     'loan_date'             => date("Y-m-d", strtotime($loan_data['loan_date'])),
+                    'payment_date_start'    => date("Y-m-d", strtotime($loan_data['payment_date_start'])),
                     'loan_amount'           => $loan_data['loan_amount'],
                     'loan_period'           => $loan_data['loan_period'],
                     'loan_interest'         => $loan_data['loan_interest'],
@@ -315,6 +322,7 @@ class LoanUploads extends Connection
             $response = [];
             $collections = $loan_data['collections'];
             $count = 1;
+            $count_index = 1;
             foreach ($collections as $collection_data) {
                 if ($collection_data['payment_amount'] > 0) {
                     $reference_number = "CL-$client_id-" . sprintf("%'.03d", $count++) . "-" . $loan_id . "-" . date("Ymdhis");
@@ -350,6 +358,7 @@ class LoanUploads extends Connection
                             'client_id'             => $client_id,
                             'loan_type_id'          => $loan_data['loan_type_id'],
                             'loan_date'             => date("Y-m-d", strtotime($collection_data['payment_month'])),
+                            'payment_date_start'    => date("Y-m-d", strtotime($collections[$count_index]['payment_month'])),
                             'loan_amount'           => $loan_data['loan_amount'],
                             'loan_period'           => $loan_data['loan_period'],
                             'loan_interest'         => $loan_data['loan_interest'],
@@ -372,6 +381,7 @@ class LoanUploads extends Connection
                     }
                     $response[] = $collection_id;
                 }
+                $count_index++;
             }
             return $response;
         } catch (Exception $e) {

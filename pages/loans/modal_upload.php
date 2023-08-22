@@ -148,6 +148,7 @@
             for (var loanIndex = 0; loanIndex < client.loans.length; loanIndex++) {
                 const loan = client.loans[loanIndex];
                 var loan_is_valid = isValidDate(loan.loan_date) ? "" : "unacceptable_data";
+                var start_is_valid = isValidDate(loan.payment_date_start) ? "" : "unacceptable_data";
 
                 client_tds += `<tr data-client-index="${clientIndex}" data-loan-index="${loanIndex}">
                 <td colspan="2"></td>
@@ -156,6 +157,7 @@
                 </td>
                 <td onblur="editLoanCell(this,false)" data-loan-column="loan_type_name" contenteditable="true" class='${unacceptable_data(loan.loan_type_id)}'>${loan.loan_type_name}</td>
                 <td onblur="editLoanCell(this,false)" data-loan-column="loan_date" contenteditable="true" class='${loan_is_valid}'>${loan.loan_date}</td>
+                <td onblur="editLoanCell(this,false)" data-loan-column="payment_date_start" contenteditable="true" class='${start_is_valid}'>${loan.payment_date_start}</td>
                 <td onblur="editLoanCell(this)" data-loan-column="loan_amount" contenteditable="true" class='right ${unacceptable_data(loan.loan_amount)}'>${numberFormatClearZero(loan.loan_amount)}</td>
                 <td onblur="editLoanCell(this)" data-loan-column="loan_interest" contenteditable="true" class='right ${unacceptable_data(loan.loan_interest)}'>${numberFormatClearZero(loan.loan_interest)}</td>
                 <td onblur="editLoanCell(this)" data-loan-column="penalty_percentage" contenteditable="true" class='right ${unacceptable_data(loan.penalty_percentage)}'>${numberFormatClearZero(loan.penalty_percentage)}</td>
@@ -173,14 +175,15 @@
                 <th>#</th>
                 <th colspan="2">Client</th>
                 <th>Loan Type</th>
-                <th class='w-10'>Loan Date</th>
-                <th class='w-10'>Loan Amount</th>
-                <th class='w-10'>Interest</th>
-                <th class='w-10'>Penalty Interest</th>
-                <th class='w-10'>Loan Terms</th>
-                <th class='w-10'>Payment Terms</th>
-                <th class='w-10'>Monthly Payment</th>
-                <th class='w-10'>Outstanding Balance</th>
+                <th class='w-8'>Loan Date</th>
+                <th class='w-8'>Payment Start</th>
+                <th class='w-8'>Loan Amount</th>
+                <th class='w-8'>Interest</th>
+                <th class='w-8'>Penalty Interest</th>
+                <th class='w-8'>Loan Terms</th>
+                <th class='w-8'>Payment Terms</th>
+                <th class='w-8'>Monthly Payment</th>
+                <th class='w-8'>Outstanding Balance</th>
               </tr>
               </thead>
               ${client_tds}
@@ -206,14 +209,14 @@
             total_interest += collection.interest;
             skin_collections += `<tr data-client-index="${client_index}" data-loan-index="${loan_index}" data-collection-index="${collectionIndex}">
                 <td class='w-2'></td>
-                <td class='w-10' contenteditable="true" data-collection-column="payment_month" onblur="editCollectionCell(this,false)">${collection.payment_month}</td>
-                <td class='w-10 right' contenteditable="true" data-collection-column="payment_amount" onblur="editCollectionCell(this)">${numberFormat(collection.payment_amount)}</td>
-                <td class='w-10 right' contenteditable="true" data-collection-column="interest" onblur="editCollectionCell(this)">${numberFormat(collection.interest)}</td>
-                <td class='w-10 right' contenteditable="true" data-collection-column="penalty" onblur="editCollectionCell(this)">${numberFormat(collection.penalty)}</td>
-                <td class='w-10 right' contenteditable="true" data-collection-column="principal" onblur="editCollectionCell(this)">${numberFormat(collection.principal)}</td>
+                <td class='w-8' contenteditable="true" data-collection-column="payment_month" onblur="editCollectionCell(this,false)">${collection.payment_month}</td>
+                <td class='w-8 right' contenteditable="true" data-collection-column="payment_amount" onblur="editCollectionCell(this)">${numberFormat(collection.payment_amount)}</td>
+                <td class='w-8 right' contenteditable="true" data-collection-column="interest" onblur="editCollectionCell(this)">${numberFormat(collection.interest)}</td>
+                <td class='w-8 right' contenteditable="true" data-collection-column="penalty" onblur="editCollectionCell(this)">${numberFormat(collection.penalty)}</td>
+                <td class='w-8 right' contenteditable="true" data-collection-column="principal" onblur="editCollectionCell(this)">${numberFormat(collection.principal)}</td>
                 <td class='w-5'></td>
-                <td class='w-10 right' contenteditable="true">${numberFormat(collection.balance)}</td>
-                <td class='w-10'>${collection.status}</td>
+                <td class='w-8 right' contenteditable="true">${numberFormat(collection.balance)}</td>
+                <td class='w-8'>${collection.status}</td>
                 <td class='w-2'></td>
             </tr>`;
         }
@@ -231,11 +234,11 @@
               </tr>
               <tr>
                 <th class='w-2'></th>
-                <th class='w-10'>Payment Date</th>
-                <th class='w-10'>Payment</th>
-                <th class='w-10'>Interest Amount</th>
-                <th class='w-10'>Penalty</th>
-                <th class='w-10'>Applicable to Principal</th>
+                <th class='w-8'>Payment Date</th>
+                <th class='w-8'>Payment</th>
+                <th class='w-8'>Interest Amount</th>
+                <th class='w-8'>Penalty</th>
+                <th class='w-8'>Applicable to Principal</th>
                 <th class='w-5'></th>
                 <th colspan="2">Outstanding Balance</th>
                 <th class='w-2'></th>
@@ -294,6 +297,7 @@
             var actual_data = str;
             loanTypeChecker(el);
             loanDateChecker(el);
+            loanStartDateChecker(el);
         }
 
         var loan_column = el.getAttribute("data-loan-column");
@@ -368,6 +372,25 @@
         var loan_index = el.parentNode.getAttribute("data-loan-index");
 
         loan_from_excels[client_index].loans[loan_index].loan_date = new_loan_date;
+
+        if (isValidDate(new_loan_date)) {
+            el.classList.remove('unacceptable_data');
+        } else {
+            el.classList.add('unacceptable_data');
+        }
+    }
+
+    function loanStartDateChecker(el) {
+        var loan_column = el.getAttribute("data-loan-column");
+        if (loan_column != 'payment_date_start')
+            return;
+
+        var new_loan_date = el.innerHTML;
+
+        var client_index = el.parentNode.getAttribute("data-client-index");
+        var loan_index = el.parentNode.getAttribute("data-loan-index");
+
+        loan_from_excels[client_index].loans[loan_index].payment_date_start = new_loan_date;
 
         if (isValidDate(new_loan_date)) {
             el.classList.remove('unacceptable_data');
@@ -485,8 +508,8 @@
         color: #fff;
     }
 
-    .w-10 {
-        width: 10% !important;
+    .w-8 {
+        width: 8% !important;
     }
 
     .w-5 {

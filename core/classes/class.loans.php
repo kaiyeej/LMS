@@ -384,7 +384,7 @@ class Loans extends Connection
 
             $suggested_payment = $loan_period > 0 ? $total_amount_with_interest / $loan_period : "";
 
-            if ($payment_start == $loan_date OR $payment_count == $payment_terms) { // matches every iterations
+            if ($payment_start == $loan_date or $payment_count == $payment_terms) { // matches every iterations
                 $payment_count = 1;
                 $monthly_payment = $monthlypayment > 0 ? $monthlypayment : ($suggested_payment * $payment_terms);
             } else {
@@ -460,7 +460,7 @@ class Loans extends Connection
 
                 $loan_date = date('Y-m-d', strtotime("first day of next month", strtotime($loan_date)));
 
-                if ($payment_count == $payment_terms OR $payment_date_start == $loan_date) { // matches every 3 iterations
+                if ($payment_count == $payment_terms or $payment_date_start == $loan_date) { // matches every 3 iterations
                     $payment_count = 1;
                     $payment = $row['monthly_payment'];
                 } else {
@@ -934,7 +934,8 @@ class Loans extends Connection
                 $this->metadata('due_date', 'date'),
                 $this->metadata('status', 'varchar', 1, 'NOT NULL', "'A'", '', "'P - Pending; A - Approved; R - Released; D - Denied; F- Fully paid'"),
                 $this->metadata('renewal_status', 'varchar', 1),
-                $this->metadata('loan_date', 'date'),
+                $this->metadata('loan_date', 'date', '', 'NULL'),
+                $this->metadata('payment_date_start', 'date', '', 'NULL'),
                 $this->metadata('service_fee', 'decimal', '12,3'),
                 $this->metadata('monthly_payment', 'decimal', '12,4'),
                 $this->metadata('main_loan_id', 'int', 11),
