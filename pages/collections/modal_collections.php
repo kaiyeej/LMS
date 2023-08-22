@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <input type="hidden" id="hidden_id" name="input[collection_id]">
                     <div class="form-row">
-                        <div class="col-lg-7">
+                        <div class="col-lg-7" id="modal_collection_body">
                             <div class="row">
                                 <div class="form-group col-md-12">
                                     <label style="color: #6777ef;font-weight: bold;">Ref. #: </label>
@@ -133,11 +133,18 @@
                     <div class="form-row">
 
                     </div>
+
+
+                    <div id="temporary_print">
+                    </div>
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" id="btn_submit" class="btn btn-success">
                         Finish
+                    </button>
+                    <button id="btn_print" class="btn btn-primary" style="display: none;" onclick="print_collection_solo()">
+                        Print
                     </button>
                 </div>
             </div>

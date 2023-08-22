@@ -214,6 +214,21 @@ class Collections extends Connection
         return $row;
     }
 
+    public function print(){
+        $Branches = new Branches;
+        $Clients = new Clients;
+        $ChartOfAccounts = new ChartOfAccounts;
+
+        $primary_id =  $this->inputs['id'];
+        $result = $this->select($this->table, "*", "$this->pk = '$primary_id'");
+        $row = $result->fetch_assoc();
+
+        $row['branch_name'] = $Branches->name($row['branch_id']);
+        $row['client_name'] = $Clients->name($row['client_id']);
+        $row['coa_name'] = $ChartOfAccounts->name($row['chart_id']);
+        return $row;
+    }
+
     public function remove()
     {
         $ids = implode(",", $this->inputs['ids']);

@@ -124,6 +124,57 @@
 <?php include "modal_export.php"; ?>
 <?php include "modal_import.php"; ?>
 <script type="text/javascript">
+    function print_collection_solo(){
+        var id = $("#hidden_id").val();
+
+        $.ajax({
+            type: "POST",
+            url: "controllers/sql.php?c=" + route_settings.class_name + "&q=print",
+            data: {
+                input: {
+                    id: id
+                }
+            },
+            success: function(data) {
+                var jsonParse = JSON.parse(data);
+                const json = jsonParse.data;
+                
+                $("#temporary_print").html(`
+                    <label style='font-weight:900;'><center>Collection <br>
+                    Featherleaf <br>
+                    ${json.branch_name} <br>
+                    ${json.reference_number} <br><br><br>
+                    </center></label>
+                                <label><strong>Collection Date:</strong> ${json.collection_date}</label><br>
+                                <label><strong>Client:</strong> ${json.client_name}</label><br>
+                                <label><strong>Receipt #: ${json.receipt_number}</strong></label><br>
+                                <label><strong>Bank:</strong> ${json.coa_name}</label><br>
+                                        
+                                <label><strong>Penalty:</strong> ${numberFormat(json.penalty_amount,2)}</label><br>
+                                <label><strong>Amount:</strong> ${numberFormat(json.amount,2)}</label><br>
+
+                                <label><strong>Atm Balance Before Withdrawal:</strong> ${numberFormat(json.old_atm_balance,2)}</label><br>
+                                <label><strong>Atm Withdrawal:</strong> ${numberFormat(json.atm_withdrawal,2)}</label><br>
+
+                                <label><strong>Atm Charge:</strong> ${numberFormat(json.atm_charge,2)}</label><br>
+                                <label><strong>Atm Balance:</strong> ${numberFormat(json.atm_balance,2)}</label><br>
+                                <label><strong>Excess:</strong> ${numberFormat(json.excess,2)}</label><br>
+                                <label><strong>Remarks:</strong> ${json.remarks}</label><br>
+                `);
+
+        var divContents = document.getElementById("temporary_print").innerHTML;
+            var a = window.open('', '', 'height=500, width=500');
+            a.document.write('<html>');
+            a.document.write('<link rel="stylesheet" href="assets/modules/datatables/datatables.min.css"><link rel="stylesheet" href="assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css"><link rel="stylesheet" href="assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css"><link rel="stylesheet" href="assets/css/style.css"><link rel="stylesheet" href="assets/css/components.css"><link rel="stylesheet" href="assets/modules/select2/dist/css/select2.min.css">')
+            a.document.write('<body>');
+            a.document.write(divContents);
+            a.document.write('</body></html>');
+            a.document.close();
+            a.print();
+            }
+        });
+    }
+
     function getEntries() {
         var start_date = $("#start_date").val();
         var end_date = $("#end_date").val();
@@ -265,6 +316,7 @@
                 $('.input-item').attr('readonly', true);
                 $(".select2").prop("disabled", true);
                 $("#btn_submit").hide();
+                $("#btn_print").show();
 
                 $("#modalLabel").html("<i class='flaticon-edit'></i> Update Entry");
                 $("#modalEntry").modal('show');
