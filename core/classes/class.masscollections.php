@@ -59,6 +59,19 @@ class MassCollections extends Connection
         return $rows;
     }
 
+    public function initilize_query()
+    {
+        "SELECT l.*
+        FROM tbl_loans AS l
+        INNER JOIN tbl_clients AS c ON c.client_id = l.client_id
+        INNER JOIN tbl_client_employment AS ce ON ce.client_id = c.client_id
+        WHERE
+            c.branch_id= 1
+            AND ce.employer_id = 4
+        GROUP BY c.client_id
+        ORDER BY c.client_lname ASC";
+    }
+
     public function initialize()
     {
         $Clients            = new Clients;
@@ -71,9 +84,9 @@ class MassCollections extends Connection
 
         // $loan_type_id       = $this->inputs['loan_type_id'];
         $collection_date    = $this->inputs['collection_date'];
-        // $employer_id        = $this->inputs['employer_id'];
+        $employer_id        = $this->inputs['employer_id'];
         $chart_id           = $this->inputs['chart_id'];
-        // $branch_id          = $this->inputs['branch_id'];
+        $branch_id          = (int) $this->inputs['branch_id'];
         $atm_charge         = (float) $this->inputs['atm_charge'];
         $loan_types         = $LoanTypes->show();
 
@@ -81,7 +94,7 @@ class MassCollections extends Connection
         $result = $this->select(
             "tbl_loans",
             '*',
-            "status = 'R' GROUP BY client_id"
+            "status = 'R' AND branch_id = '$branch_id' GROUP BY client_id"
         );
         while ($row = $result->fetch_assoc()) {
             $row_details = [];
@@ -110,13 +123,13 @@ class MassCollections extends Connection
             // "loan_name"             => $LoanTypes->name($loan_type_id),
             "collection_date"       => date("Y-m-d", strtotime($collection_date)),
             "collection_date_label" => date("F d, Y", strtotime($collection_date)),
-            // "employer_id"           => $employer_id,
+            "employer_id"           => $employer_id,
             // "employer_name"         => $Employers->name($employer_id),
             "prepared_by"           => $_SESSION['lms_user_id'],
             "finished_by"           => $_SESSION['lms_user_id'],
             "chart_id"              => $chart_id,
             "chart_name"            => $ChartOfAccounts->name($chart_id),
-            // "branch_id"             => $branch_id,
+            "branch_id"             => $branch_id,
             // "branch_name"           => $Branches->name($branch_id),
             "atm_charge"            => $atm_charge,
             "status"                => "S",

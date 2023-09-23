@@ -1,17 +1,19 @@
 <form id='frmMassCollection' method="POST">
     <div class="modal fade" id="modalMassCollection" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" id="import_dialog" style="width: 100%;max-width: 2000px;margin: 0.5rem;">
+        <div class="modal-dialog" role="document" id="import_dialog"
+            style="width: 100%;max-width: 2000px;margin: 0.5rem;">
             <div class="modal-content">
                 <div class="modal-header" id="mass-modal-header">
                     <h5 class="modal-title"><span class='ion-compose'></span> Add Mass Collection</h5>
                 </div>
                 <div class="modal-body">
                     <div class="form-row w3-animate-left">
-                        <!--                         <div class="form-group col">
+                        <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Branch</label>
-                            <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]" style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]"
+                                style="width:100%;" required>
                             </select>
-                        </div> -->
+                        </div>
                         <!--                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Loan Type</label>
                             <select class="form-control select2 input-item" id="loan_type_id" name="input[loan_type_id]" style="width:100%;" required>
@@ -19,25 +21,30 @@
                         </div> -->
                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Bank</label>
-                            <select class="form-control select2 input-item" id="mass_chart_id" name="input[chart_id]" style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="mass_chart_id" name="input[chart_id]"
+                                style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Collection Date</label>
-                            <input type="date" class="form-control input-item" autocomplete="off" name="input[collection_date]" id="mass_collection_date" required>
+                            <input type="date" class="form-control input-item" autocomplete="off"
+                                name="input[collection_date]" id="mass_collection_date" required>
                         </div>
-                        <!--                         <div class="form-group col">
+                        <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Employer</label>
-                            <select class="form-control select2 input-item" id="employer_id" name="input[employer_id]" style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="mass_employer_id"
+                                name="input[employer_id]" style="width:100%;" required>
                             </select>
-                        </div> -->
+                        </div>
                         <div class="form-group col hide-for-save">
                             <label>ATM Charge</label>
-                            <input min="0" type="number" class="form-control input-item" autocomplete="off" name="input[atm_charge]" id="mass_atm_charge">
+                            <input min="0" type="number" class="form-control input-item" autocomplete="off"
+                                name="input[atm_charge]" id="mass_atm_charge">
                         </div>
                         <div class="form-group col hide-for-save">
                             <br />
-                            <button type="submit" id="btn_mass_generate" style="margin-top:10px;" class="btn btn-primary">
+                            <button type="submit" id="btn_mass_generate" style="margin-top:10px;"
+                                class="btn btn-primary">
                                 Generate
                             </button>
                         </div>
@@ -227,7 +234,8 @@
     function resetMassCollection() {
 
         // getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);
-        // getSelectOption('Employers', 'employer_id', 'employer_name');
+        getSelectOption('Employers', 'mass_employer_id', 'employer_name', '', [], '', 'Select All');
+        getSelectOption('Branches', 'mass_branch_id', 'branch_name', '', [], '', 'Select All');
 
         $("#mass_chart_id").html($("#chart_id").html()).val(null).select2().trigger('change').prop("disabled", false);
         // $("#mass_branch_id").html($("#branch_id").html()).val(null).select2().trigger('change').prop("disabled", false);
@@ -501,6 +509,13 @@
         totalSolvers('atm_balance');
     }
 
+    function resetLoanDeduction(client_index) {
+        var loans = mc_client_data[client_index].loans;
+        for (var loanIndex = 0; loanIndex < loans.length; loanIndex++) {
+            mc_client_data[client_index].loans[loanIndex].monthly_payment = 0;
+        }
+    }
+
     function getLoanTotalDeduction(loans) {
         var total_deduction = 0;
         for (var loanIndex = 0; loanIndex < loans.length; loanIndex++) {
@@ -538,6 +553,7 @@
             mc_client_data[client_index].atm_balance = 0;
             mc_client_data[client_index].excess = 0;
 
+            resetLoanDeduction(client_index);
             modifyEditableCell(el);
             collectionSolvers(el.parentNode, client_index);
         }
@@ -570,12 +586,12 @@
             }
         } else {
             swal({
-                    title: 'Are you sure?',
-                    text: 'Your data will be cleared!',
-                    icon: 'warning',
-                    buttons: ["Cancel", "Proceed"],
-                    dangerMode: true,
-                })
+                title: 'Are you sure?',
+                text: 'Your data will be cleared!',
+                icon: 'warning',
+                buttons: ["Cancel", "Proceed"],
+                dangerMode: true,
+            })
                 .then((willProceed) => {
                     if (willProceed) {
                         for (var i = 0; i < checkboxes.length; i++) {
@@ -648,7 +664,7 @@
 
         var myWindow = window.open('', 'Print Mass Collection', 'height=600,width=2500');
         myWindow.document.write('<html><head><title>Print Mass Collection</title>');
-        myWindow.document.write('<style>#tbl_mass_collection{font-family:arial,sans-serif;font-size:10pt;border-collapse:collapse;width:100%;color:#0a0a0a}.table-container{max-height:300px;overflow:auto}.table-container thead{background-color:#f2f2f2;font-weight:bold;}.sticky-column{background-color:#f9f9f9}#tbl_mass_collection td,th{border:1px solid #ddd;padding:2px}#tbl_mass_collection th{text-align:center;font-size:8pt!important}#tbl_mass_collection td{font-size:11pt!important}.table-footer{font-size:12pt!important}.import_failed{background-color:#db5151;color:#fff}.w-10{width:10%!important}.w-8{width:8% !important}.w-5{width:5%!important}.fs-9{font-size:9px!important}.right{text-align:right!important}.center{text-align:center!important}.end{text-align:end!important}.negative{background:red;color:#fff}.gray{background:gray;color:#fff}.excluded_loan{background:gray;color:white;text-decoration:line-through}.form-group{width:50%;}.row{width:100%;}</style>');
+        myWindow.document.write('<style>#tbl_mass_collection{font-family:arial,sans-serif;font-size:10pt;border-collapse:collapse;width:100%;color:#0a0a0a}.table-container{max-height:300px;overflow:auto}.table-container thead{background-color:#f2f2f2;font-weight:bold;}#tbl_mass_collection td,th{border:1px solid #ddd;padding:2px}#tbl_mass_collection th{text-align:center;font-size:8pt!important}#tbl_mass_collection td{font-size:11pt!important}.table-footer{font-size:12pt!important}.import_failed{background-color:#db5151;color:#fff}.w-10{width:10%!important}.w-8{width:8% !important}.w-5{width:5%!important}.fs-9{font-size:9px!important}.right{text-align:right!important}.center{text-align:center!important}.end{text-align:end!important}.negative{background:red;color:#fff}.gray{background:gray;color:#fff}.excluded_loan{background:gray;color:white;text-decoration:line-through}.form-group{width:50%;}.row{width:100%;}</style>');
         /*optional stylesheet*/ //myWindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
         myWindow.document.write('</head><body>');
         // myWindow.document.write('<div align="center" style="font-size:12pt; font-weight:bold; width: 100%;">');
@@ -700,7 +716,7 @@
         position: sticky;
         left: 0;
         z-index: 1;
-        background-color: #f9f9f9;
+        /*        background-color: #f9f9f9;*/
     }
 
     #tbl_mass_collection td,
