@@ -483,7 +483,7 @@ $User = new Users;
               $('#loan_container :input').attr('readonly', true);
               $(".select2").prop("disabled", true);
               $("#btn_submit").hide();
-              
+
             } else if (jsonParse.data['status'] == "A") {
               $("#btn_submit").show();
               // $("#btn_release").show();
@@ -823,6 +823,44 @@ $User = new Users;
             } else {
               $('.' + primary_id).append($("<option></option>").attr(data_attributes).text(list[label]));
             }
+          }
+        }
+      });
+    }
+
+    function getSelectOption2(element_id, class_name, value_name, text_name, param = '', pre_value = '', pre_text = 'Please Select', selected = 0, attributes = []) {
+      $("#" + element_id).prepend($('<option></option>').html('Loading...'));
+      $.ajax({
+        type: "POST",
+        url: "controllers/sql.php?c=" + class_name + "&q=show",
+        data: {
+          input: {
+            param: param
+          }
+        },
+        success: function(data) {
+          var json = JSON.parse(data);
+
+          $("#" + element_id).html("<option value='" + pre_value + "'> &mdash; " + pre_text + " &mdash; </option>");
+
+
+          for (list_index = 0; list_index < json.data.length; list_index++) {
+            const list = json.data[list_index];
+            var data_attributes = {};
+
+            data_attributes['value'] = list[value_name];
+
+            if (data_attributes['value'] == selected) {
+              data_attributes['selected'] = true;
+            }
+            for (var attr_index in attributes) {
+              const attr = attributes[attr_index];
+              data_attributes[attr] = list[attr];
+            }
+
+
+            $('#' + element_id).append($("<option></option>").attr(data_attributes).text(list[text_name]));
+
           }
         }
       });

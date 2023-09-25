@@ -18,6 +18,8 @@ class MassCollections extends Connection
         $form = array(
             $this->name         => $this->clean($this->inputs[$this->name]),
             'chart_id'          => $this->clean($this->inputs['chart_id']),
+            'branch_id'         => $this->clean($this->inputs['branch_id']),
+            'employer_id'       => $this->clean($this->inputs['employer_id']),
             'collection_date'   => $this->clean($this->inputs['collection_date']),
             'atm_charge'        => $this->clean($this->inputs['atm_charge']),
             'status'            => $this->clean($this->inputs['status']),
@@ -52,24 +54,32 @@ class MassCollections extends Connection
             $row['loan_type']   = $LoanTypes->name($row['loan_type_id']);
             $row['bank']        = $ChartOfAccounts->name($row['chart_id']);
             $row['employer']    = $Employers->name($row['employer_id']);
-            $row['prepared']    = $Users->name($row['prepared_by']);
-            $row['checked']     = $Users->name($row['finished_by']);
+            $row['prepared']    = $Users->fullname($row['prepared_by']);
+            $row['checked']     = $Users->fullname($row['finished_by']);
             $rows[] = $row;
         }
         return $rows;
     }
 
-    public function initilize_query()
+    public function initialize_query($employer_id, $branch_id)
     {
-        "SELECT l.*
-        FROM tbl_loans AS l
-        INNER JOIN tbl_clients AS c ON c.client_id = l.client_id
-        INNER JOIN tbl_client_employment AS ce ON ce.client_id = c.client_id
-        WHERE
-            c.branch_id= 1
-            AND ce.employer_id = 4
-        GROUP BY c.client_id
-        ORDER BY c.client_lname ASC";
+        $select = "SELECT l.*,c.client_lname,c.client_fname ";
+        $from = "FROM tbl_loans AS l INNER JOIN tbl_clients AS c ON c.client_id = l.client_id ";
+        $where = "WHERE l.status = 'R' ";
+
+        if ($branch_id > 0) {
+            $where .= "AND c.branch_id = '$branch_id' ";
+        }
+
+        if ($employer_id > 0) {
+            $from .= "INNER JOIN tbl_client_employment AS ce ON ce.client_id = c.client_id ";
+            $where .= "AND ce.employer_id = '$employer_id' ";
+        }
+
+        $where .= "GROUP BY c.client_id ORDER BY c.client_lname ASC";
+
+        $sql = $select . $from . $where;
+        return $this->query($sql);
     }
 
     public function initialize()
@@ -91,16 +101,18 @@ class MassCollections extends Connection
         $loan_types         = $LoanTypes->show();
 
         $rows = array();
-        $result = $this->select(
-            "tbl_loans",
-            '*',
-            "status = 'R' AND branch_id = '$branch_id' GROUP BY client_id"
-        );
+        // $result = $this->select(
+        //     "tbl_loans",
+        //     '*',
+        //     "status = 'R' AND branch_id = '$branch_id' GROUP BY client_id"
+        // );
+
+        $result = $this->initialize_query($employer_id, $branch_id);
         while ($row = $result->fetch_assoc()) {
             $row_details = [];
             $row_details['client_id']       = $row['client_id'];
             $row_details['branch_id']       = $row['branch_id'];
-            $row_details['client_name']     = $Clients->initial_name($row['client_id']);
+            $row_details['client_name']     = $row['client_lname'] . ", " . $row['client_fname']; //$Clients->initial_name($row['client_id']);
             $row_details['receipt_number']  = "";
             $row_details['old_atm_balance'] = 0;
             $row_details['atm_withdrawal']  = 0;
@@ -359,9 +371,10 @@ class MassCollections extends Connection
             if ($cl_id < 1)
                 throw new Exception("cl_id:" . $cl_id);
 
-            if ($Loans->loan_balance($this->inputs['loan_id'], $this->inputs['collection_date']) <= 0)
+            if ($Loans->loan_balance($this->inputs['loan_id'], $this->inputs['collection_date']) <= 0) {
+                $Loans->inputs['loan_id'] = $this->inputs['loan_id'];
                 $Loans->finish();
-
+            }
             // FOR JOURNAL ENTRY
             $form_journal = array(
                 'reference_number'  => $ref_code,

@@ -1,7 +1,6 @@
 <form id='frmMassCollection' method="POST">
     <div class="modal fade" id="modalMassCollection" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" id="import_dialog"
-            style="width: 100%;max-width: 2000px;margin: 0.5rem;">
+        <div class="modal-dialog" role="document" id="import_dialog" style="width: 100%;max-width: 2000px;margin: 0.5rem;">
             <div class="modal-content">
                 <div class="modal-header" id="mass-modal-header">
                     <h5 class="modal-title"><span class='ion-compose'></span> Add Mass Collection</h5>
@@ -10,8 +9,7 @@
                     <div class="form-row w3-animate-left">
                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Branch</label>
-                            <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]"
-                                style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="mass_branch_id" name="input[branch_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <!--                         <div class="form-group col">
@@ -21,30 +19,25 @@
                         </div> -->
                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Bank</label>
-                            <select class="form-control select2 input-item" id="mass_chart_id" name="input[chart_id]"
-                                style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="mass_chart_id" name="input[chart_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Collection Date</label>
-                            <input type="date" class="form-control input-item" autocomplete="off"
-                                name="input[collection_date]" id="mass_collection_date" required>
+                            <input type="date" class="form-control input-item" autocomplete="off" name="input[collection_date]" id="mass_collection_date" required>
                         </div>
                         <div class="form-group col">
                             <label><strong style="color:red;">*</strong> Employer</label>
-                            <select class="form-control select2 input-item" id="mass_employer_id"
-                                name="input[employer_id]" style="width:100%;" required>
+                            <select class="form-control select2 input-item" id="mass_employer_id" name="input[employer_id]" style="width:100%;" required>
                             </select>
                         </div>
                         <div class="form-group col hide-for-save">
                             <label>ATM Charge</label>
-                            <input min="0" type="number" class="form-control input-item" autocomplete="off"
-                                name="input[atm_charge]" id="mass_atm_charge">
+                            <input min="0" type="number" class="form-control input-item" autocomplete="off" name="input[atm_charge]" id="mass_atm_charge">
                         </div>
                         <div class="form-group col hide-for-save">
                             <br />
-                            <button type="submit" id="btn_mass_generate" style="margin-top:10px;"
-                                class="btn btn-primary">
+                            <button type="submit" id="btn_mass_generate" style="margin-top:10px;" class="btn btn-primary">
                                 Generate
                             </button>
                         </div>
@@ -232,15 +225,14 @@
     }
 
     function resetMassCollection() {
-
-        // getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);
-        getSelectOption('Employers', 'mass_employer_id', 'employer_name', '', [], '', 'Select All');
-        getSelectOption('Branches', 'mass_branch_id', 'branch_name', '', [], '', 'Select All');
+        getSelectOption2("mass_employer_id", "Employers", "employer_id", "employer_name", '', 0, 'Select All');
+        getSelectOption2("mass_branch_id", "Branches", "branch_id", "branch_name", '', 0, 'Select All');
+        getSelectOption2("mass_chart_id", "ChartOfAccounts", "chart_id", "chart_name", "chart_name LIKE '%Bank%'");
 
         $("#mass_chart_id").html($("#chart_id").html()).val(null).select2().trigger('change').prop("disabled", false);
-        // $("#mass_branch_id").html($("#branch_id").html()).val(null).select2().trigger('change').prop("disabled", false);
+        $("#mass_branch_id").html($("#branch_id").html()).val(null).select2().trigger('change').prop("disabled", false);
         // $("#loan_type_id").val(0).select2().trigger('change').prop("disabled", false);
-        // $("#employer_id").val(0).select2().trigger('change').prop("disabled", false);
+        $("#mass_employer_id").val(0).select2().trigger('change').prop("disabled", false);
         $("#mass_collection_date").val('').prop("disabled", false).attr('readonly', false);
         $("#mass_atm_charge").val('').prop("disabled", false).attr('readonly', false);
 
@@ -352,7 +344,7 @@
             skin_loan_types += `<th class='w-8'>${loan_type.loan_type}</th>`;
             skin_total_loan_types += `<th data-column='total_loan_type_${loan_type.loan_type_id}' class="right"></th>`;
         }
-        $('#mass_collection_result_content').html(`<div class='w3-animate-left table-container'>
+        $('#mass_collection_result_content').html(`<div class='w3-animate-left table-container' style="width:100%;">
             <table id="tbl_mass_collection">
                 <thead>
                   <tr>
@@ -394,10 +386,20 @@
             </div>
         </div>`);
         focusFirstReceiptNumber();
+        totalLoanSolvers(loan_types);
 
         // <td data-column='deduction' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(deduction)}</td>
         // <td data-column='emergency_loan' onblur="editCollectionCell(this)" contenteditable="${is_editable}" class='right editable-cell'>${numberFormatClearZero(emergency_loan)}</td>
         $('.select2-mass').select2();
+    }
+
+
+    function totalLoanSolvers(loan_types) {
+        for (var loanTypeIndex = 0; loanTypeIndex < loan_types.length; loanTypeIndex++) {
+            var loan_type = loan_types[loanTypeIndex];
+            var column_data = `loan_type_${loan_type.loan_type_id}`;
+            totalSolvers(column_data);
+        }
     }
 
     function optionUsers(users, user_id = 0) {
@@ -586,12 +588,12 @@
             }
         } else {
             swal({
-                title: 'Are you sure?',
-                text: 'Your data will be cleared!',
-                icon: 'warning',
-                buttons: ["Cancel", "Proceed"],
-                dangerMode: true,
-            })
+                    title: 'Are you sure?',
+                    text: 'Your data will be cleared!',
+                    icon: 'warning',
+                    buttons: ["Cancel", "Proceed"],
+                    dangerMode: true,
+                })
                 .then((willProceed) => {
                     if (willProceed) {
                         for (var i = 0; i < checkboxes.length; i++) {
@@ -610,10 +612,9 @@
 </script>
 <script>
     function viewMassCollection(mass_collection_id, is_finish = false) {
-        // getSelectOption('LoanTypes', 'loan_type_id', 'loan_type', "", ['loan_type_interest']);
-        // getSelectOption('Employers', 'employer_id', 'employer_name');
-        $("#mass_chart_id").html($("#chart_id").html());
-        $("#mass_branch_id").html($("#branch_id").html());
+        getSelectOption2("mass_employer_id", "Employers", "employer_id", "employer_name", '', 0, 'Select All');
+        getSelectOption2("mass_branch_id", "Branches", "branch_id", "branch_name", '', 0, 'Select All');
+        getSelectOption2("mass_chart_id", "ChartOfAccounts", "chart_id", "chart_name", "chart_name LIKE '%Bank%'");
         $(".hide-for-save").hide();
 
         is_finish ? $('#btn_mass_save').hide() : $('#btn_mass_save').show();
@@ -644,9 +645,9 @@
                 mc_header_data = json.headers;
 
                 // $("#loan_type_id").val(mc_header_data.loan_type_id).select2().trigger('change').prop("disabled", true);
-                // $("#employer_id").val(mc_header_data.employer_id).select2().trigger('change').prop("disabled", true);
+                $("#mass_employer_id").val(mc_header_data.employer_id).select2().trigger('change').prop("disabled", true);
                 $("#mass_chart_id").val(mc_header_data.chart_id).select2().trigger('change').prop("disabled", true);
-                // $("#mass_branch_id").val(mc_header_data.branch_id).select2().trigger('change').prop("disabled", true);
+                $("#mass_branch_id").val(mc_header_data.branch_id).select2().trigger('change').prop("disabled", true);
 
                 $("#mass_collection_date").val(mc_header_data.collection_date).prop("disabled", true);
 

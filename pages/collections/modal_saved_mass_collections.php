@@ -15,6 +15,7 @@
                                 <th>Collection Date</th>
                                 <th>Prepared By</th>
                                 <th>Checked By</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                     </table>
@@ -68,6 +69,11 @@
                 },
                 {
                     "data": "checked"
+                },
+                {
+                    "mRender": function(data, type, row) {
+                        return row.status == 'F' ? '<div class="text-success">Finish</div>' : '<div class="text-warning">Saved</div>';
+                    },
                 }
             ]
         });

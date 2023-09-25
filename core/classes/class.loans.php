@@ -253,7 +253,7 @@ class Loans extends Connection
 
     public function finish()
     {
-        $loan_id = $this->inputs['loan_id'];
+        $loan_id = $this->inputs['loan_id'] ?? 0;
         return $this->update($this->table, ['status' => 'F'], "loan_id = '$loan_id'");
     }
 
